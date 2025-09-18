@@ -1,0 +1,25 @@
+# Common / OS
+.rep
+.DS_Store
+tmp/
+
+# IDEs
+.idea
+.vscode
+
+# LaTeX
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.out
+*.snm
+*.toc
+*.lot
+*.lof
+*.bbl
+*.blg
+*.vrb
+*.lol
