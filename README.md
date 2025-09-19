@@ -15,9 +15,13 @@ configuration and code for the BFH (Bern University of Applied Sciences) Module 
 ## Documentation
 The project documentation is written in LaTeX and can be found in the `docs/` folder.
 
-To build the documentation, you need to install LaTeX on your system:
+To build the documentation, you need to install LaTeX on your system, which may take several hours to complete:
 - LaTeX quick installation guide: https://tug.org/texlive/quickinstall.html
 - LaTeX full installation guide: https://tug.org/texlive/doc/texlive-en/texlive-en.html#installation
+
+Check the following links for the BFH LaTeX templates, which are used for the documentation:
+- Installation: https://latex.ti.bfh.ch/doc_gettingStarted/index.html
+- BFH Thesis Class: https://latex.ti.bfh.ch/doc_bfhclass/thesis.html
 
 ### Build PDF documentation
 ```bash
@@ -26,12 +30,12 @@ make docs
 
 ### Clean documentation, including the generated PDF
 ```bash
-make clean
+make clean-docs
 ```
 
 ### Clean and rebuild PDF documentation
 ```bash
-make clean && make docs
+make clean-docs && make docs
 ```
 
 ## License

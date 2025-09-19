@@ -2,16 +2,16 @@
 % define document class
 \PassOptionsToPackage{table}{xcolor}
 \documentclass[
-    a4paper,
-    BCOR=15mm,            % Binding correction
-    twoside,
+  a4paper,
+  BCOR=15mm,            % Binding correction
+  twoside,
 % openright,
 %  headings=openright,
-    bibliography=totoc,   % If enabled add bibliography to TOC
-    listof=totoc,         % If enabled add lists to TOC
-    monolingual,
+  bibliography=totoc,   % If enabled add bibliography to TOC
+  listof=totoc,         % If enabled add lists to TOC
+  monolingual,
 % bilingual,
-    invert-title,
+  invert-title,
 ]{bfhthesis}
 
 \LoadBFHModule{listings,terminal,boxes}
@@ -58,12 +58,12 @@
 %---------------------------------------------------------------------------
 % Blind text -> for dummy text
 %---------------------------------------------------------------------------
-\usepackage{blindtext}
-\usepackage{letltxmacro}
+\usepackage{blindtext}    
+\usepackage{letltxmacro}   
 \LetLtxMacro{\blindtextblindtext}{\blindtext}
 
 \RenewDocumentCommand{\blindtext}{O{\value{blindtext}}}{
-    \begingroup\color{BFH-Gray}\blindtextblindtext[#1]\endgroup
+	\begingroup\color{BFH-Gray}\blindtextblindtext[#1]\endgroup
 }
 %---------------------------------------------------------------------------
 % Glossary Package
@@ -93,22 +93,20 @@
 % Hyperref Package (Create links in a pdf)
 %---------------------------------------------------------------------------
 \usepackage[
-,bookmarks
-,plainpages=false
-,pdfpagelabels
-,pdfusetitle
-,backref = {false}          % No index backreference
-,colorlinks = {true}        % Color links in a PDF
-,hypertexnames = {true}     % no failures "same page(i)"
-,bookmarksopen = {true}     % opens the bar on the left side
-,bookmarksopenlevel = {0}   % depth of opened bookmarks
-,linkcolor=.
-,filecolor=.
-,urlcolor=.
-,citecolor=.
+	,bookmarks
+	,plainpages=false
+	,pdfpagelabels
+        ,pdfusetitle
+	,backref = {false}          % No index backreference
+	,colorlinks = {true}        % Color links in a PDF
+	,hypertexnames = {true}     % no failures "same page(i)"
+	,bookmarksopen = {true}     % opens the bar on the left side
+	,bookmarksopenlevel = {0}   % depth of opened bookmarks
+	,linkcolor=.
+	,filecolor=.
+	,urlcolor=.
+	,citecolor=.
 ]{hyperref}
-\usepackage{xparse}
-\usepackage{color}
 %---------------------------------------------------------------------------
 
 %% %% Customize Footer and Headers in Document
@@ -145,75 +143,73 @@
 %% \redefinetranslation{German}{project partner}{Projektpartnerin} %  just for consistency
 
 %------------ START FRONT PART ------------
-    \frontmatter
+\frontmatter
 
-    \title{Project 2}
-    \subtitle{Swiss Army Knife Network Sniffer}
-    \author{
-        Frank Gauss (gausf1) \\
-        Lukas von Allmen (vonal3)
-    }
-    \institution{Bern University of Applied Sciences}
-    \department{Technik und Informatik}
-%    \institute{TBD}
-    \version{1.0}
-%    \titlegraphic*{\includegraphics{somePicture}}
-    \advisor{Wenger Hansjürg}
-%    \coadvisor{PhD A. Smart}
-    \projectpartner{proj partner}
-%    \expert{Some expert}
-    \degreeprogram{Bachelor of Science in Computer Science}
-%    \setupSignature{
-%        A. Muster={\includegraphics[width=.5\linewidth]{sig_muster}},
-%        C. Example={\includegraphics[width=.5\linewidth]{sig_example}}
-%    }
+\title{Bachelor's Thesis}
+\subtitle{Thesis subject}
+\author{Anton Muster \and Cindy Example}
+\institution{Bern University of Applied Sciences}
+\department{Technik und Informatik}
+\institute{Mikro- und Medizintechnik}
+\version{1.0}
+\titlegraphic*{\includegraphics{somePicture}}
+\advisor{Prof. Dr. Super Smart}
+\coadvisor{PhD A. Smart}
+\projectpartner{proj partner}
+\expert{Some expert}
+\degreeprogram{Bachelor of Science in Computer Science}
+\setupSignature{
+	A. Muster={\includegraphics[width=.5\linewidth]{sig_muster}},
+	C. Example={\includegraphics[width=.5\linewidth]{sig_example}}
+}
 
 
 %----------------  BFH tile page   -----------------------------------------
-    \maketitle
+\maketitle
 %------------ ABSTRACT        ----------------
-    \addchap{Abstract}
-    \input{content/abstract}
+\addchap{Abstract}
+\input{content/abstract}
 
 %------------ TABLEOFCONTENTS ----------------
-    \tableofcontents
+\tableofcontents
 
 %------------ START MAIN PART ------------
-    \mainmatter
+\mainmatter
 
-    \chapter{First Thesis Chapter}\label{ch:first-thesis-chapter}
-    \input{content/introduction}
-    \input{content/specification}
-    \input{content/evaluation}
+\chapter{First Thesis Chapter}
+\input{content/introduction}
+\input{content/methods}
+\input{content/results}
 
-    \chapter{Second Thesis Chapter}\label{ch:second-thesis-chapter}
-    \input{content/implementation}
+\chapter{Second Thesis Chapter}
+\input{content/expl_fragments}
+\input{content/discussion}
 
 %------------ Authorship declaration translated to main language ------------
-    \declarationOfAuthorship
+\declarationOfAuthorship
 
 %----------- Bibliography ----------------
-    \clearpage
-    \bibliographystyle{unsrt}
-    \bibliography{references}      % the references.bib file gets loaded
+\clearpage
+\bibliographystyle{unsrt}
+\bibliography{project}      % the project.bib file gets loaded
 
 %------------ List of Figures ------------
-    \listoffigures
-
+\listoffigures
+ 
 %------------ List of Tables -------------
-    \listoftables
-
+\listoftables
+ 
 %------------ List of Listings -----------
-    \lstlistoflistings
-
+\lstlistoflistings 
+ 
 %------------ Glossary -------------------
-    \printglossary
+\printglossary
 
 %------------ Index ----------------------
-    \clearpage
-    \printindex
-%------------ Appendix ----------------
-    \appendix
-    \input{./content/appendix}
+\clearpage
+\printindex
+%------------ Appendix ----------------	
+\appendix
+\chapter{First Appendix Chapter}
 
 \end{document}

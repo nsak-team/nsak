@@ -4,14 +4,11 @@ dev:
 
 ./docs/documentation/documentation.pdf: ./docs/documentation/documentation.tex
 	cd ./docs/documentation \
-	&& pdflatex --shell-escape documentation.tex \
-	&& bibtex documentation \
-	&& pdflatex --shell-escape documentation.tex \
-	&& pdflatex --shell-escape documentation.tex
+	&& latexmk -pdflua
 
 .PHONY: docs
 docs: ./docs/documentation/documentation.pdf
 
-.PHONY: clean
+.PHONY: clean-docs
 clean:
-	find ./doc -type f \( -name '*.aux' -o -name '*.log' -o -name '*.bbl' -o -name '*.blg' -o -name '*.out' -o -name '*.pdf' -o -name '*.lof' -o -name '*.lot' -o -name '*.toc' -o -name '*.snm' -o -name '*.nav' \) -delete
+	latexmk -c
