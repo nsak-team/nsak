@@ -23,3 +23,9 @@ tmp/
 *.blg
 *.vrb
 *.lol
+*.glo
+*.idx
+*.ilg
+*.ind
+*.ist
+
