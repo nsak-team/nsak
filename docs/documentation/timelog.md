@@ -9,10 +9,10 @@ Each section contains a table with activity entries for the respective week.
 
 ### Week 1
 
-| Date       | Activity / Task Description                                                                             | Duration | Category | Notes / Results                             |
-|------------|---------------------------------------------------------------------------------------------------------|----------|----------|---------------------------------------------|
-| 2025-08-21 | Compared Banana Pi R4, R3, R3 Mini vs R6S boards. Documented hardware specs, performance, and RAM usage | 4 h      | Research | Added board components and comparison table |
-|            |                                                                                                         |          |          |                                             |
+| Date            | Activity / Task Description                                                                             | Duration | Category | Notes / Results                             |
+|-----------------|---------------------------------------------------------------------------------------------------------|----------|----------|---------------------------------------------|
+| 2025-08-21      | Compared Banana Pi R4, R3, R3 Mini vs R6S boards. Documented hardware specs, performance, and RAM usage | 4 h      | Research | Added board components and comparison table |
+| **Week Total ** |                                                                                                         | **4 h**  |          |                                             |
 
 ### Week 2
 
@@ -22,14 +22,17 @@ Each section contains a table with activity entries for the respective week.
 | 2025-09-04 | Compare Raspberry Pi 5 vs Raspberry Pi 4 for performance and interfaces | 3 h      | Documentation | Added findings in                   |
 | 2025-09-26 | Kickoff Meeting                                                         | 1 h      | Planning      | -                                   |
 | 2025-09-26 | Create Hardware Order List, evaluate PiN67S                             | 3 h      | Documentation | Order List stored in 'exel'         |
-|            |                                                                         |          |               |                                     |
+|            |                                                                         | **10**   |               |                                     |
 
 ### Week 3
 
-| Date       | Activity / Task Description   | Duration | Category      | Notes / Results |
-|------------|-------------------------------|----------|---------------|-----------------|
-| 2025-10-05 | Variant and Module evaluation | 4 h      | Documentation | —               |
-| 2025-10-05 | Create timelog md file        | 1 h      | Documentation |                 |
+| Date            | Activity / Task Description   | Duration | Category      | Notes / Results |
+|-----------------|-------------------------------|----------|---------------|-----------------|
+| 2025-10-05      | Variant and Module evaluation | 4 h      | Documentation | —               |
+| 2025-10-05      | Create timelog md file        | 1 h      | Documentation |                 |
+|                 |                               |          |               |                 |
+|                 |                               |          |               |                 |
+| **Week Total ** |                               | **5 h**  |               |                 |
 
 ### Week 4
 
