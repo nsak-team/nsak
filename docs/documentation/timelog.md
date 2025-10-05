@@ -34,185 +34,26 @@ Each section contains a table with activity entries for the respective week.
 |                 |                               |          |               |                 |
 | **Week Total ** |                               | **5 h**  |               |                 |
 
-### Week 4
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 5
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 6
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 7
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 8
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 9
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 10
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 11
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 12
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 13
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 14
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 15
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 16
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
 ---
 
 ## 👤 Lukas
 
-### Week 1
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 2
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 3
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 4
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 5
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 6
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 7
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 8
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 9
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 10
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 11
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 12
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 13
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 14
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 15
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
-### Week 16
-
-| Date | Activity / Task Description | Duration | Category | Notes / Results |
-|------|-----------------------------|----------|----------|-----------------|
-|      |                             |          |          |                 |
-
----
+| Date            | Activity / Task Description                               | Duration | Category      | Notes / Results                                                                                           |
+|-----------------|-----------------------------------------------------------|----------|---------------|-----------------------------------------------------------------------------------------------------------|
+| **Preparation** |                                                           |          |               |                                                                                                           |
+|                 |                                                           |          |               |                                                                                                           |
+|                 |                                                           |          |               |                                                                                                           |
+| **Week 1:**     |                                                           |          |               |                                                                                                           |
+|                 |                                                           |          |               |                                                                                                           |
+|                 |                                                           |          |               |                                                                                                           |
+| **Week 2:**     |                                                           |          |               |                                                                                                           |
+| 2025-09-10      |                                                           | 3 h      | Documentation |                                                                                                           |
+| 2025-09-26      | Kickoff Meeting                                           | 1 h      | Planning      | Added meeting notes to https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/1 |
+| 2025-09-26      | Create Hardware Order List, evaluate Banana PI BPI-R4     | 3 h      | Documentation | Order List stored in google sheet                                                                         |
+|                 |                                                           |          |               |                                                                                                           |
+| **Week 3:**     |                                                           |          |               |                                                                                                           |
+| 2025-09-29      | Finalize Hardware Order List                              | 1 h      | Documentation | Send order list to hansjuerg.wenger@bfh.ch                                                                |
+| 2025-10-05      | Add time entries to timelog.md, create and manage tickets | 4 h      | Documentation |                                                                                                           |
 
 ## Combined Summary
 
