@@ -40,5 +40,3 @@ make clean-docs && make docs
 
 ## License
 @TODO: Evaluate and add license
-
-hello franky
