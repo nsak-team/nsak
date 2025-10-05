@@ -11,7 +11,7 @@ The following requirements were defined for the hardware platform used in this p
 	\item Strong community and software support 
 	\item Affordable cost (below 150 CHF)
 \end{itemize}
-
+\newpage
 \section{Evaluated Boards}
 
 Several boards were considered as potential variants. Their main specifications relevant to the project are listed in Table~\ref{tab:boardspecs}.
@@ -37,6 +37,9 @@ Several boards were considered as potential variants. Their main specifications 
 		\hline
 		Raspberry Pi 5 & BCM2712, Quad-core ARM Cortex-A76 @ 2.4 GHz & 4–8 GB LPDDR4X, microSD & 1 × 1 GbE (second via PCIe card) & 8–12 W & Wi-Fi 5 (AP/Client only) \\
 		\hline
+		NanoPi R76S & Rockchip RK3588S, Octa-core (4× Cortex-A76 @ 2.4 GHz + 4× Cortex-A55 @ 1.8 GHz) & 16 GB LPDDR4X / LPDDR5, NVMe (option via M.2) & 3 × 2.5 GbE (RJ45) & 10–15 W & None (M.2 Wi-Fi 6E module recommended) \\
+		\hline
+		
 	\end{tabularx}
 \end{table}
 
@@ -47,23 +50,26 @@ Several boards were considered as potential variants. Their main specifications 
 	\caption{Requirements Fulfillment by Candidate Boards}
 	\label{tab:reqcheck}
 	\resizebox{\textwidth}{!}{%
-		\begin{tabular}{|p{6cm}|c|c|c|c|c|c|}
+		\begin{tabular}{|p{6cm}|c|c|c|c|c|c|c}
 			\hline
-			\textbf{\large Requirement} & \textbf{\large R3 Mini} & \textbf{\large R3} & \textbf{\large R4} & \textbf{\large R5} & \textbf{\large RPi 4} & \textbf{\large RPi 5} \\
+			\textbf{\large Requirement} & \textbf{\large R3 Mini} & \textbf{\large R3} & \textbf{\large R4} & \textbf{\large R5} & \textbf{\large RPi 4} & \textbf{\large RPi 5} & \textbf{NanoPi R76S}\\
 			\hline
-			\scriptsize ≥ 2 native Ethernet interfaces & \ding{51} & \ding{51} & \ding{51} & \ding{51} & \ding{55} & \ding{55} \\
+			\scriptsize ≥ 2 native Ethernet interfaces & \ding{51} & \ding{51} & \ding{51} & \ding{51} & \ding{55} & \ding{55} & \ding{51} \\
 			\hline
-			\scriptsize ≥ 2.5 GbE support & \ding{51} (2×) & \ding{51} (2×) & \ding{51} (4×) & \ding{51} (2×) & \ding{55} & \ding{55} \\
+			\scriptsize RAM > 4GB & \ding{55} & \ding{55} & \ding{51} &\ding{51} &
+			\ding{55} & \ding{51} & \ding{51} \\
 			\hline
-			\scriptsize Onboard Wi-Fi with AP \& Monitor mode & \ding{51} & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
+			\scriptsize ≥ 2.5 GbE support & \ding{51} (2×) & \ding{51} (2×) & \ding{51} \ding{51} (4×) & \ding{51} (2×) & \ding{55} & \ding{55} & \ding{51} \\
 			\hline
-			\scriptsize Low power consumption (<10 W) & \ding{51} & \ding{51}/\ding{115} & \ding{55} & \ding{55} & \ding{51} & \ding{115} \\
+			\scriptsize Onboard Wi-Fi with AP \& Monitor mode & \ding{51} & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
 			\hline
-			\scriptsize Compact form factor & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{51} & \ding{51} \\
+			\scriptsize Low power consumption (<10 W) & \ding{51} & \ding{51}/\ding{115} & \ding{55} & \ding{55} & \ding{51} & \ding{115} & \ding{51}\\
 			\hline
-			\scriptsize Strong community \& software support & \ding{51} & \ding{51} & \ding{115} & \ding{115} & \ding{51} (general) & \ding{51} (general) \\
+			\scriptsize Compact form factor & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{51} & \ding{51} & \ding{51}\\
 			\hline
-			\scriptsize Suitable for inline packet sniffing & \ding{51} & \ding{51} (overkill) & \ding{115} (overkill) & \ding{115} (expensive) & \ding{55} & \ding{55} \\
+			\scriptsize Strong community \& software support & \ding{51} & \ding{51} & \ding{115} & \ding{115} & \ding{51} (general) & \ding{51} (general) & \ding{51}\\
+			\hline
+			\scriptsize Suitable for inline packet sniffing & \ding{51} & \ding{51} (overkill) & \ding{115} (overkill) & \ding{115} (expensive) & \ding{55} & \ding{55} & \ding{51 }\\
 			\hline
 		\end{tabular}
 	}
@@ -73,22 +79,83 @@ Several boards were considered as potential variants. Their main specifications 
 \end{table}
 
 
+
 \section{Decision}
 
-Based on the defined requirements and the evaluation of alternatives, the \textbf{Banana Pi R3 Mini} was selected as the hardware platform for this prototype.
+Based on the defined requirements and the evaluation of alternatives, the \textbf{Banana Pi R4} and the\textbf{NanoPI R76S} are most suitable hardware platform for this prototype implementation.
 
-The R3 Mini provides the necessary features: two native 2.5~GbE interfaces for inline sniffing, onboard Wi-Fi 6 with support for access point and monitor modes, and low power consumption suitable for 24/7 operation. In addition, the board is compact, affordable, and supported by a strong community.
+The Banana Pi R4 offers two native 2.5~GbE interfaces for inline sniffing the board is compact, affordable, and supported by a strong community. In Addition, the two 10 GbE SFP+ ports provide flexibility for extensions as fiber-based packet capturing. A drawback of the R4 is the weaker CPU and a larger size compared to the NanoPI R76S
 
-Alternative boards such as the full Banana Pi R3, R4, or R5 offer higher performance and more ports, but these features are unnecessary for the scope of this project and come with drawbacks such as higher power usage, larger board size, or reduced community support. Raspberry Pi 4 and 5 were excluded primarily because they provide only a single native Ethernet interface, requiring external adapters that reduce performance for inline sniffing scenarios.
+The NanoPi R76S is more compact and provides up to 16GB of RAM, which is advantageous for memory intensive processing and buffering tasks. While it lacks built-in Wi-fi, it can be expanded via the M.2 Wi-Fi 6E module. It can not host both a Wi-Fi card and NVMe SSD simultaneously. Consequently, data storage must be provided via microSD card or external USB SSD
 
-In conclusion, the R3 Mini offers the best balance between performance and functionality for implementing a network sniffer prototype.
-\\
+Alternative boards such as the Banana Pi R3 Mini, R3 are limited overall performance. Rasberry PI 4 or 5 offer higher single core performance but were ultimately discarded because they provide only a single native Ethernet interface, requiring external adapters that reduce performance for inline sniffing scenarios. 
+
+\section{Module}
+
+\begin{table}[H]
+	\centering
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabular}{|c|p{4cm}|p{8cm}|}
+		\hline
+		\textbf{ID} & \textbf{Module Name} & \textbf{Description} \\
+		\hline
+		M1 & Hardware Evaluation \& Setup & Evaluation and selection of suitable embedded hardware (e.g., Banana Pi R4, NanoPi R6S). Setup of OS, drivers, and base configuration. \\
+		\hline
+		M2 & System Configuration & Installation and configuration of the operating system, networking stack, and essential system packages. \\
+		\hline
+		M3 & Network Capture Engine & Implementation of inline network sniffing using pcap/tcpdump, bridge configuration, and throughput validation. \\
+		\hline
+		M4 & Traffic Filtering \& Manipulation & Integration of firewall, packet filtering, and traffic injection capabilities (iptables/nftables). \\
+		\hline
+		M5 & Performance Measurement & Development of measurement tools for throughput, latency, and jitter (iperf3, netperf, ping tests). \\
+		\hline
+		M6 & Attack Simulation & Controlled execution of network attacks such as MITM, downgrade, or ARP spoofing for testing purposes. \\
+		\hline
+		M7 & Switching \& Routing (SDN) & Implementation of dynamic routing or bridging functions, optional integration with SDN controllers. \\
+		\hline
+		M8 & VPN Endpoint & Configuration of a secure VPN endpoint (WireGuard or OpenVPN) supporting host-to-network and network-to-network connections. \\
+		\hline
+		M9 & Wi-Fi Client Mode & Setup of Wi-Fi module as a client endpoint for wireless measurements and connectivity. \\
+		\hline
+		M10 & Wi-Fi Access Point Mode & Setup of hostapd to run the board as a wireless access point, including channel and signal analysis. \\
+		\hline
+		M11 & Mobile Network (Tethering) & Integration of LTE/5G USB modem for mobile uplink or hotspot functionality. \\
+		\hline
+		M12 & Backend Communication & Secure communication with a remote backend or control server via REST API or MQTT. \\
+		\hline
+		M13 & User Interface (CLI / Web) & Development of a local command-line and/or web-based configuration interface for module control. \\
+		\hline
+		M14 & System Security \& Hardening & Implementation of SSH key management, firewall, certificates, and user authentication for secure operation. \\
+		\hline
+		M15 & Monitoring \& Logging & Collection of system logs, traffic statistics, and implementation of rotation and data persistence. \\
+		\hline
+		M16 & Documentation \& Reporting & Continuous documentation of development progress, project report, and final presentation materials. \\
+		\hline
+	\end{tabular}
+	\caption{Overview of project modules for the \textit{Network Swiss Army Knife} prototype.}
+	\label{tab:modules_overview}
+\end{table}
+
+
+
 \section{Diagram}
 
+
+\subsection{Variant 1 Inline-Sniffing}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../../../Media/LAN-Sniffing}
+	\caption{}
+	\label{fig:lan-sniffing}
+\end{figure}
+\subsection{Variant 2}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../../../Media/LAN-Sniffing-Switch-AccessPoint}
 	\caption{}
 	\label{fig:lan-sniffing-switch-accesspoint}
 \end{figure}
+\subsection{Variant 3}
+\subsection{Variant 4}
+\subsection{Variant 5}
 
