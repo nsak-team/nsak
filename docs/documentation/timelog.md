@@ -27,9 +27,18 @@ Each section contains a table with activity entries for the respective week.
 | **Week 3:**      |                                                                                                         |          |               |                                                                                                        |
 | 2025-10-05       | Variant and Module evaluation                                                                           | 4 h      | Documentation | —                                                                                                      |
 | 2025-10-05       | Create timelog md file                                                                                  | 1 h      | Documentation |                                                                                                        |
-| **Sub Total**    |                                                                                                         | **5 h**  |               |                                                                                                        |
+| 2025-10-08       | Add Environment draft                                                                                   | 4 h      | Documentation |                                                                                                        |
+| **Sub Total**    |                                                                                                         | **9 h**  |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
-| **Total**        |                                                                                                         | **22 h** |               |                                                                                                        |
+| **Week 4:**      |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+| **Total**        |                                                                                                         | **26 h** |               |                                                                                                        |
 
 ## 👤 Lukas
 
@@ -63,7 +72,7 @@ Each section contains a table with activity entries for the respective week.
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
-| Frank     | 22 h        | Research, Docs, DevOps        |
+| Frank     | 26 h        | Research, Docs, DevOps        |
 | Lukas     | 22 h        | Planning, Project Setup, Docs |
 | **Total** | 44 h        |                               |
 

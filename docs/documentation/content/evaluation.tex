@@ -43,8 +43,6 @@ Several boards were considered as potential variants. Their main specifications 
 	\end{tabularx}
 \end{table}
 
-
-
 \begin{table}[H]
 	\centering
 	\caption{Requirements Fulfillment by Candidate Boards}
@@ -89,73 +87,4 @@ The Banana Pi R4 offers two native 2.5~GbE interfaces for inline sniffing the bo
 The NanoPi R76S is more compact and provides up to 16GB of RAM, which is advantageous for memory intensive processing and buffering tasks. While it lacks built-in Wi-fi, it can be expanded via the M.2 Wi-Fi 6E module. It can not host both a Wi-Fi card and NVMe SSD simultaneously. Consequently, data storage must be provided via microSD card or external USB SSD
 
 Alternative boards such as the Banana Pi R3 Mini, R3 are limited overall performance. Rasberry PI 4 or 5 offer higher single core performance but were ultimately discarded because they provide only a single native Ethernet interface, requiring external adapters that reduce performance for inline sniffing scenarios. 
-
-\section{Module}
-
-\begin{table}[H]
-	\centering
-	\renewcommand{\arraystretch}{1.2}
-	\begin{tabular}{|c|p{4cm}|p{8cm}|}
-		\hline
-		\textbf{ID} & \textbf{Module Name} & \textbf{Description} \\
-		\hline
-		M1 & Hardware Evaluation \& Setup & Evaluation and selection of suitable embedded hardware (e.g., Banana Pi R4, NanoPi R6S). Setup of OS, drivers, and base configuration. \\
-		\hline
-		M2 & System Configuration & Installation and configuration of the operating system, networking stack, and essential system packages. \\
-		\hline
-		M3 & Network Capture Engine & Implementation of inline network sniffing using pcap/tcpdump, bridge configuration, and throughput validation. \\
-		\hline
-		M4 & Traffic Filtering \& Manipulation & Integration of firewall, packet filtering, and traffic injection capabilities (iptables/nftables). \\
-		\hline
-		M5 & Performance Measurement & Development of measurement tools for throughput, latency, and jitter (iperf3, netperf, ping tests). \\
-		\hline
-		M6 & Attack Simulation & Controlled execution of network attacks such as MITM, downgrade, or ARP spoofing for testing purposes. \\
-		\hline
-		M7 & Switching \& Routing (SDN) & Implementation of dynamic routing or bridging functions, optional integration with SDN controllers. \\
-		\hline
-		M8 & VPN Endpoint & Configuration of a secure VPN endpoint (WireGuard or OpenVPN) supporting host-to-network and network-to-network connections. \\
-		\hline
-		M9 & Wi-Fi Client Mode & Setup of Wi-Fi module as a client endpoint for wireless measurements and connectivity. \\
-		\hline
-		M10 & Wi-Fi Access Point Mode & Setup of hostapd to run the board as a wireless access point, including channel and signal analysis. \\
-		\hline
-		M11 & Mobile Network (Tethering) & Integration of LTE/5G USB modem for mobile uplink or hotspot functionality. \\
-		\hline
-		M12 & Backend Communication & Secure communication with a remote backend or control server via REST API or MQTT. \\
-		\hline
-		M13 & User Interface (CLI / Web) & Development of a local command-line and/or web-based configuration interface for module control. \\
-		\hline
-		M14 & System Security \& Hardening & Implementation of SSH key management, firewall, certificates, and user authentication for secure operation. \\
-		\hline
-		M15 & Monitoring \& Logging & Collection of system logs, traffic statistics, and implementation of rotation and data persistence. \\
-		\hline
-		M16 & Documentation \& Reporting & Continuous documentation of development progress, project report, and final presentation materials. \\
-		\hline
-	\end{tabular}
-	\caption{Overview of project modules for the \textit{Network Swiss Army Knife} prototype.}
-	\label{tab:modules_overview}
-\end{table}
-
-
-
-\section{Diagram}
-
-
-\subsection{Variant 1 Inline-Sniffing}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../../../Media/LAN-Sniffing}
-	\caption{}
-	\label{fig:lan-sniffing}
-\end{figure}
-\subsection{Variant 2}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../../../Media/LAN-Sniffing-Switch-AccessPoint}
-	\caption{}
-	\label{fig:lan-sniffing-switch-accesspoint}
-\end{figure}
-\subsection{Variant 3}
-\subsection{Variant 4}
-\subsection{Variant 5}
 

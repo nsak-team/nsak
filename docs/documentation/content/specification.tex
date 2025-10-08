@@ -1,5 +1,104 @@
-\section{Specification}\label{sec:specification}
+\chapter{Network Environments}\label{sec:environment}
 
-\subsection{System Delimitation}\label{subsec:system-delimination}
 
-\subsubsection{System Environment}\label{subsubsec:system_environment}
+Each environment represents a practical setup in which the Network Swiss Army Knife (nsak) can be deployed for traffic analysis, performance testing, or security evaluation.
+
+\subsection{Category I: Basic / Local}
+
+\subsubsection{E 1: Point-to-Point}
+\textbf{Diagram:} Laptop $\leftrightarrow$ nsak $\leftrightarrow$ Router  \\
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../assets/LAN-Sniffing}
+	\caption{}
+	\label{fig:lan-sniffing}
+\end{figure}
+
+\textbf{Description:}  
+Direct inline bridge between client and router. Used for basic LAN capturing, latency and throughput testing.
+
+\subsubsection{E 2: Home Network}
+\textbf{Diagram:} Laptop, Smart Devices, Printer $\leftrightarrow$ nsak (inline) $\leftrightarrow$ Router  \\
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../assets/LAN-4-ports-Sniffing.drawio}
+	\caption{}
+	\label{fig:lan-4-ports-sniffing}
+\end{figure}
+
+\textbf{Description:}  
+Captures typical home traffic. WLAN interface required for Wi-Fi analysis. Useful for IoT discovery and local broadcast observation.
+
+\subsubsection{E 3: Business Network}
+\textbf{Diagram:} Devices $\leftrightarrow$ Switch $\leftrightarrow$ nsak (inline) $\leftrightarrow$ Server / Router  \\
+
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{../assets/LAN-Sniffing-Switch-AccessPoint}
+	\caption{}
+	\label{fig:lan-sniffing-switch-accesspoint}
+\end{figure}
+
+\textbf{Description:}  
+Represents a small office LAN. nsak placed at uplink or server edge to monitor internal traffic, VLANs, and broadcast domains.
+
+\subsection{Category II: Mobile / Wireless}
+
+\subsubsection{E 4: Access Point Mode}
+\textbf{Diagram:} Wi-Fi Device $\leftrightarrow$ AP-nsak $\leftrightarrow$ Internet  \\
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../assets/LAN-WLAN-Sniffing.drawio}
+	\caption{}
+	\label{fig:lan-wlan-sniffing}
+\end{figure}
+
+
+\textbf{Description:}  
+nsak acts as Wi-Fi AP, providing connectivity and packet capture. Captures management and data frames for WLAN analysis.
+
+\subsubsection{E 5: Mobile Hotspot}
+\textbf{Diagram:} Smartphone $\leftrightarrow$ nsak $\leftrightarrow$ LTE/5G  \\
+\textbf{Description:}  
+Mobile tethering or hotspot scenario. Focus on NAT behavior, encryption overhead, and power constraints.
+
+\subsection{Category III: Secure / Advanced}
+
+\subsubsection{E 6: Data Center / Server Rack}
+\textbf{Diagram:} Servers $\leftrightarrow$ Switch $\leftrightarrow$ Firewall $\leftrightarrow$ nsak   \\
+\textbf{Description:}  
+High-performance setup for 2.5G–10G traffic capture. Focus on throughput, buffering, and VLAN-tagged traffic.
+
+\subsubsection{E 7: VPN Gateway}
+\textbf{Diagram:} Router $\leftrightarrow$ nsak (VPN Endpoint) $\leftrightarrow$ Remote Peer  \\
+\textbf{Description:}  
+nsak configured as WireGuard gateway. Measures encrypted vs. unencrypted traffic, tunnel stability, and CPU load.
+
+\subsection{Category IV: IoT / Special Purpose}
+
+\subsubsection{E 8: VLAN-Segmented Enterprise Network}
+\textbf{Diagram:} Switch + Router + Multiple VLANs $\leftrightarrow$ nsak  \\
+\textbf{Description:}  
+Used to verify VLAN isolation and detect inter-segment leaks or misconfigurations.
+
+\subsubsection{E 9: IoT Sensor Network}
+\textbf{Diagram:} IoT Devices $\leftrightarrow$ Local Gateway (Broadcast) $\leftrightarrow$ nsak   \\
+\textbf{Description:}  
+Passive capture of local IoT or broadcast-based communication. Identifies timing, protocol use, and unsecured traffic.
+
+\subsection{Category V: Virtual / Simulation}
+
+\subsubsection{E 10: Attack Simulation Network}
+\textbf{Diagram:} Virtual Attacker $\leftrightarrow$ Target VM $\leftrightarrow$ nsak  
+\textbf{Description:}  
+Virtual lab for testing detection systems, malware traffic, and replay scenarios.
+
+\subsubsection{E 11: Remote Management Environment}
+\textbf{Diagram:} Admin $\leftrightarrow$ VPN/SSH $\leftrightarrow$ nsak (headless)  
+\textbf{Description:}  
+Remote-controlled nsak for automated capture and monitoring in unattended operation.
+
+\subsubsection{E 12: Dual-Sniffer Setup}
+\textbf{Diagram:} nsak-A $\parallel$ nsak-B (same link)  
+\textbf{Description:}  
+Two synchronized devices capture the same traffic path. Used for timestamp comparison and hardware validation.
