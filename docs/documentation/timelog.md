@@ -74,6 +74,6 @@ Each section contains a table with activity entries for the respective week.
 |-----------|-------------|-------------------------------|
 | Frank     | 26 h        | Research, Docs, DevOps        |
 | Lukas     | 22 h        | Planning, Project Setup, Docs |
-| **Total** | 44 h        |                               |
+| **Total** | 48 h        |                               |
 
 
