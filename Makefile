@@ -1,18 +1,14 @@
-.PHONY: dev
-dev:
-	python -m http.server -d app || python3 -m http.server -d app
+DOCUMENTATION_PATH = docs/documentation
+DOCUMENTATION_FILE = documentation
+DOCUMENTATION = $(DOCUMENTATION_PATH)/$(DOCUMENTATION_FILE)
 
+.PHONY: docs clean-docs
 
-./docs/documentation/documentation.pdf: ./docs/documentation/documentation.tex
-	cd ./docs/documentation \
-	&& latexmk -pdflua
+docs: clean-docs $(DOCUMENTATION).pdf
 
+$(DOCUMENTATION).pdf: $(DOCUMENTATION).tex
+	cd $(DOCUMENTATION_PATH) && \
+	latexmk -pdflua
 
-.PHONY: docs
-docs: ./docs/documentation/documentation.pdf
-
-
-.PHONY: clean-docs
 clean-docs:
-	cd ./docs/documentation \
-	&& latexmk -c
+	rm -f $(DOCUMENTATION).pdf
