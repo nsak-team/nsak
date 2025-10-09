@@ -63,17 +63,19 @@ Each section contains a table with activity entries for the respective week.
 | 2025-09-29      | Finalize Hardware Order List                                    | 1 h      | Documentation | Send order list to hansjuerg.wenger@bfh.ch                                                                |
 | 2025-10-05      | Add time entries to timelog.md, create and manage tickets       | 1 h      | Planning      | New structure for timelog.md (this file)                                                                  |
 | 2025-10-05      | Coordination with Frank, define terms and create tasks          | 2 h      | Planning      | Terms are defined in https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/12  |
-| 2025-10-05      |                                                                 | 2 h      | Planning      |                                                                                                           |
-| **Sub Total**   |                                                                 | **5 h**  |               |                                                                                                           |
+| 2025-10-05      | Research in security tooling for software modules               | 2 h      | Planning      |                                                                                                           |
+| 2025-10-09      | Create new tickets / Planning / Brainstorming (automation)      | 1 h      | Planning      |                                                                                                           |
+| 2025-10-09      | Create software module list                                     | 4 h      | Planning      |                                                                                                           |
+| **Sub Total**   |                                                                 | **10 h** |               |                                                                                                           |
 |                 |                                                                 |          |               |                                                                                                           |
-| **Total**       |                                                                 | **22 h** |               |                                                                                                           |
+| **Total**       |                                                                 | **27 h** |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
 | Frank     | 26 h        | Research, Docs, DevOps        |
-| Lukas     | 22 h        | Planning, Project Setup, Docs |
+| Lukas     | 27 h        | Planning, Project Setup, Docs |
 | **Total** | 48 h        |                               |
 
 
