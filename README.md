@@ -40,3 +40,15 @@ make clean-docs && make docs
 
 ## License
 @TODO: Evaluate and add license
+
+### timeline
+```mermaid
+gantt
+    title Project 2 Timeline
+    dateFormat  YYYY-MM-DD
+    section Phase 1: Planning
+    Kickoff :a1, 2025-09-12, 14d
+    Kickoff :a2, 2025-09-26, 14d
+    Concept Phase :a3, 2025-10-10, 14d
+    Design & Timeplan :a4, 2025-10-24, 14d
+    POC :aa5, 2025-11-28, 28
