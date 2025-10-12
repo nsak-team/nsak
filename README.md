@@ -48,10 +48,10 @@ timeline
     title Project 2 Timeline
     section Planning
     2025-09-12 : Kickoff & Setup
-    2025-09-26 : Research & Analysis
+    2025-09-26 : Planning
     section Design
-    2025-10-10 : Concept & Design
-    2025-10-24 : Architecture & Timeplan
+    2025-10-10 : Research & Analysis
+    2025-10-24 : Concept, Design, Timeplan
     section Implementation
     2025-11-07 : Proof of Concept (PoC)
     2025-11-21 : Core Development
