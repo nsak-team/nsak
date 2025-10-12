@@ -46,17 +46,19 @@ make clean-docs && make docs
 ```mermaid
 timeline
     title Project 2 Timeline
-    section Planning
+    section Planning & Brainstorm
     2025-09-12 : Kickoff & Setup
     2025-09-26 : Planning
-    section Design
     2025-10-10 : Research & Analysis
-    2025-10-24 : Concept, Design, Timeplan
+    section Design & Resarch
+    2025-10-24 : Concept & Timeplan
+    2025-10-02 : Research & Product comparison
+    2025-11-07 : Architecture and Design
     section Implementation
-    2025-11-07 : Proof of Concept (PoC)
     2025-11-21 : Core Development
-    2025-12-12 : Integration & Testing
+    2025-12-24 : Integration & Testing 
     section Documentation & Delivery
-    2025-12-19 : Report Writing
-    2025-12-23 : Final Presentation
+    2025-01-03 : Final Presentation and Documentation finish
+    2025-01-16 : Final Presentation 
+    2025-01-22 : Project Submission 
 
