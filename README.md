@@ -42,13 +42,24 @@ make clean-docs && make docs
 @TODO: Evaluate and add license
 
 ### timeline
+
 ```mermaid
 gantt
     title Project 2 Timeline
     dateFormat  YYYY-MM-DD
+    axisFormat  %d.%m
+
     section Phase 1: Planning
-    Kickoff :a1, 2025-09-12, 14d
-    Kickoff :a2, 2025-09-26, 14d
-    Concept Phase :a3, 2025-10-10, 14d
-    Design & Timeplan :a4, 2025-10-24, 14d
-    POC :aa5, 2025-11-28, 28
+    Kickoff & Setup        :a1, 2025-09-12, 14d
+    Research & Analysis     :a2, 2025-09-26, 14d
+    Concept & Design        :a3, 2025-10-10, 14d
+    Timeplan & Architecture :a4, 2025-10-24, 14d
+
+    section Phase 2: Implementation
+    Proof of Concept (PoC)  :b1, 2025-11-07, 14d
+    Core Development        :b2, 2025-11-21, 21d
+    Integration & Testing   :b3, 2025-12-12, 7d
+
+    section Phase 3: Documentation & Delivery
+    Report Writing          :c1, 2025-12-19, 5d
+    Final Presentation      :c2, 2025-12-23, 1d
