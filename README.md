@@ -51,7 +51,7 @@ timeline
     🗓️ 2025-09-26 : Planning
     🗓️ 2025-10-10 : Research & Analysis
     section Design & Resarch
-    2025-10-24 : Concept & Timeplan
+    🗓️ 2025-10-24 : Concept & Timeplan
     2025-11-02 : Research & Product comparison
     🗓️ 2025-11-07 : Architecture and Design
     section Implementation
