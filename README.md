@@ -46,12 +46,17 @@ make clean-docs && make docs
 ```mermaid
 timeline
     title Project 2 Timeline
+    section Planning
     2025-09-12 : Kickoff & Setup
     2025-09-26 : Research & Analysis
+    section Design
     2025-10-10 : Concept & Design
     2025-10-24 : Architecture & Timeplan
+    section Implementation
     2025-11-07 : Proof of Concept (PoC)
     2025-11-21 : Core Development
     2025-12-12 : Integration & Testing
+    section Documentation & Delivery
     2025-12-19 : Report Writing
     2025-12-23 : Final Presentation
+
