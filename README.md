@@ -44,22 +44,14 @@ make clean-docs && make docs
 ### timeline
 
 ```mermaid
-gantt
+timeline
     title Project 2 Timeline
-    dateFormat  YYYY-MM-DD
-    axisFormat  %d.%m
-
-    section Phase 1: Planning
-    Kickoff & Setup        :a1, 2025-09-12, 14d
-    Research & Analysis     :a2, 2025-09-26, 14d
-    Concept & Design        :a3, 2025-10-10, 14d
-    Timeplan & Architecture :a4, 2025-10-24, 14d
-
-    section Phase 2: Implementation
-    Proof of Concept (PoC)  :b1, 2025-11-07, 14d
-    Core Development        :b2, 2025-11-21, 21d
-    Integration & Testing   :b3, 2025-12-12, 7d
-
-    section Phase 3: Documentation & Delivery
-    Report Writing          :c1, 2025-12-19, 5d
-    Final Presentation      :c2, 2025-12-23, 1d
+    2025-09-12 : Kickoff & Setup
+    2025-09-26 : Research & Analysis
+    2025-10-10 : Concept & Design
+    2025-10-24 : Architecture & Timeplan
+    2025-11-07 : Proof of Concept (PoC)
+    2025-11-21 : Core Development
+    2025-12-12 : Integration & Testing
+    2025-12-19 : Report Writing
+    2025-12-23 : Final Presentation
