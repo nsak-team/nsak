@@ -27,10 +27,18 @@ Each section contains a table with activity entries for the respective week.
 | **Week 3:**      |                                                                                                         |          |               |                                                                                                        |
 | 2025-10-05       | Variant and Module evaluation                                                                           | 4 h      | Documentation | —                                                                                                      |
 | 2025-10-05       | Create timelog md file                                                                                  | 1 h      | Documentation |                                                                                                        |
-| 2025-10-08       | Add Environment draft                                                                                   | 4 h      | Documentation |                                                                                                        |
-| **Sub Total**    |                                                                                                         | **9 h**  |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+| **Sub Total**    |                                                                                                         | **5 h**  |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
 | **Week 4:**      |                                                                                                         |          |               |                                                                                                        |
+| 2025-10-08       | Add Environment draft                                                                                   | 4 h      | Documentation |                                                                                                        |
+| 2025-10-10       | Add Environment draft                                                                                   | 4 h      | Documentation |                                                                                                        |
+| 2025-10-10       | Meeting with Tutor                                                                                      | 0.5 h    | Planning      |                                                                                                        |
+| 2025-10-10       | Weekly planning                                                                                         | 0.5 h    | Planning      |                                                                                                        |
+| 2025-10-12       | Concept planing, brainstorm and draft of roadmap                                                        | 6 h      | Documentation | Concept Diagram and md Roadmap in Readme                                                               |
+| **Sub Total**    |                                                                                                         | **15 h** |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+| **Week 5:**      |                                                                                                         |          |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
@@ -38,7 +46,7 @@ Each section contains a table with activity entries for the respective week.
 |                  |                                                                                                         |          |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
-| **Total**        |                                                                                                         | **26 h** |               |                                                                                                        |
+| **Total**        |                                                                                                         | **37 h** |               |                                                                                                        |
 
 ## 👤 Lukas
 
@@ -74,8 +82,8 @@ Each section contains a table with activity entries for the respective week.
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
-| Frank     | 26 h        | Research, Docs, DevOps        |
+| Frank     | 37 h        | Research, Docs, DevOps        |
 | Lukas     | 27 h        | Planning, Project Setup, Docs |
-| **Total** | 48 h        |                               |
+| **Total** | 64 h        |                               |
 
 
