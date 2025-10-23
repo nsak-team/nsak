@@ -50,40 +50,56 @@ Each section contains a table with activity entries for the respective week.
 
 ## 👤 Lukas
 
-| Date            | Activity / Task Description                                     | Duration | Category      | Notes / Results                                                                                           |
-|-----------------|-----------------------------------------------------------------|----------|---------------|-----------------------------------------------------------------------------------------------------------|
-| **Preparation** |                                                                 |          |               |                                                                                                           |
-| 2025-08-21      | Brainstorming meeting with Frank                                | 4 h      | Planning      | Ideas for possible hardware, scenarios and general Scope of the Project (mainly notes in Google Drive)    |
-| 2025-09-05      | Brainstorming/Coordination meeting with Frank                   | 3 h      | Planning      | Discussed network diagrams, possible hardware choices and next steps/tasks. Project Kickoff scheduled.    |
-| **Sub Total**   |                                                                 | **7 h**  |               |                                                                                                           |
-|                 |                                                                 |          |               |                                                                                                           |
-| **Week 1:**     |                                                                 |          |               |                                                                                                           |
-| 2025-09-18      | Setup GIT repository and project board in GitLab                | 3 h      | Planning      | Git Repository with Readme.md and issue board.                                                            |
-| 2025-09-19      | Setup latex documentation based on BFH bachelor thesis template | 3 h      | Documentation | LaTeX Documentation base setup.                                                                           |
-| **Sub Total**   |                                                                 | **6 h**  |               |                                                                                                           |
-|                 |                                                                 |          |               |                                                                                                           |
-| **Week 2:**     |                                                                 |          |               |                                                                                                           |
-| 2025-09-26      | Kickoff Meeting                                                 | 1 h      | Planning      | Added meeting notes to https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/1 |
-| 2025-09-26      | Create Hardware Order List, evaluate Banana PI BPI-R4           | 3 h      | Documentation | HW Order List stored in google sheet                                                                      |
-| **Sub Total**   |                                                                 | **4 h**  |               |                                                                                                           |
-|                 |                                                                 |          |               |                                                                                                           |
-| **Week 3:**     |                                                                 |          |               |                                                                                                           |
-| 2025-09-29      | Finalize Hardware Order List                                    | 1 h      | Documentation | Send order list to hansjuerg.wenger@bfh.ch                                                                |
-| 2025-10-05      | Add time entries to timelog.md, create and manage tickets       | 1 h      | Planning      | New structure for timelog.md (this file)                                                                  |
-| 2025-10-05      | Coordination with Frank, define terms and create tasks          | 2 h      | Planning      | Terms are defined in https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/12  |
-| 2025-10-05      | Research in security tooling for software modules               | 2 h      | Planning      |                                                                                                           |
-| 2025-10-09      | Create new tickets / Planning / Brainstorming (automation)      | 1 h      | Planning      |                                                                                                           |
-| 2025-10-09      | Create software module list                                     | 4 h      | Planning      |                                                                                                           |
-| **Sub Total**   |                                                                 | **10 h** |               |                                                                                                           |
-|                 |                                                                 |          |               |                                                                                                           |
-| **Total**       |                                                                 | **27 h** |               |                                                                                                           |
+| Date            | Activity / Task Description                                     | Duration   | Category      | Notes / Results                                                                                           |
+|-----------------|-----------------------------------------------------------------|------------|---------------|-----------------------------------------------------------------------------------------------------------|
+| **Preparation** |                                                                 |            |               |                                                                                                           |
+| 2025-08-21      | Brainstorming meeting with Frank                                | 4 h        | Planning      | Ideas for possible hardware, scenarios and general Scope of the Project (mainly notes in Google Drive)    |
+| 2025-09-05      | Brainstorming/Coordination meeting with Frank                   | 3 h        | Planning      | Discussed network diagrams, possible hardware choices and next steps/tasks. Project Kickoff scheduled.    |
+| **Sub Total**   |                                                                 | **7 h**    |               |                                                                                                           |
+|                 |                                                                 |            |               |                                                                                                           |
+| **Week 1:**     |                                                                 |            |               |                                                                                                           |
+| 2025-09-18      | Setup GIT repository and project board in GitLab                | 3 h        | Planning      | Git Repository with Readme.md and issue board.                                                            |
+| 2025-09-19      | Setup latex documentation based on BFH bachelor thesis template | 3 h        | Documentation | LaTeX Documentation base setup.                                                                           |
+| **Sub Total**   |                                                                 | **6 h**    |               |                                                                                                           |
+|                 |                                                                 |            |               |                                                                                                           |
+| **Week 2:**     |                                                                 |            |               |                                                                                                           |
+| 2025-09-26      | Kickoff Meeting                                                 | 1 h        | Planning      | Added meeting notes to https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/1 |
+| 2025-09-26      | Create Hardware Order List, evaluate Banana PI BPI-R4           | 3 h        | Documentation | HW Order List stored in google sheet                                                                      |
+| **Sub Total**   |                                                                 | **4 h**    |               |                                                                                                           |
+|                 |                                                                 |            |               |                                                                                                           |
+| **Week 3:**     |                                                                 |            |               |                                                                                                           |
+| 2025-09-29      | Finalize Hardware Order List                                    | 1 h        | Documentation | Send order list to hansjuerg.wenger@bfh.ch                                                                |
+| 2025-10-05      | Add time entries to timelog.md, create and manage tickets       | 1 h        | Planning      | New structure for timelog.md (this file)                                                                  |
+| 2025-10-05      | Coordination with Frank, define terms and create tasks          | 2 h        | Planning      | Terms are defined in https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/12  |
+| 2025-10-05      | Research in security tooling for software modules               | 2 h        | Planning      |                                                                                                           |
+| **Sub Total**   |                                                                 | **6 h**    |               |                                                                                                           |
+|                 |                                                                 |            |               |                                                                                                           |
+| **Week 4:**     |                                                                 |            |               |                                                                                                           |
+| 2025-10-09      | Create new tickets / Planning / Brainstorming (automation)      | 1 h        | Planning      |                                                                                                           |
+| 2025-10-09      | Create software module list                                     | 4 h        | Planning      |                                                                                                           |
+| 2025-10-10      | Meeting with Tutor                                              | 0.5 h      | Planning      |                                                                                                           |
+| 2025-10-10      | Weekly planning                                                 | 0.5 h      | Planning      |                                                                                                           |
+| 2025-10-12      | Concept planing, brainstorm and draft of roadmap                | 6 h        | Documentation | Concept Diagram and md Roadmap in Readme                                                                  |
+| **Sub Total**   |                                                                 | **12 h**   |               |                                                                                                           |
+|                 |                                                                 |            |               |                                                                                                           |
+| **Week 5:**     |                                                                 |            |               |                                                                                                           |
+| 2025-10-16      | Research if similar tools already exist                         | 0.5 h      | Research      | https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/19                       |
+| 2025-10-16      | Research Metasploit Framework                                   | 1.5 h      | Research      | https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/19                       |
+| 2025-10-17      | Weekly planning                                                 | 0.5 h      | Planning      |                                                                                                           |
+| **Sub Total**   |                                                                 | **2.5 h**  |               |                                                                                                           ||                 |                                                                 |          |               |                                                                                                           |
+|                 |                                                                 |            |               |                                                                                                           |
+| **Week 6:**     |                                                                 |            |               |                                                                                                           |
+| 2025-10-23      |                                                                 | 3h         | Planning      |                                                                                                           |
+| **Sub Total**   |                                                                 | **3 h**    |               |                                                                                                           ||                 |                                                                 |          |               |                                                                                                           |
+|                 |                                                                 |            |               |                                                                                                           |
+| **Total**       |                                                                 | **40.5 h** |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
 | Frank     | 37 h        | Research, Docs, DevOps        |
-| Lukas     | 27 h        | Planning, Project Setup, Docs |
-| **Total** | 64 h        |                               |
+| Lukas     | 40.5 h      | Planning, Project Setup, Docs |
+| **Total** | 72 h        |                               |
 
 
