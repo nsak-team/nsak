@@ -38,8 +38,20 @@ Each section contains a table with activity entries for the respective week.
 | 2025-10-12       | Concept planing, brainstorm and draft of roadmap                                                        | 6 h      | Documentation | Concept Diagram and md Roadmap in Readme                                                               |
 | **Sub Total**    |                                                                                                         | **15 h** |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
-| **Week 5:**      |                                                                                                         |          |               |                                                                                                        |
+| **Week 6:**      |                                                                                                         |          |               |                                                                                                        |
+| 2025-10-24       | Project Meeting and discussion                                                                          | 1h       |               |                                                                                                        |
+| 2025-10-27       | Market and Network product analyse                                                                      | 4h       |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
+| **Sub Total**    |                                                                                                         | 5h       |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+| Week 7           |                                                                                                         |          |               |                                                                                                        |
+| 2025-11-02       | Planning Architecture and Design in Sibb with Lukas                                                     | 5h       |               |                                                                                                        |
+| 2025-11-03       | Add Use-Case-Diagram and Use Case table to documentation, add meeting notes                             | 5h       |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         |          |               |                                                                                                        |
+|                  |                                                                                                         | **10h**  |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
 |                  |                                                                                                         |          |               |                                                                                                        |
@@ -98,8 +110,8 @@ Each section contains a table with activity entries for the respective week.
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
-| Frank     | 37 h        | Research, Docs, DevOps        |
+| Frank     | 52 h        | Research, Docs, DevOps        |
 | Lukas     | 40.5 h      | Planning, Project Setup, Docs |
-| **Total** | 72 h        |                               |
+| **Total** | 92.5 h      |                               |
 
 
