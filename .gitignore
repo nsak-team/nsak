@@ -6,7 +6,7 @@ tmp/
 # IDEs
 .idea
 .vscode
-
+tmp
 # LaTeX
 *.aux
 *.log
