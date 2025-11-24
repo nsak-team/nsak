@@ -1,0 +1,13 @@
+drill: v1
+
+metadata:
+  id: hello
+  name: Hello Drill
+  author: frank@bfh.ch
+  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+dependencies: []
+
+interface:
+  arguments: none
+  return_value: string
