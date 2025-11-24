@@ -10,7 +10,6 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parents[2]
 DRILLS = BASE / "drills"
 
-# function to run the scenario in a container
 def run():
     """
     Execute scenario
