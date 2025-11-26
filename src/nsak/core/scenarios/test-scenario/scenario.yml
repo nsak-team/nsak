@@ -1,13 +1,13 @@
 scenario: v1
 
 metadata:
-  id: test-scenarios
+  id: test-scenario
   name: Test Scenario
-  author: frank@bfh.ch
+  author: gausf1@bfh.ch
   repository:  https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
 drills:
-  - hello
+  - hello_world
 
 interface:
   arguments: none

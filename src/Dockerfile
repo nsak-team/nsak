@@ -10,5 +10,4 @@ WORKDIR src
 # copy project
 COPY . src
 
-# Standard-Entry: dein Scenario
 CMD ["python3", "/src/scenarios/test-scenario/scenario.py"]

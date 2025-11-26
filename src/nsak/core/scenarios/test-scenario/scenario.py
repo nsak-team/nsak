@@ -6,7 +6,7 @@ scenario entrypoint for drill POC
 import importlib.util
 from pathlib import Path
 
-# takes the absolut path from here. scenarios.test-scenario.scenario.py
+# takes the absolut path from here. scenarios.test-scenario.scenarios.py
 BASE = Path(__file__).resolve().parents[2]
 DRILLS = BASE / "drills"
 
@@ -16,7 +16,7 @@ def run():
     :return: None
     print output
     """
-    drill = "hello"
+    drill = "hello_world"
     drill_path = DRILLS / drill / "drill.py"
 
     spec = importlib.util.spec_from_file_location("drill-module",drill_path) # return spec of module
@@ -24,6 +24,3 @@ def run():
     spec.loader.exec_module(module)
 
     print("[Scenario] Drill returned:", module.run())
-
-if __name__ == "__main__":
-    run()
