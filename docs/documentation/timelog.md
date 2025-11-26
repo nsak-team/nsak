@@ -58,14 +58,14 @@ Each section contains a table with activity entries for the respective week.
 | **Week 10:**     |                                                                                                                              |          |                |                                                                                                        |
 | 2025-11-21       | Weekly planning and conception                                                                                               | 1 h      | Planning       |                                                                                                        |
 | 2025-11-22       | Access the BPI-r4 with a serial cable, familiarize with the provided debian image and setup networking, including SSH access | 8 h      | HW             |                                                                                                        |
-| 2025-11-23       | Implement https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/31                                | 0 h      | Implementation |                                                                                                        |
-| **Sub Total**    |                                                                                                                              | **9 h**  |                |                                                                                                        |
+| 2025-11-23       | Implement https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/issues/31                                | 3 h      | Implementation |                                                                                                        |
+| **Sub Total**    |                                                                                                                              | **11 h** |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
 | **Week 11:**     |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              | 0 h      |                |                                                                                                        | |
-| **Sub Total**    |                                                                                                                              | **0 h**  |                |                                                                                                        |                                                                                                                              
+| 2025-11-26       | Review, Planning and Restructuring                                                                                           | 2 h      |                |                                                                                                        | |
+| **Sub Total**    |                                                                                                                              | **2 h**  |                |                                                                                                        |                                                                                                                              
 |                  |                                                                                                                              |          |                |                                                                                                        |
-| **Total**        |                                                                                                                              | **67 h** |                |                                                                                                        |
+| **Total**        |                                                                                                                              | **71 h** |                |                                                                                                        |
 
 ## 👤 Lukas
 
@@ -144,8 +144,8 @@ Each section contains a table with activity entries for the respective week.
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
-| Frank     | 67 h        | Research, Docs, DevOps        |
+| Frank     | 71 h        | Research, Docs, DevOps        |
 | Lukas     | 69 h        | Planning, Project Setup, Docs |
-| **Total** | 136 h       |                               |
+| **Total** | 140 h       |                               |
 
 
