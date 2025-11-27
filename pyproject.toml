@@ -10,6 +10,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "mypy>=1.18.2",
     "ruff>=0.14.6",
 ]
 
@@ -19,6 +20,12 @@ package = false
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"
+
+[tool.mypy]
+files = ["."]
+strict = true
+ignore_missing_imports = true
+plugins = []
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
