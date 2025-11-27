@@ -2,7 +2,7 @@
 @TODO: Add abstract
 
 ## About
-This repository contains all relevant documentation, 
+This repository contains all relevant documentation,
 configuration and code for the BFH (Bern University of Applied Sciences) Module "BTI3041 - Project 2".
 
 ### Authors
@@ -64,6 +64,16 @@ Type checking is done using [mypy](https://www.mypy-lang.org/). The configuratio
 
 `uvx mypy`
 
+### GIT Pre-Commit Hooks
+
+GIT pre-commit hooks are set up with [pre-commit](https://pre-commit.com/) to enforce linting, formatting and type checking on every commit. The configuration is located in `.pre-commit-config.yaml`. It's strongly recommended to install pre-commit hooks locally before committing any changes:
+
+`uvx pre-commit install`
+
+Additional links:
+ - ruff pre-commit: https://github.com/astral-sh/ruff-pre-commit
+ - mypy pre-commit: https://github.com/pre-commit/mirrors-mypy
+
 ## License
 @TODO: Evaluate and add license
 
@@ -81,7 +91,7 @@ timeline
     2025-11-02 : Research & Product comparison
     🗓️ 2025-11-07 : Architecture and Design
     section Implementation
-    🗓️ 2025-11-21 : Finalized Scenario MITM with required drills and environments
+    🗓️ 2025-11-21 : Finalized Scenario MITM with required drills and environments 
     🗓️ 2025-12-05 : Finalized Scenario "W-lan Spoofing" with required drills and enviornments
     🗓️ 2025-12-19 : Integration & Testing 
     section Documentation & Delivery
