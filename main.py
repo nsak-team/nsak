@@ -1,5 +1,13 @@
-def main():
-    print("Hello from nsak!")
+import sys
+
+
+def main() -> None:
+    """
+    Main entry point.
+
+    :return:
+    """
+    sys.stdout("Hello from nsak!")
 
 
 if __name__ == "__main__":
