@@ -4,11 +4,13 @@ metadata:
   id: test-scenario
   name: Test Scenario
   author: gausf1@bfh.ch
-  repository:  https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-drills:
-  - hello_world
+dependencies:
+  drills: [ hello_world ]
+  system: [ ]
+  python: [ ]
 
 interface:
-  arguments: none
-  return_value: none
+  arguments: None
+  return_type: None
