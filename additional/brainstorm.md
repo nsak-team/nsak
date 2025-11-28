@@ -43,10 +43,10 @@ drills:
   - ...
 
 # default entrypoint:
-#   scenario.py
+#   scenarios.py
 
 interface:
-  arguments: prepare scenario
+  arguments: prepare scenarios
   return value: none -> output
 ```
 
@@ -61,7 +61,7 @@ dependencies:
   - nmap
 
 # default entrypoint:
-#   drill.py
+#   drills.py
 
 interface:
   arguments:
