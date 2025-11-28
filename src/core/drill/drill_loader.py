@@ -1,10 +1,13 @@
+import logging
 from pathlib import Path
 from typing import Any
 
 import yaml
 
 from src.core.config import LIBRARY_PATHS
-from src.core.drill.drill import Drill
+from src.core.drill.drill import Drill, DrillDependencies, DrillInterface
+
+logger = logging.getLogger(__name__)
 
 
 class InvalidDrillError(Exception):
@@ -16,7 +19,7 @@ class InvalidDrillError(Exception):
         self, message: str, original_exception: Exception | None = None
     ) -> None:
         self.original_exception = original_exception
-        super().__init__(message)
+        super().__init__(original_exception or message)
 
 
 class DrillNotFoundError(Exception):
@@ -110,7 +113,20 @@ class DrillLoader:
         Creates a Drill object from a dict containing the drill's metadata.
         """
         try:
-            return Drill(**data)
+            return Drill(
+                id=str(data["metadata"]["id"]),
+                name=str(data["metadata"]["name"]),
+                author=str(data["metadata"]["author"]),
+                repository=str(data["metadata"]["repository"]),
+                dependencies=DrillDependencies(
+                    system=set(data["dependencies"]["system"]),
+                    python=set(data["dependencies"]["python"]),
+                ),
+                interface=DrillInterface(
+                    arguments=tuple(data["interface"]["arguments"]),
+                    return_type=str(data["interface"]["return_type"]),
+                ),
+            )
         except TypeError as e:
             message = "Loaded Drill data is invalid."
             raise InvalidDrillError(message, e) from e
@@ -122,3 +138,22 @@ class DrillLoader:
         result = self._find(name)
         data = self._load(result)
         return self._create(data)
+
+    def load_all(self) -> list[Drill]:
+        """
+        Load all drills and return a set of Drill objects.
+        """
+        all_drills: list[Drill] = list()
+        for search_path in self._search_paths:
+            for path in search_path.iterdir():
+                if not path.is_dir():
+                    continue
+                try:
+                    data = self._load(path)
+                    drill = self._create(data)
+                    all_drills.append(drill)
+                except InvalidDrillError as e:
+                    message = f"Skipping invalid drill '{path.name}'"
+                    logger.debug(message, exc_info=e)
+
+        return all_drills
