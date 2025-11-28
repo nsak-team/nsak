@@ -62,8 +62,8 @@ timeline
     2025-01-03 : Final Presentation and Documentation finish
     2025-01-16 : Final Presentation 
     2025-01-19 : Project Submission 
-
-### timeline2
+ ```
+### changed timeline
 
 ```mermaid
 timeline
@@ -86,3 +86,4 @@ timeline
     2025-01-03 : Final Presentation and Documentation finish
     2025-01-16 : Final Presentation 
     2025-01-19 : Project Submission 
+```
