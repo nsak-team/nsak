@@ -20,4 +20,4 @@ repos:
       - id: mypy
         args: [--strict, --ignore-missing-imports]
         # Additional type dependencies as hooks are run in a separate virtual environment.
-        additional_dependencies: []
+        additional_dependencies: [types-click, types-PyYAML]
