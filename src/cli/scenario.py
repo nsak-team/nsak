@@ -1,5 +1,7 @@
 import click
 
+from src import core
+
 scenario_group = click.Group("scenario")
 
 
@@ -8,4 +10,6 @@ def list_scenarios() -> None:
     """
     List all scenarios.
     """
-    pass
+    scenarios = core.list_scenarios()
+    for scenario in scenarios:
+        click.echo(scenario.name)
