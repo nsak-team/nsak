@@ -1,4 +1,5 @@
-from src.core.scenario import Scenario, ScenarioLoader
+from src.core.scenario.scenario import Scenario
+from src.core.scenario.scenario_loader import ScenarioLoader
 
 
 def get_scenario(name: str) -> Scenario:

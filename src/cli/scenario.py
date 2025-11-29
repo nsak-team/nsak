@@ -27,3 +27,17 @@ def build_scenario(name: str) -> None:
     """
     scenario = core.get_scenario(name)
     core.build_scenario(scenario)
+
+
+@scenario_group.command("run")
+@click.option(
+    "--name",
+    prompt="Scenario name",
+    help="Provide the scenario name you want to build.",
+)
+def run_scenario(name: str) -> None:
+    """
+    Build the scenario image for deployment.
+    """
+    scenario = core.get_scenario(name)
+    core.run_scenario(scenario)
