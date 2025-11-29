@@ -38,6 +38,26 @@ make clean-docs
 make clean-docs && make docs
 ```
 
+## Development
+
+@TODO: Describe development environment
+
+### Programming Language
+
+nsak and all scenarios and drills are written in Python.
+
+### Virtual Environment and Package Management
+
+The virtual environment and packages are management with [uv](https://docs.astral.sh/uv/). The required python version and all dependencies are configured in `pyproject.toml`. To create a virtual environment and install all dependencies, run the following command:
+
+`uv init`
+
+### Linting and Formatting
+
+Linting and formatting is done using [ruff](https://docs.astral.sh/ruff/). The configuration is located in `pyproject.toml`. To run linting and formatting, run the following command:
+
+`uvx ruff check`
+
 ## License
 @TODO: Evaluate and add license
 
