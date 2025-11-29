@@ -7,7 +7,7 @@ def main() -> None:
 
     :return:
     """
-    sys.stdout("Hello from nsak!")
+    sys.stdout.write("Hello from nsak!")
 
 
 if __name__ == "__main__":

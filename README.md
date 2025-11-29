@@ -58,6 +58,12 @@ Linting and formatting is done using [ruff](https://docs.astral.sh/ruff/). The c
 
 `uvx ruff check`
 
+### Type Checking
+
+Type checking is done using [mypy](https://www.mypy-lang.org/). The configuration is located in `pyproject.toml`. To run type checking, run the following command:
+
+`uvx mypy`
+
 ## License
 @TODO: Evaluate and add license
 
