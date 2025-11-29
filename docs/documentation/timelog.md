@@ -140,15 +140,17 @@ Each section contains a table with activity entries for the respective week.
 |                 |                                                                                                                              |           |               |                                                                                                           |
 | **Week 12:**    |                                                                                                                              |           |               |                                                                                                           |
 | 2025-11-27      | Create tickets for backlog and start Development (Dev Tooling)                                                               | 3 h       | Development   |                                                                                                           |
-| 2025-11-28      | Development: Datastructure, File/Object Loaders,                                                                             | 4 h       | Development   |                                                                                                           |
-| **Sub Total**   |                                                                                                                              | **7 h**   |               |                                                                                                           |
+| 2025-11-28      | Development: Datastructures, File/Object Loaders and CLI commands                                                            | 4 h       | Development   |                                                                                                           |
+| 2025-11-29      | Development: Scenario Image builder, run images                                                                              | 4 h       | Development   |                                                                                                           |
+| 2025-11-29      | Create new tickets                                                                                                           | 1 h       | Planning      |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | **12 h**  |               |                                                                                                           |
 |                 |                                                                                                                              |           |               |                                                                                                           |
-| **Total**       |                                                                                                                              | **76 h**  |               |                                                                                                           |
+| **Total**       |                                                                                                                              | **81 h**  |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
 | Frank     | 71 h        | Research, Docs, DevOps        |
-| Lukas     | 76 h        | Planning, Project Setup, Docs |
-| **Total** | 147 h       |                               |
+| Lukas     | 81 h        | Planning, Project Setup, Docs |
+| **Total** | 152 h       |                               |
