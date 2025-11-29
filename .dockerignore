@@ -1,0 +1,8 @@
+tmp
+images
+.venv
+.git
+.gitlab
+docs
+additional
+pyproject.toml

@@ -1,4 +1,5 @@
 import dataclasses
+from pathlib import Path
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
@@ -29,6 +30,7 @@ class Drill:
 
     id: str
     name: str
+    path: Path
     author: str
     repository: str
     dependencies: DrillDependencies
