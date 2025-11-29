@@ -5,7 +5,7 @@ from typing import Any
 import yaml
 
 from src.core.config import LIBRARY_PATHS
-from src.core.scenario import Scenario, ScenarioDependencies, ScenarioInterface
+from src.core.scenario.scenario import Scenario, ScenarioDependencies, ScenarioInterface
 
 logger = logging.getLogger(__name__)
 
@@ -118,8 +118,8 @@ class ScenarioLoader:
                 name=str(data["metadata"]["name"]),
                 author=str(data["metadata"]["author"]),
                 repository=str(data["metadata"]["repository"]),
+                drills=set(data["drills"]),
                 dependencies=ScenarioDependencies(
-                    drills=set(data["dependencies"]["drills"]),
                     system=set(data["dependencies"]["system"]),
                     python=set(data["dependencies"]["python"]),
                 ),

@@ -17,7 +17,6 @@ class ScenarioDependencies:
     Represents the scenarios drill, system and python dependencies.
     """
 
-    drills: set[str]
     system: set[str]
     python: set[str]
 
@@ -32,5 +31,6 @@ class Scenario:
     name: str
     author: str
     repository: str
+    drills: set[str]
     dependencies: ScenarioDependencies
     interface: ScenarioInterface
