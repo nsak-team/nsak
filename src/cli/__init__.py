@@ -1,7 +1,7 @@
 import click
 
-from src.nsak.cli.drill import drill_group
-from src.nsak.cli.scenario import scenario_group
+from src.cli.drill import drill_group
+from src.cli.scenario import scenario_group
 
 
 @click.group()
