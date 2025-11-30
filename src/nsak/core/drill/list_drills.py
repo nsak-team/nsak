@@ -1,4 +1,4 @@
-from src.core.drill import Drill, DrillLoader
+from nsak.core.drill import Drill, DrillLoader
 
 
 def list_drills() -> list[Drill]:

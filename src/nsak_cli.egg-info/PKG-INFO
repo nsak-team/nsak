@@ -1,3 +1,12 @@
+Metadata-Version: 2.4
+Name: nsak-cli
+Version: 0.1.0
+Summary: The prototype CLI tool to manage nsak resources and systems.
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: pyyaml>=6.0.3
+Requires-Dist: click>=8.3.1
+
 # Swiss Army Knife Network Sniffer
 @TODO: Add abstract
 
@@ -50,23 +59,7 @@ nsak and all scenarios and drills are written in Python.
 
 The virtual environment and packages are management with [uv](https://docs.astral.sh/uv/). The required python version and all dependencies are configured in `pyproject.toml`. To create a virtual environment and install all dependencies, run the following command:
 
-`uv sync`
-
-### Install nsak module in editable mode
-
-For development and the build process to work correctly, it is required to install nsak in editable mode with the following command:
-
-`uv run pip install -e .`
-
-### Build and install nsak executable
-
-To build and install the nsak executable, run the following commands:
-
-```bash
-uv build
-# uv tool install dist/nsak-<version>-py3-none-any.whl
-uv tool install dist/nsak-0.1.0-py3-none-any.whl
-```
+`uv init`
 
 ### Linting and Formatting
 

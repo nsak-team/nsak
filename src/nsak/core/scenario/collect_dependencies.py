@@ -1,5 +1,5 @@
-from src.core.scenario.list_drills import list_drills
-from src.core.scenario.scenario import Scenario, ScenarioDependencies
+from nsak.core.scenario.list_drills import list_drills
+from nsak.core.scenario.scenario import Scenario, ScenarioDependencies
 
 
 def collect_dependencies(scenario: Scenario) -> ScenarioDependencies:

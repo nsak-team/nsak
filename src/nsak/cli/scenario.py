@@ -1,6 +1,6 @@
 import click
 
-from src import core
+from nsak import core
 
 scenario_group = click.Group("scenario")
 

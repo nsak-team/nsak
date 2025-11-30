@@ -1,6 +1,6 @@
 import subprocess
 
-from src.core.scenario.scenario import Scenario
+from nsak.core.scenario.scenario import Scenario
 
 
 def run_scenario(scenario: Scenario) -> int:

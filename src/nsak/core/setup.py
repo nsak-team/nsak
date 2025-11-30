@@ -1,11 +1,11 @@
 import logging
 
-from src.core import config
+from nsak.core.config import DEBUG
 
 
 def setup() -> None:
     """
-    Setup the nsak core.
+    Set up the nsak core.
     """
-    if config.DEBUG:
+    if DEBUG:
         logging.basicConfig(level=logging.DEBUG)

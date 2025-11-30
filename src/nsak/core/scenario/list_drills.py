@@ -1,5 +1,5 @@
-from src.core.drill import Drill, DrillLoader
-from src.core.scenario.scenario import Scenario
+from nsak.core.drill import Drill, DrillLoader
+from nsak.core.scenario.scenario import Scenario
 
 
 def list_drills(scenario: Scenario) -> list[Drill]:

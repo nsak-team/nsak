@@ -1,5 +1,5 @@
-from .drill import drill, drill_loader, list_drills
-from .scenario import (
+from nsak.core.drill import drill, drill_loader, list_drills
+from nsak.core.scenario import (
     build_scenario,
     get_scenario,
     list_scenarios,
@@ -7,7 +7,7 @@ from .scenario import (
     scenario,
     scenario_loader,
 )
-from .setup import setup
+from nsak.core.setup import setup
 
 __all__ = [
     "build_scenario",

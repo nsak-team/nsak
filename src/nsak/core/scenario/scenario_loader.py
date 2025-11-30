@@ -4,15 +4,19 @@ from typing import Any
 
 import yaml
 
-from src.core.config import LIBRARY_PATHS
-from src.core.drill.drill import Drill, DrillDependencies, DrillInterface
+from nsak.core.config import LIBRARY_PATHS
+from nsak.core.scenario.scenario import (
+    Scenario,
+    ScenarioDependencies,
+    ScenarioInterface,
+)
 
 logger = logging.getLogger(__name__)
 
 
-class InvalidDrillError(Exception):
+class InvalidScenarioError(Exception):
     """
-    Exception raised when a drill is invalid.
+    Exception raised when a scenario is invalid.
     """
 
     def __init__(
@@ -22,9 +26,9 @@ class InvalidDrillError(Exception):
         super().__init__(original_exception or message)
 
 
-class DrillNotFoundError(Exception):
+class ScenarioNotFoundError(Exception):
     """
-    Exception raised when a drill is not found.
+    Exception raised when a scenario is not found.
     """
 
     def __init__(self, name: str, search_paths: set[Path]) -> None:
@@ -34,14 +38,14 @@ class DrillNotFoundError(Exception):
         self.name = name
         self.search_paths = search_paths
         message = (
-            f"Drill '{name}' not found in any of the following paths: {search_paths}"
+            f"Scenario '{name}' not found in any of the following paths: {search_paths}"
         )
         super().__init__(message)
 
 
-class MultipleDrillsFoundError(Exception):
+class MultipleScenariosFoundError(Exception):
     """
-    Exception raised when multiple drills with the same folder name are found.
+    Exception raised when multiple scenarios with the same folder name are found.
     """
 
     def __init__(self, name: str, results: set[Path], search_paths: set[Path]) -> None:
@@ -51,24 +55,24 @@ class MultipleDrillsFoundError(Exception):
         self.name = name
         self.results = results
         self.search_paths = search_paths
-        message = f"Multiple Drills with '{name}' found: {', '.join({str(result) for result in results})}"
+        message = f"Multiple Scenarios with '{name}' found: {', '.join({str(result) for result in results})}"
         super().__init__(message)
 
 
-class DrillLoader:
+class ScenarioLoader:
     """
-    Finds and loads drills from the library paths.
+    Finds and loads scenarios from the library paths.
     """
 
     def __init__(self) -> None:
         """
-        Setup drill loader.
+        Initialize the scenario loader.
         """
-        self._search_paths = {path / "drills" for path in LIBRARY_PATHS}
+        self._search_paths = {path / "scenarios" for path in LIBRARY_PATHS}
 
     def _search(self, name: str) -> set[Path]:
         """
-        Search for drills.
+        Search for scenarios.
         """
         results: set[Path] = set()
         for path in self._search_paths:
@@ -80,81 +84,82 @@ class DrillLoader:
 
     def _find(self, name: str) -> Path:
         """
-        Find a drill by its folder name.
+        Find a scenario by its folder name.
         """
         results = self._search(name)
         match len(results):
             case 0:
-                raise DrillNotFoundError(name, self._search_paths)
+                raise ScenarioNotFoundError(name, self._search_paths)
             case 1:
                 return results.pop()
             case _:
-                raise MultipleDrillsFoundError(name, results, self._search_paths)
+                raise MultipleScenariosFoundError(name, results, self._search_paths)
 
     @staticmethod
     def _load(path: Path) -> dict[str, Any]:
         """
-        Load drill from a YAML file into a dict.
+        Load a scenario from a YAML file into a dict.
         """
-        drill_yaml = path / "drill.yaml"
-        if not drill_yaml.exists():
-            message = "Drill must contain a drill.yaml file."
-            raise InvalidDrillError(message)
-        with open(drill_yaml, "r") as file:
+        scenario_yaml = path / "scenario.yaml"
+        if not scenario_yaml.exists():
+            message = "Scenario must contain a scenario.yaml file."
+            raise InvalidScenarioError(message)
+        with open(scenario_yaml, "r") as file:
             data = yaml.safe_load(file)
         if not isinstance(data, dict):
-            message = "Loading a drill.yaml file must return a dictionary."
-            raise InvalidDrillError(message)
+            message = "Loading a scenario.yaml file must return a dictionary."
+            raise InvalidScenarioError(message)
         return data
 
     @staticmethod
-    def _create(data: dict[str, Any], path: Path) -> Drill:
+    def _create(data: dict[str, Any], path: Path) -> Scenario:
         """
-        Creates a Drill object from a dict containing the drill's metadata.
+        Creates a Scenario object from a dict containing the scenario's metadata.
         """
         try:
-            return Drill(
+            return Scenario(
                 id=str(data["metadata"]["id"]),
                 name=str(data["metadata"]["name"]),
                 path=path,
                 author=str(data["metadata"]["author"]),
                 repository=str(data["metadata"]["repository"]),
-                dependencies=DrillDependencies(
+                drills=set(data["drills"]),
+                dependencies=ScenarioDependencies(
                     system=set(data["dependencies"]["system"]),
                     python=set(data["dependencies"]["python"]),
                 ),
-                interface=DrillInterface(
+                interface=ScenarioInterface(
                     arguments=tuple(data["interface"]["arguments"]),
                     return_type=str(data["interface"]["return_type"]),
                 ),
             )
         except TypeError as e:
-            message = "Loaded Drill data is invalid."
-            raise InvalidDrillError(message, e) from e
+            message = "Loaded Scenario data is invalid."
+            raise InvalidScenarioError(message, e) from e
 
-    def load(self, name: str) -> Drill:
+    def load(self, name: str) -> Scenario:
         """
-        Load a drill by its folder name and return a Drill object.
+        Load a scenario by its folder name and return a Scenario object.
         """
         path = self._find(name)
         data = self._load(path)
         return self._create(data, path)
 
-    def load_all(self) -> list[Drill]:
+    def load_all(self) -> list[Scenario]:
         """
-        Load all drills and return a set of Drill objects.
+        Load all scenarios and return a set of Scenario objects.
         """
-        all_drills: list[Drill] = list()
+        all_scenarios: list[Scenario] = list()
         for search_path in self._search_paths:
             for path in search_path.iterdir():
                 if not path.is_dir():
                     continue
                 try:
                     data = self._load(path)
-                    drill = self._create(data, path)
-                    all_drills.append(drill)
-                except InvalidDrillError as e:
-                    message = f"Skipping invalid drill '{path.name}'"
+                    scenario = self._create(data, path)
+                    all_scenarios.append(scenario)
+                except InvalidScenarioError as e:
+                    message = f"Skipping invalid scenario '{path.name}'"
                     logger.debug(message, exc_info=e)
 
-        return all_drills
+        return all_scenarios
