@@ -3,6 +3,7 @@ from .scenario import (
     build_scenario,
     get_scenario,
     list_scenarios,
+    run_scenario,
     scenario,
     scenario_loader,
 )
@@ -15,6 +16,7 @@ __all__ = [
     "get_scenario",
     "list_drills",
     "list_scenarios",
+    "run_scenario",
     "scenario",
     "scenario_loader",
     "setup",

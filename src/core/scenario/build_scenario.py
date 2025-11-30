@@ -2,8 +2,8 @@ import subprocess
 
 from src.core import config
 from src.core.config import BASE_PATH
-from src.core.scenario import Scenario
 from src.core.scenario.collect_dependencies import collect_dependencies
+from src.core.scenario.scenario import Scenario
 
 
 def build_scenario(scenario: Scenario) -> None:
