@@ -1,9 +1,14 @@
 [project]
 name = "nsak-cli"
 version = "0.1.0"
+authors = [
+  { name="Lukas von Allmen", email="lukaschristian.vonallmen@students.bfh.ch" },
+    {name="Frank Gauss", email="frank.gauss@students.bfh.ch"}
+]
 description = "The prototype CLI tool to manage nsak resources and systems."
 readme = "README.md"
 requires-python = ">=3.13"
+license = { file = "LICENSE" }
 dependencies = [
     "pyyaml>=6.0.3",
     "click>=8.3.1",
