@@ -1,9 +1,9 @@
 import subprocess
 
-from src.core import config
-from src.core.config import BASE_PATH
-from src.core.scenario.collect_dependencies import collect_dependencies
-from src.core.scenario.scenario import Scenario
+from nsak.core import config
+from nsak.core.config import BASE_PATH
+from nsak.core.scenario.collect_dependencies import collect_dependencies
+from nsak.core.scenario.scenario import Scenario
 
 
 def build_scenario(scenario: Scenario) -> None:

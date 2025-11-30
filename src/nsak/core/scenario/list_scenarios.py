@@ -1,5 +1,5 @@
-from src.core.scenario.scenario import Scenario
-from src.core.scenario.scenario_loader import ScenarioLoader
+from nsak.core.scenario.scenario import Scenario
+from nsak.core.scenario.scenario_loader import ScenarioLoader
 
 
 def list_scenarios() -> list[Scenario]:

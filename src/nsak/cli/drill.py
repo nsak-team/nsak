@@ -1,6 +1,6 @@
 import click
 
-from src import core
+from nsak import core
 
 drill_group = click.Group("drill")
 
