@@ -108,7 +108,7 @@ class DrillLoader:
         return data
 
     @staticmethod
-    def _create(data: dict[str, Any]) -> Drill:
+    def _create(data: dict[str, Any], path: Path) -> Drill:
         """
         Creates a Drill object from a dict containing the drill's metadata.
         """
@@ -116,6 +116,7 @@ class DrillLoader:
             return Drill(
                 id=str(data["metadata"]["id"]),
                 name=str(data["metadata"]["name"]),
+                path=path,
                 author=str(data["metadata"]["author"]),
                 repository=str(data["metadata"]["repository"]),
                 dependencies=DrillDependencies(
@@ -135,9 +136,9 @@ class DrillLoader:
         """
         Load a drill by its folder name and return a Drill object.
         """
-        result = self._find(name)
-        data = self._load(result)
-        return self._create(data)
+        path = self._find(name)
+        data = self._load(path)
+        return self._create(data, path)
 
     def load_all(self) -> list[Drill]:
         """
@@ -150,7 +151,7 @@ class DrillLoader:
                     continue
                 try:
                     data = self._load(path)
-                    drill = self._create(data)
+                    drill = self._create(data, path)
                     all_drills.append(drill)
                 except InvalidDrillError as e:
                     message = f"Skipping invalid drill '{path.name}'"

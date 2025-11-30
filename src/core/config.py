@@ -5,3 +5,4 @@ LIBRARY_PATHS = {
     BASE_PATH / "lib",
 }
 DEBUG = True
+DOCKER_CONTEXT = BASE_PATH

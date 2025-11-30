@@ -8,7 +8,7 @@ metadata:
 
 dependencies:
   system: [ ]
-  python: [ ]
+  python: [ art ]
 
 interface:
   arguments: [ ]

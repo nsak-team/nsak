@@ -108,7 +108,7 @@ class ScenarioLoader:
         return data
 
     @staticmethod
-    def _create(data: dict[str, Any]) -> Scenario:
+    def _create(data: dict[str, Any], path: Path) -> Scenario:
         """
         Creates a Scenario object from a dict containing the scenario's metadata.
         """
@@ -116,6 +116,7 @@ class ScenarioLoader:
             return Scenario(
                 id=str(data["metadata"]["id"]),
                 name=str(data["metadata"]["name"]),
+                path=path,
                 author=str(data["metadata"]["author"]),
                 repository=str(data["metadata"]["repository"]),
                 drills=set(data["drills"]),
@@ -136,9 +137,9 @@ class ScenarioLoader:
         """
         Load a scenario by its folder name and return a Scenario object.
         """
-        result = self._find(name)
-        data = self._load(result)
-        return self._create(data)
+        path = self._find(name)
+        data = self._load(path)
+        return self._create(data, path)
 
     def load_all(self) -> list[Scenario]:
         """
@@ -151,7 +152,7 @@ class ScenarioLoader:
                     continue
                 try:
                     data = self._load(path)
-                    scenario = self._create(data)
+                    scenario = self._create(data, path)
                     all_scenarios.append(scenario)
                 except InvalidScenarioError as e:
                     message = f"Skipping invalid scenario '{path.name}'"

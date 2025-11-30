@@ -7,7 +7,6 @@ requires-python = ">=3.13"
 dependencies = [
     "pyyaml>=6.0.3",
     "click>=8.3.1",
-    "types-click>=7.1.8",
 ]
 
 [dependency-groups]
@@ -16,6 +15,7 @@ dev = [
     "pre-commit>=4.5.0",
     "ruff>=0.14.6",
     "types-pyyaml>=6.0.12.20250915",
+    "types-click>=7.1.8",
 ]
 
 [tool.uv]
@@ -27,6 +27,7 @@ url = "https://pypi.org/simple"
 
 [tool.mypy]
 files = ["."]
+exclude = ["lib"]
 strict = true
 ignore_missing_imports = true
 plugins = []
@@ -34,6 +35,7 @@ plugins = []
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [
+    "lib",
     ".bzr",
     ".direnv",
     ".eggs",

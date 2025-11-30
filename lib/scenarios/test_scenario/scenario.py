@@ -30,3 +30,7 @@ def run() -> None:
     spec.loader.exec_module(module)
 
     sys.stdout.write(f"[Scenario] Drill returned: {module.run()}")
+
+
+if __name__ == "__main__":
+    run()
