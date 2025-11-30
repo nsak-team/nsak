@@ -6,8 +6,10 @@ metadata:
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-dependencies: [ ]
+dependencies:
+  system: [ ]
+  python: [ ]
 
 interface:
   arguments: [ ]
-  return_value: str
+  return_type: str

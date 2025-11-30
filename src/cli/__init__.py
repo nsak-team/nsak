@@ -1,5 +1,6 @@
 import click
 
+from src import core
 from src.cli.drill import drill_group
 from src.cli.scenario import scenario_group
 
@@ -9,7 +10,7 @@ def cli() -> None:
     """
     CLI root.
     """
-    pass
+    core.setup()
 
 
 cli.add_command(scenario_group)

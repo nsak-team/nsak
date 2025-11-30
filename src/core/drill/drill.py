@@ -1,27 +1,27 @@
 import dataclasses
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
 class DrillInterface:
     """
     Represents a drill arguments and return value types.
     """
 
-    arguments: list[type]
-    return_value: type
+    arguments: tuple[str]
+    return_type: str
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
 class DrillDependencies:
     """
     Represents a drills system and python dependencies.
     """
 
-    system: list[str]
-    python: list[str]
+    system: set[str]
+    python: set[str]
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
 class Drill:
     """
     Represents a drill.
