@@ -1,6 +1,6 @@
 import click
 
-from nsak import core
+from nsak.core import ScenarioManager
 
 scenario_group = click.Group("scenario")
 
@@ -10,7 +10,7 @@ def list_scenarios() -> None:
     """
     List all scenarios.
     """
-    scenarios = core.list_scenarios()
+    scenarios = ScenarioManager.list()
     for scenario in scenarios:
         click.echo(scenario.path.name)
 
@@ -25,8 +25,8 @@ def build_scenario(name: str) -> None:
     """
     Build the scenario image for deployment.
     """
-    scenario = core.get_scenario(name)
-    core.build_scenario(scenario)
+    scenario = ScenarioManager.get(name)
+    ScenarioManager.build(scenario)
 
 
 @scenario_group.command("run")
@@ -39,5 +39,5 @@ def run_scenario(name: str) -> None:
     """
     Build the scenario image for deployment.
     """
-    scenario = core.get_scenario(name)
-    core.run_scenario(scenario)
+    scenario = ScenarioManager.get(name)
+    ScenarioManager.run(scenario)
