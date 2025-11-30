@@ -1,6 +1,6 @@
 import click
 
-from nsak import core
+from nsak.core import DrillManager
 
 drill_group = click.Group("drill")
 
@@ -10,6 +10,6 @@ def list_drills() -> None:
     """
     List all drills.
     """
-    drills = core.list_drills()
+    drills = DrillManager.list()
     for drill in drills:
         click.echo(drill.name)
