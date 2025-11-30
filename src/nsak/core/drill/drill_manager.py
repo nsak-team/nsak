@@ -13,13 +13,11 @@ class DrillManager:
         """
         Lists all drills.
         """
-        drill_loader = DrillLoader()
-        return drill_loader.load_all()
+        return DrillLoader.load_all()
 
     @classmethod
     def get(cls, name: str) -> Drill:
         """
         Get a drill by name.
         """
-        drill_loader = DrillLoader()
-        return drill_loader.load(name)
+        return DrillLoader.load(name)

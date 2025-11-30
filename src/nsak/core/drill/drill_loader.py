@@ -1,3 +1,4 @@
+import functools
 import logging
 from pathlib import Path
 from typing import Any
@@ -60,36 +61,40 @@ class DrillLoader:
     Finds and loads drills from the library paths.
     """
 
-    def __init__(self) -> None:
+    @staticmethod
+    @functools.cache
+    def get_search_paths() -> set[Path]:
         """
-        Setup drill loader.
+        Returns the paths to search for drills.
         """
-        self._search_paths = {path / "drills" for path in LIBRARY_PATHS}
+        return {path / "drills" for path in LIBRARY_PATHS}
 
-    def _search(self, name: str) -> set[Path]:
+    @classmethod
+    def _search(cls, name: str) -> set[Path]:
         """
         Search for drills.
         """
         results: set[Path] = set()
-        for path in self._search_paths:
+        for path in cls.get_search_paths():
             candidate = path / name
             if candidate.exists():
                 results.add(candidate)
 
         return results
 
-    def _find(self, name: str) -> Path:
+    @classmethod
+    def _find(cls, name: str) -> Path:
         """
         Find a drill by its folder name.
         """
-        results = self._search(name)
+        results = cls._search(name)
         match len(results):
             case 0:
-                raise DrillNotFoundError(name, self._search_paths)
+                raise DrillNotFoundError(name, cls.get_search_paths())
             case 1:
                 return results.pop()
             case _:
-                raise MultipleDrillsFoundError(name, results, self._search_paths)
+                raise MultipleDrillsFoundError(name, results, cls.get_search_paths())
 
     @staticmethod
     def _load(path: Path) -> dict[str, Any]:
@@ -132,26 +137,28 @@ class DrillLoader:
             message = "Loaded Drill data is invalid."
             raise InvalidDrillError(message, e) from e
 
-    def load(self, name: str) -> Drill:
+    @classmethod
+    def load(cls, name: str) -> Drill:
         """
         Load a drill by its folder name and return a Drill object.
         """
-        path = self._find(name)
-        data = self._load(path)
-        return self._create(data, path)
+        path = cls._find(name)
+        data = cls._load(path)
+        return cls._create(data, path)
 
-    def load_all(self) -> list[Drill]:
+    @classmethod
+    def load_all(cls) -> list[Drill]:
         """
         Load all drills and return a set of Drill objects.
         """
         all_drills: list[Drill] = list()
-        for search_path in self._search_paths:
+        for search_path in cls.get_search_paths():
             for path in search_path.iterdir():
                 if not path.is_dir():
                     continue
                 try:
-                    data = self._load(path)
-                    drill = self._create(data, path)
+                    data = cls._load(path)
+                    drill = cls._create(data, path)
                     all_drills.append(drill)
                 except InvalidDrillError as e:
                     message = f"Skipping invalid drill '{path.name}'"
