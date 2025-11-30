@@ -1,6 +1,7 @@
 def run() -> str:
     """
-    execute the drill
+    Example Drill, which prints Hello World.
+
     :return:
     """
-    return "Hello from Drill!"
+    return "Hello World from Drill!"

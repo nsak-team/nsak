@@ -1,20 +1,20 @@
 """
-scenario entrypoint for drill POC
-
+scenario entrypoint for drill POC.
 """
 
 import importlib.util
+import sys
 from pathlib import Path
 
 # takes the absolut path from here. scenarios.test-scenario.scenarios.py
 BASE = Path(__file__).resolve().parents[2]
 DRILLS = BASE / "drills"
 
-def run():
+def run() -> None:
     """
-    Execute scenario
+    Example Scenario, which runs the Hello World Drill.
+
     :return: None
-    print output
     """
     drill = "hello_world"
     drill_path = DRILLS / drill / "drill.py"
@@ -23,4 +23,4 @@ def run():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
-    print("[Scenario] Drill returned:", module.run())
+    sys.stdout("[Scenario] Drill returned:", module.run())
