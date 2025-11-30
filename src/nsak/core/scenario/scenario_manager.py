@@ -16,16 +16,14 @@ class ScenarioManager:
         """
         Lists all available scenarios.
         """
-        scenario_loader = ScenarioLoader()
-        return scenario_loader.load_all()
+        return ScenarioLoader.load_all()
 
     @classmethod
     def get(cls, name: str) -> Scenario:
         """
         Get a scenario by name.
         """
-        scenario_loader = ScenarioLoader()
-        return scenario_loader.load(name)
+        return ScenarioLoader.load(name)
 
     @classmethod
     def build(cls, scenario: Scenario) -> None:
