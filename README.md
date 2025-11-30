@@ -56,7 +56,7 @@ The virtual environment and packages are management with [uv](https://docs.astra
 
 For development and the build process to work correctly, it is required to install nsak in editable mode with the following command:
 
-`uv run pip install -e .`
+`uv pip install -e .`
 
 ### Build and install nsak executable
 
