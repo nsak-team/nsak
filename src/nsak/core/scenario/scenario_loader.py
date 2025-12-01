@@ -1,3 +1,4 @@
+import functools
 import logging
 from pathlib import Path
 from typing import Any
@@ -64,36 +65,40 @@ class ScenarioLoader:
     Finds and loads scenarios from the library paths.
     """
 
-    def __init__(self) -> None:
+    @staticmethod
+    @functools.cache
+    def get_search_paths() -> set[Path]:
         """
-        Initialize the scenario loader.
+        Returns the paths to search for scenarios.
         """
-        self._search_paths = {path / "scenarios" for path in LIBRARY_PATHS}
+        return {path / "scenarios" for path in LIBRARY_PATHS}
 
-    def _search(self, name: str) -> set[Path]:
+    @classmethod
+    def _search(cls, name: str) -> set[Path]:
         """
         Search for scenarios.
         """
         results: set[Path] = set()
-        for path in self._search_paths:
+        for path in cls.get_search_paths():
             candidate = path / name
             if candidate.exists():
                 results.add(candidate)
 
         return results
 
-    def _find(self, name: str) -> Path:
+    @classmethod
+    def _find(cls, name: str) -> Path:
         """
         Find a scenario by its folder name.
         """
-        results = self._search(name)
+        results = cls._search(name)
         match len(results):
             case 0:
-                raise ScenarioNotFoundError(name, self._search_paths)
+                raise ScenarioNotFoundError(name, cls.get_search_paths())
             case 1:
                 return results.pop()
             case _:
-                raise MultipleScenariosFoundError(name, results, self._search_paths)
+                raise MultipleScenariosFoundError(name, results, cls.get_search_paths())
 
     @staticmethod
     def _load(path: Path) -> dict[str, Any]:
@@ -137,26 +142,28 @@ class ScenarioLoader:
             message = "Loaded Scenario data is invalid."
             raise InvalidScenarioError(message, e) from e
 
-    def load(self, name: str) -> Scenario:
+    @classmethod
+    def load(cls, name: str) -> Scenario:
         """
         Load a scenario by its folder name and return a Scenario object.
         """
-        path = self._find(name)
-        data = self._load(path)
-        return self._create(data, path)
+        path = cls._find(name)
+        data = cls._load(path)
+        return cls._create(data, path)
 
-    def load_all(self) -> list[Scenario]:
+    @classmethod
+    def load_all(cls) -> list[Scenario]:
         """
         Load all scenarios and return a set of Scenario objects.
         """
         all_scenarios: list[Scenario] = list()
-        for search_path in self._search_paths:
+        for search_path in cls.get_search_paths():
             for path in search_path.iterdir():
                 if not path.is_dir():
                     continue
                 try:
-                    data = self._load(path)
-                    scenario = self._create(data, path)
+                    data = cls._load(path)
+                    scenario = cls._create(data, path)
                     all_scenarios.append(scenario)
                 except InvalidScenarioError as e:
                     message = f"Skipping invalid scenario '{path.name}'"
