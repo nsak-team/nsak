@@ -18,7 +18,8 @@ def run() -> None:
     :return: None
     """
     drill = DrillManager.get("hello_world")
-    sys.stdout.write(f"[Scenario] Drill returned: {DrillManager.execute(drill)}")
+    sys.stdout.write(f"[Scenario] Drill returned:\n\n")
+    sys.stdout.write(DrillManager.execute(drill))
 
 
 if __name__ == "__main__":
