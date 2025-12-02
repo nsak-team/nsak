@@ -1,9 +1,12 @@
+import importlib.util
 import subprocess
-from typing import List
+import sys
+from typing import Any, List
 
 from nsak.core import config
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
+from nsak.core.scenario.scenario_loader import ScenarioNotFoundError
 
 
 class ScenarioManager:
@@ -49,7 +52,7 @@ class ScenarioManager:
                 "--build-arg",
                 f"PYTHON_DEPENDENCIES={python_dependencies}",
                 "--build-arg",
-                f"SCENARIO_PATH={scenario.path.relative_to(config.BASE_PATH)}",
+                f"SCENARIO={scenario.path.name}",
             ]
         )
 
@@ -96,3 +99,23 @@ class ScenarioManager:
             drill = drill_loader.load(drill_name)
             drills.append(drill)
         return drills
+
+    @classmethod
+    def execute(cls, scenario: Scenario, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+        """
+        Load the scenarios entrypoint and execute it.
+        """
+        module_name = scenario.path.name
+        spec = importlib.util.spec_from_file_location(
+            module_name, scenario.path / "scenario.py"
+        )
+        if spec is None:
+            raise ScenarioNotFoundError(scenario.name)
+        module = importlib.util.module_from_spec(spec)
+        if module is None:
+            raise ScenarioNotFoundError(scenario.name)
+        sys.modules[module_name] = module
+        if spec.loader is None:
+            raise ScenarioNotFoundError(scenario.name)
+        spec.loader.exec_module(module)
+        return module.run(*args, **kwargs)

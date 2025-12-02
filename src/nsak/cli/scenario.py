@@ -33,11 +33,25 @@ def build_scenario(name: str) -> None:
 @click.option(
     "--name",
     prompt="Scenario name",
-    help="Provide the scenario name you want to build.",
+    help="Provide the scenario name for the container you want to run.",
 )
 def run_scenario(name: str) -> None:
     """
-    Build the scenario image for deployment.
+    Run the scenario container.
     """
     scenario = ScenarioManager.get(name)
     ScenarioManager.run(scenario)
+
+
+@scenario_group.command("execute")
+@click.option(
+    "--name",
+    prompt="Scenario name",
+    help="Provide the scenario name for the script you want to execute.",
+)
+def execute_scenario(name: str) -> None:
+    """
+    Execute the scenario script.
+    """
+    scenario = ScenarioManager.get(name)
+    ScenarioManager.execute(scenario)
