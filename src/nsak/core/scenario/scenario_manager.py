@@ -68,6 +68,7 @@ class ScenarioManager:
             [
                 "/usr/bin/podman",
                 "run",
+                "-d",
                 "--privileged",
                 "--network=host",
                 scenario.path.name,
