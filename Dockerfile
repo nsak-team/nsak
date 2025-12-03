@@ -1,7 +1,7 @@
 FROM docker.io/kalilinux/kali-rolling
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates python3 curl
+    apt-get install -y --no-install-recommends ca-certificates python3 curl iproute2
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
