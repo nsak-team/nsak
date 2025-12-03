@@ -150,17 +150,20 @@ Each section contains a table with activity entries for the respective week.
 | **Week 13:**    |                                                                                                                              |           |               |                                                                                                           |
 | 2025-12-01      | Install Metasploit Framework and go through first steps to see how drill could execute modules                               | 1 h       | Research      |                                                                                                           |
 | 2025-12-01      | First look at MITRE Caldera                                                                                                  | 0.5 h     | Research      |                                                                                                           |
-| 2025-11-02      | Create tickets for backlog                                                                                                   | 3.5 h     | Development   |                                                                                                           |
-| **Sub Total**   |                                                                                                                              | **5 h**   |               |                                                                                                           |
+| 2025-11-02      | Create tickets for backlog                                                                                                   | 1 h       | Planning      |                                                                                                           |
+| 2025-11-02      | Implement execute methods, refactor Dockerfile and build process and cli autocompletion                                      | 2.5 h     | Development   |                                                                                                           |
+| 2025-11-03      | Implement host network access for scenario containers, implement pytest and a simple test case                               | 2 h       | Development   |                                                                                                           |
+| 2025-11-03      | Create tickets for backlog                                                                                                   | 1 h       | Planning      |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | **8 h**   |               |                                                                                                           |
 |                 |                                                                                                                              |           |               |                                                                                                           |
-| **Total**       |                                                                                                                              | **95 h**  |               |                                                                                                           |
+| **Total**       |                                                                                                                              | **98 h**  |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
 | Frank     | 71 h        | Research, Docs, DevOps        |
-| Lukas     | 95 h        | Planning, Project Setup, Docs |
-| **Total** | 166 h       |                               |
+| Lukas     | 98 h        | Planning, Project Setup, Docs |
+| **Total** | 169 h       |                               |
 
 Goal: 150 - 180 hours per student
