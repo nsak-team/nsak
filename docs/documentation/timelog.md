@@ -154,16 +154,19 @@ Each section contains a table with activity entries for the respective week.
 | 2025-11-02      | Implement execute methods, refactor Dockerfile and build process and cli autocompletion                                      | 2.5 h     | Development   |                                                                                                           |
 | 2025-11-03      | Implement host network access for scenario containers, implement pytest and a simple test case                               | 2 h       | Development   |                                                                                                           |
 | 2025-11-03      | Create tickets for backlog                                                                                                   | 1 h       | Planning      |                                                                                                           |
-| **Sub Total**   |                                                                                                                              | **8 h**   |               |                                                                                                           |
+| 2025-11-04      | Weekly project meeting                                                                                                       | 2 h       | Planning      |                                                                                                           |
+| 2025-11-05      | Research scientific state of Zero Trust Architecture                                                                         | 2 h       | Research      |                                                                                                           |
+| 2025-11-06      | Research scientific state of Zero Trust Architecture                                                                         | 4 h       | Research      |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | **16 h**  |               |                                                                                                           |
 |                 |                                                                                                                              |           |               |                                                                                                           |
-| **Total**       |                                                                                                                              | **98 h**  |               |                                                                                                           |
+| **Total**       |                                                                                                                              | **106 h** |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
 | Frank     | 71 h        | Research, Docs, DevOps        |
-| Lukas     | 98 h        | Planning, Project Setup, Docs |
+| Lukas     | 106 h       | Planning, Project Setup, Docs |
 | **Total** | 169 h       |                               |
 
 Goal: 150 - 180 hours per student
