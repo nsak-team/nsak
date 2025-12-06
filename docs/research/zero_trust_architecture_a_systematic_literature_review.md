@@ -182,7 +182,7 @@ Selection:
 Further reading:
 - [A comprehensive framework for migrating to zero trust architecture]
 - [A critical analysis of zero trust architecture (zta)]
-- [Zero trust architecture (zta): A comprehensive survey]
+- [Zero trust architecture (zta):  in Verbindung mit Malware oder sonstigen bösartigen Aktivitäten fallen in die zweite Kategorie. Diese Kategorien sind in deA comprehensive survey]
 - [Migrating to zero trust architecture: Reviews and challenges]
 - [Zero trust architecture: Does it help?]
 - [Office of management and budget - federal zero trust strategy.]

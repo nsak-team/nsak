@@ -157,16 +157,17 @@ Each section contains a table with activity entries for the respective week.
 | 2025-11-04      | Weekly project meeting                                                                                                       | 2 h       | Planning      |                                                                                                           |
 | 2025-11-05      | Research scientific state of Zero Trust Architecture                                                                         | 2 h       | Research      |                                                                                                           |
 | 2025-11-06      | Research scientific state of Zero Trust Architecture                                                                         | 4 h       | Research      |                                                                                                           |
-| **Sub Total**   |                                                                                                                              | **16 h**  |               |                                                                                                           |
+| 2025-11-07      | Create Bachelor Thesis Proposal with Frank                                                                                   | 6 h       | Research      |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | **22 h**  |               |                                                                                                           |
 |                 |                                                                                                                              |           |               |                                                                                                           |
-| **Total**       |                                                                                                                              | **106 h** |               |                                                                                                           |
+| **Total**       |                                                                                                                              | **112 h** |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
 | Frank     | 71 h        | Research, Docs, DevOps        |
-| Lukas     | 106 h       | Planning, Project Setup, Docs |
-| **Total** | 169 h       |                               |
+| Lukas     | 112 h       | Planning, Project Setup, Docs |
+| **Total** | 183 h       |                               |
 
 Goal: 150 - 180 hours per student
