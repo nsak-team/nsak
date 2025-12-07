@@ -1,0 +1,20 @@
+scenario: v1
+
+metadata:
+  id: rouge_ap
+  name: rouge_ap_scenario
+  author: gausf1@bfh.ch
+  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+drills: [
+  captive-portal,
+  sniff-traffic
+]
+
+dependencies:
+  system: [ hostapd ]
+  python: [ ]
+
+interface:
+  arguments: None
+  return_type: None
