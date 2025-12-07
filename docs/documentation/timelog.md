@@ -140,17 +140,27 @@ Each section contains a table with activity entries for the respective week.
 |                 |                                                                                                                              |           |               |                                                                                                           |
 | **Week 12:**    |                                                                                                                              |           |               |                                                                                                           |
 | 2025-11-27      | Create tickets for backlog and start Development (Dev Tooling)                                                               | 3 h       | Development   |                                                                                                           |
+| 2025-11-28      | Weekly planning                                                                                                              | 1 h       | Planning      |                                                                                                           |
 | 2025-11-28      | Development: Datastructures, File/Object Loaders and CLI commands                                                            | 4 h       | Development   |                                                                                                           |
 | 2025-11-29      | Development: Scenario Image builder, run images                                                                              | 4 h       | Development   |                                                                                                           |
 | 2025-11-29      | Create new tickets                                                                                                           | 1 h       | Planning      |                                                                                                           |
-| **Sub Total**   |                                                                                                                              | **12 h**  |               |                                                                                                           |
+| 2025-11-30      | Development: Refactor `core` from functional to object oriented paradigm, first successful run of `test_scenario`            | 8 h       | Development   |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | **21 h**  |               |                                                                                                           |
 |                 |                                                                                                                              |           |               |                                                                                                           |
-| **Total**       |                                                                                                                              | **81 h**  |               |                                                                                                           |
+| **Week 13:**    |                                                                                                                              |           |               |                                                                                                           |
+| 2025-12-01      | Install Metasploit Framework and go through first steps to see how drill could execute modules                               | 1 h       | Research      |                                                                                                           |
+| 2025-12-01      | First look at MITRE Caldera                                                                                                  | 0.5 h     | Research      |                                                                                                           |
+| 2025-11-02      | Create tickets for backlog                                                                                                   | 3.5 h     | Development   |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | **5 h**   |               |                                                                                                           |
+|                 |                                                                                                                              |           |               |                                                                                                           |
+| **Total**       |                                                                                                                              | **95 h**  |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                   |
 |-----------|-------------|-------------------------------|
 | Frank     | 71 h        | Research, Docs, DevOps        |
-| Lukas     | 81 h        | Planning, Project Setup, Docs |
-| **Total** | 152 h       |                               |
+| Lukas     | 95 h        | Planning, Project Setup, Docs |
+| **Total** | 166 h       |                               |
+
+Goal: 150 - 180 hours per student
