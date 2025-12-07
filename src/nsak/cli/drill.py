@@ -16,14 +16,13 @@ def list_drills() -> None:
 
 
 @drill_group.command("execute")
-@click.option(
-    "--name",
-    prompt="Drill name",
-    help="Provide the drill name for the script you want to execute.",
-)
+@click.argument("name")
 def execute_drill(name: str) -> None:
     """
     Execute the drill script.
+
+    :param name: The name of the drill for which you want to execute the script.
+    :return:
     """
     scenario = DrillManager.get(name)
     DrillManager.execute(scenario)
