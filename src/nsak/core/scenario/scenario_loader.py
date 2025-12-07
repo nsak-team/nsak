@@ -32,7 +32,7 @@ class ScenarioNotFoundError(Exception):
     Exception raised when a scenario is not found.
     """
 
-    def __init__(self, name: str, search_paths: set[Path]) -> None:
+    def __init__(self, name: str, search_paths: set[Path] | None = None) -> None:
         """
         Adds the name and search paths to the exception and sets a default message.
         """

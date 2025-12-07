@@ -28,15 +28,16 @@ class DrillNotFoundError(Exception):
     Exception raised when a drill is not found.
     """
 
-    def __init__(self, name: str, search_paths: set[Path]) -> None:
+    def __init__(self, name: str, search_paths: set[Path] | None = None) -> None:
         """
         Adds the name and search paths to the exception and sets a default message.
         """
         self.name = name
         self.search_paths = search_paths
-        message = (
-            f"Drill '{name}' not found in any of the following paths: {search_paths}"
-        )
+        if search_paths is None:
+            message = f"Drill '{name}' not found."
+        else:
+            message = f"Drill '{name}' not found in any of the following paths: {search_paths}"
         super().__init__(message)
 
 
