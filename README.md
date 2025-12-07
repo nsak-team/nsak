@@ -68,6 +68,25 @@ uv build
 uv tool install dist/nsak-0.1.0-py3-none-any.whl
 ```
 
+### Enable nsak command completion
+
+Command works only when running `nsak` over an entrypoint e.g., after installing it with `uv tool install`.
+
+**Bash**
+```bash
+echo "_NSAK_COMPLETE=bash_source nsak" >> ~/.bashrc
+```
+
+**Zsh**
+```bash
+echo "_NSAK_COMPLETE=zsh_source nsak" >> ~/.zshrc
+```
+
+**Fish**
+```bash
+echo "_NSAK_COMPLETE=fish_source nsak" > ~/.config/fish/completions/nsak.fish
+```
+
 ### Linting and Formatting
 
 Linting and formatting is done using [ruff](https://docs.astral.sh/ruff/). The configuration is located in `pyproject.toml`. To run linting and formatting, run the following command:

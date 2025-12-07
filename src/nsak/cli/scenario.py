@@ -5,6 +5,21 @@ from nsak.core import ScenarioManager
 scenario_group = click.Group("scenario")
 
 
+def complete_scenario_name(
+    ctx: click.Context, param: click.Parameter, incomplete: str
+) -> list[str]:
+    """
+    Autocomplete for scenario name in arguments.
+    """
+    scenarios = ScenarioManager.list()
+    scenario_names = {scenario.path.name for scenario in scenarios}
+    return [
+        scenario_name
+        for scenario_name in scenario_names
+        if scenario_name.startswith(incomplete)
+    ]
+
+
 @scenario_group.command("list")
 def list_scenarios() -> None:
     """
@@ -16,7 +31,7 @@ def list_scenarios() -> None:
 
 
 @scenario_group.command("build")
-@click.argument("name")
+@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
 def build_scenario(name: str) -> None:
     """
     Build the scenario image for deployment.
@@ -29,7 +44,7 @@ def build_scenario(name: str) -> None:
 
 
 @scenario_group.command("run")
-@click.argument("name")
+@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
 def run_scenario(name: str) -> None:
     """
     Run the scenario container.
@@ -42,7 +57,7 @@ def run_scenario(name: str) -> None:
 
 
 @scenario_group.command("execute")
-@click.argument("name")
+@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
 def execute_scenario(name: str) -> None:
     """
     Execute the scenario script.
