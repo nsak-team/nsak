@@ -12,7 +12,6 @@ def run() -> None:
 
     :return: None
     """
-    # todo run the container permanently to function as ap
 
     hostapd_manager = HostapdManager()
     config = AccessPointConfig()

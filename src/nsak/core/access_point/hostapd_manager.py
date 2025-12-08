@@ -65,6 +65,13 @@ class HostapdManager:
 
         logger.info("hostapd started with PID %s", self._process.pid)
 
+        try:
+            exit_code = self._process.wait()
+            if exit_code != 0:
+                logger.warning("hostapd exited with code %s", exit_code)
+        finally:
+            self._process = None
+
     def stop(self) -> None:
         """
         Stops a hostapd process.
