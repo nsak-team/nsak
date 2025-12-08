@@ -18,7 +18,7 @@ def test_write_hostapd_config(tmp_path: Path) -> None:
         country_code="CH",
     )
 
-    manager = HostapdManager(config_dir=tmp_path)
+    manager = HostapdManager(config_dir_path=tmp_path)
 
     path = manager._write_hostapd_config(config)
     content = path.read_text()
@@ -33,3 +33,15 @@ def test_write_hostapd_config(tmp_path: Path) -> None:
 
     for expected in expected_lines:
         assert expected in content
+
+
+def test_start_and_stop_hostapd(tmp_path: Path) -> None:
+    """
+    Test that the hostapd starts and stops correctly.
+
+    :param tmp_path: temporary directory
+    :return:
+    """
+
+
+pass

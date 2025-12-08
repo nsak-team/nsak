@@ -2,13 +2,8 @@
 scenario entrypoint for drill POC.
 """
 
-import sys
-from pathlib import Path
-from nsak.core import DrillManager
-
-# takes the absolut path from here. scenarios.test-scenario.scenarios.py
-BASE = Path(__file__).resolve().parents[2]
-DRILLS = BASE / "drills"
+from nsak.core.access_point.config import AccessPointConfig
+from nsak.core.access_point.hostapd_manager import HostapdManager
 
 
 def run() -> None:
@@ -17,9 +12,13 @@ def run() -> None:
 
     :return: None
     """
-    drill = DrillManager.get("start-access_point")
-    sys.stdout.write(f"[Scenario] Drill returned:\n\n")
-    sys.stdout.write(DrillManager.execute(drill))
+    # todo run the container permanently to function as ap
+
+    hostapd_manager = HostapdManager()
+    config = AccessPointConfig()
+    hostapd_manager.start(config)
+
+    print(f"[Scenario] Rouge AP active on {config.interface} with SSID {config.ssid}.")
 
 
 if __name__ == "__main__":

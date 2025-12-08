@@ -42,6 +42,7 @@ class ScenarioManager:
         # - https://pypi.org/project/podman/
         subprocess.run(  # noqa: S603
             [
+                "/usr/bin/sudo",
                 "/usr/bin/podman",
                 "build",
                 config.DOCKER_CONTEXT,
@@ -66,6 +67,7 @@ class ScenarioManager:
         # - https://pypi.org/project/podman/
         completed_process = subprocess.run(  # noqa: S603
             [
+                "/usr/bin/sudo",
                 "/usr/bin/podman",
                 "run",
                 "-d",
