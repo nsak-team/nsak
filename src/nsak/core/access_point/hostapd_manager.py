@@ -65,6 +65,9 @@ class HostapdManager:
 
         logger.info("hostapd started with PID %s", self._process.pid)
 
+        # todo: to discuss all methods static?
+        # todo: container management über nsak befehle sigterm ?
+
         try:
             exit_code = self._process.wait()
             if exit_code != 0:
