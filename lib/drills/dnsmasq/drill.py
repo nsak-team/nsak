@@ -9,7 +9,7 @@ DEFAULT_DHCP = {
     "lease_time": "12h",
 }
 
-def run(args: dict) -> dict:
+def run(args: dict) -> dict[str, any]:
     # required arguments
     interface = args["interface"]
 
