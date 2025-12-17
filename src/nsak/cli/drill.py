@@ -30,12 +30,16 @@ def list_drills() -> None:
 
 @drill_group.command("execute")
 @click.argument("name", shell_complete=complete_drill_name)  # type: ignore [call-arg]
-def execute_drill(name: str) -> None:
+@click.option(
+    "--interface", "interface_", required=True, help="Network interface to bind to"
+)
+def execute_drill(name: str, interface_: str) -> None:
     """
     Execute the drill script.
 
+    :param interface_:
     :param name: The name of the drill for which you want to execute the script.
     :return:
     """
-    scenario = DrillManager.get(name)
-    DrillManager.execute(scenario)
+    drill = DrillManager.get(name)
+    DrillManager.execute(drill, {"interface": interface_})
