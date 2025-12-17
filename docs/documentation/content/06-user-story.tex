@@ -1,3 +1,15 @@
+\section{Use-Cases}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../assets/figures/diagrams/concept-architecture-diagrams/use-case-diagram}
+	\caption{}
+	\label{fig:use-case-diagram}
+\end{figure}
+
+
+
+
 \begin{longtable}{@{} >{\columncolor{blue!15}}l >{\raggedright\arraybackslash}p{0.75\textwidth} @{}}
 	\caption{Use Cases Specification (nsak)}\\
 	\toprule
@@ -6,7 +18,7 @@
 	\toprule
 	\rowcolor{blue!30}\textbf{NR} & \textbf{Details} \\
 	\endhead
-	
+
 	% --- UC-02 ----------------------------------------------------
 	\textbf{UC-02} &
 	\textbf{Use-Case:} Select Scenarios \newline
@@ -24,7 +36,7 @@
 	\textbf{Result:} Selected scenarios recorded. \newline
 	\textbf{Postconditions:} Mission plan saved; ready for preparation (UC-03).\\
 	\midrule
-	
+
 	% --- UC-03 ----------------------------------------------------
 	\textbf{UC-03} &
 	\textbf{Use-Case:} Prepare Scenario \newline
@@ -43,7 +55,7 @@
 	\textbf{Result:} Prepared scenario image / runtime available. \newline
 	\textbf{Postconditions:} Scenario state = \emph{prepared}.\\
 	\midrule
-	
+
 	% --- UC-04 ----------------------------------------------------
 	\textbf{UC-04} &
 	\textbf{Use-Case:} Use Commands (CLI) \newline
@@ -60,7 +72,7 @@
 	\textbf{Result:} Requested action performed or error reported. \newline
 	\textbf{Postconditions:} State updated accordingly.\\
 	\midrule
-	
+
 	% --- UC-04.1 --------------------------------------------------
 	\textbf{UC-04.1} &
 	\textbf{Use-Case:} List Scenarios \newline
@@ -76,7 +88,7 @@
 	\textbf{Result:} Scenarios visible to the user. \newline
 	\textbf{Postconditions:} User can select scenarios (UC-02).\\
 	\midrule
-	
+
 	% --- UC-04.2 --------------------------------------------------
 	\textbf{UC-04.2} &
 	\textbf{Use-Case:} Show Help \newline
@@ -91,7 +103,7 @@
 	\textbf{Result:} List of all cmds \newline
 	\textbf{Postconditions:} — \\
 	\midrule
-	
+
 	% --- UC-04.3 --------------------------------------------------
 	\textbf{UC-04.3} &
 	\textbf{Use-Case:} Verify Scenario / Drill \newline
@@ -108,7 +120,7 @@
 	\textbf{Result:} OK or detailed error. \newline
 	\textbf{Postconditions:} Decision basis for preparation.\\
 	\midrule
-	
+
 	% --- UC-04.4 --------------------------------------------------
 	\textbf{UC-04.4 needs to be discussed} &
 	\textbf{Use-Case:} Show Nsak Status \newline
@@ -124,7 +136,7 @@
 	\textbf{Result:} User sees current state. \newline
 	\textbf{Postconditions:} — \\
 	\midrule
-	
+
 	% --- UC-04.5 --------------------------------------------------
 	\textbf{UC-04.5} &
 	\textbf{Use-Case:} Show Version \newline
@@ -155,7 +167,7 @@
 	\textbf{Result:} Simulation finished. \newline
 	\textbf{Postconditions:} Results stored \\
 	\midrule
-	
+
 	% --- UC-06 ----------------------------------------------------
 	\textbf{UC-06} &
 	\textbf{Use-Case:} Start Scenario \newline
@@ -172,7 +184,7 @@
 	\textbf{Result:} Scenario running. \newline
 	\textbf{Postconditions:} State = running. \\
 	\midrule
-	
+
 	% --- UC-07 ----------------------------------------------------
 	\textbf{UC-07} &
 	\textbf{Use-Case:} Stop Scenario \newline
@@ -189,7 +201,7 @@
 	\textbf{Result:} Scenario stopped safely. \newline
 	\textbf{Postconditions:} Logs persisted, state updated. \\
 	\midrule
-	
+
 	% --- UC-08 ----------------------------------------------------
 	\textbf{UC-08} &
 	\textbf{Use-Case:} Extract Data \newline
@@ -206,7 +218,7 @@
 	\textbf{Result:} Data exported. \newline
 	\textbf{Postconditions:} Export Files created. \\
 	\midrule
-	
+
 	% --- UC-09 ----------------------------------------------------
 	\textbf{UC-09} &
 	\textbf{Use-Case:} Remote Access SSH \newline
@@ -223,5 +235,5 @@
 	\textbf{Result:} Secure shell established or denied. \newline
 	\textbf{Postconditions:} Access logged; keys remain intact. \\
 	\bottomrule
-	
+
 \end{longtable}
