@@ -14,4 +14,4 @@ dependencies:
 interface:
   arguments:
     - interface
-  return_types: str
+  return_types: dict
