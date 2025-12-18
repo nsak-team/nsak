@@ -46,7 +46,7 @@ class ScenarioManager:
                 "build",
                 config.DOCKER_CONTEXT,
                 "-t",
-                scenario.path.name,
+                f"nsak/scenario/{scenario.path.name}",
                 "--build-arg",
                 f"SYSTEM_DEPENDENCIES={system_dependencies}",
                 "--build-arg",
@@ -71,7 +71,7 @@ class ScenarioManager:
                 "-d",
                 "--privileged",
                 "--network=host",
-                scenario.path.name,
+                f"nsak/scenario/{scenario.path.name}",
             ]
         )
         return completed_process.returncode
