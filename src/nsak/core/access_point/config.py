@@ -8,7 +8,7 @@ class AccessPointConfig:
     """
 
     ssid: str = "BFH-Open"
-    interface: str = "wlp59s0"
+    interface: str = "wlan0"
     channel: int = 6
     country_code: str = "CH"
     hw_mode: str = "g"
