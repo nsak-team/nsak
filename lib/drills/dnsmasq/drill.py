@@ -46,15 +46,6 @@ log-dhcp
     if not Path(dnsmasq).exists():
         raise RuntimeError("dnsmasq binary not found at PATH or /usr/sbin/dnsmasq")
 
-    subprocess.run(
-        ["ip", "addr", "add", "10.0.0.1/24", "dev", interface],
-        check=False,
-    )
-    subprocess.run(
-        ["ip", "link", "set", interface, "up"],
-        check=False,
-    )
-
     # start process
     proc = subprocess.Popen(
         [
