@@ -1,0 +1,7 @@
+environment: v1
+
+metadata:
+  id: simple_tcp_client_server
+  name: Simple TCP Client Server Environment
+  author: vonal3@bfh.ch
+  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer

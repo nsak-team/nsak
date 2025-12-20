@@ -34,5 +34,6 @@ class Scenario:
     author: str
     repository: str
     drills: set[str]
+    environments: set[str]
     dependencies: ScenarioDependencies
     interface: ScenarioInterface

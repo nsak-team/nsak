@@ -7,7 +7,8 @@ metadata:
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
 dependencies:
-  system: [ arpspoof ]
+  system:
+    - dsniff # provides arpspoof
   python: [ ]
 
 interface:

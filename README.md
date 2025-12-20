@@ -12,6 +12,35 @@ configuration and code for the BFH (Bern University of Applied Sciences) Module 
 ### Tutor
 - Wenger Hansjürg <wgh1@bfh.ch>
 
+## Usage
+
+```bash
+
+```
+
+### Simulate a specific scenario in a environment
+
+**Host system configuration:**
+```
+# Install iproute2 if not already installed
+sudo apt install iproute2
+
+# Create a dummy interface called `nsak0` for simulation:
+sudo ip link add nsak0 type dummy
+sudo ip link set nsak0 up
+
+# Verify that the interface was created successfully and is in state UP or UNKNOWN:
+ip link show nsak0
+```
+
+**Simulate the scenario `mitm` in the environment `simple_tcp_client_server`:
+```bash
+nsak environment list # Shows all available environments
+nsak environment list_scenarios simple_tcp_client_server # Lists all available scenarios for the environment
+nsak scenario build mitm # Build the scenario which you want to simulate
+nsak environment simulate simple_tcp_client_server mitm
+```
+
 ## Documentation
 The project documentation is written in LaTeX and can be found in the `docs/` folder.
 
@@ -70,7 +99,7 @@ uv tool install dist/nsak-0.1.0-py3-none-any.whl
 
 ### Enable nsak command completion
 
-Command works only when running `nsak` over an entrypoint e.g., after installing it with `uv tool install`.
+Command works only when running `nsak` over an entrypoint e.g., after installing it with `uv tool install nsak`.
 
 **Bash**
 ```bash
