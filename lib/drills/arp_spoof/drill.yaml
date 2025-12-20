@@ -1,17 +1,15 @@
-scenario: v1
+drill: v1
 
 metadata:
-  id: mitm
-  name: MITM Scenario
+  id: arp_spoof
+  name: ARP Spoof
   author: vonal3@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-drills: [ ]
-
 dependencies:
-  system: [ ]
-  python: [ scapy ]
+  system: [ arpspoof ]
+  python: [ ]
 
 interface:
-  arguments: None
-  return_type: None
+  arguments: [ str, str, str ]
+  return_type: subprocess.Popen

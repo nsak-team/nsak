@@ -1,17 +1,15 @@
-scenario: v1
+drill: v1
 
 metadata:
-  id: mitm
-  name: MITM Scenario
+  id: transparent_tcp_proxy
+  name: Transparent TCP Proxy
   author: vonal3@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-drills: [ ]
-
 dependencies:
-  system: [ ]
-  python: [ scapy ]
+  system: [ iptables ]
+  python: [ ]
 
 interface:
-  arguments: None
+  arguments: [ str, str, int ]
   return_type: None
