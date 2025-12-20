@@ -9,8 +9,8 @@ metadata:
 drills: [ ]
 
 dependencies:
-  system: [ iptables tcpdump libpcap-dev gcc musl-dev dsniff libnetfilter-queue-dev ]
-  python: [ scapy netfilterqueue ]
+  system: [ iptables tcpdump libpcap-dev gcc musl-dev dsniff ]
+  python: [ scapy ]
 
 interface:
   arguments: None

@@ -3,13 +3,13 @@ version: "3.9"
 services:
   malcom:
     image: nsak/scenario/mitm:latest
+    privileged: true
     cap_add:
       - NET_ADMIN
       - NET_RAW
     networks:
       testnet:
         ipv4_address: 10.10.10.10
-    privileged: true
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped

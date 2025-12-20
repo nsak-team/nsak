@@ -5,13 +5,17 @@ import time
 def run_server(host, port, label):
     """Start a TCP server that waits for a client and then enters a send/receive loop."""
     while True:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind((host, port))
-            s.listen(1)
-            print(f"[{label}] Waiting for connection on {host}:{port}...")
-            conn, addr = s.accept()
-            print(f"[{label}] Connected by {addr}")
-            communicate(conn, label)
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind((host, port))
+                s.listen(1)
+                print(f"[{label}] Waiting for connection on {host}:{port}...")
+                conn, addr = s.accept()
+                print(f"[{label}] Connected by {addr}")
+                communicate(conn, label)
+        except Exception as e:
+            print(f"[{label}] Connection error: {e}. Retrying...")
+            time.sleep(1)
 
 
 def run_client(target_host, target_port, label):
