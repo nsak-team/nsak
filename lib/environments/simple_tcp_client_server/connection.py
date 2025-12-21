@@ -1,4 +1,3 @@
-# common.py
 import socket
 import time
 

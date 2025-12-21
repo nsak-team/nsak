@@ -1,12 +1,11 @@
 import subprocess
 from typing import Any, List
 
-from scapy.all import conf, get_if_list
-
 from nsak.core.environment import Environment, EnvironmentLoader
+from nsak.core.network import get_network_interface
+from nsak.core.network.network_interface import NetworkInterfaceNotFoundError
 from nsak.core.scenario import Scenario, ScenarioLoader, ScenarioManager
 
-IFF_UP = 0x1
 ENVIRONMENT_SIMULATION_IFACE = "nsak0"
 ENVIRONMENT_SIMULATION_IFACE_SETUP = f"""
 A dummy interface named {ENVIRONMENT_SIMULATION_IFACE} is required for simulation.
@@ -25,20 +24,6 @@ sudo ip link set {ENVIRONMENT_SIMULATION_IFACE} up
 Verify that the interface is in state UP or UNKNOWN:
 ip link show {ENVIRONMENT_SIMULATION_IFACE}
 """
-
-
-def iface_is_down(iface: str) -> bool:
-    """
-    Checks if an interface is not in state DOWN e.g., UP or UNKNOWN.
-
-    :param iface:
-    :return:
-    """
-    iface_obj = conf.ifaces.get(iface)
-    if not iface_obj:
-        return False
-
-    return not bool(iface_obj.flags & IFF_UP)
 
 
 class EnvironmentManager:
@@ -79,6 +64,18 @@ class EnvironmentManager:
         ]
 
     @classmethod
+    def _verify_simulation_network_interface(cls) -> None:
+        try:
+            dummy_network_interface = get_network_interface(
+                ENVIRONMENT_SIMULATION_IFACE
+            )
+        except NetworkInterfaceNotFoundError as e:
+            raise RuntimeError(ENVIRONMENT_SIMULATION_IFACE_SETUP) from e
+
+        if not dummy_network_interface.is_up:
+            raise RuntimeError(ENVIRONMENT_SIMULATION_IFACE_DOWN)
+
+    @classmethod
     def simulate(
         cls,
         environment: Environment | str,
@@ -89,11 +86,7 @@ class EnvironmentManager:
         """
         Simulate a scenario in an environment.
         """
-        iface_list = get_if_list()
-        if ENVIRONMENT_SIMULATION_IFACE not in iface_list:
-            raise RuntimeError(ENVIRONMENT_SIMULATION_IFACE_SETUP)
-        elif iface_is_down(ENVIRONMENT_SIMULATION_IFACE):
-            raise RuntimeError(ENVIRONMENT_SIMULATION_IFACE_DOWN)
+        cls._verify_simulation_network_interface()
 
         if isinstance(environment, str):
             environment = cls.get(environment)

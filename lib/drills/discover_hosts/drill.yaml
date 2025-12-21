@@ -1,15 +1,16 @@
 drill: v1
 
 metadata:
-  id: transparent_tcp_proxy
-  name: Transparent TCP Proxy
+  id: arp_spoof
+  name: ARP Spoof
   author: vonal3@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
 dependencies:
-  system: [ iptables ]
+  system:
+    - arp-scan
   python: [ ]
 
 interface:
-  arguments: [ NetworkDiscoveryResultMap ]
-  return_type: None
+  arguments: [ "list[NetworkInterface]" ]
+  return_type: "subprocess.Popen"

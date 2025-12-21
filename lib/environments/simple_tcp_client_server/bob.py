@@ -1,4 +1,3 @@
-# bob.py
 from connection import run_server
 
 HOST = "0.0.0.0"
