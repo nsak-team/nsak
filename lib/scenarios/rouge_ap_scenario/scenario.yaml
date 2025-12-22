@@ -9,7 +9,7 @@ metadata:
 drills: [ ]
 
 dependencies:
-  system: [ hostapd ]
+  system: [ ap_mod ]
   python: [ ]
 
 interface:

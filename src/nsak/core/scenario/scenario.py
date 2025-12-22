@@ -30,7 +30,7 @@ class Scenario:
 
     id: str
     name: str
-    description: str
+    description: str | None
     path: Path
     author: str
     repository: str

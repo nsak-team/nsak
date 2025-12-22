@@ -6,7 +6,7 @@ from nsak.core.access_point.hostapd_manager import HostapdManager
 
 def test_write_hostapd_config(tmp_path: Path) -> None:
     """
-    Test that the hostapd config file is written correctly.
+    Test that the ap_mod config file is written correctly.
 
     :param tmp_path: temporary directory
     :return: None
@@ -37,7 +37,7 @@ def test_write_hostapd_config(tmp_path: Path) -> None:
 
 def test_start_and_stop_hostapd(tmp_path: Path) -> None:
     """
-    Test that the hostapd starts and stops correctly.
+    Test that the ap_mod starts and stops correctly.
 
     :param tmp_path: temporary directory
     :return:
