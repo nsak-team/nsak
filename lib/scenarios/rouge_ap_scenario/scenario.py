@@ -39,8 +39,7 @@ def run(args: dict, state: dict | None = None) -> dict:
     )
     results["dnsmasq"] = dnsmasq
 
-    # todo add Nat rules to forward the packets to Gateway
-
+    # Add nat_forwarding_rules
     nat = DrillManager.execute(
         DrillManager.get("nat_forwarding"),
         {
@@ -50,16 +49,16 @@ def run(args: dict, state: dict | None = None) -> dict:
     )
     results["nat"] = nat
 
-    # todo Traffic sniffing
-    # sniff = DrillManager.execute(
-    #     DrillManager.get("tshark_capture"),
-    #     {
-    #         "interface": ap_if,
-    #         "capture_filter": "port 53",
-    #     },
-    #     state=state,
-    # )
-    # results["sniff"] = sniff
+    # capture traffic with tshark and stores it in "/tmp/rogue_ap.pcap"
+
+    sniff = DrillManager.execute(
+        DrillManager.get("tshark_capture"),
+        {
+            "interface": ap_if
+        },
+        state=state,
+    )
+    results["sniff"] = sniff
 
     return results
 
