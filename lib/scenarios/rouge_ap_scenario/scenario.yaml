@@ -9,9 +9,11 @@ metadata:
 drills: [ ]
 
 dependencies:
-  system: [ ap_mod ]
+  system: [ ]
   python: [ ]
 
 interface:
-  arguments: None
+  arguments:
+    - interface
+    - uplink_interface
   return_type: None
