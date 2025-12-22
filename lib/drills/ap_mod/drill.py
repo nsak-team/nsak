@@ -12,7 +12,6 @@ from lib.drills.ap_mod.config import AccessPointConfig
 
 logger = logging.getLogger(__name__)
 
-# Für volatile Scenario-Runs oft besser als /etc
 _config_dir_path = Path("/run/nsak/hostapd")
 _process: Optional[subprocess.Popen[str]] = None
 
@@ -62,7 +61,7 @@ def start(config: AccessPointConfig) -> int:
     return _process.pid
 
 
-def run(args: dict) -> dict[str, Any]:
+def run() -> dict[str, Any]:
     """
     Scenario entrypoint: create config, start hostapd, return result for cleanup.
     """
