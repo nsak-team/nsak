@@ -1,5 +1,6 @@
 from nsak.core.drill.drill_manager import DrillManager
 
+
 def run(args: dict, state: dict | None = None) -> dict:
     """
     Rogue AP orchestration.
@@ -8,7 +9,7 @@ def run(args: dict, state: dict | None = None) -> dict:
     results = {}
 
     ap_if = args["ap_interface"]
-    # uplink_if = args["uplink_interface"]
+    uplink_if = args["uplink_interface"]
 
     # Start ap_mod (AP mode)
     hostapd = DrillManager.execute(
@@ -41,7 +42,11 @@ def run(args: dict, state: dict | None = None) -> dict:
     # todo add Nat rules to forward the packets to Gateway
 
     nat = DrillManager.execute(
-        DrillManager.get("nat_forward"),
+        DrillManager.get("nat_forwarding"),
+        {
+            "interface": ap_if,
+            "uplink_interface": uplink_if
+        }, state=state,
     )
     results["nat"] = nat
 
@@ -57,6 +62,7 @@ def run(args: dict, state: dict | None = None) -> dict:
     # results["sniff"] = sniff
 
     return results
+
 
 def cleanup(state: dict) -> None:
     """
