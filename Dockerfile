@@ -17,18 +17,10 @@ ENV NSAK_LIBRARY_PATH="lib/"
 
 RUN apt-get install -y $SYSTEM_DEPENDENCIES
 
-#tempoary split run cmd for debugg reasons
-#RUN uv sync && \
-#    uv add $PYTHON_DEPENDENCIES && \
-#    uv pip install . && \
-#    uv build && \
-#    uv tool install dist/nsak-0.1.0-py3-none-any.whl
-
-RUN uv sync
-# if python dep ist non-zero-length -> if string is not empty run uv add
-RUN if [ -n "$PYTHON_DEPENDENCIES" ]; then uv add $PYTHON_DEPENDENCIES; fi
-RUN uv pip install .
-RUN uv build
-RUN uv tool install dist/nsak-0.1.0-py3-none-any.whl
+RUN uv sync && \
+    uv add $PYTHON_DEPENDENCIES && \
+    uv pip install . && \
+    uv build && \
+    uv tool install dist/nsak-0.1.0-py3-none-any.whl
 
 CMD $ENTRYPOINT

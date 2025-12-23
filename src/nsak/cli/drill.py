@@ -28,7 +28,13 @@ def list_drills() -> None:
         click.echo(drill.name)
 
 
-@drill_group.command("execute", context_settings={"ignore_unknown_options": True})
+@drill_group.command(
+    "execute",
+    context_settings={
+        "ignore_unknown_options": True,
+        "allow_extra_args": True,
+    },
+)
 @click.argument("name", shell_complete=complete_drill_name)  # type: ignore [call-arg]
 @click.option(
     "--interface", "interface_", required=True, help="Network interface to bind to"
