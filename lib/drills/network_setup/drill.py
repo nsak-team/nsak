@@ -7,13 +7,12 @@ logger = logging.getLogger(__name__)
 
 def run(args: dict) -> dict[str, any]:
     interface = args["interface"]
-    address = args["address"]
 
     # start process
     proc = subprocess.Popen(
         [
             "ip",
-            "addr", "replace", address, interface,
+            "addr", "replace", "10.0.0.1/24", "dev", interface,
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
