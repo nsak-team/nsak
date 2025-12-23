@@ -1,7 +1,9 @@
+import logging
 import os
 import signal
 import subprocess
 
+logger = logging.getLogger(__name__)
 
 def run_tshark(interface: str):
     proc = subprocess.Popen([
@@ -15,6 +17,7 @@ def run_tshark(interface: str):
 
 def run(args: dict) -> dict[str, any]:
     proc = run_tshark(args["interface"])
+    logger.info("tshark pcap capture started")
 
     return {
         "pid": proc.pid,
@@ -26,4 +29,5 @@ def run(args: dict) -> dict[str, any]:
 def cleanup(result: dict) -> None:
     pid = result.get("pid")
     if pid:
-        os.kill(pid, signal.SIGINT)  # wichtig!
+        os.kill(pid, signal.SIGINT)
+    logger.info("tshark pcap capture stopped")
