@@ -18,7 +18,8 @@ def run(args: dict) -> dict[str, any]:
         stderr=subprocess.STDOUT,
         text=True,
     )
-    logger.info(proc.stdout.read())
+    logger.info(proc.stdout.read() + " 10.0.0.1/24 on" + interface)
+    proc.wait()
 
     return {"pid": proc.pid}
 
