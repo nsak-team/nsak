@@ -16,13 +16,13 @@ def run_tshark(interface: str):
 
 
 def run(args: dict) -> dict[str, any]:
-    proc = run_tshark(args["interface"])
+    proc = run_tshark(args["ap_interface"])
     logger.info("tshark pcap capture started")
 
     return {
         "pid": proc.pid,
         "pcap": "/tmp/rogue_ap.pcap",
-        "interface": args["interface"],
+        "interface": args["ap_interface"],
     }
 
 
