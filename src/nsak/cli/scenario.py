@@ -69,7 +69,13 @@ def _parse_args(raw_args: list[str]) -> dict[str, str]:
     return args
 
 
-@scenario_group.command("execute")
+@scenario_group.command(
+    "execute",
+    context_settings={
+        "ignore_unknown_options": True,
+        "allow_extra_args": True,
+    },
+)
 @click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
 @click.pass_context
 def execute_scenario(ctx: click.Context, name: str) -> None:
