@@ -1,7 +1,9 @@
+import logging
 import os
 import signal
 import subprocess
 
+logger = logging.getLogger(__name__)
 
 def run(args: dict) -> dict[str, any]:
     interface = args["interface"]
@@ -17,6 +19,7 @@ def run(args: dict) -> dict[str, any]:
         stderr=subprocess.STDOUT,
         text=True,
     )
+    logger.info(proc.stdout.read())
 
     return {"pid": proc.pid}
 

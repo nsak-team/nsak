@@ -1,8 +1,10 @@
+import logging
 from pathlib import Path
 import subprocess
 import signal
 import os
 
+logger = logging.getLogger(__name__)
 
 def enable_ip_forwarding():
     subprocess.run([
@@ -36,6 +38,7 @@ def add_nat_rules(ap_interface: str, uplink_interface: str):
         "--state", "RELATED,ESTABLISHED",
         "-j", "ACCEPT"
     ], check=True)
+    logger.info("NAT rules enabled on [AP-INTERFACE]" + ap_interface + "[UPLINK-INTERFACE] " + uplink_interface)
 
 
 def run(args: dict) -> dict[str, any]:

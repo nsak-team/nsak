@@ -1,7 +1,10 @@
+import logging
 from pathlib import Path
 import subprocess
 import signal
 import os
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_DHCP = {
     "range_start": "10.0.0.10",
@@ -31,6 +34,7 @@ dhcp_lease_file={leases_path}
 """
 
     conf_path.write_text(conf.strip() + "\n")
+    logger.info("DHCP config written" + conf)
 
     # start process
     proc = subprocess.Popen(
