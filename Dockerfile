@@ -18,7 +18,7 @@ ENV NSAK_LIBRARY_PATH="lib/"
 RUN apt-get install -y $SYSTEM_DEPENDENCIES
 
 RUN uv sync && \
-    uv add $PYTHON_DEPENDENCIES && \
+    if [ -n "$PYTHON_DEPENDENCIES" ]; then uv add $PYTHON_DEPENDENCIES; fi && \
     uv pip install . && \
     uv build && \
     uv tool install dist/nsak-0.1.0-py3-none-any.whl
