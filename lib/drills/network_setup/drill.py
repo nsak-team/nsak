@@ -13,7 +13,7 @@ def run(args: dict) -> dict[str, any]:
     proc = subprocess.Popen(
         [
             "ip",
-            "addr", "add", interface, address
+            "addr", "replace", address, interface,
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
