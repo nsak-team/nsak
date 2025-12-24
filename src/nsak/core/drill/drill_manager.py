@@ -26,10 +26,13 @@ class DrillManager:
         return DrillLoader.load(name)
 
     @classmethod
-    def execute(cls, drill: Drill, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+    def execute(cls, drill: Drill | str, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
         """
         Load the drills entrypoint and execute it.
         """
+        if isinstance(drill, str):
+            drill = cls.get(drill)
+
         module_name = drill.path.name
         spec = importlib.util.spec_from_file_location(
             module_name, drill.path / "drill.py"

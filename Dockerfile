@@ -1,13 +1,15 @@
-FROM docker.io/kalilinux/kali-rolling
+FROM docker.io/kalilinux/kali-rolling as BASE_IMAGE
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates python3 curl iproute2
+    apt-get install -y --no-install-recommends ca-certificates python3 python3-dev curl iproute2
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
 
 WORKDIR nsak
 COPY . .
+
+FROM BASE_IMAGE
 
 ARG SYSTEM_DEPENDENCIES
 ARG PYTHON_DEPENDENCIES
