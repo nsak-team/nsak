@@ -14,7 +14,7 @@ for traffic analysis, performance testing, or security evaluation.
 	\label{fig:lan-sniffing}
 \end{figure}
 
-\textbf{Description:}  
+\textbf{Description:}
 Direct inline bridge between client and router.
 Used for basic LAN capturing, latency, and throughput testing.
 
@@ -27,7 +27,7 @@ Used for basic LAN capturing, latency, and throughput testing.
 	\label{fig:lan-4-ports-sniffing}
 \end{figure}
 
-\textbf{Description:}  
+\textbf{Description:}
 Captures typical home traffic.
 The WLAN interface is required for Wi-Fi analysis.
 Useful for IoT discovery and local broadcast observation.
@@ -42,7 +42,7 @@ Useful for IoT discovery and local broadcast observation.
 	\label{fig:lan-sniffing-switch-accesspoint}
 \end{figure}
 
-\textbf{Description:}  
+\textbf{Description:}
 Represents a small office LAN. nsak placed at uplink or server edge to monitor internal traffic, VLANs, and broadcast domains.
 
 \subsection{Category II: Mobile / Wireless}\label{subsec:category-ii:-mobile-/-wireless}
@@ -57,13 +57,14 @@ Represents a small office LAN. nsak placed at uplink or server edge to monitor i
 \end{figure}
 
 
-\textbf{Description:}  
+\textbf{Description:}
 nsak acts as Wi-Fi AP, providing connectivity and packet capture.
 Captures management and data frames for WLAN analysis.
 
+
 \subsubsection{E 5: Mobile Hotspot}
 \textbf{Diagram:} Smartphone $\leftrightarrow$ nsak $\leftrightarrow$ LTE/5G  \\
-\textbf{Description:}  
+\textbf{Description:}
 Mobile tethering or hotspot scenario.
 Focus on NAT behavior, encryption overhead, and power constraints.
 
@@ -71,13 +72,13 @@ Focus on NAT behavior, encryption overhead, and power constraints.
 
 \subsubsection{E 6: Data Center / Server Rack}
 \textbf{Diagram:} Servers $\leftrightarrow$ Switch $\leftrightarrow$ Firewall $\leftrightarrow$ nsak   \\
-\textbf{Description:}  
+\textbf{Description:}
 High-performance setup for 2.5G\textendash10G traffic capture.
 Focus on throughput, buffering, and VLAN-tagged traffic.
 
 \subsubsection{E 7: VPN Gateway}
 \textbf{Diagram:} Router $\leftrightarrow$ nsak (VPN Endpoint) $\leftrightarrow$ Remote Peer  \\
-\textbf{Description:}  
+\textbf{Description:}
 nsak configured as WireGuard gateway.
 Measures encrypted vs.
 unencrypted traffic, tunnel stability, and CPU load.
@@ -86,30 +87,30 @@ unencrypted traffic, tunnel stability, and CPU load.
 
 \subsubsection{E 8: VLAN-Segmented Enterprise Network}
 \textbf{Diagram:} Switch + Router + Multiple VLANs $\leftrightarrow$ nsak  \\
-\textbf{Description:}  
+\textbf{Description:}
 Used to verify VLAN isolation and detect inter-segment leaks or misconfigurations.
 
 \subsubsection{E 9: IoT Sensor Network}
 \textbf{Diagram:} IoT Devices $\leftrightarrow$ Local Gateway (Broadcast) $\leftrightarrow$ nsak   \\
-\textbf{Description:}  
+\textbf{Description:}
 Passive capture of local IoT or broadcast-based communication.
 Identifies timing, protocol use, and unsecured traffic.
 
 \subsection{Category V: Virtual / Simulation}\label{subsec:category-v:-virtual-/-simulation}
 
 \subsubsection{E 10: Attack Simulation Network}
-\textbf{Diagram:} Virtual Attacker $\leftrightarrow$ Target VM $\leftrightarrow$ nsak  
-\textbf{Description:}  
+\textbf{Diagram:} Virtual Attacker $\leftrightarrow$ Target VM $\leftrightarrow$ nsak
+\textbf{Description:}
 Virtual lab for testing detection systems, malware traffic, and replay scenarios.
 
 \subsubsection{E 11: Remote Management Environment}
-\textbf{Diagram:} Admin $\leftrightarrow$ VPN/SSH $\leftrightarrow$ nsak (headless)  
-\textbf{Description:}  
+\textbf{Diagram:} Admin $\leftrightarrow$ VPN/SSH $\leftrightarrow$ nsak (headless)
+\textbf{Description:}
 Remote-controlled nsak for automated capture and monitoring in unattended operation.
 
 \subsubsection{E 12: Dual-Sniffer Setup}
-\textbf{Diagram:} nsak-A $\parallel$ nsak-B (same link)  
-\textbf{Description:}  
+\textbf{Diagram:} nsak-A $\parallel$ nsak-B (same link)
+\textbf{Description:}
 Two synchronized devices capture the same traffic path.
 Used for timestamp comparison and hardware validation.
 
@@ -323,5 +324,3 @@ Action sequence:
 \section{Scenarios}\label{sec:scenarios}
 
 A scenario is described as a combination of an environment, with a defined location of the sniffer and one or multiple software modules.
-
-

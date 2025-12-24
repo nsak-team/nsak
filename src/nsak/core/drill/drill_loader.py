@@ -122,6 +122,7 @@ class DrillLoader:
             return Drill(
                 id=str(data["metadata"]["id"]),
                 name=str(data["metadata"]["name"]),
+                description=str(data["metadata"]["description"]),
                 path=path,
                 author=str(data["metadata"]["author"]),
                 repository=str(data["metadata"]["repository"]),
