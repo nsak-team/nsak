@@ -22,19 +22,18 @@ def run() -> None:
     :return: None
     """
 
-    DrillManager.execute(
-        "discover_services",
-        iface=ATTACKER_IFACE,
-        listen_ip=LISTEN_IP,
-        port=PORT,
-        target_ips=[ALICE_IP, BOB_IP],
-    )
+    # DrillManager.execute(
+    #     "discover_services",
+    #     iface=ATTACKER_IFACE,
+    #     listen_ip=LISTEN_IP,
+    #     port=PORT,
+    #     target_ips=[ALICE_IP, BOB_IP],
+    # )
     DrillManager.execute(
         "transparent_tcp_proxy",
         iface=ATTACKER_IFACE,
-        listen_ip=LISTEN_IP,
+        ip=ATTACKER_IP,
         port=PORT,
-        target_ips=[ALICE_IP, BOB_IP],
     )
     DrillManager.execute(
         "arp_spoof",

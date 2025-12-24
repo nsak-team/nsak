@@ -31,7 +31,7 @@ networks:
   testnet:
     driver: macvlan
     driver_opts:
-      parent: wlan0
+      parent: nsak0
     ipam:
       config:
         - subnet: 10.10.10.0/24

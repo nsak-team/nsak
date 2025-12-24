@@ -129,6 +129,7 @@ class ScenarioLoader:
                 author=str(data["metadata"]["author"]),
                 repository=str(data["metadata"]["repository"]),
                 drills=set(data["drills"]),
+                environments=set(data.get("environments") or []),
                 dependencies=ScenarioDependencies(
                     system=set(data["dependencies"]["system"]),
                     python=set(data["dependencies"]["python"]),

@@ -42,6 +42,7 @@ class ScenarioManager:
         # - https://pypi.org/project/podman/
         subprocess.run(  # noqa: S603
             [
+                "/usr/sbin/sudo",
                 "/usr/bin/podman",
                 "build",
                 config.DOCKER_CONTEXT,
@@ -66,7 +67,8 @@ class ScenarioManager:
         # - https://pypi.org/project/podman/
         completed_process = subprocess.run(  # noqa: S603
             [
-                "/usr/bin/podman",
+                "/usr/sbin/sudo",
+                "/usr/sbin/podman",
                 "run",
                 "-d",
                 "--privileged",
@@ -104,10 +106,13 @@ class ScenarioManager:
         return drills
 
     @classmethod
-    def execute(cls, scenario: Scenario, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+    def execute(cls, scenario: Scenario | str, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
         """
         Load the scenarios entrypoint and execute it.
         """
+        if isinstance(scenario, str):
+            scenario = cls.get(scenario)
+
         module_name = scenario.path.name
         spec = importlib.util.spec_from_file_location(
             module_name, scenario.path / "scenario.py"

@@ -122,4 +122,4 @@ def run(iface: str, ip: str, port: int) -> None:
 
     set_ip_forwarding(True)
     configure_iptables(iface, ip, port)
-    start_tcp_proxy(ip, port)
+    threading.Thread(target=start_tcp_proxy, args=(ip, port)).start()
