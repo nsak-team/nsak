@@ -9,7 +9,7 @@ services:
       - NET_RAW
     networks:
       testnet:
-        ipv4_address: 10.10.10.10
+        ipv4_address: 10.10.10.30
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped

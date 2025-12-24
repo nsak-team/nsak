@@ -67,11 +67,10 @@ class ScenarioManager:
         # - https://pypi.org/project/podman/
         completed_process = subprocess.run(  # noqa: S603
             [
-                "/usr/bin/sudo",
+                "/usr/sbin/sudo",
                 "/usr/sbin/sudo",
                 "/usr/sbin/podman",
                 "run",
-                "-d",
                 "--privileged",
                 "--network=host",
                 f"nsak/scenario/{scenario.path.name}",

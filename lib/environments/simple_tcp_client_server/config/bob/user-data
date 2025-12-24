@@ -18,8 +18,16 @@
 # configuration.
 
 hostname: bob
+manage_etc_hosts: true
+
+timezone: Europe/Zurich
+
+enable_ssh: true
 ssh_pwauth: true
-chpasswd:
-  expire: false
-  list: |
-    root:root
+
+users
+  - name: bob
+    groups: users,adm,dialout,sudo
+    plain_text_password: bob
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']

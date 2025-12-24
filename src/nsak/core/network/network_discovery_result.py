@@ -1,6 +1,7 @@
 import dataclasses
 
-from nsak.core.network import NetworkInterface, NetworkService
+from nsak.core.network.network_interface import NetworkInterface
+from nsak.core.network.network_service import NetworkService
 from nsak.core.network.types import IPAddress
 
 

@@ -20,6 +20,8 @@
 hostname: alice
 manage_etc_hosts: true
 
+timezone: Europe/Zurich
+
 enable_ssh: true
 ssh_pwauth: true
 

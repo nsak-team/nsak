@@ -1,12 +1,14 @@
 """
 Scenario entrypoint for MITM with arp spoofing and transparent tcp proxy.
 """
+import dataclasses
+from typing import Any
 
 from nsak.core import DrillManager, get_target_network_interfaces
 from nsak.core.network import NetworkDiscoveryResultMap
 
 
-def run(network_interfaces: list[str] | None = None) -> None:
+def run(network_interfaces: list[str] | None = None, *args: Any, **kwargs: Any) -> None:
     """
     Scenario, which runs MITM attack, based on arp spoofing.
 

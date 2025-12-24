@@ -24,7 +24,14 @@
 
 version: 2
 ethernets:
-eth0:
-  addresses:
-    - 10.10.10.30/24
-  dhcp4: false
+  eth0:
+    addresses:
+      - 10.10.10.20/24
+    dhcp4: false
+    nameservers:
+      addresses:
+        - 1.1.1.1
+        - 8.8.8.8
+    routes: # instead of gateway4
+      - to: 0.0.0.0/0
+        via: 10.10.10.1
