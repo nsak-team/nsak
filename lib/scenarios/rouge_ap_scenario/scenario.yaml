@@ -3,10 +3,11 @@ scenario: v1
 metadata:
   id: rouge_ap
   name: rouge_ap_scenario
+  description: "Rouge AP Scenario."
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-drills: [ ]
+drills: [ dnsmasq ]
 
 dependencies:
   system: [ ap_mod ]
