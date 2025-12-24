@@ -14,7 +14,7 @@ DEFAULT_DHCP = {
     "upstream_dns": "1.1.1.1",
 }
 
-#todo network arguments with type hints
+
 
 def run(interface: str) -> subprocess.Popen:
     # runtime paths
@@ -56,5 +56,6 @@ def run(interface: str) -> subprocess.Popen:
         text=True,
     )
 
+
 def cleanup(proc: subprocess.Popen) -> None:
-   proc.terminate()
+    proc.terminate()
