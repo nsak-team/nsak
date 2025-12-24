@@ -69,7 +69,7 @@ Each section contains a table with activity entries for the respective week.
 | 2025-11-29       | Code Review, research Pipy Packaging                                                                                         | 3h       |                |                                                                                                        |
 | 2025-11-30       | Repository mirroring, Edit documentation                                                                                     | 3h       |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              |          |                |                                                                                                        |
+| **Sub Total**    |                                                                                                                              | **6h**   |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
@@ -82,16 +82,16 @@ Each section contains a table with activity entries for the respective week.
 | 2025-12-06       | Define Research Question, research and planning - scientific writing, zta, bachelor                                          | 6h       |                |                                                                                                        |
 | 2025-12-07       | Code Review, define issue rouge AP                                                                                           | 3h       |                |                                                                                                        |
 | 2025-12-07       | research hostapd, set up rouge_ap_scenario, implement write hostapd, add unit-test                                           | 4h       |                |                                                                                                        |
+| **Sub Total**    |                                                                                                                              | **15h**  |                |                                                                                                        |
+|                  |                                                                                                                              |          |                |                                                                                                        |
+| **Week 14:**     |                                                                                                                              |          |                |                                                                                                        |
+| 2025-12-08       | Development: set up Rouge AP Scenario, debug and document configuration                                                      | 6h       |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              |          |                |                                                                                                        |
-|                  |                                                                                                                              |          |                |                                                                                                        |
+| **Week 15**      |                                                                                                                              |          |                |                                                                                                        |
+| 2025-12-16       | Development: dnsmasq-drill, test on ns in lab, resarch relevant paper for doc                                                | 4h       |                |                                                                                                        |
+| 2025-12-17       | Set Up Nsak on ns in lab and test dnsmasq implementation                                                                     | 2h       |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
 |                  |                                                                                                                              |          |                |                                                                                                        |
@@ -194,10 +194,10 @@ Each section contains a table with activity entries for the respective week.
 
 ## Combined Summary
 
-| Member    | Total Hours | Focus Areas                   |
-|-----------|-------------|-------------------------------|
-| Frank     | 71 h        | Research, Docs, DevOps        |
-| Lukas     | 112 h       | Planning, Project Setup, Docs |
-| **Total** | 183 h       |                               |
+| Member    | Total Hours | Focus Areas                           |
+|-----------|-------------|---------------------------------------|
+| Frank     | 98 h        | Research, Docs, DevOps, Developments, |
+| Lukas     | 112 h       | Planning, Project Setup, Docs         |
+| **Total** | 210 h       |                                       |
 
 Goal: 150 - 180 hours per student
