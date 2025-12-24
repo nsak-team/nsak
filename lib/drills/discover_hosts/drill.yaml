@@ -1,0 +1,16 @@
+drill: v1
+
+metadata:
+  id: arp_spoof
+  name: ARP Spoof
+  author: vonal3@bfh.ch
+  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+dependencies:
+  system:
+    - arp-scan
+  python: [ ]
+
+interface:
+  arguments: [ "list[NetworkInterface]" ]
+  return_type: "subprocess.Popen"

@@ -5,6 +5,7 @@
     a4paper,
     BCOR=15mm,            % Binding correction
     twoside,
+    openany,
 % openright,
 %  headings=openright,
     bibliography=totoc,   % If enabled add bibliography to TOC
@@ -48,7 +49,7 @@
 \usepackage{multicol}
 
 \usepackage{parskip}
-\usepackage{tabularx} 
+\usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{pifont}
 \usepackage{array}
@@ -113,6 +114,7 @@
 ]{hyperref}
 \usepackage{xparse}
 \usepackage{color}
+\usepackage{todonotes}
 %---------------------------------------------------------------------------
 
 %% %% Customize Footer and Headers in Document
@@ -134,6 +136,8 @@
 %% \rofoot*{rofoot}
 %---------------------------------------------------------------------------
 \begin{document}
+\raggedbottom  % content does not get strechted verticaly
+
 
 %% Snippet do redefine German babel translations -- see FAQ latex.ti.bfh.ch for further information or
 %% the package documentation https://www.ctan.org/pkg/translations
@@ -174,7 +178,7 @@
     \maketitle
 %------------ ABSTRACT        ----------------
     \addchap{Abstract}
-    \input{content/abstract}
+    \input{content/01-abstract}
 
 %------------ TABLEOFCONTENTS ----------------
     \tableofcontents
@@ -182,14 +186,23 @@
 %------------ START MAIN PART ------------
     \mainmatter
 
-    \chapter{First Thesis Chapter}\label{ch:first-thesis-chapter}
-    \input{content/introduction}
-    \input{content/specification}
-    \input{content/evaluation}
-    \input{content/architecture-and-design}
+    \chapter{First Part Thesis}\label{ch:first-thesis-chapter}
+    \input{content/02-introduction}
+    \input{content/03-current-state-of-research}
 
-    \chapter{Second Thesis Chapter}\label{ch:second-thesis-chapter}
-    \input{content/implementation}
+	\chapter{Hardware Selection}
+    \input{content/04-evaluation}
+    \input{content/05-specification}
+
+	\chapter{Architecture and Design}
+	\input{content/06-user-story}
+	\input{content/07-component-diagram}
+
+    \chapter{Second Part Thesis: Method}\label{ch:second-thesis-chapter}
+    \input{content/08-method}
+    \input{content/09-implementation}
+    \input{content/10-conclusion}
+
 
 %------------ Authorship declaration translated to main language ------------
     \declarationOfAuthorship
@@ -216,6 +229,6 @@
     \printindex
 %------------ Appendix ----------------
     \appendix
-    \input{./content/appendix}
+    \input{./content/11-appendix}
 
 \end{document}

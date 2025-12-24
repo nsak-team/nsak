@@ -1,0 +1,20 @@
+scenario: v1
+
+metadata:
+  id: mitm
+  name: MITM Scenario
+  author: vonal3@bfh.ch
+  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+drills: [ discover_hosts, arp_spoof, transparent_tcp_proxy ]
+
+environments:
+  - simple_tcp_client_server
+
+dependencies:
+  system: [ ]
+  python: [ scapy ]
+
+interface:
+  arguments: None
+  return_type: None
