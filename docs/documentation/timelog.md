@@ -213,17 +213,28 @@ Each section contains a table with activity entries for the respective week.
 | 2025-12-18      | Work on MITM scenario: Implement packet sniffing and trivial manipulation with netfilter_queue                               | 2 h       | Development   |                                                                                                           |
 | 2025-12-19      | Work on MITM scenario: Research transparent tcp proxy and iptables configuration                                             | 2 h       | Research      |                                                                                                           |
 | 2025-12-19      | Weekly project meeting: Synchronize current state of the scenarios and drills, explain current issues                        | 1 h       | Planning      |                                                                                                           |
-| 2025-12-10      | Work on MITM scenario: Implement transparent tcp proxy and iptables configuration (fully working MITM in podman-compose lab) | 2 h       | Development   |                                                                                                           |
-| **Sub Total**   |                                                                                                                              | **12 h**  |               |                                                                                                           |
+| 2025-12-20      | Work on MITM scenario: Implement transparent tcp proxy and iptables configuration (fully working MITM in podman-compose lab) | 2 h       | Development   |                                                                                                           |
+| 2025-12-20      | Work on nsak core/cli: Implement environment/scenario simulation                                                             | 6 h       | Development   |                                                                                                           |
+| 2025-12-21      | Work on MITM scenario: Extract reusable logic into drills                                                                    | 2 h       | Development   |                                                                                                           |
+| 2025-12-21      | Work on MITM scenario: Implement interface lookup and arp autodiscover abilities                                             | 6 h       | Development   |                                                                                                           |
+| 2025-12-21      | Work on MITM scenario: Start HW setup and documentation for scenario with two raspberry pis                                  | 2 h       | Development   |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | **26 h**  |               |                                                                                                           |
 |                 |                                                                                                                              |           |               |                                                                                                           |
-| **Total**       |                                                                                                                              | **126 h** |               |                                                                                                           |
+| **Week 14:**    |                                                                                                                              |           |               |                                                                                                           |
+| 2025-12-22      | Work on MITM scenario: Continue with HW setup and documentation for scenario with two raspberry pis                          | 2 h       | Development   |                                                                                                           |
+| 2025-12-23      | Code reviews and sync                                                                                                        | 1.5 h     | Development   |                                                                                                           |
+| 2025-12-24      | Quick research on Network Management and Discovery Tools: Netbox,                                                            | 1 h       | Documentation |                                                                                                           |
+| 2025-12-24      | Work on documentation                                                                                                        | - h       | Documentation |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | **3.5 h** |               |                                                                                                           |
+|                 |                                                                                                                              |           |               |                                                                                                           |
+| **Total**       |                                                                                                                              | **140 h** |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                           |
 |-----------|-------------|---------------------------------------|
 | Frank     | 123 h       | Research, Docs, DevOps, Developments, |
-| Lukas     | 112 h       | Planning, Project Setup, Docs         |
-| **Total** | 235 h       |                                       |
+| Lukas     | 143.5 h     | Planning, Project Setup, Docs         |
+| **Total** | 266.5 h     |                                       |
 
 Goal: 150 - 180 hours per student
