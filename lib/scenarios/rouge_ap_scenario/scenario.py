@@ -1,29 +1,72 @@
-"""
-scenario entrypoint for drill POC.
-"""
-import sys
+from nsak.core.drill.drill_manager import DrillManager
 
-from nsak.core import Drill, DrillLoader, DrillManager
-from nsak.core.access_point.config import AccessPointConfig
-from nsak.core.access_point.hostapd_manager import HostapdManager
-
-
-def run() -> None:
+def run(args: dict, state: dict | None = None) -> dict:
     """
-    Example Scenario, which runs the Hello World Drill.
-
-    :return: None
+    Rogue AP orchestration.
     """
+    state = state or {}
+    results = {}
 
-    hostapd_manager = HostapdManager()
-    config = AccessPointConfig()
-    hostapd_manager.start(config)
+    ap_if = args["ap_interface"]
+    # uplink_if = args["uplink_interface"]
 
-    print(f"[Scenario] Rouge AP active on {config.interface} with SSID {config.ssid}.")
-    drill = DrillManager.get("dnsmasq")
-    sys.stdout.write(f"[Scenario] Drill returned:\n\n")
-    sys.stdout.write(DrillManager.execute(drill))
+    # Start ap_mod (AP mode)
+    hostapd = DrillManager.execute(
+        DrillManager.get("ap_mod"),
+        state=state,
+    )
+    results["ap_mod"] = hostapd
 
+    # Network setup set static Ip for nsak to work as Gateway (Nsak is AP, DHCP, DNS)
+    net = DrillManager.execute(
+        DrillManager.get("network_setup"),
+        {
+            "interface": ap_if,
+            "address": "10.0.0.1/24",
+        },
+        state=state,
+    )
+    results["network"] = net
 
-if __name__ == "__main__":
-    run()
+    # DHCP + DNS (with dnsmasq range and lease time)
+    dnsmasq = DrillManager.execute(
+        DrillManager.get("dnsmasq"),
+        {
+            "interface": ap_if,
+        },
+        state=state,
+    )
+    results["dnsmasq"] = dnsmasq
+
+    # todo add Nat rules to forward the packets to Gateway
+
+    nat = DrillManager.execute(
+        DrillManager.get("nat_forward"),
+    )
+    results["nat"] = nat
+
+    # todo Traffic sniffing
+    # sniff = DrillManager.execute(
+    #     DrillManager.get("tshark_capture"),
+    #     {
+    #         "interface": ap_if,
+    #         "capture_filter": "port 53",
+    #     },
+    #     state=state,
+    # )
+    # results["sniff"] = sniff
+
+    return results
+
+def cleanup(state: dict) -> None:
+    """
+    Stop all running drills.
+    """
+    for name in reversed(["sniff", "nat", "dnsmasq", "network", "ap_mod"]):
+        result = state.get(name)
+        if not result:
+            continue
+        DrillManager.clear(
+            DrillManager.get(name if name != "sniff" else "tshark_capture"),
+            result,
+        )

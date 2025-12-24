@@ -10,13 +10,7 @@ DEFAULT_DHCP = {
     "lease_time": "12h",
 }
 
-
-def _dnsmasq_bin() -> str:
-    # Resolve binary robustly on minimal systems (dnsmasq often lives in /usr/sbin)
-    return shutil.which("dnsmasq") or "/usr/sbin/dnsmasq"
-
-
-def run(args: dict) -> dict:
+def run(args: dict) -> dict[str, any]:
     # required arguments
     interface = args["interface"]
 

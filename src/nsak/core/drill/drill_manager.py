@@ -44,3 +44,32 @@ class DrillManager:
             raise DrillNotFoundError(drill.name)
         spec.loader.exec_module(module)
         return module.run(*args, **kwargs)
+
+    # todo we should handle drills and scenarios with a state but for now it is sufficient to clear the drills over cli
+    @classmethod
+    def clear(cls, drill: Drill) -> None:
+        """
+        Clear the drills.
+
+        :param drill:
+        :return: None
+        """
+        module_name = drill.path.name
+        spec = importlib.util.spec_from_file_location(
+            module_name, drill.path / "drill.py"
+        )
+        if spec is None:
+            raise DrillNotFoundError(drill.name)
+        module = importlib.util.module_from_spec(spec)
+        if module is None:
+            raise DrillNotFoundError(drill.name)
+        sys.modules[module_name] = module
+        if spec.loader is None:
+            raise DrillNotFoundError(drill.name)
+        spec.loader.exec_module(module)
+
+        cleanup_fn = getattr(module, "cleanup", None)
+        if not callable(cleanup_fn):
+            raise DrillNotFoundError(drill.name + "has no cleanup")
+
+        cleanup_fn()

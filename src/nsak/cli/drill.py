@@ -37,9 +37,22 @@ def execute_drill(name: str, interface_: str) -> None:
     """
     Execute the drill script.
 
-    :param interface_:
+    :param interface_: Network interface to bind to
     :param name: The name of the drill for which you want to execute the script.
     :return:
     """
     drill = DrillManager.get(name)
     DrillManager.execute(drill, {"interface": interface_})
+
+
+@drill_group.command("clear")
+@click.argument("name", shell_complete=complete_drill_name)  # type: ignore [call-arg]
+def clear_drill(name: str) -> None:
+    """
+    Clear the drill cmd.
+
+    :param name:
+    :return:
+    """
+    drill = DrillManager.get(name)
+    DrillManager.clear(drill)

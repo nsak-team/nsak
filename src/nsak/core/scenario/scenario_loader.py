@@ -125,7 +125,9 @@ class ScenarioLoader:
             return Scenario(
                 id=str(data["metadata"]["id"]),
                 name=str(data["metadata"]["name"]),
-                description=str(data["metadata"]["description"]),
+                description=str(data["metadata"]["description"])
+                if "description" in data["metadata"]
+                else None,
                 path=path,
                 author=str(data["metadata"]["author"]),
                 repository=str(data["metadata"]["repository"]),
