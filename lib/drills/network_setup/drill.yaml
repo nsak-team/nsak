@@ -1,16 +1,16 @@
 drill: v1
 
 metadata:
-  id: hello_world
-  name: hello_world_drill
-  description: "hello world drill"
+  id: network_setup
+  name: network_setup
+  description: "Set a static Ip to the inf wlan0 10.0.0.1"
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
 dependencies:
   system: [ ]
-  python: [ art ]
+  python: [ ]
 
 interface:
-  arguments: [ ]
-  return_type: str
+  arguments: [ str ]
+  return_type: dict
