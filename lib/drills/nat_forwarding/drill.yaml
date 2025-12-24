@@ -8,11 +8,9 @@ metadata:
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
 dependencies:
-  system: [ sysctl ]
+  system: [ ]
   python: [ ]
 
 interface:
-  arguments:
-    - interface
-    - uplink_interface
+  arguments: [ str, str ]
   return_type: dict

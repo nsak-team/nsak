@@ -6,6 +6,7 @@ import os
 
 logger = logging.getLogger(__name__)
 
+
 def enable_ip_forwarding():
     subprocess.run([
         "sysctl",
@@ -14,38 +15,32 @@ def enable_ip_forwarding():
     ], check=True)
 
 
-# todo forwarding rules get attached at the end if called twice ip tables get a mess of similiar rules
+# todo forwarding rules get attached at the end if called twice ip tables get a mess of similiar rules, right
+#  now the config is non permanent
 
-def add_nat_rules(ap_interface: str, uplink_interface: str):
+def add_nat_rules(interface: str, uplink_interface: str):
     subprocess.run([
         "iptables", "-t", "nat",
-        "-A", "POSTROUTING", "-o",
-        uplink_interface, "-j",
-        "MASQUERADE"
+        "-A", "POSTROUTING",
+        "-o", uplink_interface,
+        "-j", "MASQUERADE"
     ], check=True)
     subprocess.run([
         "iptables", "-A", "FORWARD",
-        "-i", ap_interface, "-o",
-        uplink_interface, "-j",
-        "ACCEPT"
-    ], check=True)
-    subprocess.run([
-        "iptables", "-A",
-        "FORWARD", "-i",
-        uplink_interface, "-o",
-        ap_interface, "-m",
-        "state",
-        "--state", "RELATED,ESTABLISHED",
+        "-i", interface,
+        "-o", uplink_interface,
         "-j", "ACCEPT"
     ], check=True)
-    logger.info("NAT rules enabled on [AP-INTERFACE]" + ap_interface + "[UPLINK-INTERFACE] " + uplink_interface)
+    subprocess.run([
+        "iptables", "-A", "FORWARD",
+        "-i", uplink_interface,
+        "-o", interface,
+        "-m", "state", "--state",
+        "RELATED,ESTABLISHED", "-j", "ACCEPT"
+    ], check=True)
+    logger.info("NAT rules enabled on [AP-INTERFACE]" + interface + "[UPLINK-INTERFACE] " + uplink_interface)
 
 
-def run(args: dict) -> dict[str, any]:
+def run(args: dict):
     enable_ip_forwarding()
     add_nat_rules(args['interface'], args['uplink_interface'])
-    return {
-        "ip_forward": True,
-        "interface": args["interface"],
-        "uplink_interface": args["uplink_interface"],
-    }

@@ -76,6 +76,7 @@ def _parse_args(raw_args: list[str]) -> dict[str, str]:
         "allow_extra_args": True,
     },
 )
+# todo design a way to pass the arguments to the run method of the container
 @click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
 @click.pass_context
 def execute_scenario(ctx: click.Context, name: str) -> None:

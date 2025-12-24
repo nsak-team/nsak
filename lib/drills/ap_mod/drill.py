@@ -60,7 +60,7 @@ def start(config: AccessPointConfig) -> int:
     logger.info("hostapd started with PID %s (cfg=%s)", _process.pid, cfg_path)
     return _process.pid
 
-
+#  todo use explicit arguments, maybe with the same data structure as used in MITM scenario
 def run() -> dict[str, Any]:
     """
     Scenario entrypoint: create config, start hostapd, return result for cleanup.

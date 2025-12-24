@@ -13,7 +13,5 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments:
-    - interface
-    - uplink_interface
+  arguments: [str, str]
   return_type: None

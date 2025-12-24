@@ -4,7 +4,7 @@ import sys
 from typing import Any, List
 
 from nsak.core.drill import Drill, DrillLoader
-from nsak.core.drill.drill_loader import DrillNotFoundError
+from nsak.core.drill.drill_loader import DrillNotFoundError, InvalidDrillError
 
 
 class DrillManager:
@@ -45,11 +45,12 @@ class DrillManager:
         run_fn = getattr(module, "run", None)
         if run_fn is None or not callable(run_fn):
             msg = f"Drill '{drill.name}' has no callable run()"
-            raise DrillNotFoundError(msg)
+            raise InvalidDrillError(msg)
 
         sig = inspect.signature(run_fn)
 
         # if a drill has **kwargs pass everything
+        # TODO design this part to pass arguments to a drill
         if any(
             p.kind == inspect.Parameter.VAR_KEYWORD for p in sig.parameters.values()
         ):
@@ -62,7 +63,7 @@ class DrillManager:
         return run_fn(*args, **filtered_kwargs)
 
     @classmethod
-    def clear(cls, drill: Drill) -> None:
+    def clean_up(cls, drill: Drill) -> None:
         """
         Clear the drills.
 
@@ -86,6 +87,6 @@ class DrillManager:
 
         cleanup_fn = getattr(module, "cleanup", None)
         if not callable(cleanup_fn):
-            raise DrillNotFoundError(drill.name + "has no cleanup")
+            raise InvalidDrillError(drill.name)
 
         cleanup_fn()

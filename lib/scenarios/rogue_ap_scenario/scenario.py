@@ -1,6 +1,6 @@
 from nsak.core.drill.drill_manager import DrillManager
 
-
+# todo change args to network interfaces from core after merge
 def run(args: dict, state: dict | None = None) -> dict:
     """
     Rogue AP orchestration.
@@ -49,8 +49,7 @@ def run(args: dict, state: dict | None = None) -> dict:
     )
     results["nat"] = nat
 
-    # capture traffic with tshark and stores it in "/tmp/rogue_ap.pcap"
-
+    # capture traffic with tshark and stores it in "/run/rogue_ap.pcap"
     sniff = DrillManager.execute(
         DrillManager.get("tshark_capture"),
         {
@@ -60,7 +59,13 @@ def run(args: dict, state: dict | None = None) -> dict:
     )
     results["sniff"] = sniff
 
-    return results
+    return {
+        "processes": {
+            "dnsmasq_pid": results["dnsmasq"]["pid"],
+            "hostapd_pid": results["hostapd"]["pid"],
+            "tshark_pid":  results["tshark"]["pid"],
+        },
+    }
 
 
 def cleanup(state: dict) -> None:
@@ -71,7 +76,6 @@ def cleanup(state: dict) -> None:
         result = state.get(name)
         if not result:
             continue
-        DrillManager.clear(
+        DrillManager.clean_up(
             DrillManager.get(name if name != "sniff" else "tshark_capture"),
-            result,
         )
