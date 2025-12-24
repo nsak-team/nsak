@@ -1,4 +1,3 @@
-# alice.py
 from connection import run_client
 
 BOB_HOST = "10.10.10.30"

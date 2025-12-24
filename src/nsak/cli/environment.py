@@ -26,7 +26,10 @@ def complete_environment_scenario_name(
     """
     Autocomplete for scenario name in arguments.
     """
-    scenarios = EnvironmentManager.list_scenarios(EnvironmentManager.get(""))
+    environment_name = ctx.params["name"]
+    scenarios = EnvironmentManager.list_scenarios(
+        EnvironmentManager.get(environment_name)
+    )
     scenario_names = {scenario.path.name for scenario in scenarios}
     return [
         scenario_name
