@@ -1,16 +1,16 @@
 drill: v1
 
 metadata:
-  id: hello_world
-  name: hello_world_drill
-  description: "hello world drill"
+  id: nat_forwarding
+  name: nat_forwarding
+  description: "Add nat_forwarding rules to ip tables"
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
 dependencies:
   system: [ ]
-  python: [ art ]
+  python: [ ]
 
 interface:
-  arguments: [ ]
-  return_type: str
+  arguments: [ str, str ]
+  return_type: dict

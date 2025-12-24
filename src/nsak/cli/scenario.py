@@ -56,14 +56,42 @@ def run_scenario(name: str) -> None:
     ScenarioManager.run(scenario)
 
 
-@scenario_group.command("execute")
+def _parse_args(raw_args: list[str]) -> dict[str, str]:
+    args: dict[str, str] = {}
+
+    for item in raw_args:
+        if "=" not in item:
+            msg = f"Invalid argument '{item}', expected key=value"
+            raise click.UsageError(msg)
+        key, value = item.split("=", 1)
+        args[key] = value
+
+    return args
+
+
+@scenario_group.command(
+    "execute",
+    context_settings={
+        "ignore_unknown_options": True,
+        "allow_extra_args": True,
+    },
+)
+# todo design a way to pass the arguments to the run method of the container
 @click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
-def execute_scenario(name: str) -> None:
+@click.pass_context
+def execute_scenario(ctx: click.Context, name: str) -> None:
     """
     Execute the scenario script.
 
     :param name: The name of the scenario for which you want to execute the script.
+    :param ctx: The click context.
     :return:
     """
     scenario = ScenarioManager.get(name)
-    ScenarioManager.execute(scenario)
+
+    # everything after `--`
+    raw_args = ctx.args
+
+    args = _parse_args(raw_args)
+
+    ScenarioManager.execute(scenario, args=args)

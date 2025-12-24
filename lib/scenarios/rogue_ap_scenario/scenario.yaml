@@ -1,16 +1,17 @@
-drill: v1
+scenario: v1
 
 metadata:
-  id: hello_world
-  name: hello_world_drill
-  description: "hello world drill"
+  id: rogue_ap_scenario
+  name: rogue_ap_scenario
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
+drills: [ ]
+
 dependencies:
   system: [ ]
-  python: [ art ]
+  python: [ ]
 
 interface:
-  arguments: [ ]
-  return_type: str
+  arguments: [str, str]
+  return_type: None

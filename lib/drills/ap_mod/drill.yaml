@@ -1,17 +1,16 @@
-scenario: v1
+drill: v1
 
 metadata:
-  id: rouge_ap
-  name: rouge_ap_scenario
+  id: ap_mode
+  name: ap_mode
+  description: "Set the embedded system with hostapd in AP mode"
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
-
-drills: [ ]
 
 dependencies:
   system: [ hostapd ]
   python: [ ]
 
 interface:
-  arguments: None
-  return_type: None
+  arguments: [ str ]
+  return_type:
