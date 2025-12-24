@@ -1,7 +1,7 @@
 drill: v1
 
 metadata:
-  id: dnsmasq
+  id: dnsmasq_drill
   name: dnsmasq_drill
   description: "Generate a dnsmasq config at runtime and start/stop dnsmasq for a given interface."
   author: gausf1@bfh.ch
@@ -12,6 +12,5 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments:
-    - interface
+  arguments: [str]
   return_type: dict

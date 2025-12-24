@@ -1,29 +1,22 @@
+import logging
 import os
 import signal
 import subprocess
 
+from nsak.core.config import RUN_PATH
 
-def run_tshark(interface: str):
+logger = logging.getLogger(__name__)
+run_path = RUN_PATH / "rouge_ap.pcap"
+
+def run(interface: str) -> subprocess.Popen:
     proc = subprocess.Popen([
         "tshark",
         "-i", interface,
         "-n",
-        "-w", "/tmp/rogue_ap.pcap"
+        "-w", run_path
     ])
+    logger.info("tshark pcap capture started")
     return proc
 
-
-def run(args: dict) -> dict[str, any]:
-    proc = run_tshark(args["interface"])
-
-    return {
-        "pid": proc.pid,
-        "pcap": "/tmp/rogue_ap.pcap",
-        "interface": args["interface"],
-    }
-
-
-def cleanup(result: dict) -> None:
-    pid = result.get("pid")
-    if pid:
-        os.kill(pid, signal.SIGINT)  # wichtig!
+def cleanup(proc: subprocess.Popen) -> None:
+    proc.terminate()

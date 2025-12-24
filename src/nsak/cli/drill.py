@@ -31,7 +31,10 @@ def list_drills() -> None:
 @drill_group.command("execute")
 @click.argument("name", shell_complete=complete_drill_name)  # type: ignore [call-arg]
 @click.option(
-    "--interface", "interface_", required=True, help="Network interface to bind to"
+    "--interface",
+    "network-interface",
+    required=True,
+    help="Network interface to bind to",
 )
 def execute_drill(name: str, interface_: str) -> None:
     """
@@ -47,7 +50,7 @@ def execute_drill(name: str, interface_: str) -> None:
 
 @drill_group.command("clear")
 @click.argument("name", shell_complete=complete_drill_name)  # type: ignore [call-arg]
-def clear_drill(name: str) -> None:
+def clean_up(name: str) -> None:
     """
     Clear the drill cmd.
 
@@ -55,4 +58,4 @@ def clear_drill(name: str) -> None:
     :return:
     """
     drill = DrillManager.get(name)
-    DrillManager.clear(drill)
+    DrillManager.clean_up(drill)

@@ -1,9 +1,9 @@
 drill: v1
 
 metadata:
-  id: dnsmasq
-  name: dnsmasq_drill
-  description: "Generate a dnsmasq config at runtime and start/stop dnsmasq for a given interface."
+  id: ap_mode
+  name: ap_mode
+  description: "Set the embedded system with hostapd in AP mode"
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
@@ -12,6 +12,5 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments:
-    - interface
-  return_type: dict
+  arguments: [ str ]
+  return_type:
