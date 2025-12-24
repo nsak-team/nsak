@@ -63,5 +63,5 @@ Insert the SD cards into the Raspberry Pi's and power them up, check if you can 
 # Add a static ip address to the network interface, which can reach the raspberry pi's:
 ip addr
 sudo ip addr add
-sudo ip addr add 10.10.10.100/24 dev enp45s0
+sudo ip addr add 10.10.10.1/24 dev enp45s0
 ```

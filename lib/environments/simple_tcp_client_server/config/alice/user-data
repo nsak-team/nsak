@@ -18,8 +18,14 @@
 # configuration.
 
 hostname: alice
+manage_etc_hosts: true
+
+enable_ssh: true
 ssh_pwauth: true
-chpasswd:
-  expire: false
-  list: |
-    root:root
+
+users
+  - name: alice
+    groups: users,adm,dialout,sudo
+    plain_text_password: alice
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
