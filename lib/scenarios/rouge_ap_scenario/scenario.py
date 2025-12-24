@@ -1,5 +1,6 @@
 from nsak.core.drill.drill_manager import DrillManager
 
+
 def run(args: dict, state: dict | None = None) -> dict:
     """
     Rogue AP orchestration.
@@ -8,7 +9,7 @@ def run(args: dict, state: dict | None = None) -> dict:
     results = {}
 
     ap_if = args["ap_interface"]
-    # uplink_if = args["uplink_interface"]
+    uplink_if = args["uplink_interface"]
 
     # Start ap_mod (AP mode)
     hostapd = DrillManager.execute(
@@ -38,25 +39,29 @@ def run(args: dict, state: dict | None = None) -> dict:
     )
     results["dnsmasq"] = dnsmasq
 
-    # todo add Nat rules to forward the packets to Gateway
-
+    # Add nat_forwarding_rules
     nat = DrillManager.execute(
-        DrillManager.get("nat_forward"),
+        DrillManager.get("nat_forwarding"),
+        {
+            "interface": ap_if,
+            "uplink_interface": uplink_if
+        }, state=state,
     )
     results["nat"] = nat
 
-    # todo Traffic sniffing
-    # sniff = DrillManager.execute(
-    #     DrillManager.get("tshark_capture"),
-    #     {
-    #         "interface": ap_if,
-    #         "capture_filter": "port 53",
-    #     },
-    #     state=state,
-    # )
-    # results["sniff"] = sniff
+    # capture traffic with tshark and stores it in "/tmp/rogue_ap.pcap"
+
+    sniff = DrillManager.execute(
+        DrillManager.get("tshark_capture"),
+        {
+            "interface": ap_if
+        },
+        state=state,
+    )
+    results["sniff"] = sniff
 
     return results
+
 
 def cleanup(state: dict) -> None:
     """

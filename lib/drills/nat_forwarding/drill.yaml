@@ -1,20 +1,18 @@
-scenario: v1
+drill: v1
 
 metadata:
-  id: rouge_ap
-  name: rouge_ap_scenario
-  description: "Rouge AP Scenario."
+  id: nat_forwarding
+  name: nat_forwarding
+  description: "Add nat_forwarding rules to ip tables"
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-drills: [ dnsmasq ]
-
 dependencies:
-  system: [ ]
+  system: [ sysctl ]
   python: [ ]
 
 interface:
   arguments:
     - interface
     - uplink_interface
-  return_type: None
+  return_type: dict
