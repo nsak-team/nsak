@@ -125,5 +125,5 @@ output:
 
 ### Run a scenario in the configured environment with real HW
 
-Follow the steps provided in the [README.md](../../scenarios/mitm/environments/simple_tcp_client_server/README.md) of
-the MITM scenario.
+Follow the steps provided in the [README.md](../../scenarios/mitm/environments/simple_tcp_client_server/README.md) of the MITM scenario.
+obs-gnome-screencast

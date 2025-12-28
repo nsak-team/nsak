@@ -220,6 +220,9 @@ nsak --help
 # Check if you can build a scenario:
 nsak scenario list
 nsak scenario build mitm
+
+# Set iptables to legacy mode (required for nsak, until we switched everything to nftables)
+sudo update-alternatives --config iptables
 ```
 
 **Optional: Flash the contents of the SDCard to the boards internal flash memory (eMMC)**

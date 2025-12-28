@@ -28,6 +28,7 @@ def configure_iptables(network_interface: NetworkInterface, ip: str, port: int) 
 
     :return:
     """
+    subprocess.run(["update-alternatives", "--set", "iptables", "/usr/sbin/iptables-legacy"])
     subprocess.run([
         "iptables",
         "-A", "FORWARD",
