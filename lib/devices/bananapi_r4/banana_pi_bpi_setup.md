@@ -180,6 +180,11 @@ ssh root@10.10.10.30
 # Reboot Bananapi R4 and verify that you still can connect via SSH (rebooting takes a few seconds and the blue led indicates if the device has booted successfully):
 reboot
 ssh root@10.10.10.30
+
+# Change hostname
+vim /etc/hostname
+# Replace default hostname:
+nsak
 ```
 
 Now you can connect to the device via SSH instead of the USB Serial TTY.
@@ -209,14 +214,38 @@ export NSAK_LIBRARY_PATH=/root/nsak/lib/
 uv pip install -e
 source .venv/bin/activate
 
+# Verify that nsak is installed correctly:
+nsak --help
+
+# Check if you can build a scenario:
+nsak scenario list
+nsak scenario build mitm
 ```
 
 **Optional: Flash the contents of the SDCard to the boards internal flash memory (eMMC)**
-```bash
+Documentation: https://docs.banana-pi.org/en/BPI-R4/GettingStarted_BPI-R4#_how_to_burn_image_to_sd_card
 
+@TODO: Test and verify how it actually works.
+```bash
+ssh root@10.10.10.30
 ```
 
 **Optional: Permanently mound an additional block storage (HDD/SSD)**
-```bash
+Documentation: https://docs.banana-pi.org/en/BPI-R4/GettingStarted_BPI-R4#_storage
 
+```bash
+ssh root@10.10.10.30
+
+# Get the device name of the additional block storage
+lsblk
+# e.g.: nvme0n1
+
+# Format the block storage with e.g., ext4
+mkfs.ext4 /dev/nvme0n1
+
+# Mount the block storage
+mount --mkdir /dev/nvme0n1 /root/data
+
+# Persist the mount on reboot
+echo "/dev/nvme0n1 /root/data ext4 defaults 0 0" >> /etc/fstab
 ```
