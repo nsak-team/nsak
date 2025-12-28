@@ -73,6 +73,8 @@ Change the tripping point from 85 degree Celsius to 35 degree Celsius
 
 ## Target network configuration
 
+Target network: 10.10.10.0/24
+
 Because the provided images for the Banana Pi BPI-R4 board are set up for routing, we want to delete all configurations and start from scratch:
 
 `rm -rf /etc/systemd/network/*`
@@ -109,7 +111,8 @@ Name=lan1
 
 [Network]
 Address=10.10.10.30/24
-Gateway=10.10.10.1
+Address=10.10.20.30/24
+Gateway=10.10.20.1
 DNS=8.8.8.8
 ConfigureWithoutCarrier=yes
 ```
@@ -120,26 +123,27 @@ systemctl restart systemd-networkd
 
 # Verify the configuration
 ip addr
-# Output: lan0@eth1 ... 10.10.10.30/24
+# Output: lan0@eth1 ... 10.10.10.30/24 10.10.20.30/24
 ```
 
-The interface lan1@eth0 is marked as LAN 1 on the physical device, which has the IP address 10.10.10.30/24 and should be connected to the target network.
+The interface lan1@eth0 is marked as LAN 1 on the physical device, which has the IP address 10.10.20.30/24 and should be connected to the target network.
 
 ### Management network configuration
 
 @TODO: Again, we should only bring the interfaces up and then configure the management network with nsak.
-For now access the device via the target network.
+For simplicity, we just configure the management network with a static IP address on the same network interface as the target network.
+Management network: 10.10.20.0/24
 
 ** On your laptop or computer: **
 ```bash
 # Add a static ip address to the network interface, which can reach the raspberry pi's (this config is not persistent across reboots):
 ip addr
-sudo ip addr add 10.10.10.1/24 dev enp45s0
+sudo ip addr add 10.10.20.1/24 dev enp45s0
 # Enable forwarding of packets between the network interfaces:
 sudo sysctl net.ipv4.ip_forward=1
 # Verify that the forwarding is set:
 sysctl net.ipv4.ip_forward
-sudo iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o wlan0 -j MASQUERADE
+sudo iptables -t nat -A POSTROUTING -s 10.10.20.0/24 -o wlan0 -j MASQUERADE
 sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 sudo iptables -A FORWARD -i wlan0 -o eth0 -m state --state ESTABLISHED,RELATED -j ACCEPT
 ```
@@ -148,10 +152,10 @@ Now connect the Banana Pi BPI-R4 board to your laptop or computer directly or vi
 
 ```bash
 # On your laptop or computer:
-ping 10.10.10.30
+ping 10.10.20.30
 
 # On the Banana Pi BPI-R4 board (via USB Serial TTY):
-ping 10.10.10.1
+ping 10.10.20.1
 ```
 
 ## System Setup
@@ -173,13 +177,13 @@ apt install openssh-server
 systemctl enable --now ssh
 
 # Verify the configuration (root:bananapi)
-ssh root@10.10.10.30
+ssh root@10.10.20.30
 
 # Disconnect the USB serial TTY Cable (not only from the PC or Laptop, but also from the Banana Pi BPI-R4 board)
 
 # Reboot Bananapi R4 and verify that you still can connect via SSH (rebooting takes a few seconds and the blue led indicates if the device has booted successfully):
 reboot
-ssh root@10.10.10.30
+ssh root@10.10.20.30
 
 # Change hostname
 vim /etc/hostname
@@ -192,7 +196,7 @@ Now you can connect to the device via SSH instead of the USB Serial TTY.
 **Install NSAK**
 ```bash
 # Connect via SSH (root:bananapi)
-ssh root@10.10.10.30
+ssh root@10.10.20.30
 # Install system dependencies
 sudo apt install git python3 python3-pip curl podman sudo
 ln /usr/bin/sudo /usr/sbin/sudo
@@ -230,14 +234,14 @@ Documentation: https://docs.banana-pi.org/en/BPI-R4/GettingStarted_BPI-R4#_how_t
 
 @TODO: Test and verify how it actually works.
 ```bash
-ssh root@10.10.10.30
+ssh root@10.10.20.30
 ```
 
 **Optional: Permanently mound an additional block storage (HDD/SSD)**
 Documentation: https://docs.banana-pi.org/en/BPI-R4/GettingStarted_BPI-R4#_storage
 
 ```bash
-ssh root@10.10.10.30
+ssh root@10.10.20.30
 
 # Get the device name of the additional block storage
 lsblk

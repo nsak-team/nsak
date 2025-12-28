@@ -1,7 +1,6 @@
 """
 Scenario entrypoint for MITM with arp spoofing and transparent tcp proxy.
 """
-import dataclasses
 from typing import Any
 
 from nsak.core import DrillManager, get_target_network_interfaces
@@ -22,7 +21,6 @@ def run(network_interfaces: list[str] | None = None, *args: Any, **kwargs: Any) 
         "discover_hosts",
         network_interfaces=network_interfaces,
     )
-    print(network_discovery_result_map.display())
     DrillManager.execute(
         "transparent_tcp_proxy",
         network_discovery_result_map=network_discovery_result_map,

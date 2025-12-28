@@ -27,6 +27,7 @@ ethernets:
   eth0:
     addresses:
       - 10.10.10.20/24
+      - 10.10.20.20/24
     dhcp4: false
     nameservers:
       addresses:
@@ -34,4 +35,4 @@ ethernets:
         - 8.8.8.8
     routes: # instead of gateway4
       - to: 0.0.0.0/0
-        via: 10.10.10.1
+        via: 10.10.20.1
