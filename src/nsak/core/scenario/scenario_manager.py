@@ -71,8 +71,10 @@ class ScenarioManager:
                 "/usr/sbin/sudo",
                 "/usr/sbin/podman",
                 "run",
+                "-d",
                 "--privileged",
                 "--network=host",
+                f"--name={scenario.path.name}",
                 f"nsak/scenario/{scenario.path.name}",
             ]
         )
