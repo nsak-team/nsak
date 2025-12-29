@@ -12,7 +12,8 @@ The following requirements were defined for the hardware platform used in this p
 \newpage
 \section{Evaluated Boards}
 
-Several boards were considered as potential variants. Their main specifications relevant to the project are listed in Table~\ref{tab:boardspecs}.
+Several boards were considered as potential variants.
+Their main specifications relevant to the project are listed in Table~\ref{tab:boardspecs}.
 
 \begin{table}[H]
 	\centering
@@ -71,17 +72,23 @@ Several boards were considered as potential variants. Their main specifications 
 	}
 	\vspace{0.5em}
 	\scriptsize
-	\textbf{Legend:} \ding{51} = Requirement fulfilled, \ding{55} = Requirement not fulfilled, \ding{115} = Partially fulfilled / limited
+	\textbf{Legend:}~\ding{51} = Requirement fulfilled, \ding{55} = Requirement not fulfilled, \ding{115} = Partially fulfilled / limited
 \end{table}
 
 
 
-\section{Decision}
+\section{Decision}\label{sec:decision}
 
-Based on the defined requirements and the evaluation of alternatives, the \textbf{Banana Pi R4} and the\textbf{NanoPI R76S} are most suitable hardware platform for this prototype implementation.
+Based on the defined requirements and the evaluation of alternatives, the \textbf{Banana Pi R4} and the\textbf{NanoPI R76S} are the most suitable hardware platforms for this prototype implementation.
 
-The Banana Pi R4 offers two native 2.5~GbE interfaces for inline sniffing the board is compact, affordable, and supported by a strong community. In Addition, the two 10 GbE SFP+ ports provide flexibility for extensions as fiber-based packet capturing. A drawback of the R4 is the weaker CPU and a larger size compared to the NanoPI R76S
+The Banana Pi R4 offers two native 2.5~GbE interfaces for inline sniffing the board is compact, affordable, and supported by a strong community.
+In Addition, the two 10 GbE SFP+ ports provide flexibility for extensions as fiber-based packet capturing.
+A drawback of the R4 is the weaker CPU and a larger size compared to the NanoPI R76S
 
-The NanoPi R76S is more compact and provides up to 16GB of RAM, which is advantageous for memory intensive processing and buffering tasks. While it lacks built-in Wi-fi, it can be expanded via the M.2 Wi-Fi 6E module. It can not host both a Wi-Fi card and NVMe SSD simultaneously. Consequently, data storage must be provided via microSD card or external USB SSD
+The NanoPi R76S is more compact and provides up to 16GB of RAM, which is advantageous for memory-intensive processing and buffering tasks.
+While it lacks built-in Wi-fi, it can be expanded via the M.2 Wi-Fi 6E module.
+It cannot host both a Wi-Fi card and NVMe SSD simultaneously.
+Consequently, data storage must be provided via microSD card or external USB SSD
 
-Alternative boards such as the Banana Pi R3 Mini, R3 are limited overall performance. Rasberry PI 4 or 5 offer higher single core performance but were ultimately discarded because they provide only a single native Ethernet interface, requiring external adapters that reduce performance for inline sniffing scenarios.
+Alternative boards such as the Banana Pi R3 Mini, R3 are limited overall performance.
+Raspberry PI 4 or 5 offer higher single core performance but were ultimately discarded because they provide only a single native Ethernet interface, requiring external adapters that reduce performance for inline sniffing scenarios.

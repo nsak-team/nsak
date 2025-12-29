@@ -8,10 +8,8 @@
 \end{figure}
 
 
-
-
 \begin{longtable}{@{} >{\columncolor{blue!15}}l >{\raggedright\arraybackslash}p{0.75\textwidth} @{}}
-	\caption{Use Cases Specification (nsak)}\\
+	\caption{Use Cases Specification (NSAK)}\\
 	\toprule
 	\rowcolor{blue!30}\textbf{NR} & \textbf{Details} \\
 	\endfirsthead
@@ -21,15 +19,15 @@
 
 	% --- UC-02 ----------------------------------------------------
 	\textbf{UC-02} &
-	\textbf{Use-Case:} Select Scenarios \newline
+	\textbf{Use-Case:} Select Scenario \newline
 	\textbf{Description:} From the chosen environment, the user selects which scenarios (and related drills) shall be executed and orders them by mission priority / noise level. \newline
 	\textbf{Actor:} User \newline
 	\textbf{Trigger:} User wants to define a mission plan. \newline
 	\textbf{Preconditions:} Environment selected (UC-0001); scenario list available. \newline
 	\textbf{Main Scenario:} \newline
-	1. User requests list of scenarios. \newline
+	1. User requests a list of scenarios. \newline
 	2. System displays available scenarios with metadata (impact, noise). \newline
-	3. User selects one or more scenarios and sets execution order. \newline
+	3. User selects one or more scenarios and sets the execution order. \newline
 	4. System validates selection and stores it. \newline
 	\textbf{Alternative Scenarios:} No scenarios available → inform user. \newline
 	\textbf{Error Scenarios:} Conflicting resources between scenarios \newline
@@ -42,14 +40,14 @@
 	\textbf{Use-Case:} Prepare Scenario \newline
 	\textbf{Description:} Load, validate and prepare the selected scenarios: collect drills, resolve dependencies, build container. \newline
 	\textbf{Actor:} User \newline
-	\texttt{nsak prepare <scenario>}. \newline
+	\texttt{nsak scenario build <scenario-name>}. \newline
 	\textbf{Preconditions:} Environment + scenario selection available (UC-01/02). \newline
 	\textbf{Main Scenario:} \newline
 	1. System fetches referenced drills and their \texttt{drill.yaml}. \newline
 	2. System validates configuration (includes UC-04.3 Verify). \newline
 	3. System aggregates APT/Pip dependencies and resolves conflicts. \newline
 	4. System builds container image / prepares runtime. \newline
-	5. System marks scenario as \emph{prepared} and logs results. \newline
+	5. System marks the scenario as \emph{prepared} and logs results. \newline
 	\textbf{Alternative Scenarios:} CI pipeline performs the same steps. \newline
 	\textbf{Error Scenarios:} Validation or dependency failure → preparation aborted with diagnostics. \newline
 	\textbf{Result:} Prepared scenario image / runtime available. \newline
@@ -62,9 +60,9 @@
 	\textbf{Description:} Unified CLI to manage scenarios (list, prepare, start, stop, verify, status, help, version). \newline
 	\textbf{Actor:} User \newline
 	\textbf{Trigger:} User runs \texttt{nsak <subcommand>}. \newline
-	\textbf{Preconditions:} nsak installed \newline
+	\textbf{Preconditions:} NSAK installed \newline
 	\textbf{Main Scenario:} \newline
-	1. CLI parses args and dispatches to subsystem. \newline
+	1. CLI parses args and dispatches to a subsystem. \newline
 	2. Command executes and writes logs. \newline
 	3. CLI prints structured output and exit code. \newline
 	\textbf{Alternative Scenarios:} Machine-readable output via \texttt{--json}. \newline
@@ -75,16 +73,16 @@
 
 	% --- UC-04.1 --------------------------------------------------
 	\textbf{UC-04.1} &
-	\textbf{Use-Case:} List Scenarios \newline
+	\textbf{Use-Case:} List Scenario \newline
 	\textbf{Description:} Show available scenarios for an environment with key metadata. \newline
 	\textbf{Actor:} User \newline
-	\textbf{Trigger:} \texttt{nsak list [--env <env>]}. \newline
+	\textbf{Trigger:} \texttt{nsak scenario list}. \newline
 	\textbf{Preconditions:} Environment known or provided. \newline
 	\textbf{Main Scenario:} \newline
-	1. System reads scenario manifests. \newline
+	1. System reads scenario specifications/manifests. \newline
 	2. System prints table/list (name, desc, noise). \newline
-	\textbf{Alternative Scenarios:} ? \newline
-	\textbf{Error Scenarios:} ?  \newline
+	\textbf{Alternative Scenarios:} \newline
+	\textbf{Error Scenarios:} \newline
 	\textbf{Result:} Scenarios visible to the user. \newline
 	\textbf{Postconditions:} User can select scenarios (UC-02).\\
 	\midrule
@@ -98,8 +96,8 @@
 	\textbf{Preconditions:} CLI available. \newline
 	\textbf{Main Scenario:} \newline
 	1. System displays cmd in ordered form. \newline
-	\textbf{Alternative Scenarios:} -  \newline
-	\textbf{Error Scenarios:} -  \newline
+	\textbf{Alternative Scenarios:}  \newline
+	\textbf{Error Scenarios:} \newline
 	\textbf{Result:} List of all cmds \newline
 	\textbf{Postconditions:} — \\
 	\midrule
@@ -107,14 +105,14 @@
 	% --- UC-04.3 --------------------------------------------------
 	\textbf{UC-04.3} &
 	\textbf{Use-Case:} Verify Scenario / Drill \newline
-	\textbf{Description:} Validate \texttt{scenario.yaml}/\texttt{drill.yaml} structure and declared dependencies (syntax + semantics). \newline
+	\textbf{Description:} Validate \texttt{scenario.yaml}/\texttt{drill.yaml} structure and declared dependencies (syntax and semantics). \newline
 	\textbf{Actor:} User \newline
 	\textbf{Trigger:} \texttt{nsak verify <scenario|drill>}. \newline
 	\textbf{Preconditions:} Files present and accessible. \newline
 	\textbf{Main Scenario:} \newline
 	1. System parses YAML and required keys. \newline
 	2. System checks referenced drills and dependencies. \newline
-	3. System reports validation result and diagnostics. \newline
+	3. System reports validation results and diagnostics. \newline
 	\textbf{Alternative Scenarios:} Verification in CI on PRs. \newline
 	\textbf{Error Scenarios:} Missing files / invalid YAML → error with line/col. \newline
 	\textbf{Result:} OK or detailed error. \newline
@@ -129,10 +127,10 @@
 	\textbf{Trigger:} \texttt{nsak status [<scenario>]} \newline
 	\textbf{Preconditions:} State file prepared ??????? \newline
 	\textbf{Main Scenario:} \newline
-	1. System reads state file and inspects container runtime. \newline
+	1. System reads a state file and inspects container runtime. \newline
 	2. System prints summary and optional details. \newline
 	\textbf{Alternative Scenarios:} \texttt{--json} for monitoring. \newline
-	\textbf{Error Scenarios:} Corrupt state → warning + fallback inspection. \newline
+	\textbf{Error Scenarios:} Corrupt state → warning and fallback inspection. \newline
 	\textbf{Result:} User sees current state. \newline
 	\textbf{Postconditions:} — \\
 	\midrule
@@ -146,11 +144,11 @@
 	\textbf{Preconditions:} CLI installed. \newline
 	\textbf{Main Scenario:} \newline
 	1. System prints CLI version, git commit/tag. \newline
-	2. System prints base image + key tools versions. \newline
-	\textbf{Alternative Scenarios:} - \newline
+	2. System prints base image and key tools versions. \newline
+	\textbf{Alternative Scenarios:} \newline
 	\textbf{Error Scenarios:} Return a report. \newline
 	\textbf{Result:} Version info available for troubleshooting/reporting. \newline
-	\textbf{Postconditions:} — \\
+	\textbf{Postconditions:} \\
 	% --- UC-05 --------------------------------------------------
 	\textbf{UC-05} &
 	\textbf{Use-Case:} Simulate Scenario \newline
@@ -211,7 +209,7 @@
 	\textbf{Preconditions:} Simulation/ mission finished. \newline
 	\textbf{Main Scenario:} \newline
 	1. System locates and verifies artifacts. \newline
-	2. Exports data to chosen directory or archive. \newline
+	2. Exports data to a chosen directory or archive. \newline
 	3. Reports export result. \newline
 	\textbf{Alternative Scenarios:} Filtered export by time or type. \newline
 	\textbf{Error Scenarios:} Missing artifacts \newline
@@ -222,7 +220,7 @@
 	% --- UC-09 ----------------------------------------------------
 	\textbf{UC-09} &
 	\textbf{Use-Case:} Remote Access SSH \newline
-	\textbf{Description:} Allow secure SSH access to the nsak host or container for diagnostics. \newline
+	\textbf{Description:} Allow secure SSH access to the NSAK device for diagnostics. \newline
 	\textbf{Actor:} Admin / Red Team \newline
 	\textbf{Trigger:} SSH login attempt. \newline
 	\textbf{Preconditions:} Authorized key configured; network reachable. \newline

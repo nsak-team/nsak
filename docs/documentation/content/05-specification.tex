@@ -1,9 +1,10 @@
 \section{Specification}\label{sec:environments}
 
-Each environment represents a practical setup in which the Network Swiss Army Knife (nsak) can be deployed. For traffic analysis, performance testing or security evaluation.
+Each environment represents a practical setup in which the NSAK device can be deployed.
+For traffic analysis, performance testing or security evaluation.
 
-\subsection{Category I - Inline:}
-\textbf{Diagram:} Laptop $\leftrightarrow$ nsak $\leftrightarrow$ Router  \\
+\subsection{Category I — Inline:}\label{subsec:category-i---inline:}
+\textbf{Diagram:} Laptop $\leftrightarrow$ NSAK device $\leftrightarrow$ Router  \\
 
 \begin{figure}[H]
 	\centering
@@ -14,11 +15,11 @@ Each environment represents a practical setup in which the Network Swiss Army Kn
 
 
 \textbf{Description:}
-Direct inline bridge between client or switch and router.
+Direct inline bridge between a client or switch and router.
 Used for basic LAN capturing, latency, and throughput testing.
 
-\subsection{Category II Wireless:}
-\textbf{Diagram:} Laptop, Smart Devices, Printer $\leftrightarrow$ nsak (inline) $\leftrightarrow$ Router  \\
+\subsection{Category II — Wireless:}\label{subsec:category-ii-wireless:}
+\textbf{Diagram:} Laptop, Smart Devices, Printer $\leftrightarrow$ NSAK device (inline) $\leftrightarrow$ Router  \\
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-WLAN-Sniffing.drawio}
@@ -27,4 +28,4 @@ Used for basic LAN capturing, latency, and throughput testing.
 \end{figure}
 
 \textbf{Description:}
-The nsak is inline and let traffic pass but intercepts as Rouge AP and capture data
+The NSAK device is inline and lets traffic pass but intercepts as Rouge AP and capture data
