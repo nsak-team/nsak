@@ -82,7 +82,11 @@ def run(network_interfaces: list[NetworkInterface]) -> NetworkDiscoveryResultMap
     results = dict()
 
     for network_interface in network_interfaces:
-        results[network_interface] = discover_hosts(network_interface)
+        try:
+            results[network_interface] = discover_hosts(network_interface)
+        except subprocess.CalledProcessError:
+            # @TODO: maybe log this?
+            continue
 
     # @TODO: It makes sense to create an own datastructure for host discovery results,
     # as it greatly diverges from the service discovery results and

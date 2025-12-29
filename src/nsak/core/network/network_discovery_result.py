@@ -1,7 +1,22 @@
 import dataclasses
 
-from nsak.core.network import NetworkInterface, NetworkService
+from nsak.core.config import MANAGEMENT_NETWORKS
+from nsak.core.network.network_interface import NetworkInterface
+from nsak.core.network.network_service import NetworkService
 from nsak.core.network.types import IPAddress
+
+
+def in_management_networks(ip: IPAddress) -> bool:
+    """
+    Check if an IP address is part of a management network.
+
+    :param ip:
+    :return:
+    """
+    for management_network in MANAGEMENT_NETWORKS:
+        if ip in management_network:
+            return True
+    return False
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
@@ -24,7 +39,7 @@ class NetworkDiscoveryResult:
             endpoint.ip
             for service in self.network_services
             for endpoint in service.endpoints
-            if endpoint.ip is not None
+            if endpoint.ip is not None and not in_management_networks(endpoint.ip)
         ]
 
     @property

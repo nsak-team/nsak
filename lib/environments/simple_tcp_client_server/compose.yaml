@@ -10,7 +10,7 @@ services:
       - malcom
     networks:
       testnet:
-        ipv4_address: 10.10.10.20
+        ipv4_address: 10.10.10.10
     environment:
       - PYTHONUNBUFFERED=1
 
@@ -23,7 +23,7 @@ services:
       - malcom
     networks:
       testnet:
-        ipv4_address: 10.10.10.30
+        ipv4_address: 10.10.10.20
     environment:
       - PYTHONUNBUFFERED=1
 

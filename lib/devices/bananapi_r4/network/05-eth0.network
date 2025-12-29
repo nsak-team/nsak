@@ -9,4 +9,3 @@ RequiredForOnline=no
 ConfigureWithoutCarrier=yes
 LinkLocalAddressing=no
 DHCP=no
-

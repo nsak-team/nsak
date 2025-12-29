@@ -1,8 +1,5 @@
 import logging
-from pathlib import Path
 import subprocess
-import signal
-import os
 
 logger = logging.getLogger(__name__)
 

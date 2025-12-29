@@ -1,4 +1,5 @@
 import os
+from ipaddress import IPv4Network
 from pathlib import Path
 
 ENV_BASE_PATH = os.environ.get("NSAK_BASE_PATH", None)
@@ -12,3 +13,5 @@ BASE_PATH = (
 LIBRARY_PATHS = {Path(ENV_LIBRARY_PATH) if ENV_LIBRARY_PATH else BASE_PATH / "lib"}
 DEBUG = True
 DOCKER_CONTEXT = BASE_PATH
+
+MANAGEMENT_NETWORKS = [IPv4Network("10.10.20.0/24")]
