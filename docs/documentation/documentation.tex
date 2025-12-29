@@ -50,7 +50,6 @@
 
 \usepackage{parskip}
 \usepackage{tabularx}
-\usepackage{graphicx}
 \usepackage{pifont}
 \usepackage{array}
 \usepackage{longtable}
@@ -193,18 +192,24 @@
     \input{content/02-introduction}
     \input{content/03-current-state-of-research}
 
-	\chapter{Hardware Selection}
-    \input{content/04-evaluation}
-    \input{content/05-specification}
+	\chapter{Evaluation}\label{ch:evaluation}
+    \section{Hardware Selection}\label{sec:hardware-selection}
+    \input{content/04-hardware-evaluation}
+    \input{content/05-hardware-specification}
+    \section{Software Selection}\label{sec:framework-compnents}
+    \input{content/06-framework-technology-stack}
+    \input{content/07-system-dependencies}
 
-	\chapter{Architecture and Design}
-	\input{content/06-user-story}
-	\input{content/07-component-diagram}
+	\chapter{Architecture and Design}\label{ch:architecture-and-design}
+    \input{content/08-framework-concepts}
+    \input{content/09-user-story}
+	\input{content/10-component-diagram}
 
     \chapter{Second Part Thesis: Method}\label{ch:second-thesis-chapter}
-    \input{content/08-method}
-    \input{content/09-implementation}
-    \input{content/10-conclusion}
+    \input{content/11-method}
+    \input{content/12-implementation}
+    \input{content/13-future-work}
+    \input{content/14-conclusion}
 
 
 %------------ Authorship declaration translated to main language ------------
@@ -232,6 +237,6 @@
     \printindex
 %------------ Appendix ----------------
     \appendix
-    \input{./content/11-appendix}
+    \input{./content/15-appendix}
 
 \end{document}
