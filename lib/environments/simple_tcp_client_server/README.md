@@ -108,10 +108,14 @@ uv sync
 ```bash
 # Alice: TCP Client
 ssh alice@10.10.20.10
+
+cd nsak
 uv run lib/environments/simple_tcp_client_server/alice.py
 
 # Bob: TCP Server
 ssh bob@10.10.20.20
+
+cd nsak
 uv run lib/environments/simple_tcp_client_server/bob.py
 ```
 
