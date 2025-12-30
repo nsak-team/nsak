@@ -1,326 +1,326 @@
-\section{Network Environments}\label{sec:network-environments}
-
-Each environment represents a practical setup in which the NSAK device can be deployed
-for traffic analysis, performance testing, or security evaluation.
-
-\subsection{Category I: Basic / Local}\label{subsec:category-i:-basic-/-local}
-
-\subsubsection{E 1: Point-to-Point}
-\textbf{Diagram:} Laptop $\leftrightarrow$ nsak $\leftrightarrow$ Router  \\
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-Sniffing}
-	\caption{}
-	\label{fig:lan-sniffing}
-\end{figure}
-
-\textbf{Description:}
-Direct inline bridge between client and router.
-Used for basic LAN capturing, latency, and throughput testing.
-
-\subsubsection{E 2: Home Network}
-\textbf{Diagram:} Laptop, Smart Devices, Printer $\leftrightarrow$ nsak (inline) $\leftrightarrow$ Router  \\
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-4-ports-Sniffing.drawio}
-	\caption{}
-	\label{fig:lan-4-ports-sniffing}
-\end{figure}
-
-\textbf{Description:}
-Captures typical home traffic.
-The WLAN interface is required for Wi-Fi analysis.
-Useful for IoT discovery and local broadcast observation.
-
-\subsubsection{E 3: Business Network}
-\textbf{Diagram:} Devices $\leftrightarrow$ Switch $\leftrightarrow$ nsak (inline) $\leftrightarrow$ Server / Router  \\
-
-\begin{figure} [H]
-	\centering
-	\includegraphics[width=0.6\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-Sniffing-Switch-AccessPoint}
-	\caption{}
-	\label{fig:lan-sniffing-switch-accesspoint}
-\end{figure}
-
-\textbf{Description:}
-Represents a small office LAN. nsak placed at uplink or server edge to monitor internal traffic, VLANs, and broadcast domains.
-
-\subsection{Category II: Mobile / Wireless}\label{subsec:category-ii:-mobile-/-wireless}
-
-\subsubsection{E 4: Access Point Mode}
-\textbf{Diagram:} Wi-Fi Device $\leftrightarrow$ AP-nsak $\leftrightarrow$ Internet  \\
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-WLAN-Sniffing.drawio}
-	\caption{}
-	\label{fig:lan-wlan-sniffing}
-\end{figure}
-
-
-\textbf{Description:}
-nsak acts as Wi-Fi AP, providing connectivity and packet capture.
-Captures management and data frames for WLAN analysis.
-
-
-\subsubsection{E 5: Mobile Hotspot}
-\textbf{Diagram:} Smartphone $\leftrightarrow$ nsak $\leftrightarrow$ LTE/5G  \\
-\textbf{Description:}
-Mobile tethering or hotspot scenario.
-Focus on NAT behavior, encryption overhead, and power constraints.
-
-\subsection{Category III: Secure / Advanced}\label{subsec:category-iii:-secure-/-advanced}
-
-\subsubsection{E 6: Data Center / Server Rack}
-\textbf{Diagram:} Servers $\leftrightarrow$ Switch $\leftrightarrow$ Firewall $\leftrightarrow$ nsak   \\
-\textbf{Description:}
-High-performance setup for 2.5G\textendash10G traffic capture.
-Focus on throughput, buffering, and VLAN-tagged traffic.
-
-\subsubsection{E 7: VPN Gateway}
-\textbf{Diagram:} Router $\leftrightarrow$ nsak (VPN Endpoint) $\leftrightarrow$ Remote Peer  \\
-\textbf{Description:}
-nsak configured as WireGuard gateway.
-Measures encrypted vs.
-unencrypted traffic, tunnel stability, and CPU load.
-
-\subsection{Category IV: IoT / Special Purpose}\label{subsec:category-iv:-iot-/-special-purpose}
-
-\subsubsection{E 8: VLAN-Segmented Enterprise Network}
-\textbf{Diagram:} Switch + Router + Multiple VLANs $\leftrightarrow$ nsak  \\
-\textbf{Description:}
-Used to verify VLAN isolation and detect inter-segment leaks or misconfigurations.
-
-\subsubsection{E 9: IoT Sensor Network}
-\textbf{Diagram:} IoT Devices $\leftrightarrow$ Local Gateway (Broadcast) $\leftrightarrow$ nsak   \\
-\textbf{Description:}
-Passive capture of local IoT or broadcast-based communication.
-Identifies timing, protocol use, and unsecured traffic.
-
-\subsection{Category V: Virtual / Simulation}\label{subsec:category-v:-virtual-/-simulation}
-
-\subsubsection{E 10: Attack Simulation Network}
-\textbf{Diagram:} Virtual Attacker $\leftrightarrow$ Target VM $\leftrightarrow$ nsak
-\textbf{Description:}
-Virtual lab for testing detection systems, malware traffic, and replay scenarios.
-
-\subsubsection{E 11: Remote Management Environment}
-\textbf{Diagram:} Admin $\leftrightarrow$ VPN/SSH $\leftrightarrow$ nsak (headless)
-\textbf{Description:}
-Remote-controlled nsak for automated capture and monitoring in unattended operation.
-
-\subsubsection{E 12: Dual-Sniffer Setup}
-\textbf{Diagram:} nsak-A $\parallel$ nsak-B (same link)
-\textbf{Description:}
-Two synchronized devices capture the same traffic path.
-Used for timestamp comparison and hardware validation.
-
-\section{Software Modules}\label{sec:modules}
-
-We define a software module as a sequence of actions with a predefined goal.
-Actions can be but are not limited to the execution of scripts, cli tools or steps in a program, but also human interaction.
-Such an action may appear in multiple software modules, with different configurations and in interplay with other actions.
-
-We generally differentiate between two software module types:
-\begin{itemize}
-	\item Active Software Module: Does actively intervene with other devices or alter data.
-	Can be an active attack, but also testing for behavior of another device, depending on the scenario.
-	\item Passive Software Module: Does not actively intervene in communication and does not alter data.
-	Can be a passive attack, but also monitoring or analysis, depending on the scenario.
-\end{itemize}
-
-To group similar software modules together, we defined the following categories:
-\begin{enumerate}
-	\item Network Traffic Collection
-	\item Network Mapping and Port Mapping
-	\item Man\-in\-the\-Middle (MITM)
-	\item Exploits
-	\item Brute Force
-	\item Denial of Service (DoS)
-	\item Physical (TBD?)
-\end{enumerate}
-
-\subsection{Category 1: Network Traffic Collection}\label{subsec:module_1_network_traffic_collection}
-In this category are software modules to collect network traffic with the help of network sniffers like WireShark/TShark or tcpdump.
-
-\subsubsection{Module 1.1: Live Network Traffic Monitoring}\label{subsubsec:module_1_1_general_network_traffic_collection}
-The idea of this module is to allow an operator to use WireShark and connect a remote interface to it,
-which will then show all packets sent and received on nsack.
-The operator can then add filters and analyze the traffic in real time.
-This module requires a live connection from a remote device to nsak,
-in a real world attack scenario the attacker must be nearby for WI-FI access or could be identified via the cellular connection.
-
-\begin{itemize}
-	\item Type: Passive
-	\item Goal: Monitor live network traffic
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Enable remote access via Wi-Fi or cellular connection.
-	\item nsak: Enable layer 2 bridge between interfaces.
-	\item nsak: Start tshark, listening on all interfaces, no filters.
-	\item Remote Device: Start WireShark and connect to a remote interface.
-	\item Remote Device: Analyze live network traffic, apply filters
-\end{enumerate}
-
-\subsubsection{Module 1.2: Network Traffic Collection (Local)}\label{subsubsec:module_1_2_general_network_traffic_collection}
-This module requires physical access to nsak to extract the collected network traffic,
-which might be challenging or dangerous in a real-world attack scenario.
-The amount of data which can be extracted this way depends heavily on the amount of network traffic,
-how specific the filters are set, and the disk space available.
-
-\begin{itemize}
-	\item Type: Passive
-	\item Goal: Collect network traffic
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Enable layer 2 bridge between interfaces.
-	\item nsak: Start tshark, listening on all interfaces, set filters, write to a local file.
-\end{enumerate}
-
-\subsubsection{Module 1.3: Network Traffic Collection (Remote)}\label{subsubsec:module_1_3_http_network_traffic_collection}
-This module requires a live connection from a remote device to nsak,
-in a real world attack scenario the attacker must be nearby for WI-FI access or could be identified via the cellular connection.
-
-\begin{itemize}
-	\item Type: Passive
-	\item Goal: Collect http network traffic
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Enable remote access via Wi-Fi or cellular connection.
-	\item nsak: Enable layer 2 bridge between interfaces.
-	\item nsak: Start tshark, listening on all interfaces, set filters, write to a remote file.
-\end{enumerate}
-
-\subsection{Category 2: Network Mapping and Port Mapping}\label{subsec:category-2:-network-mapping}
-This category is concerned about mapping out the environment nsak is currently located in.
-
-\subsubsection{Module 2.1: Network Discovery}\label{subsubsec:-layer-2-discovery}
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: Discover Network Participants
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Run arp-scan, on interface in a specific subnet
-\end{enumerate}
-
-\subsubsection{Module 2.2: Host Service/Version Detection}\label{subsubsec:-host-service/version-detection}
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: Detect which OS and/or services are participating in the network
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Run nmap, against a whole subnet or a specific host
-\end{enumerate}
-
-\subsection{Category 3: Man\-in\-the\-Middle (MITM)}\label{subsec:category-3:-man-in-the-middle-(mitm)}
-Modules in this category will try to convince other devices or services in the network that nsak is a legitimate participant.
-
-\subsubsection{Module 3.1 SSL/TLS MITM}\label{subsubsec:module-3.1-ssl/tls-mitm}
-This module tries to intercept SSL/TLS handshakes and convince Alice and Bob that nsak is the respective counterpart.
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: Intercept encrypted traffic
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Execute SSL/TLS MITM attack (TBD)
-\end{enumerate}
-
-\subsubsection{Module 3.2 IP Spoofing}\label{subsec:module-3.2-ip-spoofing}
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: Traffic interception
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Set nsaks IP to the one of another device
-\end{enumerate}
-
-\subsubsection{Module 3.3: WLAN SSID Spoofing}\label{subsubsec:-wlan-ssid-spoofing}
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: Traffic interception
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Set nsaks WLAN SSID to the one of an actual WI-FI access point.
-\end{enumerate}
-
-\subsection{Category 4: Exploits}\label{subsec:category-4:-exploits}
-This category contains modules which execute known exploits.
-
-\subsubsection{Module 4.1: Join Network via WPS}\label{subsubsec:-join-network-via-wps}
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: Wireless Network Access (intrusion)
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: TBD
-\end{enumerate}
-
-\subsection{Category 5: Brute force}\label{subsec:category-5:-brute-force}
-With this module we try to gain access to a device or network with brute force.
-
-\subsubsection{Module 5.1: SSH Login}\label{subsubsec:-ssh-dictonary-attack}
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: Server Remote Access
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Load dictionary for the current locale or better data set if available
-	\item nsak: Brute Force SSH authentication
-\end{enumerate}
-
-\subsubsection{Module 5.2: WLAN Login}\label{subsubsec:-wlan-login}
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: Wireless Network Access (intrusion)
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Load dictionary for the current locale or better data set if available
-	\item nsak: Brute Force WI-FI authentication
-\end{enumerate}
-
-\subsection{Category 6: Denial of Service (DoS)}\label{subsec:category-6:-denial-of-service-(dos)}
-
-\subsubsection{Module 6.1: Classic Denial of Service}\label{subsubsec:-classic-denial-of-service}
-
-\begin{itemize}
-	\item Type: Active
-	\item Goal: DoS
-\end{itemize}
-
-Action sequence:
-\begin{enumerate}
-	\item nsak: Send as many requests as possible until the service is not available anymore
-\end{enumerate}
-
-\section{Scenarios}\label{sec:scenarios}
-
-A scenario is described as a combination of an environment, with a defined location of the sniffer and one or multiple software modules.
+%\section{Network Environments}\label{sec:network-environments}
+%
+%Each environment represents a practical setup in which the NSAK device can be deployed
+%for traffic analysis, performance testing, or security evaluation.
+%
+%\subsection{Category I: Basic / Local}\label{subsec:category-i:-basic-/-local}
+%
+%\subsubsection{E 1: Point-to-Point}
+%\textbf{Diagram:} Laptop $\leftrightarrow$ nsak $\leftrightarrow$ Router  \\
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.7\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-Sniffing}
+%	\caption{}
+%	\label{fig:lan-sniffing}
+%\end{figure}
+%
+%\textbf{Description:}
+%Direct inline bridge between client and router.
+%Used for basic LAN capturing, latency, and throughput testing.
+%
+%\subsubsection{E 2: Home Network}
+%\textbf{Diagram:} Laptop, Smart Devices, Printer $\leftrightarrow$ nsak (inline) $\leftrightarrow$ Router  \\
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.5\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-4-ports-Sniffing.drawio}
+%	\caption{}
+%	\label{fig:lan-4-ports-sniffing}
+%\end{figure}
+%
+%\textbf{Description:}
+%Captures typical home traffic.
+%The WLAN interface is required for Wi-Fi analysis.
+%Useful for IoT discovery and local broadcast observation.
+%
+%\subsubsection{E 3: Business Network}
+%\textbf{Diagram:} Devices $\leftrightarrow$ Switch $\leftrightarrow$ nsak (inline) $\leftrightarrow$ Server / Router  \\
+%
+%\begin{figure} [H]
+%	\centering
+%	\includegraphics[width=0.6\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-Sniffing-Switch-AccessPoint}
+%	\caption{}
+%	\label{fig:lan-sniffing-switch-accesspoint}
+%\end{figure}
+%
+%\textbf{Description:}
+%Represents a small office LAN. nsak placed at uplink or server edge to monitor internal traffic, VLANs, and broadcast domains.
+%
+%\subsection{Category II: Mobile / Wireless}\label{subsec:category-ii:-mobile-/-wireless}
+%
+%\subsubsection{E 4: Access Point Mode}
+%\textbf{Diagram:} Wi-Fi Device $\leftrightarrow$ AP-nsak $\leftrightarrow$ Internet  \\
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.5\linewidth]{../assets/figures/diagrams/network-diagrams/LAN-WLAN-Sniffing.drawio}
+%	\caption{}
+%	\label{fig:lan-wlan-sniffing}
+%\end{figure}
+%
+%
+%\textbf{Description:}
+%nsak acts as Wi-Fi AP, providing connectivity and packet capture.
+%Captures management and data frames for WLAN analysis.
+%
+%
+%\subsubsection{E 5: Mobile Hotspot}
+%\textbf{Diagram:} Smartphone $\leftrightarrow$ nsak $\leftrightarrow$ LTE/5G  \\
+%\textbf{Description:}
+%Mobile tethering or hotspot scenario.
+%Focus on NAT behavior, encryption overhead, and power constraints.
+%
+%\subsection{Category III: Secure / Advanced}\label{subsec:category-iii:-secure-/-advanced}
+%
+%\subsubsection{E 6: Data Center / Server Rack}
+%\textbf{Diagram:} Servers $\leftrightarrow$ Switch $\leftrightarrow$ Firewall $\leftrightarrow$ nsak   \\
+%\textbf{Description:}
+%High-performance setup for 2.5G\textendash10G traffic capture.
+%Focus on throughput, buffering, and VLAN-tagged traffic.
+%
+%\subsubsection{E 7: VPN Gateway}
+%\textbf{Diagram:} Router $\leftrightarrow$ nsak (VPN Endpoint) $\leftrightarrow$ Remote Peer  \\
+%\textbf{Description:}
+%nsak configured as WireGuard gateway.
+%Measures encrypted vs.
+%unencrypted traffic, tunnel stability, and CPU load.
+%
+%\subsection{Category IV: IoT / Special Purpose}\label{subsec:category-iv:-iot-/-special-purpose}
+%
+%\subsubsection{E 8: VLAN-Segmented Enterprise Network}
+%\textbf{Diagram:} Switch + Router + Multiple VLANs $\leftrightarrow$ nsak  \\
+%\textbf{Description:}
+%Used to verify VLAN isolation and detect inter-segment leaks or misconfigurations.
+%
+%\subsubsection{E 9: IoT Sensor Network}
+%\textbf{Diagram:} IoT Devices $\leftrightarrow$ Local Gateway (Broadcast) $\leftrightarrow$ nsak   \\
+%\textbf{Description:}
+%Passive capture of local IoT or broadcast-based communication.
+%Identifies timing, protocol use, and unsecured traffic.
+%
+%\subsection{Category V: Virtual / Simulation}\label{subsec:category-v:-virtual-/-simulation}
+%
+%\subsubsection{E 10: Attack Simulation Network}
+%\textbf{Diagram:} Virtual Attacker $\leftrightarrow$ Target VM $\leftrightarrow$ nsak
+%\textbf{Description:}
+%Virtual lab for testing detection systems, malware traffic, and replay scenarios.
+%
+%\subsubsection{E 11: Remote Management Environment}
+%\textbf{Diagram:} Admin $\leftrightarrow$ VPN/SSH $\leftrightarrow$ nsak (headless)
+%\textbf{Description:}
+%Remote-controlled nsak for automated capture and monitoring in unattended operation.
+%
+%\subsubsection{E 12: Dual-Sniffer Setup}
+%\textbf{Diagram:} nsak-A $\parallel$ nsak-B (same link)
+%\textbf{Description:}
+%Two synchronized devices capture the same traffic path.
+%Used for timestamp comparison and hardware validation.
+%
+%\section{Software Modules}\label{sec:modules}
+%
+%We define a software module as a sequence of actions with a predefined goal.
+%Actions can be but are not limited to the execution of scripts, cli tools or steps in a program, but also human interaction.
+%Such an action may appear in multiple software modules, with different configurations and in interplay with other actions.
+%
+%We generally differentiate between two software module types:
+%\begin{itemize}
+%	\item Active Software Module: Does actively intervene with other devices or alter data.
+%	Can be an active attack, but also testing for behavior of another device, depending on the scenario.
+%	\item Passive Software Module: Does not actively intervene in communication and does not alter data.
+%	Can be a passive attack, but also monitoring or analysis, depending on the scenario.
+%\end{itemize}
+%
+%To group similar software modules together, we defined the following categories:
+%\begin{enumerate}
+%	\item Network Traffic Collection
+%	\item Network Mapping and Port Mapping
+%	\item Man\-in\-the\-Middle (MITM)
+%	\item Exploits
+%	\item Brute Force
+%	\item Denial of Service (DoS)
+%	\item Physical (TBD?)
+%\end{enumerate}
+%
+%\subsection{Category 1: Network Traffic Collection}\label{subsec:module_1_network_traffic_collection}
+%In this category are software modules to collect network traffic with the help of network sniffers like WireShark/TShark or tcpdump.
+%
+%\subsubsection{Module 1.1: Live Network Traffic Monitoring}\label{subsubsec:module_1_1_general_network_traffic_collection}
+%The idea of this module is to allow an operator to use WireShark and connect a remote interface to it,
+%which will then show all packets sent and received on nsack.
+%The operator can then add filters and analyze the traffic in real time.
+%This module requires a live connection from a remote device to nsak,
+%in a real world attack scenario the attacker must be nearby for WI-FI access or could be identified via the cellular connection.
+%
+%\begin{itemize}
+%	\item Type: Passive
+%	\item Goal: Monitor live network traffic
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Enable remote access via Wi-Fi or cellular connection.
+%	\item nsak: Enable layer 2 bridge between interfaces.
+%	\item nsak: Start tshark, listening on all interfaces, no filters.
+%	\item Remote Device: Start WireShark and connect to a remote interface.
+%	\item Remote Device: Analyze live network traffic, apply filters
+%\end{enumerate}
+%
+%\subsubsection{Module 1.2: Network Traffic Collection (Local)}\label{subsubsec:module_1_2_general_network_traffic_collection}
+%This module requires physical access to nsak to extract the collected network traffic,
+%which might be challenging or dangerous in a real-world attack scenario.
+%The amount of data which can be extracted this way depends heavily on the amount of network traffic,
+%how specific the filters are set, and the disk space available.
+%
+%\begin{itemize}
+%	\item Type: Passive
+%	\item Goal: Collect network traffic
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Enable layer 2 bridge between interfaces.
+%	\item nsak: Start tshark, listening on all interfaces, set filters, write to a local file.
+%\end{enumerate}
+%
+%\subsubsection{Module 1.3: Network Traffic Collection (Remote)}\label{subsubsec:module_1_3_http_network_traffic_collection}
+%This module requires a live connection from a remote device to nsak,
+%in a real world attack scenario the attacker must be nearby for WI-FI access or could be identified via the cellular connection.
+%
+%\begin{itemize}
+%	\item Type: Passive
+%	\item Goal: Collect http network traffic
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Enable remote access via Wi-Fi or cellular connection.
+%	\item nsak: Enable layer 2 bridge between interfaces.
+%	\item nsak: Start tshark, listening on all interfaces, set filters, write to a remote file.
+%\end{enumerate}
+%
+%\subsection{Category 2: Network Mapping and Port Mapping}\label{subsec:category-2:-network-mapping}
+%This category is concerned about mapping out the environment nsak is currently located in.
+%
+%\subsubsection{Module 2.1: Network Discovery}\label{subsubsec:-layer-2-discovery}
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: Discover Network Participants
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Run arp-scan, on interface in a specific subnet
+%\end{enumerate}
+%
+%\subsubsection{Module 2.2: Host Service/Version Detection}\label{subsubsec:-host-service/version-detection}
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: Detect which OS and/or services are participating in the network
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Run nmap, against a whole subnet or a specific host
+%\end{enumerate}
+%
+%\subsection{Category 3: Man\-in\-the\-Middle (MITM)}\label{subsec:category-3:-man-in-the-middle-(mitm)}
+%Modules in this category will try to convince other devices or services in the network that nsak is a legitimate participant.
+%
+%\subsubsection{Module 3.1 SSL/TLS MITM}\label{subsubsec:module-3.1-ssl/tls-mitm}
+%This module tries to intercept SSL/TLS handshakes and convince Alice and Bob that nsak is the respective counterpart.
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: Intercept encrypted traffic
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Execute SSL/TLS MITM attack (TBD)
+%\end{enumerate}
+%
+%\subsubsection{Module 3.2 IP Spoofing}\label{subsec:module-3.2-ip-spoofing}
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: Traffic interception
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Set nsaks IP to the one of another device
+%\end{enumerate}
+%
+%\subsubsection{Module 3.3: WLAN SSID Spoofing}\label{subsubsec:-wlan-ssid-spoofing}
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: Traffic interception
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Set nsaks WLAN SSID to the one of an actual WI-FI access point.
+%\end{enumerate}
+%
+%\subsection{Category 4: Exploits}\label{subsec:category-4:-exploits}
+%This category contains modules which execute known exploits.
+%
+%\subsubsection{Module 4.1: Join Network via WPS}\label{subsubsec:-join-network-via-wps}
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: Wireless Network Access (intrusion)
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: TBD
+%\end{enumerate}
+%
+%\subsection{Category 5: Brute force}\label{subsec:category-5:-brute-force}
+%With this module we try to gain access to a device or network with brute force.
+%
+%\subsubsection{Module 5.1: SSH Login}\label{subsubsec:-ssh-dictonary-attack}
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: Server Remote Access
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Load dictionary for the current locale or better data set if available
+%	\item nsak: Brute Force SSH authentication
+%\end{enumerate}
+%
+%\subsubsection{Module 5.2: WLAN Login}\label{subsubsec:-wlan-login}
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: Wireless Network Access (intrusion)
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Load dictionary for the current locale or better data set if available
+%	\item nsak: Brute Force WI-FI authentication
+%\end{enumerate}
+%
+%\subsection{Category 6: Denial of Service (DoS)}\label{subsec:category-6:-denial-of-service-(dos)}
+%
+%\subsubsection{Module 6.1: Classic Denial of Service}\label{subsubsec:-classic-denial-of-service}
+%
+%\begin{itemize}
+%	\item Type: Active
+%	\item Goal: DoS
+%\end{itemize}
+%
+%Action sequence:
+%\begin{enumerate}
+%	\item nsak: Send as many requests as possible until the service is not available anymore
+%\end{enumerate}
+%
+%\section{Scenarios}\label{sec:scenarios}
+%
+%A scenario is described as a combination of an environment, with a defined location of the sniffer and one or multiple software modules.

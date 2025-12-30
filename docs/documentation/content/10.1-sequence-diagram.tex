@@ -1,0 +1,27 @@
+\section{Sequence-Diagram}\label{sec:sequence-diagram}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../assets/figures/diagrams/concept-architecture-diagrams/sequence-diagram}
+    \caption{}
+    \label{fig:sequence-diagram.drawio}
+\end{figure}
+
+\textbf{Figure~\ref{fig:sequence-diagram.drawio}} shows the interaction sequence for building,
+loading, and executing a scenario within NSAK.
+The diagram focuses on the main modularity concept and describes the orchestration flow between scenarios
+and drills without interface details, error-handling, and drill or scenario clean-up mechanisms.
+
+The process begins with the operator triggering the build command for a scenario container.
+During this phase, the selected scenario is loaded and returned as a containerized representation.
+In the execution phase, the Scenario Manager runs the container image and orchestrates the Drills order.
+The Drill Manager executes the required drills.
+
+A scenario may contain multiple drills; therefore, the * signalize various drills can be executed from a Drill Manager
+in a one scenario.
+Each drill is resolved and executed individually, while the Scenario Manager maintains complete control
+over the scenario lifecycle.
+
+
+
+

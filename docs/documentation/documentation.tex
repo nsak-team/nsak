@@ -138,7 +138,7 @@
 %% \rofoot*{rofoot}
 %---------------------------------------------------------------------------
 \begin{document}
-\raggedbottom  % content does not get strechted verticaly
+    \raggedbottom  % content does not get strechted verticaly
 
 
 %% Snippet do redefine German babel translations -- see FAQ latex.ti.bfh.ch for further information or
@@ -188,22 +188,31 @@
 %------------ START MAIN PART ------------
     \mainmatter
 
+
     \chapter{First Part Thesis: Evaluation}\label{ch:first-thesis-chapter}
     \input{content/02-introduction}
     \input{content/03-current-state-of-research}
 
-	\chapter{Evaluation}\label{ch:evaluation}
+
+    \chapter{Evaluation}\label{ch:evaluation}
+
+
     \section{Hardware Selection}\label{sec:hardware-selection}
     \input{content/04-hardware-evaluation}
     \input{content/05-hardware-specification}
+
+
     \section{Software Selection}\label{sec:framework-compnents}
     \input{content/06-framework-technology-stack}
     \input{content/07-system-dependencies}
 
-	\chapter{Architecture and Design}\label{ch:architecture-and-design}
+
+    \chapter{Architecture and Design}\label{ch:architecture-and-design}
     \input{content/08-framework-concepts}
     \input{content/09-user-story}
-	\input{content/10-component-diagram}
+    \input{content/10-component-diagram}
+    \input{content/10.1-sequence-diagram}
+
 
     \chapter{Second Part Thesis: Implementation}\label{ch:second-thesis-chapter}
     \input{content/11-method}
