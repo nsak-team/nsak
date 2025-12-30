@@ -6,7 +6,28 @@
     \caption{}
     \label{fig:NSAK-use-case-diagram}
 \end{figure}
-Figure~\ref{fig:NSAK-use-case-diagram} illustrates the use case structure of the proposed NSAK framework.
+Figure~\ref{fig:NSAK-use-case-diagram} illustrates the use case structure of the proposed NSAK modular framework.
+The operator interacts with the NSAK primarily through two high-level commands:
+Build Scenario (UC-01) and Run Scenario (UC-06).
+During the Build Scenario use case (UC-01), the system builds a scenario container for execution.
+In complex network infrastructures, additional configuration parameters—such as network interface mappings may be
+required and need to be provided as build-time arguments (UC-02).
+
+The system loads the selected scenario (UC-03).
+At this stage, the scenario orchestrates the required drills necessary to perform the intended attack.
+
+The build process concludes with the creation of an OCI-compliant container image (UC-05), which encapsulates
+the fully configured scenario.
+
+The Run Scenario use case (UC-06) represents an abstract execution phase.
+In this phase, the previously built container image is runed, and the configured attack drills are been executed within
+the containerized environment (UC-08).
+
+Finally, the system performs a cleanup procedure in which all scenario-specific resources, processes and drills are
+terminated.
+This step minimizes side effects, reduces system noise, and prevents interference other scenarios that may
+reuse the same drills.
+
 
 
 \todo{drüber lesen und mit UC final ableichen}
