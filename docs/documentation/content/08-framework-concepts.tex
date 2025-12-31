@@ -1,24 +1,112 @@
 \subsection{Framework Concepts}\label{subsec:framework-concepts}
 
-This section describes the high-level concepts which can be managed with the NSAK framework.
+This section describes the high-level concepts, resources and vocabulary needed to understand and work with the NSAK framework.
 
-\todo{I did not think of a specific order, add a short excerpt in the overview list, add a diagram which shows the relation of the concepts }
+\todo{Optional: Add a diagram which shows the relation between the concepts}
 
-Overview:
+Overview of the NSAK resources and concepts:
 \begin{itemize}
     \item Devices
     \item Environments
     \item Drills
     \item Scenarios
+    \item Operator
+    \item Operation
 \end{itemize}
 
 \subsubsection{Devices}\label{subsubsec:devices}
+Under a \textbf{device} we understand a physical or virtual machine, which is capable of running the NSAK framework.
+Even though we currently only work and describe the hardware devices evaluated in~\ref{sec:hardware-selection}, other devices or virtual machines could be used with NSAK\@.
 
+The following list vaguely describes the minimum requirements for a device:
+\begin{itemize}
+    \item Processor architecture: ARM and x86 should work equally well, as the NSAK framework is written in python and the scenarios are OCI images/containers, which are built on the NSAK device.
+    \item Capable of running a Linux-based operating system, such as Debian.
+    \item Enough memory and compute resources to run multiple OCI containers.
+    \item Ideally, multiple physical network ports and Wi-Fi for covering many scenarios and environments.
+    \item Optionally, additional bulk storage for data collection, such as PCAPs via T-Shark.
+\end{itemize}
+
+\textbf{Provisioning a NSAK device} usually consists of the following tasks:
+\begin{enumerate}
+    \item Install and configure a Linux-based operating system
+    \item Set up a minimal network configuration and SSH access
+    \item Install system dependencies required for NSAK
+    \item Install and configure NSAK
+\end{enumerate}
+
+After a device is provisioned, we refer to it as a \textbf{NSAK device}, which may or may not be prepared for an operation.
 
 \subsubsection{Environments}\label{subsubsec:environments}
+An \textbf{environment} is representing a specific network topology including infrastructure components, servers, clients and services.
+Ideally, an environment describes a part or a subset of a network and system infrastructure like you would encounter in a real organization.
 
+Examples of environments:
+\begin{itemize}
+    \item WLAN AP: Smartphone, WLAN AccessPoint, Router
+    \item Client - server: Client, Server, Switch
+    \item Home network: Router, WLAN, One Physical Network (Star Topology), Multiple Devices (Computers, Laptops, SmartPhones, SmartTVs)
+    \item Business network: Firewall, Router, DC Server, Intranet, Multiple Subnets, Multiple WLAN Access points, Switches
+\end{itemize}
 
 \subsubsection{Drills}\label{subsubsec:drills}
+A \textbf{drill}, initially called a module, is a sequence of actions with a specific goal.
+This goal can be an active or passive attack, network discovery, monitoring, analysis, data extraction, a hook for manual intervention or a device configuration.
 
+Examples of drills:
+\begin{itemize}
+    \item Network sniffing with TShark with a specific filter (http traffic)
+    \item Data extraction on an internal bulk storage or external network file system
+    \item Active or passive MITM (man in the middle) attack with a transparent TCP proxy
+    \item ARP Spoofing
+    \item WLAN SSID spoofing
+    \item Network discovery with nmap or arp-scan
+    \item Network configuration, such as enabling IP-Forwarding or NAT
+\end{itemize}
 
 \subsubsection{Scenarios}\label{subsubsec:scenarios}
+A \textbf{scenario} is designed for one or multiple environments, consists of a sequence of drills and describes a concrete use case for specific red or blue team activities.
+
+Examples of Scenarios:
+\begin{itemize}
+    \item WLAN SSID Spoofing:
+    \begin{itemize}
+        \item Environment: WLAN AP
+        \item Drills: Network configuration for DHCP, NAT, SSID Spoofing, Packet Sniffing
+    \end{itemize}
+    \item TCP MITM Attack:
+    \begin{itemize}
+        \item Environment: TCP client - server
+        \item Drills: Automatic network discovery and configuration, ARP Spoofing, Transparent TCP Proxy, Packet manipulation
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Operator}
+For simplicity and consistency we use the term \textbf{operator} for the person or team, which is planning and executing operations with NSAK\@.
+So an operator can refer to a single IT-specialist, a red, blue or purple team.
+
+Examples of Operators:
+\begin{itemize}
+    \item A single IT-Specialized or Security researcher
+    \item System and network engineering teams
+    \item Red, blue, purple teams
+\end{itemize}
+
+\subsubsection{Operation}
+An \textbf{operation} is the deployment of NSAK in a real network.
+
+Preparing an operation usually has the following sequence of tasks, assessed and executed by an operator:
+\begin{enumerate}
+    \item Provision a NSAK device.
+    \item Choose one or multiple environments which are relevant for the operation.
+    \item Configure and build all or a subset of scenarios which can be executed in those environments.
+    \item Scenarios
+\end{enumerate}
+
+An operation explicitly excludes the development phase for scenarios, drills and environments, as these resources should be finalized and tested before being used in a real operation, otherwise the following conventions should be used:
+\begin{itemize}
+    \item \textbf{Operation Simulation:} Simulating an operation in a virtualized environment.
+    \item \textbf{Operation Test:} Testing an operation in a physical lab network.
+\end{itemize}
+
+\todo{Optional: Describe the relation between an operation and red, blue team phases (https://mindgard.ai/blog/red-team-operations-phases-of-engagement)}
