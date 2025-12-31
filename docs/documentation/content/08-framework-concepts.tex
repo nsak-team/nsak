@@ -1,8 +1,6 @@
-\subsection{Framework Concepts}\label{subsec:framework-concepts}
+\section{Framework Concepts}\label{sec:framework-concepts}
 
 This section describes the high-level concepts, resources and vocabulary needed to understand and work with the NSAK framework.
-
-\todo{Optional: Add a diagram which shows the relation between the concepts}
 
 Overview of the NSAK resources and concepts:
 \begin{itemize}
@@ -14,7 +12,7 @@ Overview of the NSAK resources and concepts:
     \item Operation
 \end{itemize}
 
-\subsubsection{Devices}\label{subsubsec:devices}
+\subsection{Devices}\label{subsec:devices}
 Under a \textbf{device} we understand a physical or virtual machine, which is capable of running the NSAK framework.
 Even though we currently only work and describe the hardware devices evaluated in~\ref{sec:hardware-selection}, other devices or virtual machines could be used with NSAK\@.
 
@@ -37,7 +35,7 @@ The following list vaguely describes the minimum requirements for a device:
 
 After a device is provisioned, we refer to it as a \textbf{NSAK device}, which may or may not be prepared for an operation.
 
-\subsubsection{Environments}\label{subsubsec:environments}
+\subsection{Environments}\label{subsec:environments}
 An \textbf{environment} is representing a specific network topology including infrastructure components, servers, clients and services.
 Ideally, an environment describes a part or a subset of a network and system infrastructure like you would encounter in a real organization.
 
@@ -49,7 +47,7 @@ Examples of environments:
     \item Business network: Firewall, Router, DC Server, Intranet, Multiple Subnets, Multiple WLAN Access points, Switches
 \end{itemize}
 
-\subsubsection{Drills}\label{subsubsec:drills}
+\subsection{Drills}\label{subsec:drills}
 A \textbf{drill}, initially called a module, is a sequence of actions with a specific goal.
 This goal can be an active or passive attack, network discovery, monitoring, analysis, data extraction, a hook for manual intervention or a device configuration.
 
@@ -64,7 +62,7 @@ Examples of drills:
     \item Network configuration, such as enabling IP-Forwarding or NAT
 \end{itemize}
 
-\subsubsection{Scenarios}\label{subsubsec:scenarios}
+\subsection{Scenarios}\label{subsec:scenarios}
 A \textbf{scenario} is designed for one or multiple environments, consists of a sequence of drills and describes a concrete use case for specific red or blue team activities.
 
 Examples of Scenarios:
@@ -81,7 +79,7 @@ Examples of Scenarios:
     \end{itemize}
 \end{itemize}
 
-\subsubsection{Operator}
+\subsection{Operator}\label{subsec:operator}
 For simplicity and consistency we use the term \textbf{operator} for the person or team, which is planning and executing operations with NSAK\@.
 So an operator can refer to a single IT-specialist, a red, blue or purple team.
 
@@ -89,24 +87,22 @@ Examples of Operators:
 \begin{itemize}
     \item A single IT-Specialized or Security researcher
     \item System and network engineering teams
-    \item Red, blue, purple teams
+    \item Usually, red, blue and purple teams, but potentially all teams in the InfoSec color wheel~\cite{cremen2018infoseccolourwheel}
 \end{itemize}
 
-\subsubsection{Operation}
+\subsection{Operation}\label{subsec:operation}
 An \textbf{operation} is the deployment of NSAK in a real network.
-
-Preparing an operation usually has the following sequence of tasks, assessed and executed by an operator:
-\begin{enumerate}
-    \item Provision a NSAK device.
-    \item Choose one or multiple environments which are relevant for the operation.
-    \item Configure and build all or a subset of scenarios which can be executed in those environments.
-    \item Scenarios
-\end{enumerate}
 
 An operation explicitly excludes the development phase for scenarios, drills and environments, as these resources should be finalized and tested before being used in a real operation, otherwise the following conventions should be used:
 \begin{itemize}
-    \item \textbf{Operation Simulation:} Simulating an operation in a virtualized environment.
-    \item \textbf{Operation Test:} Testing an operation in a physical lab network.
+    \item \textbf{Simulated Operation:} Simulating an operation in a virtualized environment.
+    \item \textbf{Test Operation:} Testing an operation in a physical lab network.
 \end{itemize}
 
-\todo{Optional: Describe the relation between an operation and red, blue team phases (https://mindgard.ai/blog/red-team-operations-phases-of-engagement)}
+Preparing and planning an operation usually has the following sequence of tasks, assessed and executed by an operator:
+\begin{enumerate}
+    \item Provision a NSAK device.
+    \item Select one or multiple environments which are relevant for the target network and system infrastructure.
+    \item Configure and build all or a subset of scenarios which can be executed in the selected environments.
+    \item Ideally, simulate and test the operation in a virtual or lab network infrastructure.
+\end{enumerate}
