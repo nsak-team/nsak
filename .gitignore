@@ -29,6 +29,8 @@ tmp
 *.ilg
 *.ind
 *.ist
+*.glg
+*.gls
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
