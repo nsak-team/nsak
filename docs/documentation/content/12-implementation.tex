@@ -1,1 +1,91 @@
 \section{Implementation}\label{sec:implementation}
+
+\subsection{MITM ARP-spoofing}\label{subsec:MITM ARP-spoofing}
+
+\subsection{Rogue Access Point}\label{subsec: Rogue Access Point}
+
+\subsubsection{Network Topoplgy}{subsubsec: Network Topology}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{../assets/figures/diagrams/concept-architecture-diagrams/rogue-ap}
+    \caption{}
+    \label{fig:rogue-ap}
+\end{figure}
+
+Figure\ref {fig:rogue-ap} illustrates the network topology used for the Rogue Access Point scenario.
+The NSAK device is positioned between the wireless clients and an upstream host system acting as an internet gateway.
+Two network interfaces are used on the NSAK device: a wireless interface (wlan0) operating in access point mode,
+and a wired uplink interface (eth1) connected to the host system.
+
+\subsubsection{Rogue Access Point Implementation}\label{subsubsec: RAP Implementation}
+This section describes the technical realization of the Rogue Access Point scenario within the NSAK framework.
+The focus lies on the integration of wireless access point functionality, traffic forwarding,
+and packet capture.
+
+
+Within the NSAK framework, the Rogue Access Point scenario is implemented as a composition of multiple drills.
+Each drill encapsulates a single operational responsibility, allowing the scenario to orchestrate the drills separately,
+ant to remain modular and extensible.
+
+\subsubsection{Scenario}\label{subsubsec: Scenario structure and involved components}
+The Rogue Access Point scenario consists of several drills that are executed sequentially to establish a functional
+wireless access point capable of intercepting and forwarding network traffic.
+
+\begin{itemize}
+    \item Network interface preparation
+    \item Wireless access point initialization
+    \item Traffic forwarding and network address translation
+    \item Packet capture and monitoring
+\end{itemize}
+
+\subsubsection{Drills}\label{subsubsec: RAP Drills}
+
+
+\textbf{The Hostapd Drill} is responsible for configuring the wireless network interface of the NSAK device in access mode
+mode.
+This includes assigning network parameters to the interfaces and enabling beacon transmission to allow the client
+devices to connect to the rogue access point
+
+
+The access point functionality is implemented using standard Linux networking services running in an isolated subprocesses.
+The controlled interaction with the operating system allows reliable startup and shutdown behavior.
+Furthermore, the current process state can be tracked.
+
+
+\textbf{Traffic Forwarding and Network Integration drills} are providing network connectivity for clients.
+The NSAK device establishes an uplink connection to an external network interface.
+Traffic forwarding is enabled between the wireless and uplink interfaces, enabling transparent internet access.
+
+
+Network address translation and packet forwarding are configured dynamically during scenario execution.
+This enables the NSAK device to operate as an intermediary between wireless clients and the upstream network.
+
+
+In parallel, a \textbf{traffic capture drill} on the connected interface captures traffic passing through.
+The pcap files can be used for later analysis, enabling the evaluation of client behavior and the network.
+interactions.
+
+By separating packet capture into an independent drill, the framework allows traffic monitoring to
+be reused across different scenarios without modification.
+
+The scenario manager orchestrates the execution of all drills involved in the Rogue Access Point scenario.
+Drills are executed in a predefined order, ensuring that the required network services are available before
+dependent components are started.
+
+
+\textbf{Error handling and cleanup}\
+To prevent persistent system modifications, each drill defines a cleanup routine that can be executed after scenario
+completion or upon failure.
+This ensures that network interfaces and system services are restored to their original state.
+In the current state of the POC the cleanup functionality need to be adjusted for the broad diversity of the drills
+and covers momentarily not all possible edge cases.
+
+But as mentioned in, a centralized cleanup mechanism ensures that partial execution states do not persist in the system
+in an inconsistent configuration.
+And helps to prevent uncontrolled behaviors of drills.
+
+\textbf{}
+This section focused on the technical realization of the Rogue Access Point scenario.
+The effectiveness and behavior of the scenario under real network conditions are evaluated in the subsequent evaluation
+chapter.
