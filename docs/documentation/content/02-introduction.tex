@@ -6,7 +6,7 @@ According to the World Economic Forum’s Global Risk Report 2025, the categorie
 These risks are expected to intensify even further because the economic and operational costs of launching cyberattacks will decrease due to AI automation~\cite{Garg2024AIEconomicsCyberattacks}.
 This underlines the need for cost-effective and easy-to-use security tools, methods and frameworks (conceptional and software) to identify and defend against cyberattacks.
 
-\subsection{Information security methods and conceptional frameworks}{subsec:information-security-methods-and-conceptional-frameworks}
+\subsection{Information security methods and conceptional frameworks}\label{subsec:information-security-methods-and-conceptional-frameworks}
 In practice, the method of combining red team activities and blue team observation techniques is widely adopted within the cybersecurity community and industry~\cite{}.
 While the red team focuses on emulating adversarial behavior, the primary objective of the blue team is to detect such activities through non-invasive monitoring and analysis of system behavior~\cite{NIST2012RedTeamBlueTeamApproach}.
 Further, we can observe approaches from the community and the industry to evolve this approach in to the so-called \enquote{InfoSec color wheel}~\cite{cremen2018infoseccolourwheel}.
@@ -16,15 +16,16 @@ The secondary colors are represented by the purple team (red and blue), the oran
 Where \enquote{purple teaming} is actually an already established praxis as it evolved naturally from the cooperation between red and blue teams~\cite{}.
 
 \todo{Add security methods and conceptional framworks such as MITRE attack, NIST, OWASP etc.}
+\todo{Add Zero Trust Architecture, sorry Franky for removing it xD}
 
-\subsection{Information security tools and software framworks}{subsec:information-security-tools-and-software-framworks}
+\subsection{Information security tools and software framworks}\label{subsec:information-security-tools-and-software-framworks}
 One approach to reduce operational security costs is to adopt multiple modular frameworks that can be easily extended, configured, and executed continuously in a controlled manner~\cite{Zilberman2020SoKThreatEmulators}.
 The threat emulation frameworks analyzed by Zilberman et al.\ evaluate multiple attack phases, including lateral movement, persistence, and attack execution.
 
 \todo{Add security tools and software framworks such as MITRE Caledra, Atomic Red Team Metasploit, Infection Monkey, etc.}
 \todo{Describe gaps and issues with the existing tools}
 
-\subsection{Lower the bar with modularity and automation}{subsec:lower-the-bar-with-modularity-and-automation}
+\subsection{Lower the bar with modularity and automation}\label{subsec:lower-the-bar-with-modularity-and-automation}
 
 
 \subsection{\acrfull{NSAK}}\label{subsec:nsak-network-swiss-army-knife}
@@ -36,13 +37,24 @@ This proof of concept comprises the design and implementation of a modular, isol
 
 The objective of this work is to investigate whether such a framework can provide a flexible, extendable, and safe foundation for modular and automated security testing in a network environment. .
 
-In the summary of their paper, Zilberman et al.\ are highlighting the necessity of the following features~\cite{Zilberman2020SoKThreatEmulators}:
+In the summary of their paper, Zilberman et al.\ are highlighting the necessity of the following design requirements~\cite{Zilberman2020SoKThreatEmulators}:
 \begin{itemize}
     \item Cleanup and configurability are important in order to repeat and automate the execution of attack scenarios during security tool assessment and what-if analysis.
     \item An emulator should support cleanup after the completion of the attack scenario, like CALDERA, Atomic Red Team, and Infection Monkey do, rather than after each individual procedure.
     \item An API, currently provided by Atomic Red Team, CALDERA, and Metasploit, facilitates integration between the threat emulators and organizational security array, thus enabling periodic and systematic security assessment.
     \item It is important to provide a GUI and ready to execute multi-procedure attacks for novice operators as well as a CLI to support automation and advanced customization capabilities.
 \end{itemize}
+
+We reconsolidate the highlighted design requirements for the implementation of NSAK into the following list of features:
+\begin{itemize}
+    \item CLI, GUI, and API to manage resources and execute scenarios.
+    \item Configurability of the framework and the resources.
+    \item Automatic cleanup procedures after the completion of a scenario.
+\end{itemize}
+
+Even though we agree with the importance of the highlighted design requirements, we are not able to include them all in the PoC of the NSAK framework.
+In the context of this project, our focus is to verify the feasibility of building a framework which provides modularity and automation and show which advantages it can provide over existing solutions.
+But because we are planning to build upon this PoC, we try to incorporate the design requirements in the architecture and design of the framework.
 
 \todo{Which gap are we closing, how we plan to distinguish NSAK from MITRE Caledra and other Tools, how can it be incoperated into existing security methods and conceptional frameworks}
 
