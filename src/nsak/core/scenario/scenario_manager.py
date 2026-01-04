@@ -82,7 +82,6 @@ class ScenarioManager:
             "--privileged",
             "--network=host",
             f"--name={scenario.path.name}",
-            f"nsak/scenario/{scenario.path.name}",
         ]
 
         # optional env vars anhängen
