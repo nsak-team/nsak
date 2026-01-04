@@ -93,7 +93,20 @@ class ScenarioManager:
         # image name
         cmd.append(f"nsak/scenario/{scenario.path.name}")
 
-        completed_process = subprocess.run(cmd, check=True)  # noqa: S603
+        completed_process = subprocess.run(
+            cmd,
+            text=True,
+            capture_output=True,
+        )
+
+        print("STDOUT:", completed_process.stdout)
+        print("STDERR:", completed_process.stderr)
+        print("RC:", completed_process.returncode)
+
+        if completed_process.returncode != 0:
+            error_msg = f"podman run failed (rc={completed_process.returncode})"
+            raise RuntimeError(error_msg)
+
         return completed_process.returncode
 
     @classmethod
