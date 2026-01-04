@@ -1,5 +1,97 @@
 \section{Evaluation}\label{sec: Evaluation}
 
+\subsection*{RQ1 – Modularity}
+RQ1: Can network security scenarios be composed from independent drills without modifying the core framework?
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Test} & \textbf{description}                            & \textbf{expectation}             \\
+        \midrule
+        T1            & Execute Rogue AP scenario with full drill set    & Scenario executes successfully \\
+        T2            & Remove packet capture drill                      & AP still functions             \\
+        T3            & Reuse packet capture drill in different scenario & No modification required       \\
+        \bottomrule
+    \end{tabular}
+    \caption{}
+    \label{tab:}
+\end{table}
+
+
+\item In set up C1, all drills were enabled
+\item in set up C2, the packet capture drill was removed
+\item in set up C3, traffic forwarding was disabled
+
+
+
+
+\begin{table}
+    \centering
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Aspekt}    & \textbf{Without Container} & \textbf{With Container} \\
+        \midrule
+        Cleanup complexity & High                    & Low                    \\
+        Isolation          & Limited                 & Strong                 \\
+        Reproducibility    & Medium                  & High                   \\
+        \bottomrule
+    \end{tabular}
+    \caption{}
+    \label{tab:container}
+\end{table}
+
+
+In all configurations, the remaining drills executed successfully without modification.
+
+\subsection*{RQ2 – Reusability}
+RQ2: Can individual drills be reused across different scenarios with minimal configuration effort?
+
+
+The packet capture drill was executed as part of both the Rogue Access Point and standalone monitoring scenarios.
+In both executions, the drill operated without requiring changes to its configuration or implementation.
+
+\subsection*{RQ3 – Containerization}
+RQ3: Does container-based execution provide sufficient isolation while maintaining required network functionality?
+
+
+\begin{table}
+    \centering
+    \begin{tabular}{lllll}
+        \toprule
+        \textbf{Configuration} & \textbf{AP} & \textbf{Forwarding} & \textbf{Capture} & \textbf{Execution Result} \\
+        \midrule
+        C1                     & ✓           & ✓                   & ✓                & Successful                \\
+        C2                     & ✓           & ✓                   & ✗                & Successful                \\
+        C3                     & ✓           & ✗                   & ✓                & Successful                \\
+        \bottomrule
+    \end{tabular}
+    caption{}
+    \label{tab:modular-drill-evaluation}
+\end{table}
+
+
+During scenario execution, all network services were started in privileged mode within the container environment.
+\todo{ist das wirklich so? Ich habe das Szenario ja dann ausgeführt - im Container sollte der Prozess nicht mehr aktiv sein
+wie kann ich das testen? }
+After a scenario termination, processes related to the scenario were observed on the host system.
+IP tables are still reboot changed on the host system
+After terminating the scenario, the rogue AP remains visible to devices.
+If the scenario is executed without a container, the configuration stays consistent on the host system
+IP tables are changed, and after multiple executions of drills like the NAT forwarding drill, the forwarding rules are
+Added multiple times to the IP tables, which led to unwanted behavior.
+
+\subsection*{RQ4 – Reproducibility}
+RQ4: Can scenarios be executed repeatedly with consistent system behavior?
+
+The scenario execution was repeated multiple times using the same configuration parameters.
+
+In each execution, client devices successfully associated with the access point.
+Network connectivity via the uplink interface was available in all runs.
+Packet capture was initiated and terminated consistently.
+
+
 Die Ergebnisse sind das, was man gerechnet, beobachtet, gemessen, entworfen, gelesen usw. hat. Sämtliche im Ergebniskapitel
 dargestellten Informationen tragen zum Beantworten der Fragestellung bei. Das Grundlagenwissen zum Thema dagegen gehört nicht
 in den Ergebnisteil. In naturwissenschaftlich-technischen Arbeiten werden das Präsentieren der Ergebnisse und deren Interpretation
@@ -17,3 +109,5 @@ sowie Tabellen und gibt deren Kernaussagen wieder (siehe 3.2).
 – Eine wissenschaftliche Arbeit darf Widersprüche nicht unterdrücken, sondern nennt sie explizit und diskutiert sie im Diskussionsteil.
 – Wichtige Ergebnisse sollen Raum bekommen. Ergänzende Details und umfangreiche Daten dagegen gehören in den Anhang der
 Arbeit.
+
+

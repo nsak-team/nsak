@@ -106,11 +106,11 @@ Each section contains a table with activity entries for the respective week.
 | 2025-12-29       | Research, rework use-cas-diagram and table, write introduction                                                               | 8h        |                |                                                                                                        |
 | 2025-12-30       | Add sequece diagram and diagram description in documentation                                                                 | 4h        |                |                                                                                                        |
 | 2025-12-31       | Add methodik in documentation                                                                                                | 6h        |                |                                                                                                        |
+| 2026-01-01       | Add Rogue AP implementation, start evaluation rogue ap                                                                       | 5h        |                |                                                                                                        |
 |                  |                                                                                                                              |           |                |                                                                                                        |
 |                  |                                                                                                                              |           |                |                                                                                                        |
-|                  |                                                                                                                              |           |                |                                                                                                        |
-|                  |                                                                                                                              | **18**    |                |                                                                                                        |
-| **Total**        |                                                                                                                              | **152 h** |                |                                                                                                        |
+|                  |                                                                                                                              | **23**    |                |                                                                                                        |
+| **Total**        |                                                                                                                              | **157 h** |                |                                                                                                        |
 
 ## 👤 Lukas
 
@@ -242,8 +242,8 @@ Each section contains a table with activity entries for the respective week.
 
 | Member    | Total Hours | Focus Areas                           |
 |-----------|-------------|---------------------------------------|
-| Frank     | 152 h       | Research, Docs, DevOps, Developments, |
+| Frank     | 157 h       | Research, Docs, DevOps, Developments, |
 | Lukas     | 181 h       | Planning, Project Setup, Docs         |
-| **Total** | 333 h       |                                       |
+| **Total** | 338 h       |                                       |
 
 Goal: 150 - 180 hours per student
