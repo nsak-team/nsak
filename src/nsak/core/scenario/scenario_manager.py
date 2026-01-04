@@ -1,4 +1,5 @@
 import importlib.util
+import os
 import subprocess
 import sys
 from typing import Any, List
@@ -66,18 +67,34 @@ class ScenarioManager:
         # @TODO: This is potentially insecure and we should replace it with a library:
         # - https://pypi.org/project/docker/
         # - https://pypi.org/project/podman/
-        completed_process = subprocess.run(  # noqa: S603
-            [
-                "/usr/bin/sudo",
-                "/usr/bin/podman",
-                "run",
-                "-d",
-                "--privileged",
-                "--network=host",
-                f"--name={scenario.path.name}",
-                f"nsak/scenario/{scenario.path.name}",
-            ]
-        )
+
+        pass_env = [
+            "NSAK_UPLINK_IF",
+            "NSAK_AP_IF",
+            "NSAK_SNIFF_IF",
+        ]
+
+        cmd = [
+            "/usr/bin/sudo",
+            "/usr/bin/podman",
+            "run",
+            "-d",
+            "--privileged",
+            "--network=host",
+            f"--name={scenario.path.name}",
+            f"nsak/scenario/{scenario.path.name}",
+        ]
+
+        # optional env vars anhängen
+        for key in pass_env:
+            val = os.environ.get(key)
+            if val:
+                cmd += ["-e", f"{key}={val}"]
+
+        # image name
+        cmd.append(f"nsak/scenario/{scenario.path.name}")
+
+        completed_process = subprocess.run(cmd, check=True)  # noqa: S603
         return completed_process.returncode
 
     @classmethod
