@@ -1,70 +1,71 @@
+import logging
+import os
+import signal
+
+logger = logging.getLogger(__name__)
+
 from nsak.core.drill.drill_manager import DrillManager
 
-# todo change args to network interfaces from core after merge
+def _disabled_drills() -> set[str]:
+    """
+    helper function to set env var for drill disabling.
+    :return:
+    """
+    raw = os.getenv("NSAK_DISABLE_DRILLS", "")
+    return {d.strip() for d in raw.split(",") if d.strip()}
+
+DISABLED = _disabled_drills()
+
+def run_drill(name: str, *args, **kwargs):
+    """
+    helper function to disable certain drills
+
+    :param name:
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    if name in DISABLED:
+        logger.info("Skipping drill %s (disabled via NSAK_DISABLE_DRILLS)", name)
+        return None
+    return DrillManager.execute(DrillManager.get(name), *args, **kwargs)
+
+# todo change args to network interface class from core
 def run(args: dict, state: dict | None = None) -> dict:
     """
     Rogue AP orchestration.
     """
+    ap_if = args.get("ap_interface") or os.getenv("NSAK_AP_IF")
+    uplink_if = args.get("uplink_interface") or os.getenv("NSAK_UPLINK_IF")
+
+    if not ap_if:
+        raise KeyError("ap_interface (or NSAK_AP_IF) is required")
+    if not uplink_if:
+        raise KeyError("uplink_interface (or NSAK_UPLINK_IF) is required")
+
     state = state or {}
     results = {}
 
-    ap_if = args["ap_interface"]
-    uplink_if = args["uplink_interface"]
-
-    # Start ap_mod (AP mode)
-    hostapd = DrillManager.execute(
-        DrillManager.get("ap_mod"),
-        state=state,
-    )
-    results["ap_mod"] = hostapd
-
-    # Network setup set static Ip for nsak to work as Gateway (Nsak is AP, DHCP, DNS)
-    net = DrillManager.execute(
-        DrillManager.get("network_setup"),
-        {
-            "interface": ap_if,
-            "address": "10.0.0.1/24",
-        },
-        state=state,
-    )
-    results["network"] = net
-
-    # DHCP + DNS (with dnsmasq range and lease time)
-    dnsmasq = DrillManager.execute(
-        DrillManager.get("dnsmasq"),
-        {
-            "interface": ap_if,
-        },
-        state=state,
-    )
+    hostapd = run_drill("ap_mod", state=state)
+    net = run_drill("network_setup", ap_if)
+    dnsmasq = run_drill("dnsmasq", ap_if)
+    nat = run_drill("nat_forwarding", {"interface": ap_if, "uplink_interface": uplink_if})
+    sniff = run_drill("tshark_capture", ap_if)
+    results["hostapd"] = hostapd
+    results["net"] = net
     results["dnsmasq"] = dnsmasq
-
-    # Add nat_forwarding_rules
-    nat = DrillManager.execute(
-        DrillManager.get("nat_forwarding"),
-        {
-            "interface": ap_if,
-            "uplink_interface": uplink_if
-        }, state=state,
-    )
     results["nat"] = nat
-
-    # capture traffic with tshark and stores it in "/run/rogue_ap.pcap"
-    sniff = DrillManager.execute(
-        DrillManager.get("tshark_capture"),
-        {
-            "interface": ap_if
-        },
-        state=state,
-    )
     results["sniff"] = sniff
+
+    signal.pause()  # keep scenario alive after all drills are up
 
     return {
         "processes": {
             "dnsmasq_pid": results["dnsmasq"]["pid"],
             "hostapd_pid": results["hostapd"]["pid"],
-            "tshark_pid":  results["tshark"]["pid"],
+            "tshark_pid": results["tshark"]["pid"],
         },
+        "state": state,
     }
 
 

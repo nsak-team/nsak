@@ -1,6 +1,4 @@
 import logging
-import os
-import signal
 import subprocess
 
 logger = logging.getLogger(__name__)
@@ -19,4 +17,4 @@ def run(interface: str):
         stderr=subprocess.STDOUT,
         text=True,
     )
-    logger.info(f"proc.stdout.read() {gateway_ip} on {interface}")
+    logger.info(f"{proc.stdout} {gateway_ip} on {interface}")

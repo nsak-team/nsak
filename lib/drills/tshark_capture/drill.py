@@ -1,19 +1,20 @@
 import logging
-import os
-import signal
 import subprocess
 
 from nsak.core.config import RUN_PATH
 
 logger = logging.getLogger(__name__)
-run_path = RUN_PATH / "rouge_ap.pcap"
+captures_dir = RUN_PATH / "captures"
+captures_dir.mkdir(parents=True, exist_ok=True)
+
+pcap_path = captures_dir / "rogue_ap.pcap"
 
 def run(interface: str) -> subprocess.Popen:
     proc = subprocess.Popen([
         "tshark",
         "-i", interface,
         "-n",
-        "-w", run_path
+        "-w", pcap_path
     ])
     logger.info("tshark pcap capture started")
     return proc

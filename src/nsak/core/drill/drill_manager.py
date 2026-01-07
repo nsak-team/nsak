@@ -1,10 +1,13 @@
 import importlib.util
 import inspect
+import logging
 import sys
 from typing import Any, List
 
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.drill.drill_loader import DrillNotFoundError, InvalidDrillError
+
+logger = logging.getLogger(__name__)
 
 
 class DrillManager:
@@ -49,6 +52,8 @@ class DrillManager:
         if run_fn is None or not callable(run_fn):
             msg = f"Drill '{drill.name}' has no callable run()"
             raise InvalidDrillError(msg)
+
+        logger.warning("EXEC DRILL: %s", drill.name)
 
         sig = inspect.signature(run_fn)
 

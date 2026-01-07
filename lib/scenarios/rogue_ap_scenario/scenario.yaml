@@ -8,6 +8,20 @@ metadata:
 
 drills: [ ]
 
+runtime:
+  env:
+    - NSAK_DISABLE_DRILLS
+    - NSAK_AP_IF
+    - NSAK_UPLINK_IF
+    - NSAK_SSID
+    - NSAK_CHANNEL
+    - NSAK_COUNTRY
+
+  mounts:
+    - host_path: "/home/pi/nsak/rogue_ap_scenario"
+      container_path: "/run/nsak"
+      mode: "rw"
+
 dependencies:
   system: [ ]
   python: [ ]

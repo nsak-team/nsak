@@ -71,6 +71,7 @@ def run() -> dict[str, Any]:
     pid = start(config)
 
     logger.info("[Scenario] Rogue AP active on %s with SSID %s", config.interface, config.ssid)
+
     return {
         "pid": pid,
         "config_path": str(cfg_path),
