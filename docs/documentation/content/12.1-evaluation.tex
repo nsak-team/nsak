@@ -1,95 +1,86 @@
 \section{Evaluation}\label{sec: Evaluation}
 
+\subsubsection{Generel Functionality of a Rogue Access Point}\label{subsubsec: General Functionality}
+The Rogue Access Point scenario was executed with different combinations of drills to test the modularity and the
+independent drill execution.
+The expected outcome is the creation of an open Wi-fi access point broadcasting the configured SSID,
+providing DHCP leases and forwarding traffic to the uplink interface.
+Additionally, traffic will be captured in PCAP format.
+
+
+During execution, the access point was successfully created, and client devices could connect using the assigned IP address.
+via DHCP.
+The Network traffic was captured in a PCAP file.
+
 \subsection*{RQ1 – Modularity}
 RQ1: Can network security scenarios be composed from independent drills without modifying the core framework?
+
+
+To ensure modularity, every drill should be able to work independently.
+When setting the DISABLE-DRILL environment variable, remaining drills should execute independently without failure.
+For example, if everything is disabled besides the ap-mode drill, the network should still be discoverable from clients.
+In T4\ref{tab:modular-execution}, IP forwarding, uplink, and capture should not be executed and therefore are not working.
+
+
+During the process, each drill has a specific attack goal or functionality.
+No implicit dependencies between drills were observed during execution.
 
 
 \begin{table}[H]
     \centering
     \begin{tabular}{lll}
         \toprule
-        \textbf{Test} & \textbf{description}                            & \textbf{expectation}             \\
+        \textbf{Test}  & \textbf{description} & \textbf{expectation} \\
         \midrule
-        T1            & Execute Rogue AP scenario with full drill set    & Scenario executes successfully \\
-        T2            & Remove packet capture drill                      & AP still functions             \\
-        T3            & Reuse packet capture drill in different scenario & No modification required       \\
+        T1 & Execute Rogue AP scenario with full drill set  & Scenario executes successfully \\
+        T2 & Deactivate packet capture drill  & AP still functions \\
+        T3 & Deactivate dnsmasq drill & All other drills are working, but in this case.
+        t-shark can't capture traffic \\
+        T4 & Just the ap-mode drill is enabled  & Client can see the SSID and can connect  \\
         \bottomrule
     \end{tabular}
     \caption{}
-    \label{tab:}
+    \label{tab:modular-execution}
 \end{table}
-
-
-\item In set up C1, all drills were enabled
-\item in set up C2, the packet capture drill was removed
-\item in set up C3, traffic forwarding was disabled
-
-
-
-
-\begin{table}
-    \centering
-    \begin{tabular}{lll}
-        \toprule
-        \textbf{Aspekt}    & \textbf{Without Container} & \textbf{With Container} \\
-        \midrule
-        Cleanup complexity & High                    & Low                    \\
-        Isolation          & Limited                 & Strong                 \\
-        Reproducibility    & Medium                  & High                   \\
-        \bottomrule
-    \end{tabular}
-    \caption{}
-    \label{tab:container}
-\end{table}
-
-
-In all configurations, the remaining drills executed successfully without modification.
 
 \subsection*{RQ2 – Reusability}
 RQ2: Can individual drills be reused across different scenarios with minimal configuration effort?
 
 
-The packet capture drill was executed as part of both the Rogue Access Point and standalone monitoring scenarios.
-In both executions, the drill operated without requiring changes to its configuration or implementation.
+The hostapd drill was reused in two scenarios: a standalone access point and a rogue access point.
+access point scenario.
+In both cases, the drill implementation remained unchanged.
+Scenario-specific behavior was controlled through environment variables such as SSID, channel, and country code.
+
+
+These results confirm that drills are scenario-orchestrated and can be composed flexibly with minimal modification.
 
 \subsection*{RQ3 – Containerization}
 RQ3: Does container-based execution provide sufficient isolation while maintaining required network functionality?
 
 
-\begin{table}
-    \centering
-    \begin{tabular}{lllll}
-        \toprule
-        \textbf{Configuration} & \textbf{AP} & \textbf{Forwarding} & \textbf{Capture} & \textbf{Execution Result} \\
-        \midrule
-        C1                     & ✓           & ✓                   & ✓                & Successful                \\
-        C2                     & ✓           & ✓                   & ✗                & Successful                \\
-        C3                     & ✓           & ✗                   & ✓                & Successful                \\
-        \bottomrule
-    \end{tabular}
-    caption{}
-    \label{tab:modular-drill-evaluation}
-\end{table}
+The evaluation focuses on whether container-based execution restricts or enables low-level network operations.
+required for nsak-device functionality.
+
+
+The Rogue Access Point scenario was executed inside a containerized NSAK environment on an embedded Linux device.
+The container was granted only the necessary capabilities for network configuration and packet capture.
 
 
 During scenario execution, all network services were started in privileged mode within the container environment.
-\todo{ist das wirklich so? Ich habe das Szenario ja dann ausgeführt - im Container sollte der Prozess nicht mehr aktiv sein
-wie kann ich das testen? }
-After a scenario termination, processes related to the scenario were observed on the host system.
-IP tables are still reboot changed on the host system
-After terminating the scenario, the rogue AP remains visible to devices.
-If the scenario is executed without a container, the configuration stays consistent on the host system
-IP tables are changed, and after multiple executions of drills like the NAT forwarding drill, the forwarding rules are
-Added multiple times to the IP tables, which led to unwanted behavior.
+During container-based execution, network interfaces, routing rules, and packet capture were successfully initialized.
+The drills ap-mode, network setup, dnsmasq, thsark left certain config files and rules in iptables and filepaths.
 
 \subsection*{RQ4 – Reproducibility}
-RQ4: Can scenarios be executed repeatedly with consistent system behavior?
+RQ4: Can scenarios be executed repeatedly without changing the system behavior?
 
-The scenario execution was repeated multiple times using the same configuration parameters.
 
-In each execution, client devices successfully associated with the access point.
-Network connectivity via the uplink interface was available in all runs.
-Packet capture was initiated and terminated consistently.
+With the same configuration, the scenario execution was triggered multiple times.
+Devices could establish a connection with the access point.
+Network connectivity was enabled in all runs. And the nsak-device was able to capture the traffic
+
+
+No deviations in system behavior were observed across repeated executions.
 
 
 Die Ergebnisse sind das, was man gerechnet, beobachtet, gemessen, entworfen, gelesen usw. hat. Sämtliche im Ergebniskapitel
