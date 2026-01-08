@@ -7,8 +7,7 @@ from nsak.core import NetworkInterface
 from nsak.core.network import NetworkDiscoveryResultMap
 
 SO_ORIGINAL_DST = 80  # from linux/netfilter_ipv4.h
-# @TODO: This just works for now, but consider refactoring
-PORT = 5000
+INTERNAL_PORT = 5000
 
 def set_ip_forwarding(value: bool) -> None:
     """
@@ -41,15 +40,16 @@ def configure_iptables(network_interface: NetworkInterface, ip: str, port: int) 
         "-A", "PREROUTING",
         "-i", network_interface.name,
         "-p", "tcp",
+        "--dport", str(port),
         "!", "-s", ip,
         "-j", "REDIRECT",
-        "--to-ports", str(port)
+        "--to-ports", str(INTERNAL_PORT)
     ], check=True)
     subprocess.run([
         "iptables",
         "-A", "INPUT",
         "-p", "tcp",
-        "--dport", str(port),
+        "--dport", str(INTERNAL_PORT),
         "-j", "ACCEPT"
     ], check=True)
 
@@ -122,10 +122,12 @@ def run(network_discovery_result_map: NetworkDiscoveryResultMap) -> None:
     """
     Start arp spoofing on the provided interfaces.
     """
+    # @TODO: This just works for now, but consider refactoring
+    port = 5000
 
     set_ip_forwarding(True)
     for network_interface, network_discovery_result in network_discovery_result_map.results.items():
         nsak_ip = network_discovery_result.network_interface.nsak_ip
-        configure_iptables(network_interface, nsak_ip, PORT)
-        print(f"[+] MITM TCP proxy listening on iface {network_interface.name}: {nsak_ip}:{PORT}")
-        threading.Thread(target=start_tcp_proxy, args=(nsak_ip, PORT)).start()
+        configure_iptables(network_interface, nsak_ip, port)
+        print(f"[+] MITM TCP proxy listening on iface {network_interface.name}: {nsak_ip}:{port}")
+        threading.Thread(target=start_tcp_proxy, args=(nsak_ip, port)).start()
