@@ -6,203 +6,174 @@
     \caption{}
     \label{fig:NSAK-use-case-diagram}
 \end{figure}
-Figure~\ref{fig:NSAK-use-case-diagram} illustrates the use case structure of the proposed NSAK modular framework.
-The operator interacts with the NSAK primarily through two high-level commands:
+
+Figure~\ref{fig:NSAK-use-case-diagram} illustrates the use case structure of the proposed \gls{nsak} modular framework.
+The operator interacts with \gls{nsak} primarily through two high-level commands:
 Build Scenario (UC-01) and Run Scenario (UC-06).
 During the Build Scenario use case (UC-01), the system builds a scenario container for execution.
-In complex network infrastructures, additional configuration parameters—such as network interface mappings may be
+In complex network infrastructures, additional configuration parameters, such as network interface mappings may be
 required and need to be provided as build-time arguments (UC-02).
 
 The system loads the selected scenario (UC-03).
 At this stage, the scenario orchestrates the required drills necessary to perform the intended attack.
 
-The build process concludes with the creation of an OCI-compliant container image (UC-05), which encapsulates
+The build process concludes with the creation of an \gls{oci} compliant container image (UC-05), which encapsulates
 the fully configured scenario.
 
 The Run Scenario use case (UC-06) represents an abstract execution phase.
-In this phase, the previously built container image is runed, and the configured attack drills are been executed within
-the containerized environment (UC-08).
+In this phase, the previously built container image is run, and the configured attack drills are executed within the containerized environment (UC-08).
 
-Finally, the system performs a cleanup procedure in which all scenario-specific resources, processes and drills are
-terminated.
-This step minimizes side effects, reduces system noise, and prevents interference other scenarios that may
-reuse the same drills.
-
-
+Finally, the system performs a cleanup procedure in which all scenario-specific resources, processes, and drills are terminated.
+This step minimizes side effects, reduces system noise, and prevents interference with other scenarios that may reuse the same drills.
 
 \todo{drüber lesen und mit UC final ableichen}
+
+
+\newcommand{\uctab}{\par\noindent\hspace{1em}}
+\newcommand{\ucbullet}[1]{\uctab\textbullet~#1}
+
 \begin{longtable}{@{} >{\columncolor{blue!15}}l >{\raggedright\arraybackslash}p{0.75\textwidth} @{}}
     \caption{Use Cases Specification (NSAK)}\\
     \toprule
-    \rowcolor{blue!30}\textbf{NR} \& \textbf{Details} \\
+    \textbf{NR} \& \textbf{Details} \\
     \endfirsthead
     \toprule
-    \rowcolor{blue!30}\textbf{NR} \& \textbf{Details} \\
+    \textbf{NR} \& \textbf{Details} \\
     \endhead
+    \toprule
 
     % --- UC-01 ----------------------------------------------------
-    \textbf{UC-01} &
-    \textbf{Use-Case:} Build Scenario \newline
-    \textbf{Description:} Builds a scenario container based on a selected scenario configuration. \newline
-    \textbf{Actor:} Operator \newline
-    \textbf{Trigger:} Operator initiates scenario build via the command-line interface. \newline
-    \textbf{Preconditions:} NSAK initialized; scenarios available. \newline
-    \textbf{Main Scenario:} \newline
-    1. Operator selects a scenario to build using the command-line interface. \newline
-    2. System validates the selected scenario. \newline
-    3. System executes the included use cases:
-    \begin{itemize}
-        \item Configure Scenario (UC-2)
-        \item Load Scenario (UC-3)
-        \item Load Drills (UC-4)
-        \item Build OCI Container (UC-5)
-    \end{itemize}
-    \textbf{Alternative Scenarios:} No scenarios available → inform operator. \newline
-    \textbf{Error Scenarios:} Conflicting scenario configuration detected → build aborted. \newline
-    \textbf{Result:} Scenario container successfully built. \newline
-    \textbf{Postconditions:} Scenario container stored and ready to run. \\
+    \textbf{UC-01} & \textbf{Use-Case:} Build Scenario \par
+                     \textbf{Description:} Builds a scenario container based on a selected scenario configuration. \par
+                     \textbf{Actor:} Operator \par
+                     \textbf{Trigger:} Operator initiates a scenario build via the command-line interface. \par
+                     \textbf{Preconditions:} \gls{nsak} initialized; scenarios available. \par
+                     \textbf{Main Scenario:} \par
+                     \uctab{} 1. Operator selects a scenario to build using the command-line interface. \par
+                     2. System validates the selected scenario. \par
+                     3. System executes the included use cases: \par
+                         \ucbullet Configure Scenario (UC-2) \par
+                         \ucbullet Load Scenario (UC-3) \par
+                         \ucbullet Load Drills (UC-4) \par
+                         \ucbullet Build \gls{oci} Container (UC-5) \par
+                     \textbf{Alternative Scenarios:} No scenarios available~\rightarrow~inform the operator. \par
+                     \textbf{Error Scenarios:} Conflicting scenario configuration detected~\rightarrow~build aborted. \par
+                     \textbf{Result:} Scenario container successfully built. \par
+                     \textbf{Postconditions:} Scenario container stored and ready to run. \\
     \midrule
-
     % --- UC-02 ----------------------------------------------------
-
-    \textbf{UC-02} &
-    \textbf{Use-Case:} Configure Scenario \newline
-    \textbf{Description:} Defines scenario-specific build parameters such as network interfaces
-    and execution options. \newline
-    \textbf{Actor:} System \newline
-    \textbf{Trigger:} Scenario selected for build (UC-01). \newline
-    \textbf{Preconditions:} Scenario selection available. \newline
-    \textbf{Main Scenario:}
-    1. System applies scenario-specific configuration parameters. \newline
-    \textbf{Result:} Scenario configuration created. \newline
-    \textbf{Postconditions:} Scenario configuration available for loading. \\
+    \textbf{UC-02} & \textbf{Use-Case:} Configure Scenario \par
+                     \textbf{Description:} Defines scenario-specific build parameters such as network interfaces and execution options. \par
+                     \textbf{Actor:} System \par
+                     \textbf{Trigger:} Scenario selected for build (UC-01). \par
+                     \textbf{Preconditions:} Scenario selection is available. \par
+                     \textbf{Main Scenario:}
+                     1. System applies scenario-specific configuration parameters. \par
+                     \textbf{Result:} Scenario configuration created. \par
+                     \textbf{Postconditions:} Scenario configuration available for loading. \\
     \midrule
-
     % --- UC-03 ----------------------------------------------------
-
-    \textbf{UC-03} &
-    \textbf{Use-Case:} Load Scenario \newline
-    \textbf{Description:} Loads and validate the selected scenarios \newline
-    \textbf{Actor:} System \newline
-    \textbf{Trigger:} Scenario configuration available (UC-02). \newline
-    \textbf{Preconditions:} Scenario configuration created. \newline
-    \textbf{Main Scenario:} \newline
-    1. System retrieves the scenario definition files (scenario.yaml, scenario.py, README.md). \newline
-    2. System validates the scenario structure and resolves declared dependencies. \newline
-    \textbf{Error Scenarios:} Validation or dependency failure - preparation aborted with Error Log. \newline
-    \textbf{Result:} Scenario is successfully loaded. \newline
-    \textbf{Postconditions:} Scenario representation available for drill loading. \\
+    \textbf{UC-03} & \textbf{Use-Case:} Load Scenario \par
+                     \textbf{Description:} Loads and validate the selected scenarios \par
+                     \textbf{Actor:} System \par
+                     \textbf{Trigger:} Scenario configuration available (UC-02). \par
+                     \textbf{Preconditions:} Scenario configuration created. \par
+                     \textbf{Main Scenario:} \par
+                     1. System retrieves the scenario definition files (scenario.yaml, scenario.py, README.md). \par
+                     2. System validates the scenario structure and resolves declared dependencies. \par
+                     \textbf{Error Scenarios:} Validation or dependency failure, preparation aborted with Error Log. \par
+                     \textbf{Result:} Scenario is successfully loaded. \par
+                     \textbf{Postconditions:} Scenario representation available for drill loading. \\
     \midrule
-
     % --- UC-04 ----------------------------------------------------
-    \textbf{UC-04} &
-    \textbf{Use-Case:} Load Drills \newline
-    \textbf{Description:} Loads the attack drills required by the selected scenario. \newline
-    \textbf{Actor:} System \newline
-    \textbf{Trigger:} Scenario loaded (UC-03). \newline
-    \textbf{Preconditions:} Scenario representation available. \newline
-    \textbf{Main Scenario:} \newline
-    1. System resolves drill references defined in the scenario configuration. \newline
-    2. System instantiates drill objects and loads associated metadata. \newline
-    \textbf{Error Scenarios:} Invalid drill definition, drill not found, or ambiguous drill reference. \newline
-    \textbf{Result:} Required drill objects loaded. \newline
-    \textbf{Postconditions:} Drills available for container build. \\
+    \textbf{UC-04} & \textbf{Use-Case:} Load Drills \par
+                     \textbf{Description:} Loads the attack drills required by the selected scenario. \par
+                     \textbf{Actor:} System \par
+                     \textbf{Trigger:} Scenario loaded (UC-03). \par
+                     \textbf{Preconditions:} Scenario representation is available. \par
+                     \textbf{Main Scenario:} \par
+                     1. System resolves drill references defined in the scenario configuration. \par
+                     2. System instantiates drill objects and loads associated metadata. \par
+                     \textbf{Error Scenarios:} Invalid drill definition, drill not found, or ambiguous drill reference. \par
+                     \textbf{Result:} Required drill objects loaded. \par
+                     \textbf{Postconditions:} Drills available for container build. \\
     \midrule
-
     % --- UC-05 --------------------------------------------------
-    \textbf{UC-05} &
-    \textbf{Use-Case:} Build OCI Container \newline
-    \textbf{Description:} Builds an OCI-compliant container image for the loaded scenario. \newline
-    \textbf{Actor:} System \newline
-    \textbf{Trigger:} Scenario and drills loaded (UC-03, UC-04). \newline
-    \textbf{Preconditions:} Scenario representation and drill objects available. \newline
-    \textbf{Main Scenario:} \newline
-    1. System generates the container build context. \newline
-    2. System builds the scenario container image with required privileges and network configuration. \newline
-    \textbf{Error Scenarios:} Container build failure - build aborted with error message. \newline
-    \textbf{Result:} OCI-compliant scenario container image built. \newline
-    \textbf{Postconditions:} Scenario container image stored and ready for execution. \\
+    \textbf{UC-05} & \textbf{Use-Case:} Build \gls{oci} Container \par
+                     \textbf{Description:} Builds an \gls{oci} compliant container image for the loaded scenario. \par
+                     \textbf{Actor:} System \par
+                     \textbf{Trigger:} Scenario and drills loaded (UC-03, UC-04). \par
+                     \textbf{Preconditions:} Scenario representation and drill objects available. \par
+                     \textbf{Main Scenario:} \par
+                     1. System generates the container build context. \par
+                     2. System builds the scenario container image with required privileges and network configuration. \par
+                     \textbf{Error Scenarios:} Container build failure — build aborted with an error message. \par
+                     \textbf{Result:} \gls{oci} compliant scenario container image built. \par
+                     \textbf{Postconditions:} Scenario container image stored and ready for execution. \\
     \midrule
-
-
     %--- UC-06 --------------------------------------------------
-    \textbf{UC-06} &
-    \textbf{Use-Case:} Run Scenario \newline
-    \textbf{Description:} Executes a previously built scenario container. \newline
-    Specific scenarios such as Rogue AP or ARP MITM represent specialized configurations of this use case.
-    \textbf{Actor:} Operator \newline
-    \textbf{Trigger:} Operator initiates scenario execution via the command-line interface. \newline
-    \textbf{Preconditions:} Scenario container image available (UC-05). \newline
-    \textbf{Main Scenario:} \newline
-    1. System starts the scenario container with the required execution parameters. \newline
-    2. System executes the included use cases:
-    \begin{itemize}
-        \item Execute Scenario (UC-07)
-        \item Clean Up Scenario (UC-09)
-    \end{itemize}
-    \textbf{Result:} Scenario container execution started. \newline
-    \textbf{Postconditions:} Scenario execution context active. \\
+    \textbf{UC-06} & \textbf{Use-Case:} Run Scenario \par
+                     \textbf{Description:} Executes a previously built scenario container. \par
+                     Specific scenarios such as Rogue AP or ARP MITM represent specialized configurations of this use case.
+                     \textbf{Actor:} Operator \par
+                     \textbf{Trigger:} Operator initiates scenario execution via the command-line interface. \par
+                     \textbf{Preconditions:} Scenario container image available (UC-05). \par
+                     \textbf{Main Scenario:} \par
+                     1. System starts the scenario container with the required execution parameters. \par
+                     2. System executes the included use cases: \par
+                         \ucbullet Execute Scenario (UC-07) \par
+                         \ucbullet Cleanup Scenario (UC-09) \par
+                     \textbf{Result:} Scenario container execution started. \par
+                     \textbf{Postconditions:} Scenario execution context active. \\
     \midrule
-
-
     %--- UC-07 --------------------------------------------------
-
-    \textbf{UC-07} &
-    \textbf{Use-Case:} Execute Scenario \newline
-    \textbf{Description:} Orchestrates the execution of a previously built scenario container and coordinates
-    the execution of the associated attack drills. \newline
-    \textbf{Actor:} System \newline
-    \textbf{Trigger:} Run Scenario (UC-6) \newline
-    \textbf{Preconditions:} Scenario Image available and started \newline
-    \textbf{Main Scenario:} \newline
-    1. System Scenario Manager executes for the selected scenario \newline
-    2. System Drill Manager execute drill UC-8 include use-case
-    \textbf{Error Scenarios:} Scenario not found or scenario container not available. \newline
-    \textbf{Result:} Scenario execution initiated and drill execution orchestrated. \newline
-    \textbf{Postconditions:} Scenario container is running and drills are being executed.\\
+    \textbf{UC-07} & \textbf{Use-Case:} Execute Scenario \par
+                     \textbf{Description:} Orchestrates the execution of a previously built scenario container and coordinates
+                     the execution of the associated attack drills. \par
+                     \textbf{Actor:} System \par
+                     \textbf{Trigger:} Run Scenario (UC-6) \par
+                     \textbf{Preconditions:} Scenario Image available and started \par
+                     \textbf{Main Scenario:} \par
+                     1. System Scenario Manager executes for the selected scenario \par
+                     2. System Drill Manager executes drill UC-8 include use-case
+                     \textbf{Error Scenarios:} Scenario not found or scenario container was not available. \par
+                     \textbf{Result:} Scenario execution initiated and drill execution orchestrated. \par
+                     \textbf{Postconditions:} Scenario container is running and drills are being executed.\\
     \midrule
-
     % --- UC-08 --------------------------------------------------
-    \textbf{UC-08} &
-    \textbf{Use-Case:} Execute Drills \newline
-    \textbf{Description:} Executes the attack drills defined in the scenario configuration within the running scenario
-    container. \newline
-    \textbf{Actor:} System \newline
-    \textbf{Preconditions:} Scenario execution context initialized. \newline
-    \textbf{Main Scenario:} \newline
-    1. System Drill Manager retrieves the list of configured drills. \newline
-    2. System Drill Manager executes the drills according to the defined order and parameters. \newline
-    \textbf{Error Scenarios:} Drill execution failure or missing drill definition. \newline
-    \textbf{Result:} Configured attack drills executed. \newline
+    \textbf{UC-08} & \textbf{Use-Case:} Execute Drills \par
+                     \textbf{Description:} Executes the attack drills defined in the scenario configuration within the running scenario
+                     container. \par
+                     \textbf{Actor:} System \par
+                     \textbf{Preconditions:} Scenario execution context initialized. \par
+                     \textbf{Main Scenario:} \par
+                     1. System Drill Manager retrieves the list of configured drills. \par
+                     2. System Drill Manager executes the drills according to the defined order and parameters. \par
+                     \textbf{Error Scenarios:} Drill execution failure or missing drill definition. \par
+                     \textbf{Result:} Configured attack drills executed. \par
     \midrule
-
     % --- UC-09 --------------------------------------------------
-    \textbf{UC-09} &
-    \textbf{Use-Case:} Clean Up Scenario \newline
-    \textbf{Description:} Terminates the running scenario container and restores the system to a defined baseline
-    state. \newline
-    \textbf{Actor:} System \newline
-    \textbf{Trigger:} Stop Scenario (UC-06) \newline
-    \textbf{Preconditions:} Scenario container is running. \newline
-    \textbf{Main Scenario:} \newline
-    1. System stops the running scenario container. \newline
-    2. System invokes the included use case Clean Up Drills (UC-10). \newline
-    \textbf{Error Scenarios:} Scenario container cannot be terminated. \newline
-    \textbf{Result:} Scenario execution terminated. \newline
-    \textbf{Postconditions:} Scenario container stopped and removed.\\
+    \textbf{UC-09} & \textbf{Use-Case:} Clean Up Scenario \par
+                     \textbf{Description:} Terminates the running scenario container and restores the system to a defined baseline state. \par
+                     \textbf{Actor:} System \par
+                     \textbf{Trigger:} Stop Scenario (UC-06) \par
+                     \textbf{Preconditions:} Scenario container is running. \par
+                     \textbf{Main Scenario:} \par
+                     1. System stops the running scenario container. \par
+                     2. System invokes the included use case Clean Up Drills (UC-10). \par
+                     \textbf{Error Scenarios:} Scenario container cannot be terminated. \par
+                     \textbf{Result:} Scenario execution terminated. \par
+                     \textbf{Postconditions:} Scenario container stopped and removed.\\
     \midrule
     % --- UC-10 --------------------------------------------------
-    \textbf{UC-10} &
-    \textbf{Use-Case:} Clean Up Drills \newline
-    \textbf{Description:} Cleans up artifacts and state changes introduced by executed attack drills. \newline
-    \textbf{Actor:} System \newline
-    \textbf{Preconditions:} Drill execution completed or aborted. \newline
-    \textbf{Main Scenario:} \newline
-    1. System Drill Manager terminates active drill processes. \newline
-    2. System Drill Manager removes temporary artifacts and resets modified parameters. \newline
-    \textbf{Error Scenarios:} Incomplete cleanup due to failed drill termination. \newline
-    \textbf{Result:} Drill-related artifacts removed and state reset. \newline
+    \textbf{UC-10} & \textbf{Use-Case:} Clean Up Drills \par
+                     \textbf{Description:} Cleans up artifacts and state changes introduced by executed attack drills. \par
+                     \textbf{Actor:} System \par
+                     \textbf{Preconditions:} Drill execution completed or aborted. \par
+                     \textbf{Main Scenario:} \par
+                     1. System Drill Manager terminates active drill processes. \par
+                     2. System Drill Manager removes temporary artifacts and resets modified parameters. \par
+                     \textbf{Error Scenarios:} Incomplete cleanup due to failed drill termination. \par
+                     \textbf{Result:} Drill-related artifacts removed and state reset. \\
     \bottomrule
-
-
 \end{longtable}
