@@ -108,14 +108,14 @@ def terminate_tcp_connection(client: socket.socket) -> None:
     threading.Thread(target=forward_tcp_connection, args=(server, client)).start()
 
 
-def start_tcp_proxy(ip: str, port: int) -> None:
+def start_tcp_proxy(ip: str) -> None:
     """
 
 
     :return:
     """
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind((ip, port))
+    sock.bind((ip, INTERNAL_PORT))
     sock.listen()
 
     while True:
@@ -135,4 +135,4 @@ def run(network_discovery_result_map: NetworkDiscoveryResultMap) -> None:
         nsak_ip = network_discovery_result.network_interface.nsak_ip
         configure_iptables(network_interface, nsak_ip, port)
         print(f"[+] MITM TCP proxy listening on iface {network_interface.name}: {nsak_ip}:{port}")
-        threading.Thread(target=start_tcp_proxy, args=(nsak_ip, port)).start()
+        threading.Thread(target=start_tcp_proxy, args=(nsak_ip)).start()
