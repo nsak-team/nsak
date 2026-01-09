@@ -59,25 +59,27 @@ class ScenarioManager:
         )
 
     @classmethod
-    def run(cls, scenario: Scenario) -> int:
+    def run(cls, scenario: Scenario, env_file: str | None = None) -> int:
         """
         Run a scenario image.
         """
         # @TODO: This is potentially insecure and we should replace it with a library:
         # - https://pypi.org/project/docker/
         # - https://pypi.org/project/podman/
-        completed_process = subprocess.run(  # noqa: S603
-            [
-                "/usr/sbin/sudo",
-                "/usr/sbin/podman",
-                "run",
-                "-d",
-                "--privileged",
-                "--network=host",
-                f"--name={scenario.path.name}",
-                f"nsak/scenario/{scenario.path.name}",
-            ]
-        )
+        args = [
+            "/usr/sbin/sudo",
+            "/usr/sbin/podman",
+            "run",
+            "-d",
+            "--rm",
+            "--privileged",
+            "--network=host",
+            f"--name={scenario.path.name}",
+            f"nsak/scenario/{scenario.path.name}",
+        ]
+        if env_file is not None:
+            args.extend(["--env-file", env_file])
+        completed_process = subprocess.run(args)  # noqa: S603
         return completed_process.returncode
 
     @classmethod

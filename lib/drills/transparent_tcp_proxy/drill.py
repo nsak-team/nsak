@@ -33,6 +33,8 @@ def configure_iptables(network_interface: NetworkInterface, ip: str, port: int) 
         "-A", "FORWARD",
         "-i", network_interface.name,
         "-o", network_interface.name,
+        "-p", "tcp",
+        "--dport", str(port),
         "-j", "ACCEPT"
     ], check=True)
     subprocess.run([

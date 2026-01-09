@@ -45,15 +45,22 @@ def build_scenario(name: str) -> None:
 
 @scenario_group.command("run")
 @click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
-def run_scenario(name: str) -> None:
+@click.option(
+    "--env-file",
+    type=str,
+    required=False,
+    help="Path to a .env file with environment variables",
+)
+def run_scenario(name: str, env_file: str | None) -> None:
     """
     Run the scenario container.
 
+    :param env_file:
     :param name: The name of the scenario for which you want to run the container.
     :return:
     """
     scenario = ScenarioManager.get(name)
-    ScenarioManager.run(scenario)
+    ScenarioManager.run(scenario, env_file=env_file)
 
 
 def _parse_args(raw_args: list[str]) -> dict[str, str]:
