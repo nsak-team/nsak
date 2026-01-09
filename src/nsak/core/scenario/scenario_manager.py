@@ -75,10 +75,10 @@ class ScenarioManager:
             "--privileged",
             "--network=host",
             f"--name={scenario.path.name}",
-            f"nsak/scenario/{scenario.path.name}",
         ]
         if env_file is not None:
             args.extend(["--env-file", env_file])
+        args.append(f"nsak/scenario/{scenario.path.name}")
         completed_process = subprocess.run(args)  # noqa: S603
         return completed_process.returncode
 
