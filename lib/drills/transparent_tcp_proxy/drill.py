@@ -29,18 +29,18 @@ def configure_iptables(network_interface: NetworkInterface, ip: str, port: int) 
     """
     subprocess.run(["update-alternatives", "--set", "iptables", "/usr/sbin/iptables-legacy"])
     subprocess.run([
-        "iptables",
-        "-A", "FORWARD",
-        "-i", network_interface.name,
-        "-o", network_interface.name,
-        "-p", "tcp",
-        "--dport", str(port),
-        "-j", "ACCEPT"
-    ], check=True)
-    subprocess.run([
         "iptables", "-t", "nat",
         "-A", "PREROUTING",
         "-i", network_interface.name,
+        "-p", "tcp",
+        "--dport", str(port),
+        "!", "-s", ip,
+        "-j", "REDIRECT",
+        "--to-ports", str(INTERNAL_PORT)
+    ], check=True)
+    subprocess.run([
+        "iptables", "-t", "nat",
+        "-A", "OUTPUT",
         "-p", "tcp",
         "--dport", str(port),
         "!", "-s", ip,
