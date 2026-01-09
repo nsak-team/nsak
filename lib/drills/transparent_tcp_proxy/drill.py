@@ -135,4 +135,4 @@ def run(network_discovery_result_map: NetworkDiscoveryResultMap) -> None:
         nsak_ip = network_discovery_result.network_interface.nsak_ip
         configure_iptables(network_interface, nsak_ip, port)
         print(f"[+] MITM TCP proxy listening on iface {network_interface.name}: {nsak_ip}:{port}")
-        threading.Thread(target=start_tcp_proxy, args=(nsak_ip,)).start()
+        threading.Thread(target=start_tcp_proxy, args=tuple(nsak_ip)).start()
