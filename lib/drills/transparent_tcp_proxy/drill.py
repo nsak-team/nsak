@@ -7,7 +7,8 @@ from nsak.core import NetworkInterface
 from nsak.core.network import NetworkDiscoveryResultMap
 
 SO_ORIGINAL_DST = 80  # from linux/netfilter_ipv4.h
-INTERNAL_PORT = 5000
+INTERNAL_PORT = 15_000
+
 
 def set_ip_forwarding(value: bool) -> None:
     """
@@ -125,7 +126,7 @@ def run(network_discovery_result_map: NetworkDiscoveryResultMap) -> None:
     Start arp spoofing on the provided interfaces.
     """
     # @TODO: This just works for now, but consider refactoring
-    port = 5000
+    port = 5_000
 
     set_ip_forwarding(True)
     for network_interface, network_discovery_result in network_discovery_result_map.results.items():
