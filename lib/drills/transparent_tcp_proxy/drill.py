@@ -7,7 +7,7 @@ from nsak.core import NetworkInterface
 from nsak.core.network import NetworkDiscoveryResultMap
 
 SO_ORIGINAL_DST = 80  # from linux/netfilter_ipv4.h
-INTERNAL_PORT = 15_000
+INTERNAL_PORT = 5_000
 
 
 def set_ip_forwarding(value: bool) -> None:
@@ -42,9 +42,9 @@ def configure_iptables(network_interface: NetworkInterface, ip: str, port: int) 
         "-i", network_interface.name,
         "-p", "tcp",
 
-        "--dport", str(port),
-        "-m", "conntrack",
-        "--ctstate", "NEW",
+        # "--dport", str(port),
+        # "-m", "conntrack",
+        # "--ctstate", "NEW",
 
         "!", "-s", ip,
         "-j", "REDIRECT",
