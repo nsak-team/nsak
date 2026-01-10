@@ -30,7 +30,7 @@ def run_drill(name: str, *args, **kwargs):
         return None
     return DrillManager.execute(DrillManager.get(name), *args, **kwargs)
 
-# todo change args to network interface class from core
+# todo change args to network interface class from core, set up conf context object provided at build time
 def run(args: dict, state: dict | None = None) -> dict:
     """
     Rogue AP orchestration.

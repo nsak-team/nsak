@@ -6,7 +6,7 @@ metadata:
   author: gausf1@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-drills: [ ]
+drills: [ap_mod, network_setup, dnsmasq, nat_forwarding, tshark_capture ]
 
 runtime:
   env:
@@ -23,9 +23,9 @@ runtime:
       mode: "rw"
 
 dependencies:
-  system: [ ]
+  system: [ hostapd, iw, iptables, dnsmasq, procps, tshark ]
   python: [ ]
 
 interface:
-  arguments: [str, str]
+  arguments: [ str, str ]
   return_type: None

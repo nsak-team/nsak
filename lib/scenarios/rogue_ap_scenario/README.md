@@ -3,17 +3,14 @@
 This document describes how to execute the Rogue Access Point scenario using NSAK and how to enable or disable
 individual drills at runtime without modifying code or rebuilding container images.
 
-### 1. Prerequisites
+## 1. Prerequisites
 
-Linux host (tested on NanoPi / BananaPi)
+- Linux host (tested on NanoPi / BananaPi)
+- Podman
+- Python environment with nsak installed
+- Root privileges (required for networking operations)
 
-Podman
-
-Python environment with nsak installed
-
-Root privileges (required for networking operations)
-
-### 2. Scenario Overview
+## 2. Scenario Overview
 
 The Rogue AP scenario consists of the following drills:
 
@@ -26,17 +23,17 @@ Drill name Purpose:
 
 By default, all drills are executed.
 
-### 3. Required Environment Variables
+## 3. Required Environment Variables
 
 The following environment variables must be set for the scenario to run depending on your needs:
 
-NSAK_AP_IF=wlan0 <br>
-NSAK_UPLINK_IF=eth1 <br>
-NSAK_SSID="BFH-Open" <br>
-NSAK_CHANNEL=6 <br>
-NSAK_COUNTRY=CH <br>
+- NSAK_AP_IF=wlan0
+- NSAK_UPLINK_IF=eth1
+- NSAK_SSID="BFH-Open"
+- NSAK_CHANNEL=6
+- NSAK_COUNTRY=CH
 
-### 4. Running the Scenario (All Drills Enabled)
+## 4. Running the Scenario (All Drills Enabled)
 
 ```
    sudo -E env \
@@ -52,12 +49,12 @@ NSAK_COUNTRY=CH <br>
 
 **Result**
 
-Rogue AP is visible <br>
-Clients receive IP addresses <br>
-Internet access via NAT is available <br>
-Traffic is captured to a PCAP file <br>
+- Rogue AP is visible
+- Clients receive IP addresses
+- Internet access via NAT is available
+- Traffic is captured to a PCAP file
 
-### 5. Disabling Individual Drills (Blacklist Mode)
+## 5. Disabling Individual Drills (Blacklist Mode)
 
 Drills can be disabled at runtime using the environment variable:
 
@@ -88,7 +85,7 @@ NSAK_DISABLE_DRILLS=dnsmasq,nat_forwarding
 
 Clients can associate with the AP but receive no IP address or internet access.
 
-### 6. Available Drill Names
+## 6. Available Drill Names
 
 Use drill names, not tool names:
 
@@ -100,7 +97,7 @@ dnsmasq: DHCP + DNS
 nat_forwarding: iptables NAT
 tshark_capture: packet capture
 
-## Containerization
+## 7. Containerization
 
 NSAK scenarios can be built and executed as privileged containers to ensure isolation, reproducibility, and a clean
 runtime environment for network experiments.

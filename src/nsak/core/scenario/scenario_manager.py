@@ -14,6 +14,7 @@ from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
 from nsak.core.scenario.scenario_loader import ScenarioNotFoundError
 
 
+# TODO: Keep flexibility low with default mount /runtime/<scenario-name>
 @dataclass(frozen=True)
 class RuntimeMount:
     """
