@@ -1,12 +1,73 @@
 import importlib.util
+import os
 import subprocess
 import sys
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, List
+
+import yaml
 
 from nsak.core import config
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
 from nsak.core.scenario.scenario_loader import ScenarioNotFoundError
+
+
+# TODO: Keep flexibility low with default mount /runtime/<scenario-name>
+@dataclass(frozen=True)
+class RuntimeMount:
+    """
+    Describes a host container bind mount during scenario execution.
+    """
+
+    host_path: str
+    container_path: str
+    mode: str = "rw"
+
+
+@dataclass(frozen=True)
+class RuntimeSpec:
+    """
+    Describes environment variables and runtime mounts.
+
+    required for scenario container execution.
+    """
+
+    env: list[str]
+    mounts: list[RuntimeMount]
+
+
+def load_manifest(path: Path) -> dict[str, Any]:
+    """
+    Loads the manifest from the yaml file path.
+
+    :param path:
+    :return: dict[str, Any] from yaml
+    """
+    with path.open("r", encoding="utf-8") as f:
+        return yaml.safe_load(f) or {}
+
+
+def parse_runtime(manifest: dict[str, Any]) -> RuntimeSpec:
+    """
+    Parse the runtime manifest and return a RuntimeSpec object.
+
+    :param manifest:
+    :return: RuntimeSpec
+    """
+    runtime = manifest.get("runtime") or {}
+    env = list(runtime.get("env") or [])
+    mounts_raw = list(runtime.get("mounts") or [])
+    mounts = [
+        RuntimeMount(
+            host_path=m["host_path"],
+            container_path=m["container_path"],
+            mode=m.get("mode", "rw"),
+        )
+        for m in mounts_raw
+    ]
+    return RuntimeSpec(env=env, mounts=mounts)
 
 
 class ScenarioManager:
@@ -42,8 +103,8 @@ class ScenarioManager:
         # - https://pypi.org/project/podman/
         subprocess.run(  # noqa: S603
             [
-                "/usr/sbin/sudo",
-                "/usr/sbin/podman",
+                "/usr/bin/sudo",
+                "/usr/bin/podman",
                 "build",
                 "--network=host",
                 config.DOCKER_CONTEXT,
@@ -66,6 +127,15 @@ class ScenarioManager:
         # @TODO: This is potentially insecure and we should replace it with a library:
         # - https://pypi.org/project/docker/
         # - https://pypi.org/project/podman/
+        manifest = load_manifest(scenario.path / "scenario.yaml")
+        runtime = parse_runtime(manifest)
+        # ensure clean container
+        subprocess.run(  # noqa: S603
+            ["/usr/bin/sudo", "/usr/bin/podman", "rm", "-f", scenario.path.name],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
         args = [
             "/usr/sbin/sudo",
             "/usr/sbin/podman",
@@ -76,10 +146,23 @@ class ScenarioManager:
             "--network=host",
             f"--name={scenario.path.name}",
         ]
+        # mounts (scenario-specific)
+        for m in runtime.mounts:
+            # ensure host dir exists
+            os.makedirs(m.host_path, exist_ok=True)
+            args += ["-v", f"{m.host_path}:{m.container_path}:{m.mode}"]
+
+        # env pass-through (scenario-specific)
+        for key in runtime.env:
+            val = os.environ.get(key)
+            if val:
+                args += ["-e", f"{key}={val!s}"]
+
         if env_file is not None:
             args.extend(["--env-file", env_file])
         args.append(f"nsak/scenario/{scenario.path.name}")
         completed_process = subprocess.run(args)  # noqa: S603
+
         return completed_process.returncode
 
     @classmethod

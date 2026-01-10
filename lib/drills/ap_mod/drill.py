@@ -56,8 +56,7 @@ def start(config: AccessPointConfig) -> int:
         stderr=subprocess.STDOUT,
         text=True,
     )  # noqa: S603
-
-    logger.info("hostapd started with PID %s (cfg=%s)", _process.pid, cfg_path)
+    logger.info("[Scenario] Starting hostapd %s", config.interface)
     return _process.pid
 
 #  todo use explicit arguments, maybe with the same data structure as used in MITM scenario
@@ -71,6 +70,8 @@ def run() -> dict[str, Any]:
     pid = start(config)
 
     logger.info("[Scenario] Rogue AP active on %s with SSID %s", config.interface, config.ssid)
+    logger.info("----------------------------------------------------")
+
     return {
         "pid": pid,
         "config_path": str(cfg_path),
