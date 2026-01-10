@@ -1,4 +1,92 @@
-\section{MITM ARP-spoofing}\label{sec:MITM ARP-spoofing}
+In this chapter we will describe what and how we implemented the \acrshort{nsak} framework, the first two scenarios, their drills and environments.
+To efficiently describe the implementation, we reference paths and files relative to the repositories root directory~\cite{nsakRepository2026}.
+
+\section{\acrshort{nsak} framework}\label{sec:nsak_framework}
+
+In this section we describe which technologies we choose to implement the \acrshort{nsak} framework and the resource library.
+
+As this project is a so called monorepo, the logical primary driver for the technology stack and dependencies is the core component.
+The following system components such as the resource library and the CLI will inherit the technology stack, the python and system dependencies.
+For this reason, the components following the core will only describe what they introduce additionally.
+
+\textbf{Core}\\
+
+\todo{Describe why we choose this technology, maybe we find references which underline the ease of use and advantages for modularity which are comming with python}
+
+\begin{itemize}
+    \item Programming language: Python
+    \item Dependency manager: uv
+    \item Virtual environment manager: uv
+    \item Package build tool: uv
+    \item Linter: ruff
+    \item Formatter: ruff
+    \item Type checker: mypy
+    \item Testing framework: pytest
+\end{itemize}
+
+Python dependencies:
+\begin{itemize}
+    \item pyyaml: Library for loading, validating and reading yaml files
+    \item scapy: Library for red team operations
+    \item pre-commit: Package to enforce code quality tools for each commit
+\end{itemize}
+
+\textbf{System Dependencies}\\
+As we leverage the abstraction of \acrshort{oci} containers to run scenarios in an encapsulated environment, we have only a minimal set of system dependencies.
+All system dependencies that are required for running a drill or a scenario are installed into the scenario image, during the build process.
+
+\begin{itemize}
+    \item Version control: git
+    \item Network tooling: iptables (we should switch to nf\_tables)
+    \item OCI container manager: podman
+    \item OCI container orchestrator: podman-compose
+    \item Programming languages: python3, python3-pip, uv
+    \item Utilities: curl, sudo
+\end{itemize}
+
+\textbf{Resource library}\\
+\\
+
+\textbf{CLI}\\
+
+Python dependencies:
+\begin{itemize}
+    \item click: Library for building CLIs
+\end{itemize}
+
+\section{\acrshort{mitm} (ARP-spoofing / transparent TCP Proxy)}\label{sec:mitm_arp_spoofing_transparent_tcp_proxy}
+
+\textbf{Network Topology / Environment}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{../assets/figures/diagrams/concept-architecture-diagrams/mitm_arp_spoofing_transparent_tcp_proxy}
+    \caption{}
+    \label{fig:mitm-arp-spoofing-transparent-tcp-proxy}
+\end{figure}
+
+Figure~\ref{fig:mitm-arp-spoofing-transparent-tcp-proxy} illustrates the network topology used for the \acrfull{mitm} scenario.
+It consists of two dotted circles separating the network boundaries of two networks.
+The left circle is describing a simple \acrshort{tcp} client - server environment consisting of Alice (client), Bob (server), a network switch, and the \acrshort{nsak} device which was placed in the target network.
+The right circle is sketching the management network, which is used by a red team operator to remotely execute the \acrshort{mitm} scenario on the \acrshort{nsak} device.
+
+\textbf{\acrshort{mitm} scenario implementation}\\
+This section describes the technical realization of the \acrshort{mitm} scenario within the \acrshort{nsak} framework.
+
+\todo{Lücku: Complete this section}
+
+\textbf{Simple TCP client - server environment}\\
+For development and testing purposes the simple \acrshort{tcp} client - server environment was added as a resource to the \acrshort{nsak} repository under~\texttt{lib/environments/simple\_tcp\_client\_server}.
+The resource includes a virtualized lab setup with podman/docker compose file (\texttt{lib/environments/simple\_tcp\_client\_server/compose.yaml}) and provides an extensive readme file (\texttt{lib/environments/simple\_tcp\_client\_server/README.md}), describing the setup of this environment as a physical lab environment.
+This physical lab setup builds the basis for the experiment, verifying that the \acrshort{mitm} scenario works in a real world environment.
+The compose file provides a possible representation of the target network with containers acting as Alice and Bob.
+The containers entrypoints are two Python scripts, which are implementing the behavior as a \acrshort{tcp} client for Alice and as a \acrshort{tcp} server for Bob.
+Because the default network driver used by podman and docker compose is abstracting away the data link of the OSI model,
+the configuration of the macvlan network driver is required to simulate the networks behavior on layer 2 correctly.
+The \acrshort{mitm} scenario resource under~\texttt{lib/scenarios/mitm/} contains a subfolder containing another readme file (\texttt{lib/scenarios/mitm/environments/simple\_tcp\_client\_server/README.md}), describing its integration in this physical lab environment.
+This subfolder also provides a podman/docker compose file (\texttt{lib/scenarios/mitm/environments/simple\_tcp\_client\_server/compose.yaml}) which extends the compose file of this resource, providing a complete setup for running the scenario in a simulation.
+The \acrshort{nsak} framework was then extended with the ability to simulate a scenario in a compatible environment which provides a podman/docker compose implementation.
+
 
 \section{Rogue Access Point}\label{sec: Rogue Access Point}
 
@@ -11,7 +99,7 @@
     \label{fig:rogue-ap}
 \end{figure}
 
-Figure\ref {fig:rogue-ap} illustrates the network topology used for the Rogue Access Point scenario.
+Figure~\ref{fig:rogue-ap} illustrates the network topology used for the Rogue Access Point scenario.
 The NSAK device is positioned between the wireless clients and an upstream host system acting as an internet gateway.
 Two network interfaces are used on the NSAK device: a wireless interface (wlan0) operating in access point mode,
 and a wired uplink interface (eth1) connected to the host system.
