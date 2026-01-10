@@ -14,14 +14,13 @@ The Network traffic was captured in a PCAP file.
 
 \subsection{Research Questions}\label{subsec: Research Questions}
 \textbf{RQ1 – Modularity}\label{RQ1 - Modularity}
-RQ1: Can network security scenarios be composed from independent drills without modifying the core framework?
+RQ1: Can network security scenarios be composed of independent drills without modifying the core framework?
 
 
 To ensure modularity, every drill should be able to work independently.
 When setting the DISABLE-DRILL environment variable, remaining drills should execute independently without failure.
 For example, if everything is disabled besides the ap-mode drill, the network should still be discoverable from clients.
-In T4\ref{tab:modular-execution}, IP forwarding, uplink, and capture should not be executed and therefore are not working.
-
+In T4~\ref{tab:modular-execution}, IP forwarding, uplink, and capture should not be executed and therefore are not working.
 
 During the process, each drill has a specific attack goal or functionality.
 No implicit dependencies between drills were observed during execution.
