@@ -1,12 +1,9 @@
-\section{Method}\label{sec: Method}
 
-
-\subsection{Research Approach}\label{subsec: Research Approach}
+\section{Research Approach}\label{sec: Research Approach}
 This work follows a design-oriented research approach and presents a proof of concept of a
 modular network sniffing framework named NSAK (Network Swiss Army Knife).
 The objective is not to introduce a new type of network attack techniques, but to design and implement
 a modular framework that enables reproducibility and encapsulation in network security systems.
-
 
 The Swiss Army Knife inspires the conceptual design of the NSAK device:
 Instead of providing a single-purpose tool, the framework offers multiple small specialized components.
@@ -14,16 +11,11 @@ that can be used depending on the operation.
 For the NSAK device, the operational environment is the network.
 Situations are represented as scenarios, and Individual tools for performing a task are implemented as drills.
 
-
 The research is primarily based on existing scientific literature, including journal articles, conference papers, and
 established open source networking tools.
 The focus lies on system integration, modularization, architectural design, reproducibility, and experimental validation rather than theoretical innovation.
 
-
-
-
-\subsection{System Design Strategy}\label{subsec: System Design Strategy}
-
+\section{System Design Strategy}\label{sec: System Design Strategy}
 
 The NSAK framework is structured in three main layers: a core backend, a CLI package, and a library package.
 The NSAK device comprises three components: environments, scenarios, and drills.
@@ -32,27 +24,13 @@ loads, manages, and executes.
 The click CLI provides all the user handling over the command line.
 
 
-\todo{sollen wir das rausnehmen}
-From a contributor’s perspective, extending the framework requires answering three guiding questions:
-
-
-\begin{itemize}
-\item In which network environment is the NSAK device operating?
-\item Which scenario should be executed in that environment?
-\item Which drills are required to implement the scenario?
-\end{itemize}
-\todo{end}
-
-
-\subsection{Scenario Oriented Orchestration}\label{subsec: Scenario Oriented Orchestration}
+\textbf{Scenario Oriented Orchestration}
 Scenarios are responsible for orchestrating drills and defining the drill order in which they are executed.
 Therefore, it needs specific parameters to be passed to the drill.
 Finally, the scenario is responsible for managing the cleanup process of the drills.
 
-
 Each scenario is designed to run inside a containerized environment, to ensure reproducibility and isolation.
 While the scenario runs in the container, the drills it orchestrates execute privileged operations on the host system.
-
 
 A scenario consists of:
 \begin{itemize}
@@ -61,11 +39,9 @@ A scenario consists of:
     \item and a README.md file providing configuration, tips, and documentation
 \end{itemize}
 
-
-\subsection{Modular Drill-Based Architecture}\label{subsec: Modular Drill-Based Architecture}
+\textbf{Modular Drill-Based Architecture}
 A drill represents the smallest functional unit within the NSAK framework.
 Each drill is responsible for a specific task.
-
 
 A drill consists of:
 \begin{itemize}
@@ -74,23 +50,20 @@ A drill consists of:
     \item and a README.md file providing configuration, tips, and documentation
 \end{itemize}
 
-
 By design, drills are independent, allowing them to be reused across multiple scenarios.
 This modularity enables flexible composition and contribution while keeping the components focused and straightforward.
 
-
-\subsection{Experimental Setup}\label{subsec: Experimental Setup}
-
+\textbf{Experimental Setup}
 
 The experimental setup was conducted on an arm-based embedded system equipped with a wireless interface.
 The following criteria were used to assess the framework:
 \begin{itemize}
-\item
-successful execution of individual drills,
-\item
-correct orchestration of multiple drills within a scenario,
-\item
-and reproducibility of experimental results.
+    \item
+    successful execution of individual drills,
+    \item
+    correct orchestration of multiple drills within a scenario,
+    \item
+    and reproducibility of experimental results.
 \end{itemize}
 The evaluation demonstrates that the NSAK framework enables structured, modular,
 and repeatable experimentation in network security research environments.
@@ -105,14 +78,11 @@ a gateway host system, an embedded NSAK device (NanoPi or Banana Pi R4),
 and multiple Wi-Fi client devices, including tablets, laptops, or smartphones.
 
 
-\subsection{Delimitation}\label{subsec: Delimitation}
+\textbf{Delimitation}
 This work does not aim to evaluate attack success rates in real-world environments.
 The focus is limited to architectural design and functional validation.
 
-
-\subsection{Project Management}\label{subsec:Project Management}
+\section{Project Management}\label{sec: Project Management}
 The development process used GitLab for version control and issue tracking.
 An issue board was used to structure development tasks, track progress, and enable the project for future contributions and further development.
 This approach improves traceability and enables the review of design decisions in the repository.
-
-

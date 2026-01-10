@@ -1,6 +1,6 @@
 \section{Evaluation}\label{sec: Evaluation}
 
-\subsubsection{Generel Functionality of a Rogue Access Point}\label{subsubsec: General Functionality}
+\subsection{Generel Functionality of a Rogue Access Point}\label{subsec: General Functionality}
 The Rogue Access Point scenario was executed with different combinations of drills to test the modularity and the
 independent drill execution.
 The expected outcome is the creation of an open Wi-fi access point broadcasting the configured SSID,
@@ -12,7 +12,8 @@ During execution, the access point was successfully created, and client devices 
 via DHCP.
 The Network traffic was captured in a PCAP file.
 
-\subsection*{RQ1 – Modularity}
+\subsection{Research Questions}\label{subsec: Research Questions}
+\textbf{RQ1 – Modularity}\label{RQ1 - Modularity}
 RQ1: Can network security scenarios be composed from independent drills without modifying the core framework?
 
 
@@ -43,7 +44,7 @@ No implicit dependencies between drills were observed during execution.
     \label{tab:modular-execution}
 \end{table}
 
-\subsection*{RQ2 – Reusability}
+\textbf{RQ2 – Reusability}\label{RQ2 - Reusability}
 RQ2: Can individual drills be reused across different scenarios with minimal configuration effort?
 
 
@@ -55,7 +56,7 @@ Scenario-specific behavior was controlled through environment variables such as 
 
 These results confirm that drills are scenario-orchestrated and can be composed flexibly with minimal modification.
 
-\subsection*{RQ3 – Containerization}
+\textbf{RQ3 – Containerization}\label{RQ3 - Containerization}
 RQ3: Does container-based execution provide sufficient isolation while maintaining required network functionality?
 
 
@@ -71,7 +72,7 @@ During scenario execution, all network services were started in privileged mode 
 During container-based execution, network interfaces, routing rules, and packet capture were successfully initialized.
 The drills ap-mode, network setup, dnsmasq, thsark left certain config files and rules in iptables and filepaths.
 
-\subsection*{RQ4 – Reproducibility}
+\textbf{RQ4 – Reproducibility}\label{RQ4 - Reproducibility}
 RQ4: Can scenarios be executed repeatedly without changing the system behavior?
 
 
@@ -100,5 +101,3 @@ sowie Tabellen und gibt deren Kernaussagen wieder (siehe 3.2).
 – Eine wissenschaftliche Arbeit darf Widersprüche nicht unterdrücken, sondern nennt sie explizit und diskutiert sie im Diskussionsteil.
 – Wichtige Ergebnisse sollen Raum bekommen. Ergänzende Details und umfangreiche Daten dagegen gehören in den Anhang der
 Arbeit.
-
-

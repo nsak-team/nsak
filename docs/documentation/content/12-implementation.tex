@@ -1,10 +1,8 @@
-\section{Implementation}\label{sec:implementation}
+\section{MITM ARP-spoofing}\label{sec:MITM ARP-spoofing}
 
-\subsection{MITM ARP-spoofing}\label{subsec:MITM ARP-spoofing}
+\section{Rogue Access Point}\label{sec: Rogue Access Point}
 
-\subsection{Rogue Access Point}\label{subsec: Rogue Access Point}
-
-\subsubsection{Network Topology}{subsubsec: Network Topology}
+\textbf{Network Topology}
 
 \begin{figure}[H]
     \centering
@@ -18,7 +16,7 @@ The NSAK device is positioned between the wireless clients and an upstream host 
 Two network interfaces are used on the NSAK device: a wireless interface (wlan0) operating in access point mode,
 and a wired uplink interface (eth1) connected to the host system.
 
-\subsubsection{Rogue Access Point Implementation}\label{subsubsec: RAP Implementation}
+\textbf{Rogue Access Point Implementation}
 This section describes the technical realization of the Rogue Access Point scenario within the NSAK framework.
 The focus lies on the integration of wireless access point functionality, traffic forwarding,
 and packet capture.
@@ -28,7 +26,7 @@ Within the NSAK framework, the Rogue Access Point scenario is implemented as a c
 Each drill encapsulates a single operational responsibility, allowing the scenario to orchestrate the drills separately,
 ant to remain modular and extensible.
 
-\subsubsection{Scenario}\label{subsubsec: Scenario structure and involved components}
+\textbf{Scenario}
 The Rogue Access Point scenario consists of several drills that are executed sequentially to establish a functional
 wireless access point capable of intercepting and forwarding network traffic.
 
@@ -39,7 +37,7 @@ wireless access point capable of intercepting and forwarding network traffic.
     \item Packet capture and monitoring
 \end{itemize}
 
-\subsubsection{Drills}\label{subsubsec: RAP Drills}
+\textbf{Drills}
 
 
 \textbf{The Hostapd Drill} is responsible for configuring the wireless network interface of the NSAK device in access

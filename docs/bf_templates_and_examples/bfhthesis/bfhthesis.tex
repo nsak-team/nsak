@@ -58,8 +58,8 @@
 %---------------------------------------------------------------------------
 % Blind text -> for dummy text
 %---------------------------------------------------------------------------
-\usepackage{blindtext}    
-\usepackage{letltxmacro}   
+\usepackage{blindtext}
+\usepackage{letltxmacro}
 \LetLtxMacro{\blindtextblindtext}{\blindtext}
 
 \RenewDocumentCommand{\blindtext}{O{\value{blindtext}}}{
@@ -176,7 +176,7 @@
 %------------ START MAIN PART ------------
 \mainmatter
 
-\chapter{First Thesis Chapter}
+\chapter{Concept and Implementation}
 \input{content/introduction}
 \input{content/methods}
 \input{content/results}
@@ -195,20 +195,20 @@
 
 %------------ List of Figures ------------
 \listoffigures
- 
+
 %------------ List of Tables -------------
 \listoftables
- 
+
 %------------ List of Listings -----------
-\lstlistoflistings 
- 
+\lstlistoflistings
+
 %------------ Glossary -------------------
 \printglossary
 
 %------------ Index ----------------------
 \clearpage
 \printindex
-%------------ Appendix ----------------	
+%------------ Appendix ----------------
 \appendix
 \chapter{First Appendix Chapter}
 
