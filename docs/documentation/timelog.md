@@ -107,6 +107,23 @@ Each section contains a table with activity entries for the respective week.
 | 2025-12-30       | Add sequece diagram and diagram description in documentation                                                                 | 4h        |                |                                                                                                        |
 | 2025-12-31       | Add methodik in documentation                                                                                                | 6h        |                |                                                                                                        |
 | 2026-01-01       | Add Rogue AP implementation, start evaluation rogue ap                                                                       | 5h        |                |                                                                                                        |
+| 2026-01-02       | Testing evaluation, add discussion                                                                                           | 7h        |                |                                                                                                        || 2026-01-03       |                                                                                                                              |           |                |                                                                                                        |
+| **Sub Total**    |                                                                                                                              | **30**    |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
+| 2026-01-05       | Rework "Rogue Ap Scenario", add containerization, path bugfix                                                                | 6h        |                |                                                                                                        |
+| 2026-01-07       | Add drill disalbing for evalutaion                                                                                           | 4h        |                |                                                                                                        |
+| 2026-01-08       | Add evaluation to doc, testing with lukas, refactor doc                                                                      | 4h?       |                |                                                                                                        |
+| 2026-01-09       | NSAK Checkpoint, add discussion to doc                                                                                       | 4h?       |                |                                                                                                        |
+| 2026-01-10       | start presentation and finalization doc                                                                                      | 6h?       |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
+| **Sub Total**    |                                                                                                                              | **10h**   |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
+|                  |                                                                                                                              |           |                |                                                                                                        |
 |                  |                                                                                                                              |           |                |                                                                                                        |
 |                  |                                                                                                                              |           |                |                                                                                                        |
 |                  |                                                                                                                              | **23**    |                |                                                                                                        |
@@ -240,10 +257,10 @@ Each section contains a table with activity entries for the respective week.
 
 ## Combined Summary
 
-| Member    | Total Hours | Focus Areas                           |
-|-----------|-------------|---------------------------------------|
-| Frank     | 157 h       | Research, Docs, DevOps, Developments, |
-| Lukas     | 181 h       | Planning, Project Setup, Docs         |
-| **Total** | 338 h       |                                       |
+| Member    | Total Hours | Focus Areas                          |
+|-----------|-------------|--------------------------------------|
+| Frank     | 174 h       | Research, Docs, DevOps, Developments |
+| Lukas     | 181 h       | Planning, Project Setup, Docs        |
+| **Total** | 355 h       |                                      |
 
 Goal: 150 - 180 hours per student

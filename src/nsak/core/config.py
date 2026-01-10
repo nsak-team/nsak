@@ -1,6 +1,20 @@
 import os
-from ipaddress import IPv4Network
 from pathlib import Path
+
+
+def parse_list(env_var: str, default: list[str] | None = None) -> list[str]:
+    """
+    Parse a comma separated list of strings.
+
+    :param default:
+    :param env_var:
+    :return:
+    """
+    raw = os.environ.get(env_var, None)
+    if raw is None:
+        return default or []
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
 
 ENV_BASE_PATH = os.environ.get("NSAK_BASE_PATH", None)
 ENV_LIBRARY_PATH = os.environ.get("NSAK_LIBRARY_PATH", None)
@@ -14,4 +28,6 @@ LIBRARY_PATHS = {Path(ENV_LIBRARY_PATH) if ENV_LIBRARY_PATH else BASE_PATH / "li
 DEBUG = True
 DOCKER_CONTEXT = BASE_PATH
 
-MANAGEMENT_NETWORKS = [IPv4Network("10.10.20.0/24")]
+TARGET_INTERFACES = parse_list("TARGET_INTERFACES")
+MANAGEMENT_INTERFACES = parse_list("MANAGEMENT_INTERFACES")
+MANAGEMENT_NETWORKS = parse_list("NSAK_MANAGEMENT_NETWORKS")

@@ -3,6 +3,8 @@ import dataclasses
 from scapy.all import conf
 from scapy.interfaces import NetworkInterface as ScapyNetworkInterface
 
+from nsak.core.config import MANAGEMENT_INTERFACES, TARGET_INTERFACES
+
 # Interface flag to check if an interface is UP, where UNKNOWN is considered UP.
 IFF_UP = 0x1
 
@@ -75,7 +77,7 @@ class NetworkInterface:
         :return:
         """
         # @TODO: Add logic to configure target interfaces, so that we don't run exploits on unwanted networks
-        return self.name != "lo"
+        return self.name != "lo" and self.name not in TARGET_INTERFACES
 
     @property
     def is_management(self) -> bool:
@@ -85,7 +87,7 @@ class NetworkInterface:
         :return:
         """
         # @TODO: Add logic to configure management interfaces.
-        return False
+        return self.name in MANAGEMENT_INTERFACES
 
 
 def get_network_interfaces() -> list[NetworkInterface]:

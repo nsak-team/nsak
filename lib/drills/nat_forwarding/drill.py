@@ -36,6 +36,7 @@ def add_nat_rules(interface: str, uplink_interface: str):
         "RELATED,ESTABLISHED", "-j", "ACCEPT"
     ], check=True)
     logger.info("NAT rules enabled on [AP-INTERFACE]" + interface + "[UPLINK-INTERFACE] " + uplink_interface)
+    logger.info("----------------------------------------------------")
 
 
 def run(args: dict):

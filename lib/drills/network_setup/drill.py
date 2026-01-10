@@ -18,3 +18,4 @@ def run(interface: str):
         text=True,
     )
     logger.info(f"{proc.stdout} {gateway_ip} on {interface}")
+    logger.info("----------------------------------------------------")

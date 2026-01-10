@@ -1,4 +1,5 @@
 import dataclasses
+from ipaddress import IPv4Network
 
 from nsak.core.config import MANAGEMENT_NETWORKS
 from nsak.core.network.network_interface import NetworkInterface
@@ -14,7 +15,7 @@ def in_management_networks(ip: IPAddress) -> bool:
     :return:
     """
     for management_network in MANAGEMENT_NETWORKS:
-        if ip in management_network:
+        if ip in IPv4Network(management_network):
             return True
     return False
 

@@ -34,11 +34,10 @@ def run(interface: str) -> subprocess.Popen:
         f"dhcp-leasefile={leases_path}",
         "log-dhcp",
     ]) + "\n"
-    logger.warning("dnsmasq RUN_PATH=%s (NSAK_RUN_PATH=%r)", RUN_PATH, RUN_PATH)
-    logger.warning("dnsmasq conf_path=%s leases_path=%s", conf_path, leases_path)
 
     conf_path.write_text(conf.strip() + "\n")
     logger.info("DHCP config written:\n%s", conf)
+    logger.info("----------------------------------------------------")
 
     dnsmasq_bin_path = Path("/usr/sbin/dnsmasq")
 
@@ -60,12 +59,13 @@ def run(interface: str) -> subprocess.Popen:
 
 
 def cleanup(proc: subprocess.Popen) -> None:
+    # check before termination if process is already finished
     if proc.poll() is not None:
         return
 
     proc.terminate()
     try:
-        proc.wait(timeout=2)
+        proc.wait(timeout=2) # time to clean to avoid zombie processes
     except subprocess.TimeoutExpired:
-        proc.kill()
+        proc.kill()          # last resort kill the process
         proc.wait(timeout=2)

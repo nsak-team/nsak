@@ -120,7 +120,7 @@ class ScenarioManager:
         )
 
     @classmethod
-    def run(cls, scenario: Scenario) -> int:
+    def run(cls, scenario: Scenario, env_file: str | None = None) -> int:
         """
         Run a scenario image.
         """
@@ -136,46 +136,32 @@ class ScenarioManager:
             stderr=subprocess.DEVNULL,
         )
 
-        cmd = [
-            "/usr/bin/sudo",
-            "/usr/bin/podman",
+        args = [
+            "/usr/sbin/sudo",
+            "/usr/sbin/podman",
             "run",
             "-d",
+            "--rm",
             "--privileged",
             "--network=host",
             f"--name={scenario.path.name}",
-            "-e",
-            "PYTHONPATH=/nsak",  # set env path for python
         ]
-
         # mounts (scenario-specific)
         for m in runtime.mounts:
             # ensure host dir exists
             os.makedirs(m.host_path, exist_ok=True)
-            cmd += ["-v", f"{m.host_path}:{m.container_path}:{m.mode}"]
+            args += ["-v", f"{m.host_path}:{m.container_path}:{m.mode}"]
 
         # env pass-through (scenario-specific)
         for key in runtime.env:
             val = os.environ.get(key)
             if val:
-                cmd += ["-e", f"{key}={val!s}"]
+                args += ["-e", f"{key}={val!s}"]
 
-        # image name
-        cmd.append(f"nsak/scenario/{scenario.path.name}")
-
-        completed_process = subprocess.run(  # noqa: S603
-            cmd,
-            text=True,
-            capture_output=True,
-        )
-
-        if completed_process.returncode != 0:
-            error_msg = (
-                f"podman run failed rc= {completed_process.returncode} | stdout:{completed_process.stdout} "
-                f"stderr: {completed_process.stderr} "
-            )
-
-            raise RuntimeError(error_msg)
+        if env_file is not None:
+            args.extend(["--env-file", env_file])
+        args.append(f"nsak/scenario/{scenario.path.name}")
+        completed_process = subprocess.run(args)  # noqa: S603
 
         return completed_process.returncode
 

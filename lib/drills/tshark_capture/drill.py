@@ -17,6 +17,7 @@ def run(interface: str) -> subprocess.Popen:
         "-w", pcap_path
     ])
     logger.info("tshark pcap capture started")
+    logger.info("----------------------------------------------------")
     return proc
 
 def cleanup(proc: subprocess.Popen) -> None:
