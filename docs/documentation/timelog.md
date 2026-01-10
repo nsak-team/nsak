@@ -253,14 +253,20 @@ Each section contains a table with activity entries for the respective week.
 | 2026-01-01      | Work on Documentation: Add glossary, work on introduction, add subchapters                                                   | 7.5 h      |               |                                                                                                           |
 | **Sub Total**   |                                                                                                                              | **18.5 h** |               |                                                                                                           |
 |                 |                                                                                                                              |            |               |                                                                                                           |
-| **Total**       |                                                                                                                              | **181 h**  |               |                                                                                                           |
+| **Week 16:**    |                                                                                                                              |            |               |                                                                                                           |
+| 2026-01-08      | Prepare and test demo with Frank and apply fixes and improvements                                                            | 4 h        | Preparation   |                                                                                                           |
+| 2026-01-09      | Meeting and demo with Professor and Frank                                                                                    | 2 h        | Demo          |                                                                                                           |
+| 2026-01-10      | Work on Documentation with Frank                                                                                             | 6 h        | Documentation |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | *12 h**    |               |                                                                                                           |
+|                 |                                                                                                                              |            |               |                                                                                                           |
+| **Total**       |                                                                                                                              | **193 h**  |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                          |
 |-----------|-------------|--------------------------------------|
 | Frank     | 174 h       | Research, Docs, DevOps, Developments |
-| Lukas     | 181 h       | Planning, Project Setup, Docs        |
-| **Total** | 355 h       |                                      |
+| Lukas     | 193 h       | Planning, Project Setup, Docs        |
+| **Total** | 367 h       |                                      |
 
 Goal: 150 - 180 hours per student
