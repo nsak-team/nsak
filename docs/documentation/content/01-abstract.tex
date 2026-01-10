@@ -1,17 +1,18 @@
-
-We describe NSAK-devive as an embedded, modular, open source, scenario-based network sniffing and security framework.
+We describe \acrfull{nsak} as a modular, open-source, scenario-based network security framework,
+which is designed to be deployed on embedded hardware.
 We provide an overview of the system design, emphasizing the functionality of a Swiss Army Knife in a networking context.
-The attack scenario includes drills that configure or target a specific task to observe or open an attack vector in the system.
-NSAK-device is based on a core back-end part that manages specific environments, scenarios, and drills.
-The whole concept is based on containerization, where each container builds or prepares a scenario that can be triggered in a network environment.
-In the analogy of the Swiss Army Knife, the right knife with the proper drills for the necessary task can be selected.
-Modularity comes into play when a drill is selected across multiple scenarios.
-The system was evaluated two different embedded ARM-based devices which a modular drill execution across different scenarios.
-
-These results indicate that NSAK-device is well suited for security experimentation and controlled attack simulations in
-constrained environments.
-The framework provides a practical foundation for network security analysis and can be extended to support automated
+A \acrshort{nsak} scenario describes a common red or blue team activity for specific network environments and
+provides an automated and configurable implementation, based on multiple drills.
+Drills are the modular and configurable technical building blocks that can be used across multiple scenarios to configure the \acrshort{nsak} device or execute a specific task for reconnaissance or exploitation in the target network.
+In the analogy of the Swiss Army Knife, the right knife with the proper drills can be selected to solve a certain task.
+The \acrshort{nsak} framework is based on a core backend that implements an API to manage the framework configuration and resources such as environments, scenarios, and drills.
+The provided core-API is used by the CLI implementation to enable user interaction and could be used for other frontends and systems in the future.
+Another important concept of the framework is containerization, where each scenario can be built as an \acrshort{oci} container and executed on a provisioned \acrshort{nsak} device in a network environment.
+To prove that the concepts are working in the real world, we evaluated two different embedded ARM-based systems and executed experiments with the implemented scenarios in physical lab environments.
+The results of these experiments indicate that \acrshort{nsak} is well suited for security experimentation and controlled attack simulations on
+constrained systems.
+On the other hand, it showed that the automation of such scenarios requires a lot of assumptions about the target environment, which potentially renders them very brittle.
+The framework provides a practical foundation for network security research and can be extended to support automated
 testing and future attack scenarios.
 
-Keywords
-Network intrusion detection, Network Monitoring, Red/Blue Team
+Keywords: Modular Security Automation Framework, Network Reconnaissance, Exploitation, Red/Blue Team
