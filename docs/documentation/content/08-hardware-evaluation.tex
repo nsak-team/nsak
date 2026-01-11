@@ -1,6 +1,6 @@
-\section{Hardware Requirements and Specification}\label{sec: Hardware Requirements and Specification}
+\section{Hardware Requirements}\label{sec:hardware-requirements}
 
-The following requirements were defined for the hardware platform used in this project:
+Based on the vaguely described minimum requirements in the section Devices~\ref{subsec:devices, we defined the following requirements for the hardware platform used in this project:
 \begin{itemize}
 	\item At least two native Ethernet interfaces for inline packet sniffing
 	\item Support for 2.5~GbE or higher
@@ -12,7 +12,7 @@ The following requirements were defined for the hardware platform used in this p
 \end{itemize}
 \newpage
 
-\textbf{Evaluated Boards}
+\section{Evaluated Boards}\label{sec:evaluated-boards}
 
 Several boards were considered as potential variants.
 Their main specifications relevant to the project are listed in Table~\ref{tab:boardspecs}.
@@ -53,7 +53,7 @@ Their main specifications relevant to the project are listed in Table~\ref{tab:b
 			\hline
 			\textbf{\large Requirement} & \textbf{\large R3 Mini} & \textbf{\large R3} & \textbf{\large R4} & \textbf{\large R5} & \textbf{\large RPi 4} & \textbf{\large RPi 5} & \textbf{NanoPi R76S}\\
 			\hline
-			\scriptsize ≥ 2 native Ethernet interfaces & \ding{51} & \ding{51} & \ding{51} & \ding{51} & \ding{55} & \ding{55} & \ding{51} \\
+			\scriptsize \geq 2 native Ethernet interfaces & \ding{51} & \ding{51} & \ding{51} & \ding{51} & \ding{55} & \ding{55} & \ding{51} \\
 			\hline
 			\scriptsize RAM > 4GB & \ding{55} & \ding{55} & \ding{51} &\ding{51} &
 			\ding{55} & \ding{51} & \ding{51} \\
@@ -77,9 +77,9 @@ Their main specifications relevant to the project are listed in Table~\ref{tab:b
 	\textbf{Legend:}~\ding{51} = Requirement fulfilled, \ding{55} = Requirement not fulfilled, \ding{115} = Partially fulfilled / limited
 \end{table}
 
-\textbf{Decision}
+\section{Hardware Selection}\label{sec:hardware-selection}
 
-Based on the defined requirements and the evaluation of alternatives, the \textbf{Banana Pi R4} and the\textbf{NanoPI R76S} are the most suitable hardware platforms for this prototype implementation.
+Based on the defined requirements and the evaluation of alternatives, the~\textbf{Banana Pi R4} and the~\textbf{NanoPI R76S} are the most suitable hardware platforms for this prototype implementation.
 
 The Banana Pi R4 offers two native 2.5~GbE interfaces for inline sniffing the board is compact, affordable, and supported by a strong community.
 In Addition, the two 10 GbE SFP+ ports provide flexibility for extensions as fiber-based packet capturing.
