@@ -1,0 +1,56 @@
+\documentclass[
+	ngerman,%globale Übergabe der Hauptsprache
+%	logofile=example-image, %Falls die Logo Dateien nicht vorliegen
+	authorontitle=true,
+	]{bfhbeamer}
+
+
+%\usepackage[main=ngerman]{babel}
+
+% Der folgende Block ist nur bei pdfTeX auf Versionen vor April 2018 notwendig
+\usepackage{iftex}
+\ifPDFTeX
+\usepackage[utf8]{inputenc}%kompatibilität mit TeX Versionen vor April 2018
+\fi
+\usepackage{bytefield}
+\usepackage{pifont}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+
+
+
+
+%Makros für Formatierungen der Doku
+%Im Allgemeinen nicht notwendig!
+\let\code\texttt
+
+\title{Swiss Army Knife Network Sniffer (NSAK) }
+\subtitle{Version 0.4}
+\author[]{Lukas von Allmen (vonal3) and Frank Gauss (gausf1)}
+\institute{Bern University of Applied Sciences}
+\titlegraphic*{\includegraphics{{assets/swiss-army-network-sniffer}}}%is only used with BFH-graphic and BFH-fullgraphic
+
+%Activate the output of a frame number:
+%\setbeamertemplate{page number in head/foot}[framenumber]
+
+\begin{document}
+
+%\maketitle
+
+%second title variant
+%\setbeamertemplate{title page}[BFH-Orange]
+
+%\maketitle
+
+\setbeamertemplate{title page}[BFH-graphic]
+\maketitle
+
+%\setbeamertemplate{title page}[BFH-fullgraphic]
+%\maketitle
+
+\input{content/01-introduction}
+\input{content/02-arp-spoofing}
+\input{content/03-rogue-ap}
+\input{content/04-conclusion}
+
+\end{document}
