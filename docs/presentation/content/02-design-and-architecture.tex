@@ -1,34 +1,45 @@
-\begin{frame}{Was ist der Swiss Army Network Sniffer}
-    \framesubtitle{NSAK Concepts}
+\newcommand\frametab{\tabto{2.25cm}}
 
+\begin{frame}{NSAK Design and Architecture Overview}
+    \framesubtitle{Resources and Concepts}
+
+    Resources:
+    \vspace{0.4em}
     \begin{itemize}
-        \item[\faServer] \textbf{Devices}
-        \small Physical machines used as attack and target hosts
-
-        \vspace{0.4em}
-
-
-        \item[\faNetworkWired] \textbf{Environments}
-        \small Network infrastructure and topology
-
-        \vspace{0.4em}
-        \item[\faLayerGroup] \textbf{Scenarios}
-        \small Sequence of drills (e.g.\ ARP spoofing, Packet Capture)
-
-        \vspace{0.4em}
-
-        \item[\faCogs] \textbf{Drills}
-        \small Individual attack or observation steps
-
-        \vspace{0.4em}
-
-
-        \item[\faUserShield] \textbf{Operator}
-        \small Red / Blue team
-
-        \vspace{0.4em}
-
+        \item[\faServer]{
+            \textbf{Devices}
+            \frametab Physical or virtual machine which can be provisioned as a NSAK device
+            \vspace{0.4em}
+        }
+        \item[\faNetworkWired]{
+            \textbf{Environments}
+            \frametab Network topology incl. infrastructure components, servers, clients and services
+            \vspace{0.4em}
+        }
+        \item[\faLayerGroup]{
+            \textbf{Scenarios}
+            \frametab Designed to be run in environements, consisting of a sequence of drills
+            \vspace{0.4em}
+        }
+        \item[\faCogs]{
+            \textbf{Drills}
+            \frametab Reusable building blocks for configuration, reconessance or expoitation
+            \vspace{0.4em}
+        }
     \end{itemize}
-    (Lücku)
-
+    \vspace{0.8em}
+    Concepts:
+    \vspace{0.4em}
+    \begin{itemize}
+        \item[\faUserSecret]{
+            \textbf{Operator}
+            \frametab A single IT-specialist, a red, blue or purple team
+            \vspace{0.4em}
+        }
+        \item[\faTasks]{
+            \textbf{Operation}
+            \frametab Deployment of NSAK in a real network or lab
+            \vspace{0.4em}
+        }
+    \end{itemize}
 \end{frame}

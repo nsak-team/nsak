@@ -1,10 +1,33 @@
-\begin{frame}{NSAK Framework}
-    \framesubtitle{}
-    \begin{itemize}
-        \item Core:
-        \item CLI: Frontend which uses the API exposed by the core to enable user interaction
-        \item Resource Repository: Python implementation of Scenarios, Drill,
-    \end{itemize}
+\begin{frame}{NSAK Framework Implementation}
+    \framesubtitle{Components, technology stack and dependencies}
+
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            Framework Components (Monorepo):
+            \begin{itemize}
+                \item Core: Framework implementation
+                \item CLI: Uses the core to enable user interaction
+                \item Resource Library: Contains devices, environments, scenarios and drills
+            \end{itemize}
+            System dependencies:
+            \begin{itemize}
+                \item Language and tooling: python3, uv
+                \item OCI containers: podman, podman-compose
+                \item Networking: iptables, nftables
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            Python dependencies:
+            \begin{itemize}
+                \item Linter and formatter: ruff
+                \item Type checker: mypy
+                \item Testing framework: pytest
+                \item pre-commit: Package to enforce code quality tools for each commit
+                \item pyyaml: Library for loading, validating and reading yaml files
+                \item scapy: Library for red team operations
+                \item click: Library for building CLIs
+            \end{itemize}
+        \end{column}
+    \end{columns}
     \centering
-    (Lücku)
 \end{frame}
