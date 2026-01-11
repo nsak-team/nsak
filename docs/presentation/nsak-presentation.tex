@@ -17,9 +17,6 @@
 \usepackage{xcolor}
 \usepackage{fontawesome5}
 
-
-
-
 %Makros für Formatierungen der Doku
 %Im Allgemeinen nicht notwendig!
 \let\code\texttt
@@ -31,7 +28,9 @@
 \titlegraphic*{\includegraphics{{assets/swiss-army-network-sniffer}}}%is only used with BFH-graphic and BFH-fullgraphic
 
 %Activate the output of a frame number:
-%\setbeamertemplate{page number in head/foot}[framenumber]
+\setbeamertemplate{section page}[BFH-ruled]
+\setbeamertemplate{page number in head/foot}[framenumber]
+\AtBeginSection{\sectionpage}
 
 \begin{document}
 
@@ -48,9 +47,21 @@
 %\setbeamertemplate{title page}[BFH-fullgraphic]
 %\maketitle
 
+\section{Introduction}\label{sec:introduction}
 \input{content/01-introduction}
-\input{content/02-arp-spoofing}
-\input{content/03-rogue-ap}
-\input{content/04-conclusion}
+
+\section{Design and Architecture}\label{sec:design-and-architecture}
+\input{content/02-design-and-architecture}
+
+\section{Hardware Evaluation}\label{sec:hardware-evaluation}
+\input{content/03-hardware-evaluation}
+
+\section{Implementation}\label{sec:implementation}
+\input{content/04-nsak-framework}
+\input{content/05-mitm}
+\input{content/06-rogue-ap}
+
+\section{Evaluation and Discussion}\label{sec:evaluation_and_discussion}
+\input{content/07-conclusion}
 
 \end{document}

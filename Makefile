@@ -2,8 +2,8 @@ DOCUMENTATION_PATH = docs/documentation
 DOCUMENTATION_FILE = documentation
 DOCUMENTATION = $(DOCUMENTATION_PATH)/$(DOCUMENTATION_FILE)\
 
-PRESENTATION_PATH = docs/presentations
-PRESENTATION_FILE = Nsak-presentation
+PRESENTATION_PATH = docs/presentation
+PRESENTATION_FILE = nsak-presentation
 PRESENTATION = $(PRESENTATION_PATH)/$(PRESENTATION_FILE)
 
 .PHONY: docs clean-docs
@@ -17,11 +17,11 @@ $(DOCUMENTATION).pdf: $(DOCUMENTATION).tex
 clean-docs:
 	rm -f $(DOCUMENTATION).pdf
 
-presentations: clean-presentations $(PRESENTATION).pdf
+presentation: clean-presentation $(PRESENTATION).pdf
 
 $(PRESENTATION).pdf: $(PRESENTATION).tex
 	cd $(PRESENTATION_PATH) && \
 	latexmk -pdflua
 
-clean-presentations:
+clean-presentation:
 	rm -f $(PRESENTATION).pdf
