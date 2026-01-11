@@ -1,14 +1,42 @@
 \begin{frame}{Hardware Selection}
-    \framesubtitle{Was braucht so ein Board}
-    \begin{itemize}
-        \item At least two native Ethernet interfaces for inline packet sniffing
-        \item Support for 2.5~GbE or higher
-        \item Onboard Wi-Fi with access point (AP) and monitor mode support
-        \item Low power consumption suitable for 24/7 operation
-        \item Compact form factor for laboratory and prototype setups
-        \item Strong community and software support
-        \item Affordable cost (below 150 CHF)
-    \end{itemize}
-    Bild R4 und Nano PI
-    (Franky)
+
+
+\begin{columns}[T,onlytextwidth]
+
+	% -------- Banana Pi --------
+	\column{0.5\textwidth}
+
+	\textbf{Banana Pi R4}
+
+	\vspace{0.5em}
+	\includegraphics[width=0.6\linewidth]{assets/banana-pi}
+
+	\vspace{0.5em}
+	\scriptsize
+	\begin{itemize}
+		\item RAM: 8 GB
+		\item CPU: Quad-Core ARM
+		\item Ports: 4× 1 GbE + 2z 10GB
+		\item Wi-Fi: Optional
+	\end{itemize}
+
+	% -------- NanoPi --------
+	\column{0.5\textwidth}
+
+	\textbf{NanoPi R76S}
+
+	\vspace{0.5em}
+	\includegraphics[width=0.45\linewidth]{assets/nano-pi}
+
+	\vspace{0.5em}
+	\scriptsize
+	\begin{itemize}
+		\item RAM: 16 GB
+		\item CPU: RK3588S
+		\item Ports: 2× 2.5 GbE
+		\item Wi-Fi: Optional
+	\end{itemize}
+
+\end{columns}
+
 \end{frame}
