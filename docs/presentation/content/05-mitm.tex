@@ -1,12 +1,38 @@
 
 \begin{frame}{Scenario: MITM ARP-spoofing / Transparent TCP Proxy}
 	\framesubtitle{Use Cases / Demo-Szenario}
-	\begin{itemize}
-		\item Idee und Konzept auffrischen
-		\item umsetzung erklären
-		\item \href{https://example.com/demo.mp4}{\beamergotobutton{Watch Demo Video}}
-	\end{itemize}
-	\includegraphics[width=0.4\linewidth]{assets/mitm_arp_spoofing_transparent_tcp_proxy.svg}
+	\begin{columns}[T]
+		\begin{column}{0.5\textwidth}
+			Drills:
+			\begin{itemize}
+				\item Discover Hosts: Scans the target network
+				\item ARP Spoof: Spoofs the MAC Addresses of discovered hosts
+				\item{
+					Transparent TCP Proxy:
+					\begin{itemize}
+						\item Creates a TCP client and server
+						\item Redirects traffic with IPTables / NFTables
+						\item Reads and modifies intercepted packages
+					\end{itemize}
+				}
+			\end{itemize}
+			Environment:
+			\begin{itemize}
+				\item Simulation with podman/docker compose
+				\item Instructions for building a lab with two Raspberry PIs and a switch
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=1.0\linewidth]{assets/mitm_arp_spoofing_transparent_tcp_proxy}
+				\caption{Simple TCP client - server environment}
+				\label{fig:mitm-arp-spoofing-transparent-tcp-proxy}
+			\end{figure}
+			\href{https://example.com/demo.mp4}{\beamergotobutton{Demo Video}}
+			\centering
+		\end{column}
+	\end{columns}
 	\centering
 	(Lücku)
 \end{frame}
