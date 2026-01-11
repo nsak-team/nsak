@@ -4,7 +4,6 @@
 	authorontitle=true,
 	]{bfhbeamer}
 
-
 %\usepackage[main=ngerman]{babel}
 
 % Der folgende Block ist nur bei pdfTeX auf Versionen vor April 2018 notwendig
@@ -18,8 +17,6 @@
 \usepackage{fontawesome5}
 
 
-
-
 %Makros für Formatierungen der Doku
 %Im Allgemeinen nicht notwendig!
 \let\code\texttt
@@ -31,7 +28,9 @@
 \titlegraphic*{\includegraphics{{assets/swiss-army-network-sniffer}}}%is only used with BFH-graphic and BFH-fullgraphic
 
 %Activate the output of a frame number:
-%\setbeamertemplate{page number in head/foot}[framenumber]
+\setbeamertemplate{section page}[BFH-ruled]
+\setbeamertemplate{page number in head/foot}[framenumber]
+\AtBeginSection{\sectionpage}
 
 \begin{document}
 
@@ -48,7 +47,7 @@
 %\setbeamertemplate{title page}[BFH-fullgraphic]
 %\maketitle
 
-\section{Example Frames}
+\section{Introduction}\label{sec:introduction}
 
 \begin{frame}{Motivation}
 	\framesubtitle{Subtitle}
@@ -75,9 +74,46 @@
 
 \begin{frame}{Warum Network Sniffing}
 	Color Wheel?
+\end{frame}
+
+\section{Design and Architecture}\label{sec:design-and-architecture}
+
+\begin{frame}{Was ist der Swiss Army Network Sniffer}
+	\framesubtitle{NSAK Concepts}
+
+	\begin{itemize}
+		\item[\faServer] \textbf{Devices}
+		\small Physical machines used as attack and target hosts
+
+		\vspace{0.4em}
+
+		\item[\faNetworkWired] \textbf{Environments}
+		\small Network infrastructure and topology
+
+		\vspace{0.4em}
+		\item[\faLayerGroup] \textbf{Scenarios}
+		\small Sequence of drills (e.g.\ ARP spoofing, Packet Capture)
+
+		\vspace{0.4em}
+
+		\item[\faCogs] \textbf{Drills}
+		\small Individual attack or observation steps
+
+		\vspace{0.4em}
+
+
+		\item[\faUserShield] \textbf{Operator}
+		\small Red / Blue team
+
+		\vspace{0.4em}
+
+	\end{itemize}
 
 \end{frame}
-\begin{frame}{Hardware Selektion}
+
+\section{Hardware Evaluation}\label{sec:hardware-evaluation}
+
+\begin{frame}{Hardware Selection}
 	\framesubtitle{Was braucht so ein Board}
 	\begin{itemize}
 		\item At least two native Ethernet interfaces for inline packet sniffing
@@ -90,50 +126,17 @@
 	\end{itemize}
 	 Bild R4 und Nano PI
 \end{frame}
-\begin{frame}{Was ist der Swiss Army Network Sniffer}
-	\framesubtitle{NSAK Concepts}
 
-		\begin{itemize}
-			\item[\faServer] \textbf{Devices}
-			\small Physical machines used as attack and target hosts
-
-			\vspace{0.4em}
-
-
-			\item[\faNetworkWired] \textbf{Environments}
-			\small Network infrastructure and topology
-
-			\vspace{0.4em}
-					\item[\faLayerGroup] \textbf{Scenarios}
-			\small Sequence of drills (e.g.\ ARP spoofing, Packet Capture)
-
-			\vspace{0.4em}
-
-			\item[\faCogs] \textbf{Drills}
-			\small Individual attack or observation steps
-
-			\vspace{0.4em}
-
-
-			\item[\faUserShield] \textbf{Operator}
-			\small Red / Blue team
-
-			\vspace{0.4em}
-
-		\end{itemize}
-
-\end{frame}
-
+\section{Implementation}\label{sec:implementation}
 
 \begin{frame}{Use Cases / Demo-Szenario}
-	\framesubtitle{Data Link Layer ARP MitM}
+	\framesubtitle{MITM ARP-spoofing / Transparent TCP Proxy}
 	\begin{itemize}
 		\item Idee und Konzept auffrischen
 		\item umsetzung erklären
 		\item Demo
 	\end{itemize}
-		\centering
-
+	\centering
 \end{frame}
 
 \begin{frame}{Use Cases / Demo-Szenario}
@@ -144,6 +147,8 @@
 		\item Demo am Ende
 	\end{itemize}
 \end{frame}
+
+\section{Evaluation and Discussion}\label{sec:evaluation_and_discussion}
 
 \begin{frame}{Grenzen und Risiken Future Work}
 	\framesubtitle{Subtitle}
