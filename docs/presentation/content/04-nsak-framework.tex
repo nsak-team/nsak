@@ -31,3 +31,38 @@
     \end{columns}
     \centering
 \end{frame}
+
+\begin{frame}{NSAK Framework Implementation}
+    \framesubtitle{Components, stack, dependencies}
+
+    \begin{columns}[T]
+        \begin{column}{0.52\textwidth}
+            \textbf{Framework (Monorepo)}
+            \begin{itemize}
+                \item \textbf{Core} – framework logic
+                \item \textbf{CLI} – user interaction
+                \item \textbf{Resource Library} – devices, environments, scenarios, drills
+            \end{itemize}
+
+            \vspace{0.4em}
+            \textbf{System dependencies}
+            \begin{itemize}
+                \item Python toolchain: \texttt{python3}, \texttt{uv}
+                \item OCI containers: \texttt{podman}, \texttt{podman-compose}
+                \item Net control: \texttt{iptables}/\texttt{nftables}
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \textbf{Python dependencies}
+            \begin{itemize}
+                \item \textbf{Quality}: \texttt{ruff}, \texttt{mypy}, \texttt{pre-commit}
+                \item \textbf{Testing}: \texttt{pytest}
+                \item \textbf{Pre-commit}: \textbf{rule enforcement}
+                \item \textbf{Config}: \texttt{pyyaml}
+                \item \textbf{Networking}: \texttt{scapy}
+                \item \textbf{CLI}: \texttt{click}
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}

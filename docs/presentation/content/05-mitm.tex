@@ -35,3 +35,42 @@
 	\end{columns}
 	\centering
 \end{frame}
+
+
+\begin{frame}{MITM Scenario Implementation}
+    \framesubtitle{ARP spoofing \& transparent TCP proxy}
+
+    \begin{columns}[T]
+        \begin{column}{0.52\textwidth}
+            \textbf{Drills}
+            \begin{enumerate}
+                \item \textbf{Discover hosts}  \textit{\scriptsize scan target network}
+                \item \textbf{ARP spoof} \textit{\scriptsize discover hosts, poison ARP tables}
+                \item \textbf{Transparent TCP proxy}
+                \begin{itemize}
+                    \item \scriptsize Client+server sockets for interception
+                    \item \scriptsize Redirect traffic via \texttt{iptables}/\texttt{nftables}
+                    \item \scriptsize Read / modify forwarded packets
+                \end{itemize}
+            \end{enumerate}
+
+            \vspace{0.6em}
+            \textbf{Environment}
+            \begin{itemize}
+                \item \textbf{Simulation:} \texttt{podman-compose}/\texttt{docker compose}
+                \item \textbf{Physical lab:} 2x Raspberry Pi + switch
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{assets/mitm_arp_spoofing_transparent_tcp_proxy}
+
+            \vspace{0.4em}
+            {\scriptsize\textit{Simple TCP client–server lab}}
+
+            \vspace{0.6em}
+            \href{assets/nsak_mitm_scenario.mp4}{\beamergotobutton{Demo video}}
+        \end{column}
+    \end{columns}
+\end{frame}
