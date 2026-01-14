@@ -1,60 +1,26 @@
 \begin{frame}{NSAK Framework Implementation}
-    \framesubtitle{Components, technology stack and dependencies}
-
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            Framework Components (Monorepo):
-            \begin{itemize}
-                \item Core: Framework implementation
-                \item CLI: Uses the core to enable user interaction
-                \item Resource Library: Contains devices, environments, scenarios and drills
-            \end{itemize}
-            System dependencies:
-            \begin{itemize}
-                \item Language and tooling: python3, uv
-                \item OCI containers: podman, podman-compose
-                \item Networking: iptables, nftables
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            Python dependencies:
-            \begin{itemize}
-                \item Linter and formatter: ruff
-                \item Type checker: mypy
-                \item Testing framework: pytest
-                \item pre-commit: Package to enforce code quality tools for each commit
-                \item pyyaml: Library for loading, validating and reading yaml files
-                \item scapy: Library for red team operations
-                \item click: Library for building CLIs
-            \end{itemize}
-        \end{column}
-    \end{columns}
-    \centering
-\end{frame}
-
-\begin{frame}{NSAK Framework Implementation}
     \framesubtitle{Components, stack, dependencies}
 
     \begin{columns}[T]
         \begin{column}{0.52\textwidth}
             \textbf{Framework (Monorepo)}
             \begin{itemize}
-                \item \textbf{Core} – framework logic
-                \item \textbf{CLI} – user interaction
-                \item \textbf{Resource Library} – devices, environments, scenarios, drills
+                \item \textbf{Core}: framework logic
+                \item \textbf{CLI}: user interaction
+                \item \textbf{Resource Library}: devices, environments, scenarios, drills
             \end{itemize}
 
             \vspace{0.4em}
-            \textbf{System dependencies}
+            \textbf{System Dependencies}
             \begin{itemize}
-                \item Python toolchain: \texttt{python3}, \texttt{uv}
-                \item OCI containers: \texttt{podman}, \texttt{podman-compose}
-                \item Net control: \texttt{iptables}/\texttt{nftables}
+                \item Python Toolchain: \texttt{python3}, \texttt{uv}
+                \item OCI Containers: \texttt{podman}, \texttt{podman-compose}
+                \item Net Control: \texttt{iptables}/\texttt{nftables}
             \end{itemize}
         \end{column}
 
         \begin{column}{0.48\textwidth}
-            \textbf{Python dependencies}
+            \textbf{Python Dependencies}
             \begin{itemize}
                 \item \textbf{Quality}: \texttt{ruff}, \texttt{mypy}, \texttt{pre-commit}
                 \item \textbf{Testing}: \texttt{pytest}

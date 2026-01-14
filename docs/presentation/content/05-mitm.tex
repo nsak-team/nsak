@@ -1,42 +1,3 @@
-
-\begin{frame}{MITM Scenario Implementation}
-	\framesubtitle{ARP-spoofing / Transparent TCP Proxy}
-	\begin{columns}[T]
-		\begin{column}{0.5\textwidth}
-			Drills:
-			\begin{itemize}
-				\item Discover Hosts: Scans the target network
-				\item ARP Spoof: Spoofs the MAC Addresses of discovered hosts
-				\item{
-					Transparent TCP Proxy:
-					\begin{itemize}
-						\item Creates a TCP client and server
-						\item Redirects traffic with IPTables / NFTables
-						\item Reads and modifies intercepted packages
-					\end{itemize}
-				}
-			\end{itemize}
-			Environment:
-			\begin{itemize}
-				\item Simulation with podman/docker compose
-				\item Instructions for building a lab with two Raspberry PIs and a switch
-			\end{itemize}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\begin{figure}[H]
-				\centering
-				\includegraphics[width=1.0\linewidth]{assets/mitm_arp_spoofing_transparent_tcp_proxy}
-				\caption{Simple TCP client - server environment}
-				\label{fig:mitm-arp-spoofing-transparent-tcp-proxy}
-			\end{figure}
-			\href{assets/nsak_mitm_scenario.mp4}{\beamergotobutton{Demo Video}}
-			\centering
-		\end{column}
-	\end{columns}
-	\centering
-\end{frame}
-
-
 \begin{frame}{MITM Scenario Implementation}
     \framesubtitle{ARP spoofing \& transparent TCP proxy}
 
@@ -44,21 +5,21 @@
         \begin{column}{0.52\textwidth}
             \textbf{Drills}
             \begin{enumerate}
-                \item \textbf{Discover hosts}  \textit{\scriptsize scan target network}
+                \item \textbf{Discover hosts} \textit{\scriptsize scan target network}
                 \item \textbf{ARP spoof} \textit{\scriptsize discover hosts, poison ARP tables}
                 \item \textbf{Transparent TCP proxy}
                 \begin{itemize}
                     \item \scriptsize Client+server sockets for interception
                     \item \scriptsize Redirect traffic via \texttt{iptables}/\texttt{nftables}
-                    \item \scriptsize Read / modify forwarded packets
+                    \item \scriptsize Read~\&~modify forwarded packets
                 \end{itemize}
             \end{enumerate}
 
             \vspace{0.6em}
             \textbf{Environment}
             \begin{itemize}
-                \item \textbf{Simulation:} \texttt{podman-compose}/\texttt{docker compose}
-                \item \textbf{Physical lab:} 2x Raspberry Pi + switch
+                \item \textbf{Simulation:} \texttt{podman-compose}
+                \item \textbf{Physical lab:} 2\times Raspberry Pi~\&~switch
             \end{itemize}
         \end{column}
 
@@ -67,7 +28,7 @@
             \includegraphics[width=\linewidth]{assets/mitm_arp_spoofing_transparent_tcp_proxy}
 
             \vspace{0.4em}
-            {\scriptsize\textit{Simple TCP client–server lab}}
+            {\scriptsize\textit{Simple TCP Client–Server Lab}}
 
             \vspace{0.6em}
             \href{assets/nsak_mitm_scenario.mp4}{\beamergotobutton{Demo video}}
