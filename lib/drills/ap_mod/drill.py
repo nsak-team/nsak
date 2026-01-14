@@ -10,7 +10,7 @@ from typing import Any, Optional
 
 @dataclass
 class HostapdConfig:
-    ssid: str = "bfh-open"
+    ssid: str = "lüko-is-the-greatest"
     interface: str = "wlan0"
     channel: int = 6
     country_code: str = "CH"
