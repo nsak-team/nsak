@@ -3,31 +3,21 @@
 
     \begin{columns}[T]
         \begin{column}{0.52\textwidth}
-            \textbf{Framework (Monorepo)}
+            \textbf{Framework Components}
             \begin{itemize}
                 \item \textbf{Core}: framework logic
                 \item \textbf{CLI}: user interaction
                 \item \textbf{Resource Library}: devices, environments, scenarios, drills
             \end{itemize}
-
-            \vspace{0.4em}
-            \textbf{System Dependencies}
-            \begin{itemize}
-                \item Python Toolchain: \texttt{python3}, \texttt{uv}
-                \item OCI Containers: \texttt{podman}, \texttt{podman-compose}
-                \item Net Control: \texttt{iptables}/\texttt{nftables}
-            \end{itemize}
         \end{column}
 
         \begin{column}{0.48\textwidth}
-            \textbf{Python Dependencies}
+            \textbf{Dependencies}
             \begin{itemize}
-                \item \textbf{Quality}: \texttt{ruff}, \texttt{mypy}, \texttt{pre-commit}
-                \item \textbf{Testing}: \texttt{pytest}
-                \item \textbf{Pre-commit}: \textbf{rule enforcement}
-                \item \textbf{Config}: \texttt{pyyaml}
-                \item \textbf{Networking}: \texttt{scapy}
-                \item \textbf{CLI}: \texttt{click}
+                \item Python Toolchain: \texttt{python3}, \texttt{uv}
+                \item OCI Containers: \texttt{podman}, \texttt{podman-compose}
+                \item Networking: \texttt{iptables}/\texttt{nftables}
+                \item Code Quality: \texttt{ruff}, \texttt{mypy}, \texttt{pre-commit}, \texttt{pytest}
             \end{itemize}
         \end{column}
     \end{columns}
