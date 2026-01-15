@@ -1,10 +1,26 @@
 \section{Component-diagram}\label{sec:component-diagram}
 
-\todo{ Caption of Component Diagram}
-
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{../assets/figures/diagrams/concept-architecture-diagrams/project_2_nsak_component_diagram}
+	\includegraphics[width=1\linewidth]{../assets/figures/diagrams/concept-architecture-diagrams/project_2_nsak_component_diagram.drawio}
 	\caption{}
 	\label{fig:project2nsakcomponentdiagram}
 \end{figure}
+
+The component diagram~\textbf{\ref{fig:project2nsakcomponentdiagram}} illustrates how the different subsystems and their respective components should interface each other.
+The \textbf{Network Stack} subsystem abstracts away the \textbf{hardware} layer and provides a \textbf{ManagementNetwork} and \textbf{TargetNetwork} component.
+The components \textbf{WIFIConnection}, \textbf{EthernetConnection} and \textbf{MobileConnection} are physical interfaces in the \textbf{Hardware} subsystem.
+Operators would connect to the \acrshort{nsak} device via \textbf{SSH} over the \textbf{management network} to open a remote shell.
+Afterward, they use the \textbf{NSAK CLI}, which exposes \textbf{DrillCommands}, \textbf{ScenarioCommands} and \textbf{EnvironmentCommands}.
+These commands interact with the API provided by the \textbf{NSAK core}, which is structured into a management component per resource type: \textbf{Drills}, \textbf{Scenarios} and \textbf{Environments}.
+In the \textbf{NSAK core} subsystem we can see how the management components are responsible for their respective resources and interfacing with each other.
+On the right side of we can see how the resources are interacting with the broader system context:
+\begin{itemize}
+	\item \textbf{Drills:} Ability to access the \textbf{TargetNetwork} via the \textbf{NetworkStack} subsystem.
+	\item \textbf{Scenarios:} Responsible for interacting with the \textbf{Container Engine} and \textbf{SystemD} subsystems.
+	\item \textbf{Environments:} Interfaces with other subsystems on the right side, but provides important information for the scenarios.
+\end{itemize}
+
+As scenarios are built as \acrshort{oci} images, we need an \textbf{OCI Container Engine} subsystem consisting of the \textbf{OCIImage} and \textbf{OCIContainer} components.
+While planned and already displayed in the diagram, the \textbf{SystemD} subsystem is not yet integrated into the framework.
+As most Linux distributions already ship with SystemD, it would make sense to implement the possibility to provide unit files to schedule and manage scenarios with the \textbf{Timer} and \textbf{Service} components respectively.

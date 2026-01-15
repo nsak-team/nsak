@@ -258,16 +258,22 @@ Each section contains a table with activity entries for the respective week.
 | 2026-01-08      | Prepare and test demo with Frank and apply fixes and improvements                                                            | 4 h        | Preparation   |                                                                                                           |
 | 2026-01-09      | Meeting and demo with Professor and Frank                                                                                    | 2 h        | Demo          |                                                                                                           |
 | 2026-01-10      | Work on Documentation with Frank                                                                                             | 6 h        | Documentation |                                                                                                           |
-| **Sub Total**   |                                                                                                                              | *12 h**    |               |                                                                                                           |
+| 2026-01-11      | Work on Presentation and create demo video for MITM scenario                                                                 | 6 h        | Documentation |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | *18 h**    |               |                                                                                                           |
 |                 |                                                                                                                              |            |               |                                                                                                           |
-| **Total**       |                                                                                                                              | **193 h**  |               |                                                                                                           |
+| **Week 16:**    |                                                                                                                              |            |               |                                                                                                           |
+| 2026-01-14      | Test presentation with Frank                                                                                                 | 4 h        |               |                                                                                                           |
+| 2026-01-15      | Work on documentation: Describe and improve component diagram                                                                | 2 h        |               |                                                                                                           |
+| **Sub Total**   |                                                                                                                              | *6 h**     |               |                                                                                                           |
+|                 |                                                                                                                              |            |               |                                                                                                           |
+| **Total**       |                                                                                                                              | **205 h**  |               |                                                                                                           |
 
 ## Combined Summary
 
 | Member    | Total Hours | Focus Areas                          |
 |-----------|-------------|--------------------------------------|
 | Frank     | 188 h       | Research, Docs, DevOps, Developments |
-| Lukas     | 193 h       | Planning, Project Setup, Docs        |
-| **Total** | 381 h       |                                      |
+| Lukas     | 205 h       | Planning, Project Setup, Docs        |
+| **Total** | 393 h       |                                      |
 
 Goal: 150 - 180 hours per student
