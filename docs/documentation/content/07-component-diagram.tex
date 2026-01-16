@@ -3,11 +3,11 @@
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../assets/figures/diagrams/concept-architecture-diagrams/project_2_nsak_component_diagram.drawio}
-	\caption{}
+	\caption{The Component diagram illustrated how the systems interact which each other}
 	\label{fig:project2nsakcomponentdiagram}
 \end{figure}
 
-The component diagram~\textbf{\ref{fig:project2nsakcomponentdiagram}} illustrates how the different subsystems and their respective components should interface each other.
+The component diagram (Figure~\textbf{\ref{fig:project2nsakcomponentdiagram}}) illustrates how the different subsystems and their respective components should interface each other.
 The \textbf{Network Stack} subsystem abstracts away the \textbf{hardware} layer and provides a \textbf{ManagementNetwork} and \textbf{TargetNetwork} component.
 The components \textbf{WIFIConnection}, \textbf{EthernetConnection} and \textbf{MobileConnection} are physical interfaces in the \textbf{Hardware} subsystem.
 Operators would connect to the \acrshort{nsak} device via \textbf{SSH} over the \textbf{management network} to open a remote shell.

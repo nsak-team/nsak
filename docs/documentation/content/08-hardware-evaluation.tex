@@ -2,47 +2,48 @@
 
 Based on the vaguely described minimum requirements in the section Devices~\ref{subsec:devices}, we defined the following requirements for the hardware platform used in this project:
 \begin{itemize}
-	\item At least two native Ethernet interfaces for inline packet sniffing
-	\item Support for 2.5~GbE or higher
-	\item Onboard Wi-Fi with access point (AP) and monitor mode support
-	\item Low power consumption suitable for 24/7 operation
-	\item Compact form factor for laboratory and prototype setups
-	\item Strong community and software support
-	\item Affordable cost (below 150 CHF)
+    \item At least two native Ethernet interfaces for inline packet sniffing
+    \item Support for 2.5~GbE or higher
+    \item Onboard Wi-Fi with access point (AP) and monitor mode support
+    \item Low power consumption suitable for 24/7 operation
+    \item Compact form factor for laboratory and prototype setups
+    \item Strong community and software support
+    \item Affordable cost (below 150 CHF)
 \end{itemize}
 \newpage
+
+
 \section{Evaluated Boards}\label{sec:evaluated-boards}
 
 Several boards were considered as potential variants.
 Their main specifications relevant to the project are listed in Table~\ref{tab:boardspecs}.
 
 \begin{table}[H]
-	\centering
-	\caption{Comparison of Board Variants}
-	\label{tab:boardspecs}
-	\scriptsize % kleinere Schrift für den Inhalt
-	\begin{tabularx}{\textwidth}{|X|X|X|X|X|X|}
-		\hline
-		\textbf{Board} & \textbf{SoC / CPU} & \textbf{RAM / Storage} & \textbf{Ethernet Ports} & \textbf{Power (typ.)} & \textbf{Wireless (onboard)} \\
-		\hline
-		Banana Pi R3 Mini & MT7986A, Quad-core ARM Cortex-A53 @ 1.3 GHz & 2 GB DDR4, 8 GB eMMC, microSD & 2 × 2.5 GbE & 5–7 W & MT7976C, Wi-Fi 6 (AP/Client/Monitor) \\
-		\hline
-		Banana Pi R3 & MT7986A, Quad-core ARM Cortex-A53 @ 1.3 GHz & 2–4 GB DDR4, eMMC, microSD & 1 × 1 GbE, 2 × 2.5 GbE, 4 × 1 GbE & 7–10 W & MT7976C, Wi-Fi 6 \\
-		\hline
-		Banana Pi R4 & MT7988A, Quad-core ARM Cortex-A73 & 4 GB DDR4, NVMe option & 4 × 2.5 GbE, 2 × 10 GbE (SFP+) & 10–15 W & None (M.2 Wi-Fi module required) \\
-		\hline
-		Banana Pi R5 & MT7988B, Quad-core ARM Cortex-A73 & 4 GB DDR4, NVMe option & 2 × 10 GbE, 2 × 2.5 GbE & 12–18 W & None (M.2 Wi-Fi module required) \\
-		\hline
-		Raspberry Pi 4 & BCM2711, Quad-core ARM Cortex-A72 @ 1.5 GHz & 2–8 GB LPDDR4, microSD & 1 × 1 GbE (second via USB dongle) & 6–8 W & Wi-Fi 5 (AP/Client only) \\
-		\hline
-		Raspberry Pi 5 & BCM2712, Quad-core ARM Cortex-A76 @ 2.4 GHz & 4–8 GB LPDDR4X, microSD & 1 × 1 GbE (second via PCIe card) & 8–12 W & Wi-Fi 5 (AP/Client only) \\
-		\hline
-		NanoPi R76S & Rockchip RK3588S, Octa-core (4× Cortex-A76 @ 2.4 GHz + 4× Cortex-A55 @ 1.8 GHz) & 16 GB LPDDR4X / LPDDR5, NVMe (option via M.2) & 3 × 2.5 GbE (RJ45) & 10–15 W & None (M.2 Wi-Fi 6E module recommended) \\
-		\hline
+    \centering
+    \caption{Comparison of Board Variants}
+    \label{tab:boardspecs}
+    \scriptsize % kleinere Schrift für den Inhalt
+    \begin{tabularx}{\textwidth}{|X|X|X|X|X|X|}
+        \hline
+        \textbf{Board} & \textbf{SoC / CPU} & \textbf{RAM / Storage} & \textbf{Ethernet Ports} & \textbf{Power (typ.)} & \textbf{Wireless (onboard)} \\
+        \hline
+        Banana Pi R3 Mini & MT7986A, Quad-core ARM Cortex-A53 @ 1.3 GHz & 2 GB DDR4, 8 GB eMMC, microSD & 2 × 2.5 GbE & 5–7 W & MT7976C, Wi-Fi 6 (AP/Client/Monitor) \\
+        \hline
+        Banana Pi R3 & MT7986A, Quad-core ARM Cortex-A53 @ 1.3 GHz & 2–4 GB DDR4, eMMC, microSD & 1 × 1 GbE, 2 × 2.5 GbE, 4 × 1 GbE & 7–10 W & MT7976C, Wi-Fi 6 \\
+        \hline
+        Banana Pi R4 & MT7988A, Quad-core ARM Cortex-A73 & 4 GB DDR4, NVMe option & 4 × 2.5 GbE, 2 × 10 GbE (SFP+) & 10–15 W & None (M.2 Wi-Fi module required) \\
+        \hline
+        Banana Pi R5 & MT7988B, Quad-core ARM Cortex-A73 & 4 GB DDR4, NVMe option & 2 × 10 GbE, 2 × 2.5 GbE & 12–18 W & None (M.2 Wi-Fi module required) \\
+        \hline
+        Raspberry Pi 4 & BCM2711, Quad-core ARM Cortex-A72 @ 1.5 GHz & 2–8 GB LPDDR4, microSD & 1 × 1 GbE (second via USB dongle) & 6–8 W & Wi-Fi 5 (AP/Client only) \\
+        \hline
+        Raspberry Pi 5 & BCM2712, Quad-core ARM Cortex-A76 @ 2.4 GHz & 4–8 GB LPDDR4X, microSD & 1 × 1 GbE (second via PCIe card) & 8–12 W & Wi-Fi 5 (AP/Client only) \\
+        \hline
+        NanoPi R76S & Rockchip RK3588S, Octa-core (4× Cortex-A76 @ 2.4 GHz + 4× Cortex-A55 @ 1.8 GHz) & 16 GB LPDDR4X / LPDDR5, NVMe (option via M.2) & 3 × 2.5 GbE (RJ45) & 10–15 W & None (M.2 Wi-Fi 6E module recommended) \\
+        \hline
 
-	\end{tabularx}
+    \end{tabularx}
 \end{table}
-
 
 
 \section{Hardware Selection}\label{sec:hardware-selection}
@@ -50,45 +51,45 @@ Their main specifications relevant to the project are listed in Table~\ref{tab:b
 Based on the defined requirements and the evaluation of alternatives, compared in table~\ref{tab:reqcheck}, the~\textbf{Banana Pi R4} and the~\textbf{NanoPI R76S} are the most suitable hardware platforms for this prototype implementation.
 
 \begin{table}[H]
-	\centering
-	\caption{Requirements Fulfillment by Candidate Boards}
-	\label{tab:reqcheck}
-	\resizebox{\textwidth}{!}{%
-		\begin{tabular}{|p{6cm}|c|c|c|c|c|c|c}
-			\hline
-			\textbf{\large Requirement} & \textbf{\large R3 Mini} & \textbf{\large R3} & \textbf{\large R4} & \textbf{\large R5} & \textbf{\large RPi 4} & \textbf{\large RPi 5} & \textbf{NanoPi R76S}\\
-			\hline
-			\scriptsize \geq 2 native Ethernet interfaces & \ding{51} & \ding{51} & \ding{51} & \ding{51} & \ding{55} & \ding{55} & \ding{51} \\
-			\hline
-			\scriptsize RAM > 4GB & \ding{55} & \ding{55} & \ding{51} &\ding{51} &
-			\ding{55} & \ding{51} & \ding{51} \\
-			\hline
-			\scriptsize ≥ 2.5 GbE support & \ding{51} (2×) & \ding{51} (2×) & \ding{51} \ding{51} (4×) & \ding{51} (2×) & \ding{55} & \ding{55} & \ding{51} \\
-			\hline
-			\scriptsize Onboard Wi-Fi with AP \& Monitor mode & \ding{51} & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
-			\hline
-			\scriptsize Low power consumption (<10 W) & \ding{51} & \ding{51}/\ding{115} & \ding{55} & \ding{55} & \ding{51} & \ding{115} & \ding{51}\\
-			\hline
-			\scriptsize Compact form factor & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{51} & \ding{51} & \ding{51}\\
-			\hline
-			\scriptsize Strong community \& software support & \ding{51} & \ding{51} & \ding{115} & \ding{115} & \ding{51} (general) & \ding{51} (general) & \ding{51}\\
-			\hline
-			\scriptsize Suitable for inline packet sniffing & \ding{51} & \ding{51} (overkill) & \ding{115} (overkill) & \ding{115} (expensive) & \ding{55} & \ding{55} & \ding{51 }\\
-			\hline
-		\end{tabular}
-	}
-	\vspace{0.5em}
-	\scriptsize
-	\textbf{Legend:}~\ding{51} = Requirement fulfilled, \ding{55} = Requirement not fulfilled, \ding{115} = Partially fulfilled / limited
+    \centering
+    \caption{Requirements Fulfillment by Candidate Boards}
+    \label{tab:reqcheck}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|p{6cm}|c|c|c|c|c|c|c}
+            \hline
+            \textbf{\large Requirement}                    & \textbf{\large R3 Mini} & \textbf{\large R3}   & \textbf{\large R4} & \textbf{\large R5} & \textbf{\large RPi 4} & \textbf{\large RPi 5} & \textbf{NanoPi R76S}\\
+            \hline
+            \scriptsize \geq 2 native Ethernet interfaces     & \ding{51}               & \ding{51}            & \ding{51}                & \ding{51} & \ding{55} & \ding{55} & \ding{51} \\
+            \hline
+            \scriptsize RAM > 4GB & \ding{55} & \ding{55} & \ding{51} & \ding{51} &
+            \ding{55} & \ding{51} & \ding{51} \\
+            \hline
+            \scriptsize ≥ 2.5 GbE support                     & \ding{51} (2×)          & \ding{51} (2×)       & \ding{51} \ding{51} (4×) & \ding{51} (2×) & \ding{55} & \ding{55} & \ding{51} \\
+            \hline
+            \scriptsize Onboard Wi-Fi with AP \& Monitor mode & \ding{51}               & \ding{51}            & \ding{55} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
+            \hline
+            \scriptsize Low power consumption (<10 W)         & \ding{51}               & \ding{51}/\ding{115} & \ding{55} & \ding{55} & \ding{51} & \ding{115} & \ding{51}\\
+            \hline
+            \scriptsize Compact form factor                   & \ding{51}               & \ding{55}            & \ding{55}                & \ding{55}              & \ding{51} & \ding{51} & \ding{51}\\
+            \hline
+            \scriptsize Strong community \& software support  & \ding{51}               & \ding{51}            & \ding{115} & \ding{115} & \ding{51} (general) & \ding{51} (general) & \ding{51}\\
+            \hline
+            \scriptsize Suitable for inline packet sniffing   & \ding{51}               & \ding{51} (overkill) & \ding{115} (overkill) & \ding{115} (expensive) & \ding{55} & \ding{55} & \ding{51 }\\
+            \hline
+        \end{tabular}
+    }
+    \vspace{0.5em}
+    \scriptsize
+    \textbf{Legend:}~\ding{51} = Requirement fulfilled, \ding{55} = Requirement not fulfilled, \ding{115} = Partially fulfilled / limited
 \end{table}
-The Banana Pi R4 offers two native 2.5~GbE interfaces for inline sniffing the board is compact, affordable, and supported by a strong community.
+The \textbf{Banana Pi R4} offers two native 2.5~GbE interfaces for inline sniffing the board is compact, affordable, and supported by a strong community.
 In Addition, the two 10 GbE SFP+ ports provide flexibility for extensions as fiber-based packet capturing.
 A drawback of the R4 is the weaker CPU and a larger size compared to the NanoPI R76S
 
-The NanoPi R76S is more compact and provides up to 16GB of RAM, which is advantageous for memory-intensive processing and buffering tasks.
+The \textbf{NanoPi R76S} is more compact and provides up to 16GB of RAM, which is advantageous for memory-intensive processing and buffering tasks.
 While it lacks built-in Wi-fi, it can be expanded via the M.2 Wi-Fi 6E module.
 It cannot host both a Wi-Fi card and NVMe SSD simultaneously.
 Consequently, data storage must be provided via microSD card or external USB SSD
 
-Alternative boards such as the Banana Pi R3 Mini, R3 are limited overall performance.
-Raspberry PI 4 or 5 offer higher single core performance but were ultimately discarded because they provide only a single native Ethernet interface, requiring external adapters that reduce performance for inline sniffing scenarios.
+Alternative boards such as the \textbf{Banana Pi R3 Mini}, R3 are limited overall performance.
+\textbf{PI 4 or 5} offer higher single core performance but were ultimately discarded because they provide only a single native Ethernet interface, requiring external adapters that reduce performance for inline sniffing scenarios.

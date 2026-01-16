@@ -188,9 +188,11 @@
 %------------ START MAIN PART ------------
     \mainmatter
 
+
     \chapter{Introduction}\label{ch:introduction}
     \input{content/02-introduction}
     \input{content/03-current-state-of-research}
+
 
     \chapter{Design and Architecture}\label{ch:design_and_architecture}
     \input{content/04-framework-concepts}
@@ -203,15 +205,19 @@
     \chapter{Hardware Evaluation}\label{ch:system_evaluation}
     \input{content/08-hardware-evaluation}
 
+
     \chapter{Methods}\label{ch:methods}
     \input{content/09-method}
+
 
     \chapter{Implementation}\label{ch:implementation}
     \input{content/10-implementation}
 
+
     \chapter{Evaluation and Discussion}\label{ch:evaluation_and_discussion}
     \input{content/11.1-evaluation}
     \input{content/11.2-discussion}
+
 
     \chapter{Future Work and Conclusion}\label{ch:future_work_and_conclusion}
     \input{content/12-future-work}
@@ -219,7 +225,13 @@
 
 
 %------------ Authorship declaration translated to main language ------------
-    \declarationOfAuthorship
+
+\setupSignature{
+	L. von Allmen={\includegraphics[width=.4\linewidth]{../assets/pictures/lukas-von-allmen-sign}\vskip-0.5em},
+	F. Gauss={\includegraphics[width=.4\linewidth]{../assets/pictures/frank-gauss-sign}}
+}
+\declarationOfAuthorship
+
 
 %----------- Bibliography ----------------
     \clearpage

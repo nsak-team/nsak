@@ -13,7 +13,7 @@ via DHCP.
 The Network traffic was captured in a PCAP file.
 
 \subsection{Research Questions}\label{subsec: Research Questions}
-\textbf{RQ1 – Modularity}\label{RQ1 - Modularity}
+\textbf{RQ1 – Modularity}\label{rq1}
 RQ1: Can network security scenarios be composed of independent drills without modifying the core framework?
 
 
@@ -42,7 +42,7 @@ No implicit dependencies between drills were observed during execution.
     \label{tab:modular-execution}
 \end{table}
 
-\textbf{RQ2 – Reusability}\label{RQ2 - Reusability}
+\textbf{RQ2 – Reusability}\label{rq2}
 RQ2: Can individual drills be reused across different scenarios with minimal configuration effort?
 
 
@@ -54,7 +54,7 @@ Scenario-specific behavior was controlled through environment variables such as 
 
 These results confirm that drills are scenario-orchestrated and can be composed flexibly with minimal modification.
 
-\textbf{RQ3 – Containerization}\label{RQ3 - Containerization}
+\textbf{RQ3 – Containerization}\label{rq3}
 RQ3: Does container-based execution provide sufficient isolation while maintaining required network functionality?
 
 
@@ -70,13 +70,14 @@ During scenario execution, all network services were started in privileged mode 
 During container-based execution, network interfaces, routing rules, and packet capture were successfully initialized.
 The drills ap-mode, network setup, dnsmasq, thsark left certain config files and rules in iptables and filepaths.
 
-\textbf{RQ4 – Reproducibility}\label{RQ4 - Reproducibility}
+\textbf{RQ4 – Reproducibility}\label{rq4}
 RQ4: Can scenarios be executed repeatedly without changing the system behavior?
 
 
 With the same configuration, the scenario execution was triggered multiple times.
 Devices could establish a connection with the access point.
-Network connectivity was enabled in all runs. And the nsak-device was able to capture the traffic
+Network connectivity was enabled in all runs.
+And the nsak-device was able to capture the traffic
 
 
 No deviations in system behavior were observed across repeated executions.
