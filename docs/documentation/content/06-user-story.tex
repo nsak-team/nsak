@@ -23,10 +23,9 @@ the fully configured scenario.
 The Run Scenario use case (UC-06) represents an abstract execution phase.
 In this phase, the previously built container image is run, and the configured attack drills are executed within the containerized environment (UC-08).
 
-Finally, the system performs a cleanup procedure in which all scenario-specific resources, processes, and drills are terminated.
+Finally, the system performs a cleanup procedure which needs to be optimized in future work, in which all scenario-specific resources,
+processes, and drills are terminated.
 This step minimizes side effects, reduces system noise, and prevents interference with other scenarios that may reuse the same drills.
-
-\todo{drüber lesen und mit UC final ableichen}
 
 
 \newcommand{\uctab}{\par\noindent\hspace{1em}}
@@ -150,7 +149,7 @@ This step minimizes side effects, reduces system noise, and prevents interferenc
                      1. System Drill Manager retrieves the list of configured drills. \par
                      2. System Drill Manager executes the drills according to the defined order and parameters. \par
                      \textbf{Error Scenarios:} Drill execution failure or missing drill definition. \par
-                     \textbf{Result:} Configured attack drills executed. \par
+                     \textbf{Result:} Configured attack drills executed. \\
     \midrule
     % --- UC-09 --------------------------------------------------
     \textbf{UC-09} & \textbf{Use-Case:} Clean Up Scenario \par

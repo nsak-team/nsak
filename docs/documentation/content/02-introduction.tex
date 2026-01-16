@@ -5,13 +5,13 @@ These risks are expected to intensify even further because the economic and oper
 This underlines the need for cost-effective and easy-to-use security tools, methods and frameworks (conceptional and software) to identify and defend against cyberattacks.
 
 \textbf{Information security methods and conceptional frameworks}
-In practice, the method of combining red team activities and blue team observation techniques is widely adopted within the cybersecurity community and industry~\cite{}.
+In practice, the method of combining red team activities and blue team observation techniques is widely adopted within the cybersecurity community and industry~\cite{cremen2018infoseccolourwheel}.
 While the red team focuses on emulating adversarial behavior, the primary objective of the blue team is to detect such activities through non-invasive monitoring and analysis of system behavior~\cite{NIST2012RedTeamBlueTeamApproach}.
 Further, we can observe approaches from the community and the industry to evolve this approach in to the so-called \enquote{InfoSec color wheel}~\cite{cremen2018infoseccolourwheel}.
 In the proposed InfoSec color wheel, the author splits the six colors into primary and secondary colors, where the primary colors are teams on their own and the secondary colors are cooperation between two primary color teams.
-The primary colors are represented by the red team, the blue team, and a newly introduced the yellow team, which represents the \enquote{builders} of software and systems.
-The secondary colors are represented by the purple team (red and blue), the orange team (red and yellow), and the green team (yellow and blue).
-Where \enquote{purple teaming} is actually an already established praxis as it evolved naturally from the cooperation between red and blue teams~\cite{}.
+The primary colors are represented by the \gls{RedTeam}, the \gls{BlueTeam}, and a newly introduced the \gls{YellowTeam}, which represents the \enquote{builders} of software and systems.
+The secondary colors are represented by the \gls{PurpleTeam} (red and blue), the \gls{OrangeTeam} (red and yellow), and the \gls{GreenTeam} (yellow and blue).
+Where \enquote{purple teaming} is actually an already established praxis as it evolved naturally from the cooperation between red and blue teams~\cite{NIST2012RedTeamBlueTeamApproach}.
 
 
 \textbf{Information security tools and software framworks}
@@ -33,7 +33,7 @@ In the summary of their paper, Zilberman et al.\ are highlighting the necessity 
     \item Cleanup and configurability are important in order to repeat and automate the execution of attack scenarios during security tool assessment and what-if analysis.
     \item An emulator should support cleanup after the completion of the attack scenario, like CALDERA, Atomic Red Team, and Infection Monkey do, rather than after each individual procedure.
     \item An API, currently provided by Atomic Red Team, CALDERA, and Metasploit, facilitates integration between the threat emulators and organizational security array, thus enabling periodic and systematic security assessment.
-    \item It is important to provide a GUI and ready to execute multi-procedure attacks for novice operators as well as a CLI to support automation and advanced customization capabilities.
+    \item It is important to provide a GUI and ready to execute multi-procedure attacks for novice operators as well as a \gls{cli} to support automation and advanced customization capabilities.
 \end{itemize}
 
 We reconsolidate the highlighted design requirements for the implementation of \acrshort{nsak} into the following list of features:

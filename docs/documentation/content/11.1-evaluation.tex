@@ -28,18 +28,17 @@ No implicit dependencies between drills were observed during execution.
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{lll}
+    \begin{tabularx}{\textwidth}{l X X}
         \toprule
-        \textbf{Test}  & \textbf{description} & \textbf{expectation} \\
+        \textbf{Test} & \textbf{Description} & \textbf{Expectation} \\
         \midrule
-        T1 & Execute Rogue AP scenario with full drill set  & Scenario executes successfully \\
-        T2 & Deactivate packet capture drill  & AP still functions \\
-        T3 & Deactivate dnsmasq drill & All other drills are working, but in this case.
-        t-shark can't capture traffic \\
-        T4 & Just the ap-mode drill is enabled  & Client can see the SSID and can connect  \\
+        T1 & Execute Rogue AP scenario with full drill set & Scenario executes successfully \\
+        T2 & Deactivate packet capture drill & AP still functions \\
+        T3 & Deactivate dnsmasq drill & All drills are working, tshark cannot capture traffic \\
+        T4 & Only the AP-mode drill is enabled & Client can see the SSID and connect \\
         \bottomrule
-    \end{tabular}
-    \caption{}
+    \end{tabularx}
+    \caption{Modular execution test cases}
     \label{tab:modular-execution}
 \end{table}
 
@@ -81,22 +80,3 @@ Network connectivity was enabled in all runs. And the nsak-device was able to ca
 
 
 No deviations in system behavior were observed across repeated executions.
-
-
-Die Ergebnisse sind das, was man gerechnet, beobachtet, gemessen, entworfen, gelesen usw. hat. Sämtliche im Ergebniskapitel
-dargestellten Informationen tragen zum Beantworten der Fragestellung bei. Das Grundlagenwissen zum Thema dagegen gehört nicht
-in den Ergebnisteil. In naturwissenschaftlich-technischen Arbeiten werden das Präsentieren der Ergebnisse und deren Interpretation
-(Diskussion) strikt voneinander getrennt. Die Ergebnisse werden objektiv und sachlich wiedergegeben (ohne Bewertung). Der Ergebnisteil enthält keine Deutung der Ergebnisse und keine persönliche Meinung. Bei Arbeiten in anderen Disziplinen wird diese Trennung im
-Hauptteil der Arbeit weniger stark vorgenommen.
-Hinweise
-– Der Ergebnisteil ist in der Regel der längste Teil der Arbeit und muss darum einen besonders klaren und nachvollziehbaren
-Aufbau und eine schlüssige, lückenlose Argumentationslinie aufweisen.
-– Die Gliederung und die Terminologie des Ergebnisteils folgen aus der Fragestellung. Wird beispielsweise nach Varianten gefragt,
-sind die einzelnen Varianten Unterkapitel des Ergebnisteils (ähnliches gilt für Massnahmen, Einflussfaktoren, Analysen usw.).
-– Werden Begriffe aus der Fragestellung für die Gliederung bzw. Überschriften wiederverwendet, wird der rote Faden durch die
-Arbeit klarer.
-– Eine gute Abbildung oder Tabelle ist oft hilfreicher als lange Erklärungen im Text. Der Text verweist aber auf die Abbildungen
-sowie Tabellen und gibt deren Kernaussagen wieder (siehe 3.2).
-– Eine wissenschaftliche Arbeit darf Widersprüche nicht unterdrücken, sondern nennt sie explizit und diskutiert sie im Diskussionsteil.
-– Wichtige Ergebnisse sollen Raum bekommen. Ergänzende Details und umfangreiche Daten dagegen gehören in den Anhang der
-Arbeit.

@@ -1,6 +1,6 @@
 \section{Hardware Requirements}\label{sec:hardware-requirements}
 
-Based on the vaguely described minimum requirements in the section Devices~\ref{subsec:devices, we defined the following requirements for the hardware platform used in this project:
+Based on the vaguely described minimum requirements in the section Devices~\ref{subsec:devices}, we defined the following requirements for the hardware platform used in this project:
 \begin{itemize}
 	\item At least two native Ethernet interfaces for inline packet sniffing
 	\item Support for 2.5~GbE or higher
@@ -11,7 +11,6 @@ Based on the vaguely described minimum requirements in the section Devices~\ref{
 	\item Affordable cost (below 150 CHF)
 \end{itemize}
 \newpage
-
 \section{Evaluated Boards}\label{sec:evaluated-boards}
 
 Several boards were considered as potential variants.
@@ -43,6 +42,12 @@ Their main specifications relevant to the project are listed in Table~\ref{tab:b
 
 	\end{tabularx}
 \end{table}
+
+
+
+\section{Hardware Selection}\label{sec:hardware-selection}
+
+Based on the defined requirements and the evaluation of alternatives, compared in table~\ref{tab:reqcheck}, the~\textbf{Banana Pi R4} and the~\textbf{NanoPI R76S} are the most suitable hardware platforms for this prototype implementation.
 
 \begin{table}[H]
 	\centering
@@ -76,11 +81,6 @@ Their main specifications relevant to the project are listed in Table~\ref{tab:b
 	\scriptsize
 	\textbf{Legend:}~\ding{51} = Requirement fulfilled, \ding{55} = Requirement not fulfilled, \ding{115} = Partially fulfilled / limited
 \end{table}
-
-\section{Hardware Selection}\label{sec:hardware-selection}
-
-Based on the defined requirements and the evaluation of alternatives, the~\textbf{Banana Pi R4} and the~\textbf{NanoPI R76S} are the most suitable hardware platforms for this prototype implementation.
-
 The Banana Pi R4 offers two native 2.5~GbE interfaces for inline sniffing the board is compact, affordable, and supported by a strong community.
 In Addition, the two 10 GbE SFP+ ports provide flexibility for extensions as fiber-based packet capturing.
 A drawback of the R4 is the weaker CPU and a larger size compared to the NanoPI R76S

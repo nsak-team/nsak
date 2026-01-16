@@ -2,6 +2,7 @@ In this chapter we will describe what and how we implemented the \acrshort{nsak}
 To efficiently describe the implementation, we reference paths and files relative to the repositories root directory~\cite{nsakRepository2026}.
 Addition technical information about the frameworks installation and development setup can be found in the \texttt{README.md}.
 
+
 \section{\acrshort{nsak} framework}\label{sec:nsak_framework}
 
 In this section we describe which technologies we choose to implement the \acrshort{nsak} framework and the resource library.
@@ -15,6 +16,7 @@ We did not make an extensive evaluation of which technologies are best suited fo
 The location of the core in the \acrshort{git} repository is under \texttt{src/nsak/core}, there are files for setup and configuration, a subfolder for network utilities and for each resource type.
 All resource subfolders contain files for a dataclass representing the resource itself, a loader, and a manager class.
 
+
 \begin{itemize}
     \item Programming language: Python~\cite{python}
     \item Dependency manager: uv~\cite{uv}
@@ -26,7 +28,7 @@ All resource subfolders contain files for a dataclass representing the resource 
     \item Testing framework: pytest~\cite{pytest}
 \end{itemize}
 
-Python dependencies:
+\textbf{Python dependencies:}
 \begin{itemize}
     \item pyyaml: Library for loading, validating, and reading YAML files~\cite{pyyaml},~\cite{yaml}
     \item scapy: Library for red team operations~\cite{scapy}
@@ -71,6 +73,7 @@ Python dependencies:
     \item click: Library for building CLIs~\cite{click}
 \end{itemize}
 
+
 \section{\acrshort{mitm} (\acrshort{arp}-spoofing / transparent \acrshort{tcp} \gls{ProxyServer})}\label{sec:mitm_arp_spoofing_transparent_tcp_proxy}
 
 \textbf{Network Topology / Environment}
@@ -90,8 +93,6 @@ The right circle is sketching the management network, which is used by a red tea
 \textbf{\acrshort{mitm} scenario implementation}\\
 This section describes the technical realization of the \acrshort{mitm} scenario within the \acrshort{nsak} framework.
 
-\todo{Lücku: Complete this section}
-
 \textbf{Simple \acrshort{tcp} client - server environment}\\
 For development and testing purposes the simple \acrshort{tcp} client - server environment was added as a resource to the \acrshort{nsak} repository under~\texttt{lib/environments/simple\_tcp\_client\_server}.
 The resource includes a virtualized lab setup with podman/docker compose file (\texttt{lib/environments/simple\_tcp\_client\_server/compose.yaml}) and provides an extensive readme file (\texttt{lib/environments/simple\_tcp\_client\_server/README.md}), describing the setup of this environment as a physical lab environment.
@@ -105,7 +106,7 @@ This subfolder also provides a podman/docker compose file (\texttt{lib/scenarios
 The \acrshort{nsak} framework was then extended with the ability to simulate a scenario in a compatible environment which provides a podman/docker compose implementation.
 
 
-\section{Rogue Access Point}\label{sec: Rogue Access Point}
+\section{Rogue Access Point}\label{sec: Rogue Access Point}\gls{rogueap}
 
 \textbf{Network Topology}
 
