@@ -1,34 +1,36 @@
 In this chapter we will describe what and how we implemented the \acrshort{nsak} framework, the first two scenarios, their drills and environments.
 To efficiently describe the implementation, we reference paths and files relative to the repositories root directory~\cite{nsakRepository2026}.
+Addition technical information about the frameworks installation and development setup can be found in the \texttt{README.md}.
 
 \section{\acrshort{nsak} framework}\label{sec:nsak_framework}
 
 In this section we describe which technologies we choose to implement the \acrshort{nsak} framework and the resource library.
 
-As this project is a so called monorepo, the logical primary driver for the technology stack and dependencies is the core component.
-The following system components such as the resource library and the CLI will inherit the technology stack, the python and system dependencies.
+As this project is a so-called monorepo, the logical primary driver for the technology stack and dependencies is the core component.
+The following system components such as the resource library and the CLI will inherit the technology stack, the python, and system dependencies.
 For this reason, the components following the core will only describe what they introduce additionally.
 
 \textbf{Core}\\
-
-\todo{Describe why we choose this technology, maybe we find references which underline the ease of use and advantages for modularity which are comming with python}
+We did not make an extensive evaluation of which technologies are best suited for building developing the software and decided to use to go with tools that we like and are familiar with.
+The location of the core in the \acrshort{git} repository is under \texttt{src/nsak/core}, there are files for setup and configuration, a subfolder for network utilities and for each resource type.
+All resource subfolders contain files for a dataclass representing the resource itself, a loader, and a manager class.
 
 \begin{itemize}
-    \item Programming language: Python
-    \item Dependency manager: uv
-    \item Virtual environment manager: uv
-    \item Package build tool: uv
-    \item Linter: ruff
-    \item Formatter: ruff
-    \item Type checker: mypy
-    \item Testing framework: pytest
+    \item Programming language: Python~\cite{python}
+    \item Dependency manager: uv~\cite{uv}
+    \item Virtual environment manager: uv~\cite{uv}
+    \item Package build tool: uv~\cite{uv}
+    \item Linter: ruff~\cite{ruff}
+    \item Formatter: ruff~\cite{ruff}
+    \item Type checker: mypy~\cite{mypy}
+    \item Testing framework: pytest~\cite{pytest}
 \end{itemize}
 
 Python dependencies:
 \begin{itemize}
-    \item pyyaml: Library for loading, validating and reading yaml files
-    \item scapy: Library for red team operations
-    \item pre-commit: Package to enforce code quality tools for each commit
+    \item pyyaml: Library for loading, validating, and reading YAML files~\cite{pyyaml},~\cite{yaml}
+    \item scapy: Library for red team operations~\cite{scapy}
+    \item pre-commit: Package to enforce code quality tools for each commit~\cite{precommit}
 \end{itemize}
 
 \textbf{System Dependencies}\\
@@ -36,32 +38,47 @@ As we leverage the abstraction of \acrshort{oci} containers to run scenarios in 
 All system dependencies that are required for running a drill or a scenario are installed into the scenario image, during the build process.
 
 \begin{itemize}
-    \item Version control: git
-    \item Network tooling: iptables (we should switch to nf\_tables)
-    \item \acrshort{oci} container manager: podman
-    \item \acrshort{oci} container orchestrator: podman-compose
-    \item Programming languages: python3, python3-pip, uv
-    \item Utilities: curl, sudo
+    \item Version control: git~\cite{git}
+    \item Network tooling: iptables, nftables~\cite{iptables},~\cite{nftables}
+    \item \acrshort{oci} container manager: podman~\cite{podman}
+    \item \acrshort{oci} container orchestrator: podman-compose~\cite{podman_compose}
+    \item Programming languages: python3, pip, uv~\cite{python},~\cite{pip},~\cite{uv}
+    \item Utilities: curl, sudo~\cite{curl},~\cite{sudo}
 \end{itemize}
 
-\textbf{Resource library}\\
-\\
+\textbf{Resource Library}\\
+All resources included in the monorepo are located in their respective resource type subfolders under \texttt{lib/\{drills,scenarios,environments\}}.
+This path can be adjusted with the environment variable \texttt{NSAK\_LIBRARY\_PATH} if a framework user or developer wants to load his own resource library.
+In the additional \texttt{devices} subfolder are instructions to set up a specific \acrshort{nsak} device, currently this resource type is not implemented in the core and only contains one description for the Banana PI R4 as an example.
+Resources with code implementations, namely scenarios and drills, manage their own python and system dependencies in their \acrshort{yaml} files.
 
-\textbf{CLI}\\
+\textbf{\acrshort{cli}}\\
+The \acrshort{cli} frontend is located under \texttt{src/nsak/cli} with a file per-resource type, implementing and exposing the functionality to the user.
+The steps required to enable autocompletion for some shells are described in the \texttt{README.md}.
+Here is a list of common commands:
+\begin{itemize}
+    \item \texttt{nsak --help}: A description of all commands
+    \item \texttt{nsak <resource-type> --help}: A description of the subcommand
+    \item \texttt{nsak environment list}: Lists all described environment resources
+    \item \texttt{nsak drill list}: Lists all implemented drills
+    \item \texttt{nsak scenario list}: Lists all available scenarios
+    \item \texttt{nsak scenario build <scenario-name>}: Build the \acrshort{oci} image for the scenario
+    \item \texttt{nsak scenario run <scenario-name>}: Run a scenario as a \acrshort{oci} container
+\end{itemize}
 
 Python dependencies:
 \begin{itemize}
-    \item click: Library for building CLIs
+    \item click: Library for building CLIs~\cite{click}
 \end{itemize}
 
-\section{\acrshort{mitm} (ARP-spoofing / transparent TCP Proxy)}\label{sec:mitm_arp_spoofing_transparent_tcp_proxy}
+\section{\acrshort{mitm} (\acrshort{arp}-spoofing / transparent \acrshort{tcp} \gls{ProxyServer})}\label{sec:mitm_arp_spoofing_transparent_tcp_proxy}
 
 \textbf{Network Topology / Environment}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{../assets/figures/diagrams/concept-architecture-diagrams/mitm_arp_spoofing_transparent_tcp_proxy}
-    \caption{}
+    \caption{MITM scenarios in the simple TCP client server environment}
     \label{fig:mitm-arp-spoofing-transparent-tcp-proxy}
 \end{figure}
 
@@ -75,14 +92,14 @@ This section describes the technical realization of the \acrshort{mitm} scenario
 
 \todo{Lücku: Complete this section}
 
-\textbf{Simple TCP client - server environment}\\
+\textbf{Simple \acrshort{tcp} client - server environment}\\
 For development and testing purposes the simple \acrshort{tcp} client - server environment was added as a resource to the \acrshort{nsak} repository under~\texttt{lib/environments/simple\_tcp\_client\_server}.
 The resource includes a virtualized lab setup with podman/docker compose file (\texttt{lib/environments/simple\_tcp\_client\_server/compose.yaml}) and provides an extensive readme file (\texttt{lib/environments/simple\_tcp\_client\_server/README.md}), describing the setup of this environment as a physical lab environment.
-This physical lab setup builds the basis for the experiment, verifying that the \acrshort{mitm} scenario works in a real world environment.
+This physical lab setup builds the basis for the experiment, verifying that the \acrshort{mitm} scenario works in a real-world environment.
 The compose file provides a possible representation of the target network with containers acting as Alice and Bob.
 The containers entrypoints are two Python scripts, which are implementing the behavior as a \acrshort{tcp} client for Alice and as a \acrshort{tcp} server for Bob.
 Because the default network driver used by podman and docker compose is abstracting away the data link of the OSI model,
-the configuration of the macvlan network driver is required to simulate the networks behavior on layer 2 correctly.
+the configuration of the macvlan network driver is required to simulate the network behavior on layer 2 correctly.
 The \acrshort{mitm} scenario resource under~\texttt{lib/scenarios/mitm/} contains a subfolder containing another readme file (\texttt{lib/scenarios/mitm/environments/simple\_tcp\_client\_server/README.md}), describing its integration in this physical lab environment.
 This subfolder also provides a podman/docker compose file (\texttt{lib/scenarios/mitm/environments/simple\_tcp\_client\_server/compose.yaml}) which extends the compose file of this resource, providing a complete setup for running the scenario in a simulation.
 The \acrshort{nsak} framework was then extended with the ability to simulate a scenario in a compatible environment which provides a podman/docker compose implementation.
