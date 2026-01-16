@@ -1,6 +1,6 @@
 In this chapter we will describe what and how we implemented the \acrshort{nsak} framework, the first two scenarios, their drills and environments.
 To efficiently describe the implementation, we reference paths and files relative to the repositories root directory~\cite{nsakRepository2026}.
-Addition technical information about the frameworks installation and development setup can be found in the \texttt{README.md}.
+Additional technical information about the framework installation and development setup can be found in the \texttt{README.md}.
 
 
 \section{\acrshort{nsak} framework}\label{sec:nsak_framework}
@@ -8,7 +8,7 @@ Addition technical information about the frameworks installation and development
 In this section we describe which technologies we choose to implement the \acrshort{nsak} framework and the resource library.
 
 As this project is a so-called monorepo, the logical primary driver for the technology stack and dependencies is the core component.
-The following system components such as the resource library and the CLI will inherit the technology stack, the python, and system dependencies.
+The following system components such as the resource library and the \acrshort{cli} will inherit the technology stack, the python, and system dependencies.
 For this reason, the components following the core will only describe what they introduce additionally.
 
 \textbf{Core}\\
@@ -85,7 +85,7 @@ Python dependencies:
     \label{fig:mitm-arp-spoofing-transparent-tcp-proxy}
 \end{figure}
 
-Figure~\ref{fig:mitm-arp-spoofing-transparent-tcp-proxy} illustrates the network topology used for the \acrfull{mitm} scenario.
+\textbf{Figure~\ref{fig:mitm-arp-spoofing-transparent-tcp-proxy}} illustrates the network topology used for the \acrfull{mitm} scenario.
 It consists of two dotted circles separating the network boundaries of two networks.
 The left circle is describing a simple \acrshort{tcp} client - server environment consisting of Alice (client), Bob (server), a network switch, and the \acrshort{nsak} device which was placed in the target network.
 The right circle is sketching the management network, which is used by a red team operator to remotely execute the \acrshort{mitm} scenario on the \acrshort{nsak} device.
