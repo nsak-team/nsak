@@ -13,7 +13,7 @@ For this reason, the components following the core will only describe what they 
 
 \textbf{Core}\\
 We did not make an extensive evaluation of which technologies are best suited for building developing the software and decided to use to go with tools that we like and are familiar with.
-The location of the core in the \acrshort{git} repository is under \texttt{src/nsak/core}, there are files for setup and configuration, a subfolder for network utilities and for each resource type.
+The location of the core in the GIT repository is under \texttt{src/nsak/core}, there are files for setup and configuration, a subfolder for network utilities and for each resource type.
 All resource subfolders contain files for a dataclass representing the resource itself, a loader, and a manager class.
 
 
@@ -70,7 +70,7 @@ Here is a list of common commands:
 
 Python dependencies:
 \begin{itemize}
-    \item click: Library for building CLIs~\cite{click}
+    \item click: Library for building \gls{cli}s~\cite{click}
 \end{itemize}
 
 
@@ -91,19 +91,68 @@ The left circle is describing a simple \acrshort{tcp} client - server environmen
 The right circle is sketching the management network, which is used by a red team operator to remotely execute the \acrshort{mitm} scenario on the \acrshort{nsak} device.
 
 \textbf{\acrshort{mitm} scenario implementation}\\
-This section describes the technical realization of the \acrshort{mitm} scenario within the \acrshort{nsak} framework.
+This section describes the implementation and simulation of the \acrshort{mitm} scenario.
+It represents a classic \acrshort{tcp} \acrfull{mitm} attack, where traffic is intercepted with \acrshort{arp} poisoning and a transparent \acrshort{tcp} \gls{ProxyServer}.
+After an initial network discovery phase, the scenario creates a transparent \gls{ProxyServer} by starting a \acrshort{tcp} client and \acrshort{tcp} server and redirecting traffic.
+Then it's time to use \acrshort{mac} Address spoofing to convince all other network participants that they should send all packets to the \acrshort{nsak} device.
+If everything worked correctly, the \acrshort{nsak} device is able to read, modify, or drop packets sent from one participant to another.
+
+I choose the following separation of the scenario, which describes the drills, which have to be implemented:
+\begin{itemize}
+    \item Network Hosts Discovery: \texttt{lib/drills/discover\_hosts}
+    \item Transparent \acrshort{tcp} \gls{ProxyServer}: \texttt{lib/drills/transparent\_tcp\_proxy}
+    \item \acrshort{arp}-spoof: \texttt{lib/drills/arp\_spoof}
+\end{itemize}
+
+\textbf{Drills}\\
+The \textbf{Discover Host Drill} iterates over all target network interfaces and uses \acrshort{arp}-scan to collect a list of all hosts in all subnets.
+While this approach is certainly good enough for the PoC, it could possibly take a lot of time and yield huge lists of hosts.
+So it would make sense to provide further configration options such as subnet filters or limits.
+In the context of this drill, a new dataclass \texttt{NetworkDiscoveryResultMap} was added to the core to provide a common interface for similar network discovery drills and drills requiring such results.
+The drill then returns an instance of the \texttt{NetworkDiscoveryResultMap} dataclass.\\~\\
+The \textbf{Transparent \acrshort{tcp} \gls{ProxyServer}} requires a \texttt{NetworkDiscoveryResultMap} instance, e.g., generated with the host discovery drill.
+It starts a transparent \acrshort{tcp} proxy for each client - server connection in the \texttt{NetworkDiscoveryResultMap} and sets up the necessary target network configuration with iptables.
+Then the drill reads and modifies the intercepted traffic, which is the goal of a \acrshort{mitm} attack.
+The packet manipulation is currently only a simple string replacement, it would be a nice future work to make it possible to specify a custom payload.
+Maybe it could make sense to split up this drill even further, as maybe as \acrshort{tcp} client, server, or the network interface configration could be reused in other drills.
+The \textbf{\acrshort{arp}-spoof Drill} also requires a \texttt{NetworkDiscoveryResultMap} instance, which provides target network interfaces and subnets to iterate over.
+It then uses the \enquote{arpspoof} command to poison the \acrshort{arp} tables of all target hosts.
 
 \textbf{Simple \acrshort{tcp} client - server environment}\\
-For development and testing purposes the simple \acrshort{tcp} client - server environment was added as a resource to the \acrshort{nsak} repository under~\texttt{lib/environments/simple\_tcp\_client\_server}.
-The resource includes a virtualized lab setup with podman/docker compose file (\texttt{lib/environments/simple\_tcp\_client\_server/compose.yaml}) and provides an extensive readme file (\texttt{lib/environments/simple\_tcp\_client\_server/README.md}), describing the setup of this environment as a physical lab environment.
+For development and testing purposes the simple \acrshort{tcp} client - server environment was added as a resource to the \acrshort{nsak} repository.
+The resource includes a virtualized lab setup with a podman/docker compose file and provides an extensive readme file, describing the setup of this environment as a physical lab environment.
+
 This physical lab setup builds the basis for the experiment, verifying that the \acrshort{mitm} scenario works in a real-world environment.
 The compose file provides a possible representation of the target network with containers acting as Alice and Bob.
 The containers entrypoints are two Python scripts, which are implementing the behavior as a \acrshort{tcp} client for Alice and as a \acrshort{tcp} server for Bob.
 Because the default network driver used by podman and docker compose is abstracting away the data link of the OSI model,
 the configuration of the macvlan network driver is required to simulate the network behavior on layer 2 correctly.
-The \acrshort{mitm} scenario resource under~\texttt{lib/scenarios/mitm/} contains a subfolder containing another readme file (\texttt{lib/scenarios/mitm/environments/simple\_tcp\_client\_server/README.md}), describing its integration in this physical lab environment.
-This subfolder also provides a podman/docker compose file (\texttt{lib/scenarios/mitm/environments/simple\_tcp\_client\_server/compose.yaml}) which extends the compose file of this resource, providing a complete setup for running the scenario in a simulation.
+The \acrshort{mitm} scenario resource contains a subfolder containing another readme file, describing its integration in this physical lab environment.
+A video demonstrating this physical setup in a real-world experiment can be found in this repository.
+This subfolder also provides a podman/docker compose file which extends the compose file of this resource, providing a complete setup for running the scenario in a simulation.
+The containerized simulation can be executed with~\texttt{nsak environment simulate simple\_tcp\_client\_server mitm}.
 The \acrshort{nsak} framework was then extended with the ability to simulate a scenario in a compatible environment which provides a podman/docker compose implementation.
+
+References:
+\begin{itemize}
+    \item {
+        Simple \acrshort{tcp} Client - Server Environment:
+        \begin{itemize}
+            \item Folder: \texttt{lib/environments/simple\_tcp\_client\_server}
+            \item Podman compose file: \texttt{simple\_tcp\_client\_server/compose.yaml}
+            \item Readme file: \texttt{simple\_tcp\_client\_server/README.md}
+        \end{itemize}
+    }
+    \item {
+        \acrshort{mitm} Scenario in the Smiple \acrshort{tcp} Client - Server Environment:
+        \begin{itemize}
+            \item Subfolder: \texttt{lib/scenarios/mitm/environments/simple\_tcp\_client\_server/}
+            \item Podman compose file: \texttt{simple\_tcp\_client\_server/compose.yaml}
+            \item Readme file: \texttt{simple\_tcp\_client\_server/README.md}
+        \end{itemize}
+    }
+    \item Demo video: \texttt{docs/presentation/assets/nsak\_mitm\_scenario.mp4}
+\end{itemize}
 
 
 \section{Rogue Access Point}\label{sec: Rogue Access Point}\gls{rogueap}
