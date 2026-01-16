@@ -1,20 +1,31 @@
 \section{Future work}\label{sec:future-work}
+While the presented proof of concept demonstrates the modularity and scenario-based network security framework, several aspects require extension and investigation.
 
-While the present proof of concept demonstrates the modularity and scenario-based network security framework, several
-aspects require extension and investigation.
+\textbf{\acrshort{rest} \acrshort{api}}\\
+A key area for future work is the introduction of a \acrshort{rest}ful \acrshort{api} that provides parity with the existing command-line interface.
+Such an HTTP-based \acrshort{api} would enable the interoperability with many other systems and the addition of alternative frontends to the \acrshort{cli}.
+A good option which would integrate nicely into the current stack would be FastAPI~\cite{fastapi}.
 
+\textbf{\acrfull{gui}}\\
+Based on the proposed \acrshort{rest} \acrshort{api}, a browser-based \acrshort{gui} would provide a lower entry barrier and improved accessibility for a wider range of users and could also help in educational settings, security training and research labs.
+We thought of~\cite{vuejs} as a possible library to implement this interface, but other technologies would be equally valid.
 
-A key area for future work is the introduction of a RESTful API that provides parity with the existing command-line
-interface.
-Building on this API, a graphical user interface that leverages the CLI logic improves accessibility for a wider
-range of users and could also help in educational settings and labs.
-
+\textbf{Cleanup Management}\\
 The evaluation revealed limitations in the current cleanup procedure.
 Temporary configuration artifacts and network rules were not removed, which affects the successive usage of multiple scenarios.
 Furthermore, the device would be more likely to be detected.
 
+\textbf{Configuration Management}\\
+We identified the possible brittleness of scenarios in different environments, as we have to make a lot of assumptions when designing a scenario or writing a drill.
+Implementing a well-designed configuration management for scenarios and drills could enable the operator to set up a scenario in a much flexible way and maybe also allow autoconfiguration for adoption during runtime.
+It would also render the drills much better suited for implementation in a wider range of scenarios.
 
+\textbf{Test Coverage}\\
 Increasing test coverage is essential to validate the correctness and stability of the framework as it evolves.
 Automated testing would improve reliability and support long-term maintainability.
 
-Finally, integrating automated analysis of defensive responses would enable more comprehensive blue- and purple-team assessments.
+\textbf{Advanced Scenario Management}\\
+As already proposed in the component diagram~\ref{fig:project2nsakcomponentdiagram} the integration of SystemD capabilities for scenarios via unit files, would enable more complex management and scheduling of scenarios.
+
+\textbf{Automated Reporting and Analysis}\\
+Finally, integrating automated reporting and analysis of defensive responses would enable more comprehensive blue- and purple-team assessments.

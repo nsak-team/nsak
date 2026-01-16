@@ -25,9 +25,9 @@ behaviors, which should be investigated more thoroughly in future work.
 The reuse of different drills in multiple scenarios suggests that drills can be reused with minimal configuration effort.
 Scenario-specific behavior was controlled exclusively through environment variables and build arguments.
 Drill implementation remained unchanged.
-This demonstrates the assumption that the NSAK-device is flexible and be orchestrated from a scenario perspective.
+This demonstrates the assumption that the \acrshort{nsak} framework is flexible and be orchestrated from a scenario perspective.
 The minimal configuration helps reduce complexity for network security teams.
-The flexibility between the inline and the Wi-Fi attack scenarios demonstrates the spectrum and potential of network attacks.
+The flexibility between the inline and Wi-Fi attack scenarios demonstrates the spectrum and potential of network attacks.
 
 
 Reusability was evaluated across a limited number of scenarios and drills.
@@ -40,14 +40,14 @@ Further evaluation across a wider range of scenarios is required to validate in-
 The isolated scenario container can be pre-built and run independently with an individual drill set.
 The container execution in the test scenario was triggered solely from the command line,
 but could also be called similarly from a system process.
-This enables the NSAK-device to remain latent in a network until the attack is most likely to succeed or to have the greatest impact.
+This enables the \acrshort{nsak} device to remain latent in a network until the attack is most likely to succeed or to have the greatest impact.
 
 
 At the same time, the evaluation revealed the necessity to manipulate the host-network configuration, such as
 Iptables rules and temporary files were not fully cleaned up after scenario execution.
 This highlights the importance of an improved cleanup mechanism to ensure isolation and reproducibility in repeated execution.
 The running containers are constantly running, increasing the likelihood of detection.
-In a more sophisticated approach, the NSAK-device should be as stealthy as possible to help harden the system.
+In a more sophisticated approach, the \acrshort{nsak} device should be as stealthy as possible to remain hidden from blue teams.
 
 
 \textbf{Reproducibility or Scenarios (RQ4)}~\ref{rq4}

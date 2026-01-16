@@ -19,7 +19,7 @@ RQ1: Can network security scenarios be composed of independent drills without mo
 
 To ensure modularity, every drill should be able to work independently.
 When setting the DISABLE-DRILL environment variable, remaining drills should execute independently without failure.
-For example, if everything is disabled besides the ap-mode drill, the network should still be discoverable from clients.
+For example, if everything is disabled beside the ap-mode drill, the network should still be discoverable from clients.
 In T4~\ref{tab:modular-execution}, IP forwarding, uplink, and capture should not be executed and therefore are not working.
 
 During the process, each drill has a specific attack goal or functionality.
@@ -58,17 +58,17 @@ These results confirm that drills are scenario-orchestrated and can be composed 
 RQ3: Does container-based execution provide sufficient isolation while maintaining required network functionality?
 
 
-The evaluation focuses on whether container-based execution restricts or enables low-level network operations.
-required for nsak-device functionality.
+The evaluation focuses on whether container-based execution restricts or enables low-level network operations,
+required for the functionality of \acrshort{nsak}.
 
 
-The Rogue Access Point scenario was executed inside a containerized NSAK environment on an embedded Linux device.
+The Rogue Access Point scenario was executed inside a containerized \acrshort{nsak} environment on an embedded Linux device.
 The container was granted only the necessary capabilities for network configuration and packet capture.
 
 
 During scenario execution, all network services were started in privileged mode within the container environment.
 During container-based execution, network interfaces, routing rules, and packet capture were successfully initialized.
-The drills ap-mode, network setup, dnsmasq, thsark left certain config files and rules in iptables and filepaths.
+The drills ap-mode, network setup, dnsmasq, t-shark left certain config files and rules in iptables and filepaths.
 
 \textbf{RQ4 – Reproducibility}\label{rq4}
 RQ4: Can scenarios be executed repeatedly without changing the system behavior?
@@ -77,7 +77,7 @@ RQ4: Can scenarios be executed repeatedly without changing the system behavior?
 With the same configuration, the scenario execution was triggered multiple times.
 Devices could establish a connection with the access point.
 Network connectivity was enabled in all runs.
-And the nsak-device was able to capture the traffic
+And the \acrshort{nsak} framework was able to capture the traffic.
 
 
 No deviations in system behavior were observed across repeated executions.
