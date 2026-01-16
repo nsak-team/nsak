@@ -274,6 +274,6 @@ Each section contains a table with activity entries for the respective week.
 |-----------|-------------|--------------------------------------|
 | Frank     | 204 h       | Research, Docs, DevOps, Developments |
 | Lukas     | 205 h       | Planning, Project Setup, Docs        |
-| **Total** | 393 h       |                                      |
+| **Total** | 409 h       |                                      |
 
 Goal: 150 - 180 hours per student
