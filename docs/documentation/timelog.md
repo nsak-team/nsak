@@ -119,16 +119,16 @@ Each section contains a table with activity entries for the respective week.
 | 2026-01-11       | start presentation and                                                                                                       | 6h        |                |                                                                                                        |
 | **Sub Total**    |                                                                                                                              | **31**    |                |                                                                                                        |
 |                  |                                                                                                                              |           |                |                                                                                                        |
+| **Final Week**   |                                                                                                                              |           |                |                                                                                                        |
+| 2026-01-13       | design presentation                                                                                                          | 3h        |                |                                                                                                        |
+| 2026-01-14       | premiere presentation                                                                                                        | 4h        |                |                                                                                                        |
+| 2026-01-15       | fix bugs and presentation                                                                                                    | 1h        |                |                                                                                                        |
+| 2026-01-16       | presentation and final work doc                                                                                              | 5h        |                |                                                                                                        |
 |                  |                                                                                                                              |           |                |                                                                                                        |
 |                  |                                                                                                                              |           |                |                                                                                                        |
 |                  |                                                                                                                              |           |                |                                                                                                        |
-|                  |                                                                                                                              |           |                |                                                                                                        |
-|                  |                                                                                                                              |           |                |                                                                                                        |
-|                  |                                                                                                                              |           |                |                                                                                                        |
-|                  |                                                                                                                              |           |                |                                                                                                        |
-|                  |                                                                                                                              |           |                |                                                                                                        |
-|                  |                                                                                                                              | **23**    |                |                                                                                                        |
-| **Total**        |                                                                                                                              | **157 h** |                |                                                                                                        |
+|                  |                                                                                                                              | **13**    |                |                                                                                                        |
+| **Total**        |                                                                                                                              | **204 h** |                |                                                                                                        |
 
 ## 👤 Lukas
 
@@ -272,7 +272,7 @@ Each section contains a table with activity entries for the respective week.
 
 | Member    | Total Hours | Focus Areas                          |
 |-----------|-------------|--------------------------------------|
-| Frank     | 188 h       | Research, Docs, DevOps, Developments |
+| Frank     | 204 h       | Research, Docs, DevOps, Developments |
 | Lukas     | 205 h       | Planning, Project Setup, Docs        |
 | **Total** | 393 h       |                                      |
 
