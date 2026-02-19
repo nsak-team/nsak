@@ -1,27 +1,20 @@
-DOCUMENTATION_PATH = docs/documentation
-DOCUMENTATION_FILE = documentation
-DOCUMENTATION = $(DOCUMENTATION_PATH)/$(DOCUMENTATION_FILE)
+DOCUMENTATION_PATH = docs
 
-PRESENTATION_PATH = docs/presentation
-PRESENTATION_FILE = nsak-presentation
-PRESENTATION = $(PRESENTATION_PATH)/$(PRESENTATION_FILE)
+PROJECTS := project2 thesis
+FORMATS  := documentation presentation
 
-.PHONY: docs clean-docs
+$(PROJECTS):
+	$(eval PROJECT := $@)
 
-docs: clean-docs $(DOCUMENTATION).pdf
+$(FORMATS):
+	@if [ -z "$(PROJECT)" ]; then \
+		echo "Choose project first"; exit 1; \
+	fi
+	$(MAKE) build PROJECT=$(PROJECT) TYPE=$@
 
-$(DOCUMENTATION).pdf: $(DOCUMENTATION).tex
-	cd $(DOCUMENTATION_PATH) && \
+build:
+	cd docs/$(PROJECT)/$(TYPE) && \
 	latexmk -pdflua
 
-clean-docs:
-	rm -f $(DOCUMENTATION).pdf
-
-presentation: clean-presentation $(PRESENTATION).pdf
-
-$(PRESENTATION).pdf: $(PRESENTATION).tex
-	cd $(PRESENTATION_PATH) && \
-	latexmk -pdflua
-
-clean-presentation:
-	rm -f $(PRESENTATION).pdf
+clean:
+	rm -rf docs/$(PROJECT)/$(TYPE)/$(TYPE).tex

@@ -1,0 +1,65 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0" version="29.3.0">
+  <diagram name="Page-1" id="T0pKIDYRgjbibjQzfUOB">
+    <mxGraphModel dx="1126" dy="678" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="iEnbzEExffe_PEklj8oC-3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="360" width="440" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-5" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="360" width="360" x="280" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" value="&lt;div&gt;Target Network:&amp;nbsp;&lt;/div&gt;&lt;div&gt;10.10.10.0/24&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="170" x="150" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" value="&lt;div&gt;Management Network:&amp;nbsp;&lt;/div&gt;&lt;div&gt;10.10.20.0/24&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="210" x="355" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-8" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Operator" vertex="1">
+          <mxGeometry height="60" width="30" x="580" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-20" edge="1" parent="1" source="iEnbzEExffe_PEklj8oC-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="iEnbzEExffe_PEklj8oC-16" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="480" />
+              <mxPoint x="260" y="480" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-14" parent="1" style="image;html=1;image=img/lib/clip_art/networking/Wireless_Router_128x128.png" value="NSAK&lt;br&gt;&lt;div&gt;10.10.10.30&lt;/div&gt;&lt;div&gt;10.10.20.30&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="320" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-15" edge="1" parent="1" source="iEnbzEExffe_PEklj8oC-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.115;entryY=0.4;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;exitX=0.972;exitY=0.619;exitDx=0;exitDy=0;exitPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="488.7750000000001" y="479.29999999999995" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-16" parent="1" style="image;html=1;image=img/lib/clip_art/networking/Switch_128x128.png" value="" vertex="1">
+          <mxGeometry height="80" width="80" x="160" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-17" parent="1" style="image;html=1;image=img/lib/clip_art/computers/Laptop_128x128.png" value="" vertex="1">
+          <mxGeometry height="80" width="80" x="480" y="445" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-29" edge="1" parent="1" source="iEnbzEExffe_PEklj8oC-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="533" as="sourcePoint" />
+            <mxPoint x="200" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-30" edge="1" parent="1" source="iEnbzEExffe_PEklj8oC-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="iEnbzEExffe_PEklj8oC-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-24" parent="1" style="image;html=1;image=img/lib/clip_art/computers/Laptop_128x128.png" value="&lt;div&gt;Alice&lt;/div&gt;&lt;div&gt;TCP Client&lt;/div&gt;&lt;div&gt;10.10.10.10&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="40" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-33" parent="1" style="text;whiteSpace=wrap;html=1;" value="Switch" vertex="1">
+          <mxGeometry height="40" width="70" x="180" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="iEnbzEExffe_PEklj8oC-34" parent="1" style="image;html=1;image=img/lib/clip_art/computers/Server_128x128.png" value="&lt;div&gt;Bob&lt;/div&gt;&lt;div&gt;TCP Server&lt;/div&gt;&lt;div&gt;10.10.10.20&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="160" y="540" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

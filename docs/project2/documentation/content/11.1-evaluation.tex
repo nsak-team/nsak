@@ -1,0 +1,83 @@
+\section{Evaluation}\label{sec: Evaluation}
+
+\subsection{Generel Functionality of a Rogue Access Point}\label{subsec: General Functionality}
+The Rogue Access Point scenario was executed with different combinations of drills to test the modularity and the
+independent drill execution.
+The expected outcome is the creation of an open Wi-fi access point broadcasting the configured SSID,
+providing DHCP leases and forwarding traffic to the uplink interface.
+Additionally, traffic will be captured in PCAP format.
+
+
+During execution, the access point was successfully created, and client devices could connect using the assigned IP address.
+via DHCP.
+The Network traffic was captured in a PCAP file.
+
+\subsection{Research Questions}\label{subsec: Research Questions}
+\textbf{RQ1 – Modularity}\label{rq1}
+RQ1: Can network security scenarios be composed of independent drills without modifying the core framework?
+
+
+To ensure modularity, every drill should be able to work independently.
+When setting the DISABLE-DRILL environment variable, remaining drills should execute independently without failure.
+For example, if everything is disabled beside the ap-mode drill, the network should still be discoverable from clients.
+In T4~\ref{tab:modular-execution}, IP forwarding, uplink, and capture should not be executed and therefore are not working.
+
+During the process, each drill has a specific attack goal or functionality.
+No implicit dependencies between drills were observed during execution.
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{l X X}
+        \toprule
+        \textbf{Test} & \textbf{Description} & \textbf{Expectation} \\
+        \midrule
+        T1 & Execute Rogue AP scenario with full drill set & Scenario executes successfully \\
+        T2 & Deactivate packet capture drill & AP still functions \\
+        T3 & Deactivate dnsmasq drill & All drills are working, tshark cannot capture traffic \\
+        T4 & Only the AP-mode drill is enabled & Client can see the SSID and connect \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Modular execution test cases}
+    \label{tab:modular-execution}
+\end{table}
+
+\textbf{RQ2 – Reusability}\label{rq2}
+RQ2: Can individual drills be reused across different scenarios with minimal configuration effort?
+
+
+The hostapd drill was reused in two scenarios: a standalone access point and a rogue access point.
+access point scenario.
+In both cases, the drill implementation remained unchanged.
+Scenario-specific behavior was controlled through environment variables such as SSID, channel, and country code.
+
+
+These results confirm that drills are scenario-orchestrated and can be composed flexibly with minimal modification.
+
+\textbf{RQ3 – Containerization}\label{rq3}
+RQ3: Does container-based execution provide sufficient isolation while maintaining required network functionality?
+
+
+The evaluation focuses on whether container-based execution restricts or enables low-level network operations,
+required for the functionality of \acrshort{nsak}.
+
+
+The Rogue Access Point scenario was executed inside a containerized \acrshort{nsak} environment on an embedded Linux device.
+The container was granted only the necessary capabilities for network configuration and packet capture.
+
+
+During scenario execution, all network services were started in privileged mode within the container environment.
+During container-based execution, network interfaces, routing rules, and packet capture were successfully initialized.
+The drills ap-mode, network setup, dnsmasq, t-shark left certain config files and rules in iptables and filepaths.
+
+\textbf{RQ4 – Reproducibility}\label{rq4}
+RQ4: Can scenarios be executed repeatedly without changing the system behavior?
+
+
+With the same configuration, the scenario execution was triggered multiple times.
+Devices could establish a connection with the access point.
+Network connectivity was enabled in all runs.
+And the \acrshort{nsak} framework was able to capture the traffic.
+
+
+No deviations in system behavior were observed across repeated executions.
