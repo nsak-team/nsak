@@ -1,0 +1,223 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:147.0) Gecko/20100101 Firefox/147.0" version="29.6.0">
+  <diagram name="Page-1" id="yqSbAHLxG_rPFXlcaQH0">
+    <mxGraphModel dx="1408" dy="1948" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" value="&lt;b&gt;AI Credits&amp;nbsp;&lt;br&gt;are to expensive&lt;/b&gt;&amp;nbsp;&lt;b&gt;to build and test the AI scenario&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="920" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;div&gt;&lt;b&gt;Scope is too&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;large for&amp;nbsp;&lt;br&gt;bachelor thesis&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="120" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Not enough&lt;br&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;time for testing&lt;/b&gt;&amp;nbsp;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;(drills, scenarios and environments)&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="320" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Not enough&lt;br&gt;time for documentation&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="320" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=bottom;rounded=0;fontStyle=1;fontSize=24;" value="&lt;font style=&quot;font-size: 32px;&quot;&gt;Risk Analysis&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="360" x="120" y="-40" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Simulate or build network&lt;br&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;environments need&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;more time as planned&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="320" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;div&gt;&lt;b&gt;Scenarios and drills&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;need more&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;time as planned&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="320" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Not enough&lt;br&gt;time for media artifacts&amp;nbsp;&lt;br&gt;(Poster, Presentations, Film, Book, etc.)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="520" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Drills not compatible&lt;br&gt;between scenarios&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="520" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Regressions:&amp;nbsp;&lt;br&gt;Tested scenarios&lt;/b&gt;&amp;nbsp;&lt;b&gt;stop working, because a drill was changed&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="520" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" value="&lt;div&gt;&lt;b&gt;Complex Network&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;nbsp;&lt;/b&gt;&lt;b&gt;environments need&amp;nbsp;&lt;/b&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;more hardware than available&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="920" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;div&gt;&lt;b&gt;NSAK gets&amp;nbsp;abused&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;nbsp;by hackers&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="1120" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;div&gt;&lt;b&gt;User do not&lt;br&gt;understand how&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;to operate NSAK&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="720" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;The AI might go rough&lt;br&gt;in the AI scenario&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="720" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Lack of resources&lt;br&gt;for attack scenarios&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="720" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;div&gt;&lt;b&gt;Lack of resources/ consensus for&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;defense scenarios&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="720" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-18" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;b&gt;Scenario or drill&lt;br&gt;to complex for&lt;br&gt;automation&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="120" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;div&gt;&lt;b&gt;An existing framework already does everything&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;we have planned&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="120" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;div&gt;&lt;b&gt;Misaligned&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;communication lead to&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;b&gt;wrong expectations&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="120" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;The NSAK framework/device itself is vulnerable&amp;nbsp;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="520" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" value="&lt;b&gt;The NSAK hardware devices stop working&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="920" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-23" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=bottom;rounded=0;fontStyle=1;fontSize=24;" value="Risk Brainstorming" vertex="1">
+          <mxGeometry height="40" width="360" x="120" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-24" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=bottom;rounded=0;fontStyle=1;fontSize=24;" value="Risk Matrix" vertex="1">
+          <mxGeometry height="40" width="360" x="120" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-25" parent="1" style="text;whiteSpace=wrap;html=1;align=left;fontSize=16;horizontal=1;verticalAlign=middle;" value="&lt;div style=&quot;line-height: 180%;&quot;&gt;&lt;div&gt;&lt;div&gt;&lt;div align=&quot;left&quot;&gt;&lt;font&gt;&lt;b&gt;Strategic Risk:&lt;/b&gt; Risks related to business decisions (e.g. wrong prioritization).&lt;/font&gt;&lt;br&gt;&lt;font&gt;&lt;b&gt;Operational Risk:&lt;/b&gt; Risks related to internal processes/procedures (e.g. Scrum, QA process).&lt;/font&gt;&lt;br&gt;&lt;font&gt;&lt;b&gt;Financial Risk:&lt;/b&gt; Risks related to costs and expenses (e.g. hardware costs).&lt;/font&gt;&lt;br&gt;&lt;font&gt;&lt;b&gt;External Risk:&lt;/b&gt; Risks related to uncontrollable sources (e.g. Force majeure).&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="670" x="150" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-26" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;One of the students&lt;br&gt;gets injured or sick&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="1120" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-27" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;The AI bubble&amp;nbsp;&lt;br&gt;bursts and we need to switch AI provider&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="1120" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-100" connectable="0" parent="1" style="group;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" value="" vertex="1">
+          <mxGeometry height="680" width="1160" x="120" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-73" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;horizontal=0;" value="&lt;b&gt;High&lt;/b&gt;" vertex="1">
+          <mxGeometry height="200" width="40" x="40" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-74" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;horizontal=0;" value="&lt;b&gt;Medium&lt;/b&gt;" vertex="1">
+          <mxGeometry height="200" width="40" x="40" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-75" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;horizontal=0;" value="&lt;b&gt;Low&lt;/b&gt;" vertex="1">
+          <mxGeometry height="200" width="40" x="40" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-76" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;b&gt;Low&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="360" x="80" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-78" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;Medium&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="360" x="440" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-79" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;b&gt;High&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="360" x="800" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-80" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="80" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-87" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="440" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-88" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="800" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-89" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="440" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-90" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="800" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-91" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="80" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-92" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="440" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-93" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="80" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-94" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="" vertex="1">
+          <mxGeometry height="200" width="360" x="800" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-96" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;horizontal=0;" value="&lt;b&gt;Probability&lt;/b&gt;" vertex="1">
+          <mxGeometry height="600" width="40" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-98" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;b&gt;Impact&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="1080" x="80" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-99" parent="kioQ-EdUJ8o1hpwqE4lg-100" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="80" width="80" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-101" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;div&gt;&lt;b&gt;An existing framework already does everything&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;we have planned&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="210" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-102" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;div&gt;&lt;b&gt;Misaligned&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;communication lead to&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;b&gt;wrong expectations&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="570" y="1150" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-103" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;div&gt;&lt;b&gt;Scope is too&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;large for&amp;nbsp;&lt;br&gt;bachelor thesis&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="1110" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-104" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;b&gt;Scenario or drill&lt;br&gt;to complex for&lt;br&gt;automation&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="1110" y="1150" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-105" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Simulate or build network&lt;br&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;environments need&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;more time as planned&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="570" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-106" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Not enough&lt;br&gt;time for media artifacts&amp;nbsp;&lt;br&gt;(Poster, Presentations, Film, Book, etc.)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="930" y="1150" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-107" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Not enough&lt;br&gt;time for documentation&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="930" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-108" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;div&gt;&lt;b&gt;Scenarios and drills&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;need more&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;time as planned&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="750" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-110" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Drills not compatible&lt;br&gt;between scenarios&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="390" y="1150" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-111" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Regressions:&amp;nbsp;&lt;br&gt;Tested scenarios&lt;/b&gt;&amp;nbsp;&lt;b&gt;stop working, because a drill was changed&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="390" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-112" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;The NSAK framework/device itself is vulnerable&amp;nbsp;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="210" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-113" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" value="&lt;b&gt;AI Credits&amp;nbsp;&lt;br&gt;are to expensive&lt;/b&gt;&amp;nbsp;&lt;b&gt;to build and test the AI scenario&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="930" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-114" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" value="&lt;div&gt;&lt;b&gt;Complex Network&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;nbsp;&lt;/b&gt;&lt;b&gt;environments need&amp;nbsp;&lt;/b&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;more hardware than available&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="570" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-115" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;div&gt;&lt;b&gt;NSAK gets&amp;nbsp;abused&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;nbsp;by hackers&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="210" y="1350" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-116" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;div&gt;&lt;b&gt;User do not&lt;br&gt;understand how&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;to operate NSAK&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="390" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-117" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;The AI might go rough&lt;br&gt;in the AI scenario&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="390" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-118" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Lack of resources&lt;br&gt;for attack scenarios&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="210" y="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-119" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;div&gt;&lt;b&gt;Lack of resources/ consensus for&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;defense scenarios&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="390" y="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-120" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" value="&lt;b&gt;The NSAK hardware devices stop working&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="750" y="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-121" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;One of the students&lt;br&gt;gets injured or sick&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="1110" y="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-122" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;The AI bubble&amp;nbsp;&lt;br&gt;bursts and we need to switch AI provider&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="750" y="1150" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-123" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="&lt;b&gt;Not enough&lt;br&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;time for testing&lt;/b&gt;&amp;nbsp;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;(drills, scenarios and environments)&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="570" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-125" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="120" y="94" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-130" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="120" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-132" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="120" y="154" as="geometry" />
+        </mxCell>
+        <mxCell id="kioQ-EdUJ8o1hpwqE4lg-133" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="120" y="184" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
