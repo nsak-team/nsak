@@ -1,0 +1,155 @@
+\section{Goals}
+
+For a goal to be considered \textbf{S.M.A.R.T.}, it must fulfill the following criteria:
+
+\begin{itemize}
+	\item \textbf{Specific}: What do we want to achieve?
+	\item \textbf{Measurable}: What are the success criteria?
+	\item \textbf{Achievable}: How do we plan to achieve this goal?
+	\item \textbf{Relevant}: Why is it important to achieve this goal?
+	\item \textbf{Time-bound}: Goals categorized as \textit{must} have to be achieved within the thesis, while \textit{should} or \textit{could} goals are considered optional or nice to have.
+\end{itemize}
+
+\subsection{Compare Frameworks (must)}
+
+To identify the USP (unique selling point) of the NSAK framework, we will analyze and compare existing security emulation frameworks. First, relevant frameworks such as MITRE Caldera and Atomic Red Team will be identified and reviewed. Based on this analysis, the identified concepts will be compared with the architecture of the NSAK framework. The comparison will focus on how scenarios and drills are defined, how configuration and parameter handling are structured, how reusable components are organized, how automation is achieved, and which AI capabilities they provide.
+
+The analysis and comparison will be based on the following properties:
+
+\begin{itemize}
+	\item Concepts
+	\item Modularity
+	\item Configurability
+	\item Automation
+	\item AI Capabilities
+\end{itemize}
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item At least two security emulation frameworks are identified and reviewed
+	\item A matrix comparing the specified properties of the selected frameworks is created
+	\item The USP of the NSAK framework is identified
+\end{itemize}
+
+\subsection{AI Integration (must)}
+
+The goal of this research is to investigate how AI (artificial intelligence) can support automated security testing and adversary emulation. The research evaluates potential integration points where AI could enhance the scenario execution, automation, decision-making, and analysis capabilities of the NSAK framework.
+
+\textbf{Success criteria - The following research questions are answered:}
+
+\begin{itemize}
+	\item How is AI currently used in cybersecurity automation?
+	\item Which tasks in adversary emulation can be supported or automated by AI?
+	\item How could AI interact with the NSAK scenarios and drills? (e.g. Agents, MCP)
+	\item What architectural changes would be required to integrate AI into NSAK?
+\end{itemize}
+
+\subsection{REST API (TBD)}
+
+Adding a REST API to the NSAK framework was already proposed in the predecessor project, as it greatly enhances interoperability with other tools. The priority of this goal depends heavily on the outcome of the goal ``Research: AI Integration'' and on whether we want to fulfill the goal ``Framework: Web GUI'', which is prioritized as ``could''. If the evaluated AI integration requires a REST API (e.g., MCP), this goal needs to be prioritized as ``must''; it will be prioritized as ``could''.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item A REST API specification with feature parity to the CLI is created.
+	\item The REST API is implemented according to the specification.
+	\item The API is documented (Open API) and usable by external clients.
+	\item The REST API remains optional and does not replace the CLI-based interaction.
+	\item Authentication and Authorization are explicitly out of scope.
+\end{itemize}
+
+\subsection{Web GUI (could)}
+
+The goal is to design and implement a web-based graphical user interface that allows users to interact with the NSAK framework in a user-friendly way. The Web GUI will enable management of scenarios and drills, triggering scenario execution, and visualization of execution results and system status.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item A simple Web GUI that interacts with the REST API has been implemented.
+	\item The Web GUI displays a list of available scenarios and their states.
+	\item The scenario's results can be viewed on the Web GUI
+	\item Scenarios can be configured and executed via the Web GUI
+	\item Authentication and authorization are explicitly out of scope.
+\end{itemize}
+\newpage
+\subsection{AI -- Purple Team (must)}
+
+The goal is to implement artificial intelligence according to the result of ``Research: AI Integration'' and to explore the use of AI to support red, blue, and purple team exercises in the NSAK framework. The AI will be evaluated for its potential to assist in executing attacks in a scenario and analyzing detection results. The findings will help assess how AI could enhance and coordinate red and blue team activities across a network via the NSAK device.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item The AI is integrated into NSAK as a scenario or as part of the framework, depending on the result of ``Research: AI Integration''.
+	\item The AI can execute CLI or Python tools to directly or indirectly interact with the attached network.
+	\item An operator can interact with or stop the running AI.
+	\item The result artifacts are stored and can be presented or reused for further scenarios.
+\end{itemize}
+
+\subsection{Reproducible Test Environment (must)}
+
+The goal is to design and implement a reproducible and safe test environment for the NSAK framework that enables consistent execution and evaluation of scenarios and drills. The environment should provide a stable basis for testing and comparison of manual and AI-assisted scenarios.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item The test environment can be set up reproducibly using a defined configuration or setup procedure with Infrastructure as code (e.g., Ansible)
+	\item NSAK scenarios and drills can be executed consistently within the environment.
+	\item The environment supports both manual and AI-assisted scenarios.
+	\item Scenario results can be collected and analyzed for evaluation purposes.
+\end{itemize}
+\newpage
+\subsection{Intrusion Detection -- Blue Team (should)}
+
+The goal is to define and implement a blue team reference scenario for intrusion detection within the NSAK framework. The scenario should allow observation and evaluation of suspicious network activity to assess detection capabilities in the test environment and compare the results with those of the AI approach.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item A blue-team intrusion-detection scenario is implemented in the NSAK framework.
+	\item Detection events or alerts can be observed and documented during scenario execution.
+	\item Detection results can be compared with results from AI-assisted scenario execution.
+\end{itemize}
+
+\subsection{Network Discovery -- Red Team (should)}
+
+The goal is to implement a reference red team scenario for network discovery within the NSAK framework. The scenario should simulate reconnaissance activities to identify hosts, services, and network characteristics, and the results should be comparable to the AI-Agent approach.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item A red team network discovery scenario is implemented in the NSAK framework.
+	\item Discovered network information is collected as artifacts.
+	\item The scenario can be executed reproducibly within the test environment.
+	\item The results can be compared with those generated by the AI-assisted approach.
+\end{itemize}
+\newpage
+
+\subsection{Evaluation Goals}
+
+\subsubsection{AI Scenario (must)}
+
+The objective is to determine the effectiveness of the AI-based scenario introduced by the goal ``AI -- Purple Team (must)'' within the network environment defined by the goal ``Reproducible Test Environment (must)''. The evaluation will assess whether the AI scenario successfully executed the expected red and blue team activities for the provided prompts and the quality of the results.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item A methodical approach for the assessment is evaluated and documented.
+	\item The results of the AI scenario for red and blue team activity are assessed.
+	\item There is a conclusion on the effectiveness of the AI scenario for red and blue team activities.
+\end{itemize}
+
+
+\subsubsection{AI vs Engineered Scenarios (should)}
+
+The goal of this evaluation is to compare the quality of AI-based red (network reconnaissance) and blue (network intrusion detection) team scenarios with that of manually engineered scenarios.
+
+The comparison focuses on criteria such as execution reliability, reproducibility, and coverage. The results will help determine the potential benefits and limitations of AI-supported scenarios and provide insights into how AI could enhance future versions of the NSAK framework.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item A methodical approach for the comparison is evaluated and documented.
+	\item The results of the AI scenario are compared against the respective results of the red and blue team scenarios.
+	\item There is a conclusion on the effectiveness of the AI scenario compared to manually engineered scenarios.
+\end{itemize}
