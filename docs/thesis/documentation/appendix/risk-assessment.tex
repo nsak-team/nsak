@@ -1,18 +1,152 @@
+\newpage
 \subsection{Risk Assessment}\label{subsec:risk_management}
 
+To methodically conduct the risk assessment the section \enquote{Risk assessment} from an online guide published by Advisera~\cite{advisera_iso27001_risk_assessment},
+which describes the risk assessment process according to \gls{iso27001}, was used as a reference.
+
+\paragraph{Risk Assessment Process:}
+\begin{enumerate}
+    \item Risk categories and criteria: Define which dimensions and taxonomies are important for the assessment.
+    \item Risk identification: Collect possible risks in a brainstorming session.
+    \item Risk analysis: Assess the risks criteria on a risk matrix.
+    \item Risk evaluation: Create a list of risks ordered by the resulting risk level and evaluate if they are acceptable or need treatment.
+    \item Risk treatment: Describe the strategy and how to treat the risks.
+\end{enumerate}
+
+\subsubsection{Risk Categories \& Criteria:}\label{subsubsec:risk-categories-and-criteria}
+
+The table~\ref{tab:risk-categories} shows four commonly used categories, which where used to group the risks.
+
+\begin{table}[h]
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Category} & \textbf{Description} \\
+        \midrule
+        Strategic Risk & Risks related to business decisions (e.g., wrong prioritization). \\
+        Operational Risk & Risks related to internal processes (e.g., Scrum, \acrshort{QA} process). \\
+        Financial Risk & Risks related to costs and expenses (e.g., hardware costs). \\
+        External Risk & Risks related to uncontrollable sources (e.g., force majeure). \\
+        \bottomrule
+    \end{tabular}
+    \caption{Risk categories used for the project risk assessment}\label{tab:risk-categories}
+\end{table}
+
+The criteria for analysing the risks are summarized in the table~\ref{tab:risk-criteria}
+
+\begin{table}[h]
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Criterion} & \textbf{Description} \\
+        \midrule
+        Probability & Likelihood that the risk will occur. \\
+        Impact & Severity of consequences if the risk materializes. \\
+        Level & Risk level calculated as Probability + Impact. \\
+        \bottomrule
+    \end{tabular}
+    \caption{Risk evaluation criteria}\label{tab:risk-criteria}
+\end{table}
+
+The levels of the criteria and their respective numerical weights are listed in the tables~\ref{tab:risk-probability-scale} and~\ref{tab:risk-impact-scale}.
+
+\begin{table}[h]
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Level} & \textbf{Weight} & \textbf{Description} \\
+        \midrule
+        Low & 1 & Unlikely \\
+        Medium & 2 & Possible \\
+        High & 3 & Likely \\
+        \bottomrule
+    \end{tabular}
+    \caption{Risk probability scale}\label{tab:risk-probability-scale}
+\end{table}
+
+\begin{table}[h]
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Level} & \textbf{Weight} & \textbf{Description} \\
+        \midrule
+        Low & 1 & Minor inconveniences \\
+        Medium & 2 & Delays milestones or reduces scope \\
+        High & 3 & Threat to the thesis \\
+        \bottomrule
+    \end{tabular}
+    \caption{Risk impact scale}\label{tab:risk-impact-scale}
+\end{table}
+
+The following table~\ref{tab:risk-level} defines the calculation method and the resulting risk levels, used for the assessment.
+
+\begin{table}[h]
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Risk Level} & \textbf{Weight} & \textbf{Calculation} \\
+        \midrule
+        Very Low & 2 & Low + Low \\
+        Low & 3 & Low + Medium \\
+        Medium & 4 & Medium + Medium / Low + High \\
+        High & 5 & Medium + High \\
+        Critical & 6 & High + High \\
+        \bottomrule
+    \end{tabular}
+    \caption{Risk level classification (probability and impact are interchangeable)}\label{tab:risk-level}
+\end{table}
 
 \subsubsection{Risk Identification}\label{subsubsec:risk_identification}
 
+The identification process was conducted with the help of a digital brainstorming, where the risks are already grouped by category.
+The identified risks are represented by the cards shown in~\ref{fig:risks-brainstorming}.
+The respective risk categories are visualized by the color coding of the cards and described in the legend.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=1.0\linewidth]{../assets/diagrams/risk_analysis/risks_brainstorming.drawio}
+    \caption{Risks Brainstorming}
+    \label{fig:risks-brainstorming}
+\end{figure}
 
 \subsubsection{Risk Analysis}\label{subsubsec:risk_analysis}
 
+For analysing the risks a matrix was prepared, where the criteria \enquote{Impact} and \enquote{Probability} are representing the x- and y-axis respectively.
+The project team then assessed the criteria for each individual risk and placed them on the matrix accordingly.
+In a second step, the risks where moved if they did not fit relatively to each other.
+The resulting \enquote{Risk Analysis Matrix} is illustrated in the following figure~\ref{fig:risks-analysis-matrix}.
+The background color of the cells is representing the resulting risk level of the tasks.
 
-\subsubsection{Risk Evaluation / Treatment}\label{subsubsec:risk_evaluation}
+\begin{figure}[H]
+    \centering
+    \includesvg[width=1.0\linewidth]{../assets/diagrams/risk_analysis/risk_matrix.drawio}
+    \caption{Risks Brainstorming}
+    \label{fig:risks-analysis-matrix}
+\end{figure}
 
-Risk treatment strategies:
-\begin{itemize}
-    \item Mitigate
-    \item Transfer
-    \item Accept
-    \item Avoid
-\end{itemize}
+\subsubsection{Risk Evaluation \& Treatment}\label{subsubsec:risk_treatment}
+
+In a first step a table with the required columns was created.
+Then the risks and weights for the criteria where added with an ID in the format \enquote{R-000}, to easier reference them in the thesis later on.
+After sorting the table by the calculated risk level, the risk evaluation was conducted by deciding which treatment strategy described in~\ref{tab:risk-treatment-strategies} we want to apply.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm} p{10cm}}
+        \textbf{Strategy} & \textbf{Description} \\ \hline
+        \textbf{Mitigate} & Reduce the likelihood or impact of a risk. \\
+        \textbf{Transfer} & Move the risk to a third party. \\
+        \textbf{Accept} & Acknowledge the risk and take no further action. \\
+        \textbf{Avoid} & Eliminate or circumvent the cause of the risk. \\
+    \end{tabular}
+    \caption{Risk Treatment Strategies}
+    \label{tab:risk-treatment-strategies}
+\end{table}
+
+Finally, the project team went through the risks and discussed how to treat them effectively.
+The resulting \enquote{Risk Assessment} is illustrated in the following table~\ref{fig:risk-assessment}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        angle=-90,
+        width=1.0\linewidth
+    ]{../assets/tables/risk_assessment}
+    \caption{Risk Assessment}
+    \label{fig:risk-assessment}
+\end{figure}

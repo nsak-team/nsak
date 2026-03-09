@@ -14,7 +14,7 @@ $(FORMATS):
 
 build:
 	cd docs/$(PROJECT)/$(TYPE) && \
-	latexmk -pdflua
+	latexmk -pdflua --shell-escape
 
 clean:
 	rm -rf docs/$(PROJECT)/$(TYPE)/$(TYPE).pdf
