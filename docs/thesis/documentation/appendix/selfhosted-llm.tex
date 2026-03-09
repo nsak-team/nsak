@@ -39,6 +39,35 @@ The 8 GB VRAM of the RTX 3070 allows us to run models with 7 Billion parameters
 \subsubsection{System Hardening}\label{subsubsec:system_hardening}
 
 
+\begin{lstlisting}[language=bash,caption={UFW configuration},label={lst:ufw-configuration}]
+# Install UFW
+sudo pacman -Syu ufw
+sudo ufw status
+
+# Allow all outgoing connections
+sudo ufw default allow outgoing
+
+# Deny all incoming connections per default
+sudo ufw default deny incoming
+
+# Allow SSH for remote access
+sudo ufw allow ssh
+
+# Allow HTTP for certbot HTTP challange
+sudo ufw allow http
+
+# Allow HTTPS for Open WebUI
+sudo ufw allow https
+
+# Allow default Ollama port
+sudo ufw allow 11434/tcp
+
+# Make sure to run this command after adding the "allow" rules!
+sudo ufw enable
+
+sudo ufw status
+\end{lstlisting}
+
 \subsubsection{}\label{subsubsec:}
 Port Forwarding via Fritzbox
 DynDNS via Infomaniak
