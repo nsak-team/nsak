@@ -17,4 +17,4 @@ build:
 	latexmk -pdflua
 
 clean:
-	rm -rf docs/$(PROJECT)/$(TYPE)/$(TYPE).tex
+	rm -rf docs/$(PROJECT)/$(TYPE)/$(TYPE).pdf
