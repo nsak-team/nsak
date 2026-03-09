@@ -63,6 +63,18 @@ Adding a REST API to the NSAK framework was already proposed in the predecessor 
 	\item Authentication and Authorization are explicitly out of scope.
 \end{itemize}
 
+\subsection{MCP Server - Client (TBD)}
+
+The MCP Protocol allows the ai to interact with applications in a standardized way - and could therefore be necessary for implementing Ai-based scenarios. 
+If the outcome of the research task "AI Integration" highlights the necessity to specify/expose an MCP-Server to interact seamlessly with the NSAK framework, the implementation is a (must) otherwise a (could). 
+
+\begin{itemize}
+	\item A MCP-Server is specified and implemented
+	\item A documentation how to connect with the MCP is provided.
+	\item A form of authentication is provided.
+\end{itemize}
+
+
 \subsubsection{Web GUI (could)}
 
 The goal is to design and implement a web-based graphical user interface that allows users to interact with the NSAK framework in a user-friendly way. The Web GUI will enable management of scenarios and drills, triggering scenario execution, and visualization of execution results and system status.
@@ -118,7 +130,7 @@ The goal is to define and implement a blue team reference scenario for intrusion
 	\item Detection results can be compared with results from AI-assisted scenario execution.
 \end{itemize}
 
-\subsubsection{Network Discovery -- Red Team (should)}
+\subsubsection{Network Discovery -- Red Team (must)}
 
 The goal is to implement a reference red team scenario for network discovery within the NSAK framework. The scenario should simulate reconnaissance activities to identify hosts, services, and network characteristics, and the results should be comparable to the AI-Agent approach.
 
@@ -147,9 +159,9 @@ The objective is to determine the effectiveness of the AI-based scenario introdu
 \end{itemize}
 
 
-\subsubsection{AI vs Engineered Scenarios (should)}
+\subsubsection{AI vs Engineered Scenarios (must/should)}
 
-The goal of this evaluation is to compare the quality of AI-based red (network reconnaissance) and blue (network intrusion detection) team scenarios with that of manually engineered scenarios.
+The goal of this evaluation is to compare the quality of AI-based red (network reconnaissance) (must) and blue (network intrusion detection) (should) team scenarios with that of manually engineered scenarios.
 
 The comparison focuses on criteria such as execution reliability, reproducibility, and coverage. The results will help determine the potential benefits and limitations of AI-supported scenarios and provide insights into how AI could enhance future versions of the NSAK framework.
 
@@ -157,6 +169,7 @@ The comparison focuses on criteria such as execution reliability, reproducibilit
 
 \begin{itemize}
 	\item A methodical approach for the comparison is evaluated and documented.
-	\item The results of the AI scenario are compared against the respective results of the red and blue team scenarios.
+	\item The results of the AI scenario are compared against the respective results of the red team scenario (must)
+	\item The results of the AI scenario are compared against the respective results of the blue team scenario (should)
 	\item There is a conclusion on the effectiveness of the AI scenario compared to manually engineered scenarios.
 \end{itemize}
