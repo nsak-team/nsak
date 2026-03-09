@@ -53,6 +53,19 @@ The research evaluates potential integration points where \acrshort{AI} could en
 
 \subsection{Framework}\label{subsec:framework}
 
+\subsubsection{Configuration Management (must)}\label{subsubsec:configuration-management}
+
+The goal is to extend the NSAK framework, so that scenarios and drills can expose configurable parameters to increase the flexibility of scenarios and reusability of drills. Parameters can be provided via command-line arguments or YAML files and are resolved by the framework into a unified run configuration used for scenario execution.
+
+\paragraph{Success criteria:}
+
+\begin{itemize}
+	\item Scenarios and drills can expose configurable parameters
+	\item The available parameters can be listed by the CLI with the \texttt{--help} option
+	\item Parameters can be provided via CLI arguments or YAML files
+	\item The framework resolves the inputs into a run configuration (internal data structure).
+\end{itemize}
+
 \subsubsection{REST API (\acrshort{TBD})}\label{subsubsec:rest-api}
 
 Adding a REST API to the \acrshort{NSAK} framework was already proposed in the predecessor project, as it greatly enhances interoperability with other tools.
