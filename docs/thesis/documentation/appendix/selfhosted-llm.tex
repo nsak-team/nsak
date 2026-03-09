@@ -1,0 +1,46 @@
+\section{Self-Hosted \acrshort{LLM}}\label{sec:self_hosted_llm}
+During the~\ref{subsubsec:risk_evaluation} we realized that the costs for \acrshort{AI} tokens required to use cloud based \acrshort{LLM}s might cause huge costs.
+\todo{Add source for the cost claim}
+As the project team already has existing hardware which is suitable for running smaller \acrshort{LLM}s, one of the possibilities to avoid this risk is the usage of self-hosted \acrshort{LLM}s.
+Besides eliminating the costs for \acrshort{AI} tokens, at least during the development phase, it also allows the quick evaluation of different \acrshort{AI} Models.
+Depending on the quality and performance of the smaller models running in the self-hosted setup we can consider not using a cloud based \acrshort{LLM} at all.
+
+\subsection{Hardware Setup}\label{subsec:hw_setup}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ll}
+        \hline
+        \textbf{Component} & \textbf{Specification} \\
+        \hline
+        CPU & AMD Ryzen 5\ 3600 (6 cores / 12 threads, up to 4.2 GHz) \\
+        GPU & NVIDIA GeForce RTX 3070 (8 GB VRAM) \\
+        System Memory & 32 GB RAM \\
+        \hline
+    \end{tabular}
+    \caption{Hardware configuration of the self-hosted \acrshort{LLM} inference server.}
+    \label{tab:llm_hardware_setup}
+\end{table}
+
+The 8 GB VRAM of the RTX 3070 allows us to run models with 7 Billion parameters
+
+\subsection{System Setup}\label{subsec:system_setup}
+
+
+\subsubsection{LLM Model Manager - Ollama}\label{subsubsec:llm_model_manager_ollama}
+
+
+\subsubsection{Webserver - Nginx}\label{subsubsec:webserver_nginx}
+
+
+\subsubsection{LLM Chat GUI - Open WebUI}\label{subsubsec:open_webui}
+
+
+\subsubsection{System Hardening}\label{subsubsec:system_hardening}
+
+
+\subsubsection{}\label{subsubsec:}
+Port Forwarding via Fritzbox
+DynDNS via Infomaniak
+
+\subsection{Evaluation}\label{subsec:evaluation}
