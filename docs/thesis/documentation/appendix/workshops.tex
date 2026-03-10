@@ -1,3 +1,5 @@
+% Time form: Past tense
+
 \newpage
 \section{Workshops}
 
@@ -57,7 +59,7 @@ This workshop demonstrates how attackers can exploit TLS downgrade vulnerabiliti
 
 In this scenario, the infamous POODLE attack is implemented, in which a malicious actor tries to convince a client and a server to use the vulnerable TLS version 1.1 instead of 1.2 or 1.3 to encrypt HTTP traffic. This attack requires the attacker to sit between the client and the server (a man-in-the-middle, or MITM), allowing them to intercept and control the traffic. When the client initiates a TLS handshake, the attacker drops packets to the server and sends TCP reset packets to the client, eventually trying older TLS versions. Because TLS 1.1 is vulnerable to a CBC Padding attack, it is possible to create a padding oracle that gradually decrypts the cookie and hijacks the user's session.
 
-Building on this, the scenario directly addresses the following aspect from the thesis proposal: \newline 
+Building on this, the scenario directly addresses the following aspect from the thesis proposal: \newline
 \enquote*{Unterstützung typischer Vorgehensweisen aus dem Red-Team- und Penetration-Testing-Bereich, etwa durch Scan- oder Angriffssimulationen}
 
 
@@ -100,7 +102,7 @@ This scenario covers the following bullet point from the thesis proposal: \newli
 
 Capturing, exfiltrating, and analyzing traffic from a targeted network is a key Red Team activity and crucial for initial reconnaissance and planning the next phases of the attack. Based on the gathered intelligence, network participants and services can be identified, and possible attack vectors may be evaluated. If unencrypted traffic is present on the network, session data and credentials could already have been extracted.
 
-This scenario addresses the following bullet point from the thesis proposal: 
+This scenario addresses the following bullet point from the thesis proposal:
 \enquote*{Untersuchung und Auswertung der Netzwerkkommunikation zwischen Endgeräten und externen Netzen.}
 \begin{figure}[H]
 	\centering
