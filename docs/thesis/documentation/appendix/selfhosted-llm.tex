@@ -41,20 +41,20 @@ act as reverse proxy for the \enquote{Open WebUI} and the Ollama API under the d
     \item Open WebUI: Web based chat interface for \glsxtrshort{LLM} managers (containerized).
 \end{itemize}
 
+\newpage
 \begin{lstlisting}[language=bash,caption={UFW configuration},label={lst:llm-system-setup}]
 # Login as default user in sudoers or root user
 
-# Check nvidia driver is loaded and the GPU was correctly detected
+# Check nvidia driver is loaded and the GPU was correctly detected, otherwise install the according drivers
 nvidia-smi
 
-# Install Ollama and enable systemd service
-sudo pacman -Syu ollama ollama-cuda
+# Install Ollama, podman, podman-compose and enable systemd service
+sudo pacman -Syu ollama ollama-cuda podman podman-compose
 sudo systemctl enable --now ollama
 sudo systemctl status ollama
 
 # Download and run a qwen coder 7b model for testing
 ollama pull qwen2.5-coder:7b
-ollama list
 ollama run qwen2.5-coder
 
 # Create a new user for isolating the services
@@ -74,9 +74,6 @@ net.ipv4.ip_unprivileged_port_start=80
 # Load the new config
 sudo sysctl -p
 
-# Install podman and podman-compose
-sudo pacman -Syu podman podman-compose
-
 # Login as user ai and create the following directory and file
 mkdir -p .config.containers
 vim .config/containers/containers.conf
@@ -95,12 +92,13 @@ podman-compose down
 # Open the nginx defalult.conf and add the contents from lst:nginx-default-conf
 vim swag/nginx/site-confs/default.conf
 
-# Start the services again, this time they should run successfully. Cevat:
+# Start the services again, this time they should run successfully.
 # Certbot will fail to perform the http challange for issueing the TLS certifiacte,
 # as long as DynDNS and the port forwarding are not set up properly.
 podman-compose up -d
 \end{lstlisting}
 
+\newpage
 \begin{lstlisting}[language=bash,caption={/home/ai/docker-compose.yml},label={lst:nginx-openwebui-docker-compose-yml}]
 services:
   swag:
@@ -140,12 +138,12 @@ services:
     restart: always
 \end{lstlisting}
 
+\newpage
 \begin{lstlisting}[language=bash,caption={swag/nginx/site-confs/default.conf},label={lst:nginx-default-conf}]
 # redirect all traffic to https
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-
     server_name ai.hiube.ch;
 
     location / {
@@ -156,10 +154,7 @@ server {
 # main server block
 server {
     listen 443 ssl default_server;
-    # listen 443 quic reuseport default_server;
     listen [::]:443 ssl default_server;
-    # listen [::]:443 quic reuseport default_server;
-
     server_name ai.hiube.ch;
     include /config/nginx/ssl.conf;
     root /config/www;
@@ -185,9 +180,8 @@ server {
 
     # Reverse proxy for Ollama
     location /llm/ {
-        # This section enforces HTTP Basic Authentication
         auth_basic "Restricted Access";
-        auth_basic_user_file /etc/nginx/.htpasswd; # Path to credentials file inside the container
+        auth_basic_user_file /etc/nginx/.htpasswd;
 
         # If authentication is successful, forward the request to Ollama
         # The trailing slash is important, so that ollma does not see the /llm/ as part of the path!
@@ -202,11 +196,9 @@ server {
         proxy_read_timeout 300s;
     }
 }
-
-# enable subdomain method reverse proxy confs
-# include /config/nginx/proxy-confs/*.subdomain.conf;
 \end{lstlisting}
 
+\newpage
 \subsubsection{System Hardening}\label{subsubsec:system_hardening}
 
 It is recommended to put a proper firewall before the services we want to expose to the internet,
@@ -274,7 +266,7 @@ This can be achieved with port forwarding rules on the \gls{FRITZ!Box}, as shown
 \end{figure}
 
 The Open WebUI and Ollama API should already be reachable via \enquote{ai.hiube.ch}, but we will receive a security warning because there is no valid SSL certificate.
-The easiest way to generate the certificate, is to trigger certbot by restarting the \enquote{swag} service as shown in the listing below~\ref{lst:restart-swag-container}.
+The easiest way to generate the certificate, is to trigger certbot by restarting the \enquote{swag} service as shown in the listing below~\ref{lst:restart-swag-container}.\\
 
 \begin{lstlisting}[language=bash,caption={Example Python Script},label={lst:restart-swag-container}]
 # Login as user ai and restart the swag service
