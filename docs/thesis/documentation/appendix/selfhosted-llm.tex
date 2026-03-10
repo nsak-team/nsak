@@ -42,7 +42,7 @@ act as reverse proxy for the \enquote{Open WebUI} and the Ollama API under the d
 \end{itemize}
 
 \newpage
-\begin{lstlisting}[language=bash,caption={UFW configuration},label={lst:llm-system-setup}]
+\begin{lstlisting}[language=bash,caption={Local LLM System Setup},label={lst:llm-system-setup}]
 # Login as default user in sudoers or root user
 
 # Check nvidia driver is loaded and the GPU was correctly detected, otherwise install the according drivers
@@ -268,7 +268,7 @@ This can be achieved with port forwarding rules on the \gls{FRITZ!Box}, as shown
 The Open WebUI and Ollama API should already be reachable via \enquote{ai.hiube.ch}, but we will receive a security warning because there is no valid SSL certificate.
 The easiest way to generate the certificate, is to trigger certbot by restarting the \enquote{swag} service as shown in the listing below~\ref{lst:restart-swag-container}.\\
 
-\begin{lstlisting}[language=bash,caption={Example Python Script},label={lst:restart-swag-container}]
+\begin{lstlisting}[language=bash,caption={Restart SWAG Container},label={lst:restart-swag-container}]
 # Login as user ai and restart the swag service
 podman-compose restart swag
 \end{lstlisting}
