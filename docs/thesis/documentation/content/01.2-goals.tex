@@ -16,10 +16,10 @@ For a goal to be considered \textbf{S.M.A.R.T.}, it must fulfill the following c
 
 \subsubsection{Compare Frameworks (must)}\label{subsubsec:compare-frameworks}
 
-To identify the USP (unique selling point) of the \acrshort{NSAK} framework, we will analyze and compare existing security emulation frameworks.
+To identify the USP (unique selling point) of the \glsxtrshort{NSAK} framework, we will analyze and compare existing security emulation frameworks.
 First, relevant frameworks such as MITRE Caldera and Atomic Red Team will be identified and reviewed.
-Based on this analysis, the identified concepts will be compared with the architecture of the \acrshort{NSAK} framework.
-The comparison will focus on how scenarios and drills are defined, how configuration and parameter handling are structured, how reusable components are organized, how automation is achieved, and which \acrshort{AI} capabilities they provide.
+Based on this analysis, the identified concepts will be compared with the architecture of the \glsxtrshort{NSAK} framework.
+The comparison will focus on how scenarios and drills are defined, how configuration and parameter handling are structured, how reusable components are organized, how automation is achieved, and which \glsxtrshort{AI} capabilities they provide.
 
 The analysis and comparison will be based on the following properties:
 
@@ -28,7 +28,7 @@ The analysis and comparison will be based on the following properties:
 	\item Modularity
 	\item Configurability
 	\item Automation
-	\item \acrshort{AI} Capabilities
+	\item \glsxtrshort{AI} Capabilities
 \end{itemize}
 
 \paragraph{Success criteria:}
@@ -36,21 +36,21 @@ The analysis and comparison will be based on the following properties:
 \begin{itemize}
 	\item At least two security emulation frameworks are identified and reviewed
 	\item A matrix comparing the specified properties of the selected frameworks is created
-	\item The USP of the \acrshort{NSAK} framework is identified
+	\item The USP of the \glsxtrshort{NSAK} framework is identified
 \end{itemize}
 
-\subsubsection{\acrshort{AI} Integration (must)}\label{subsubsec:ai-integration}
+\subsubsection{\glsxtrshort{AI} Integration (must)}\label{subsubsec:ai-integration}
 
-The goal of this research is to investigate how \acrshort{AI} (artificial intelligence) can support automated security testing and adversary emulation.
-The research evaluates potential integration points where \acrshort{AI} could enhance the scenario execution, automation, decision-making, and analysis capabilities of the \acrshort{NSAK} framework.
+The goal of this research is to investigate how \glsxtrshort{AI} (artificial intelligence) can support automated security testing and adversary emulation.
+The research evaluates potential integration points where \glsxtrshort{AI} could enhance the scenario execution, automation, decision-making, and analysis capabilities of the \glsxtrshort{NSAK} framework.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
-	\item How is \acrshort{AI} currently used in cybersecurity automation?
-	\item Which tasks in adversary emulation can be supported or automated by \acrshort{AI}?
-	\item How could \acrshort{AI} interact with the \acrshort{NSAK} scenarios and drills (e.g., Agents, \acrshort{MCP})?
-	\item What architectural changes would be required to integrate \acrshort{AI} into \acrshort{NSAK}?
+	\item How is \glsxtrshort{AI} currently used in cybersecurity automation?
+	\item Which tasks in adversary emulation can be supported or automated by \glsxtrshort{AI}?
+	\item How could \glsxtrshort{AI} interact with the \glsxtrshort{NSAK} scenarios and drills (e.g., Agents, \glsxtrshort{MCP})?
+	\item What architectural changes would be required to integrate \glsxtrshort{AI} into \glsxtrshort{NSAK}?
 \end{itemize}
 
 \subsection{Framework}\label{subsec:framework}
@@ -68,36 +68,36 @@ The goal is to extend the NSAK framework, so that scenarios and drills can expos
 	\item The framework resolves the inputs into a run configuration (internal data structure).
 \end{itemize}
 
-\subsubsection{REST API (\acrshort{TBD})}\label{subsubsec:rest-api}
+\subsubsection{REST API (\glsxtrshort{TBD})}\label{subsubsec:rest-api}
 
-Adding a REST API to the \acrshort{NSAK} framework was already proposed in the predecessor project, as it greatly enhances interoperability with other tools.
+Adding a REST API to the \glsxtrshort{NSAK} framework was already proposed in the predecessor project, as it greatly enhances interoperability with other tools.
 The priority of this goal depends heavily on the outcome of the goal~\ref{subsubsec:ai-integration} and on whether we want to fulfill the goal~\ref{subsubsec:web-gui}, which is prioritized as \enquote{could}.
-If the evaluated \acrshort{AI} integration requires a REST API (e.g., \acrshort{MCP}), this goal needs to be prioritized as \enquote{must}; it will be prioritized as \enquote{could}.
+If the evaluated \glsxtrshort{AI} integration requires a REST API (e.g., \glsxtrshort{MCP}), this goal needs to be prioritized as \enquote{must}; it will be prioritized as \enquote{could}.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
-	\item A REST API specification with feature parity to the \acrshort{CLI} is created.
+	\item A REST API specification with feature parity to the \glsxtrshort{CLI} is created.
 	\item The REST API is implemented according to the specification.
 	\item The API is documented (Open API) and usable by external clients.
-	\item The REST API remains optional and does not replace the \acrshort{CLI}-based interaction.
+	\item The REST API remains optional and does not replace the \glsxtrshort{CLI}-based interaction.
 	\item Authentication and Authorization are explicitly out of scope.
 \end{itemize}
 
-\subsubsection{MCP Server (\acrshort{TBD})}\label{subsubsec:mcp-server}
+\subsubsection{MCP Server (\glsxtrshort{TBD})}\label{subsubsec:mcp-server}
 
-The \acrshort{MCP} Protocol allows the \acrshort{AI} to interact with applications in a standardized way - and could therefore be necessary for implementing \acrshort{AI}-based scenarios.
-If the outcome of the research task~\ref{subsubsec:ai-integration} highlights the necessity to specify/expose an \acrshort{MCP}-Server to interact seamlessly with the \acrshort{NSAK} framework, the implementation is a (must), otherwise a (could).
+The \glsxtrshort{MCP} Protocol allows the \glsxtrshort{AI} to interact with applications in a standardized way - and could therefore be necessary for implementing \glsxtrshort{AI}-based scenarios.
+If the outcome of the research task~\ref{subsubsec:ai-integration} highlights the necessity to specify/expose an \glsxtrshort{MCP}-Server to interact seamlessly with the \glsxtrshort{NSAK} framework, the implementation is a (must), otherwise a (could).
 
 \begin{itemize}
-	\item A \acrshort{MCP}-Server is specified and implemented
-	\item Documentation how to connect to the \acrshort{MCP} is provided.
+	\item A \glsxtrshort{MCP}-Server is specified and implemented
+	\item Documentation how to connect to the \glsxtrshort{MCP} is provided.
 	\item A form of authentication is provided.
 \end{itemize}
 
 \subsubsection{Web GUI (could)}\label{subsubsec:web-gui}
 
-The goal is to design and implement a web-based graphical user interface that allows users to interact with the \acrshort{NSAK} framework in a user-friendly way.
+The goal is to design and implement a web-based graphical user interface that allows users to interact with the \glsxtrshort{NSAK} framework in a user-friendly way.
 The Web GUI will enable management of scenarios and drills, triggering scenario execution, and visualization of execution results and system status.
 
 \paragraph{Success criteria:}
@@ -113,94 +113,94 @@ The Web GUI will enable management of scenarios and drills, triggering scenario 
 
 \subsection{Scenarios}\label{subsec:scenarios}
 
-\subsubsection{\acrshort{AI} -- Purple Team (must)}\label{subsubsec:ai-purple-team}
+\subsubsection{\glsxtrshort{AI} -- Purple Team (must)}\label{subsubsec:ai-purple-team}
 
-The goal is to implement artificial intelligence according to the result of~\ref{subsubsec:ai-integration} and to explore the use of \acrshort{AI} to support red, blue, and purple team exercises in the \acrshort{NSAK} framework.
-The \acrshort{AI} will be evaluated for its potential to assist in executing attacks in a scenario and analyzing detection results.
-The findings will help assess how \acrshort{AI} could enhance and coordinate red and blue team activities across a network via the \acrshort{NSAK} device.
+The goal is to implement artificial intelligence according to the result of~\ref{subsubsec:ai-integration} and to explore the use of \glsxtrshort{AI} to support red, blue, and purple team exercises in the \glsxtrshort{NSAK} framework.
+The \glsxtrshort{AI} will be evaluated for its potential to assist in executing attacks in a scenario and analyzing detection results.
+The findings will help assess how \glsxtrshort{AI} could enhance and coordinate red and blue team activities across a network via the \glsxtrshort{NSAK} device.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
-	\item The \acrshort{AI} is integrated into \acrshort{NSAK} as a scenario or as part of the framework, depending on the result of~\ref{subsubsec:ai-integration}.
-	\item The \acrshort{AI} can execute \acrshort{CLI} or Python tools to directly or indirectly interact with the attached network.
-	\item An operator can interact with or stop the running \acrshort{AI}.
+	\item The \glsxtrshort{AI} is integrated into \glsxtrshort{NSAK} as a scenario or as part of the framework, depending on the result of~\ref{subsubsec:ai-integration}.
+	\item The \glsxtrshort{AI} can execute \glsxtrshort{CLI} or Python tools to directly or indirectly interact with the attached network.
+	\item An operator can interact with or stop the running \glsxtrshort{AI}.
 	\item The result artifacts are stored and can be presented or reused for further scenarios.
 \end{itemize}
 
 \subsubsection{Reproducible Test Environment (must)}\label{subsubsec:reproducible-test-environments}
 
-The goal is to design and implement a reproducible and safe test environment for the \acrshort{NSAK} framework that enables consistent execution and evaluation of scenarios and drills.
-The environment should provide a stable basis for testing and comparison of manual and \acrshort{AI}-assisted scenarios.
+The goal is to design and implement a reproducible and safe test environment for the \glsxtrshort{NSAK} framework that enables consistent execution and evaluation of scenarios and drills.
+The environment should provide a stable basis for testing and comparison of manual and \glsxtrshort{AI}-assisted scenarios.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
 	\item The test environment can be set up reproducibly using a defined configuration or setup procedure with Infrastructure as code (e.g., Ansible)
-	\item \acrshort{NSAK} scenarios and drills can be executed consistently within the environment.
-	\item The environment supports both manual and \acrshort{AI}-assisted scenarios.
+	\item \glsxtrshort{NSAK} scenarios and drills can be executed consistently within the environment.
+	\item The environment supports both manual and \glsxtrshort{AI}-assisted scenarios.
 	\item Scenario results can be collected and analyzed for evaluation purposes.
 \end{itemize}
 \newpage
 
 \subsubsection{Network Discovery -- Red Team (must)}\label{subsubsec:network-discovery-red-team}
 
-The goal is to implement a reference red team scenario for network discovery within the \acrshort{NSAK} framework.
-The scenario should simulate reconnaissance activities to identify hosts, services, and network characteristics, and the results should be comparable to the \acrshort{AI}-Agent approach.
+The goal is to implement a reference red team scenario for network discovery within the \glsxtrshort{NSAK} framework.
+The scenario should simulate reconnaissance activities to identify hosts, services, and network characteristics, and the results should be comparable to the \glsxtrshort{AI}-Agent approach.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
-	\item A red team network discovery scenario is implemented in the \acrshort{NSAK} framework.
+	\item A red team network discovery scenario is implemented in the \glsxtrshort{NSAK} framework.
 	\item Discovered network information is collected as artifacts.
 	\item The scenario can be executed reproducibly within the test environment.
-	\item The results can be compared with those generated by the \acrshort{AI}-assisted approach.
+	\item The results can be compared with those generated by the \glsxtrshort{AI}-assisted approach.
 \end{itemize}
 
 \subsubsection{Intrusion Detection -- Blue Team (should)}\label{subsubsec:intrusion-detection}
 
-The goal is to define and implement a blue team reference scenario for intrusion detection within the \acrshort{NSAK} framework.
-The scenario should allow observation and evaluation of suspicious network activity to assess detection capabilities in the test environment and compare the results with those of the \acrshort{AI} approach.
+The goal is to define and implement a blue team reference scenario for intrusion detection within the \glsxtrshort{NSAK} framework.
+The scenario should allow observation and evaluation of suspicious network activity to assess detection capabilities in the test environment and compare the results with those of the \glsxtrshort{AI} approach.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
-	\item A blue-team intrusion-detection scenario is implemented in the \acrshort{NSAK} framework.
+	\item A blue-team intrusion-detection scenario is implemented in the \glsxtrshort{NSAK} framework.
 	\item Detection events or alerts can be observed and documented during scenario execution.
-	\item Detection results can be compared with results from \acrshort{AI}-assisted scenario execution.
+	\item Detection results can be compared with results from \glsxtrshort{AI}-assisted scenario execution.
 \end{itemize}
 \newpage
 
 \subsection{Evaluation Goals}\label{subsec:evaluation-goals}
 
-\subsubsection{\acrshort{AI} Scenario (must)}\label{subsubsec:ai-scenario}
+\subsubsection{\glsxtrshort{AI} Scenario (must)}\label{subsubsec:ai-scenario}
 
-The objective is to determine the effectiveness of the \acrshort{AI}-based scenario introduced by the goal~\ref{subsubsec:ai-purple-team} within the network environment defined by the goal~\ref{subsubsec:reproducible-test-environments}
-The evaluation will assess whether the \acrshort{AI} scenario successfully executed the expected red and blue team activities for the provided prompts and the quality of the results.
+The objective is to determine the effectiveness of the \glsxtrshort{AI}-based scenario introduced by the goal~\ref{subsubsec:ai-purple-team} within the network environment defined by the goal~\ref{subsubsec:reproducible-test-environments}
+The evaluation will assess whether the \glsxtrshort{AI} scenario successfully executed the expected red and blue team activities for the provided prompts and the quality of the results.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
 	\item A methodical approach for the assessment is evaluated and documented.
-	\item The results of the \acrshort{AI} scenario for red and blue team activity are assessed.
-	\item There is a conclusion on the effectiveness of the \acrshort{AI} scenario for red and blue team activities.
+	\item The results of the \glsxtrshort{AI} scenario for red and blue team activity are assessed.
+	\item There is a conclusion on the effectiveness of the \glsxtrshort{AI} scenario for red and blue team activities.
 \end{itemize}
 
 
-\subsubsection{\acrshort{AI} vs Engineered Scenarios (must/should)}\label{subsubsec:ai-vs-engineered-scenarios}
+\subsubsection{\glsxtrshort{AI} vs Engineered Scenarios (must/should)}\label{subsubsec:ai-vs-engineered-scenarios}
 
-The goal of this evaluation is to compare the quality of \acrshort{AI}-based red (network reconnaissance) (must) and blue (network intrusion detection) (should) team scenarios with that of manually engineered scenarios.
+The goal of this evaluation is to compare the quality of \glsxtrshort{AI}-based red (network reconnaissance) (must) and blue (network intrusion detection) (should) team scenarios with that of manually engineered scenarios.
 
 The comparison focuses on criteria such as execution reliability, reproducibility, and coverage.
-The results will help determine the potential benefits and limitations of \acrshort{AI}-supported scenarios and provide insights into how \acrshort{AI} could enhance future versions of the \acrshort{NSAK} framework.
+The results will help determine the potential benefits and limitations of \glsxtrshort{AI}-supported scenarios and provide insights into how \glsxtrshort{AI} could enhance future versions of the \glsxtrshort{NSAK} framework.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
 	\item A methodical approach for the comparison is evaluated and documented.
-	\item The results of the \acrshort{AI} scenario are compared against the respective results of the red team scenario (must)
-	\item The results of the \acrshort{AI} scenario are compared against the respective results of the blue team scenario (should)
-	\item There is a conclusion on the effectiveness of the \acrshort{AI} scenario compared to manually engineered scenarios.
+	\item The results of the \glsxtrshort{AI} scenario are compared against the respective results of the red team scenario (must)
+	\item The results of the \glsxtrshort{AI} scenario are compared against the respective results of the blue team scenario (should)
+	\item There is a conclusion on the effectiveness of the \glsxtrshort{AI} scenario compared to manually engineered scenarios.
 \end{itemize}
 
 \subsection{Out of Scope / Optional Feature}
