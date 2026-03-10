@@ -2,6 +2,10 @@
 
 \chapter{Project Management}\label{ch:project-management}
 
+\section{Stakeholder}\label{sec:stakeholer}
+Hj. Wenger: Instructor and Network Specialist \\
+Urs Keller: Expert and Entrepreneur
+
 \section{Agile Management Process}\label{sec:agile-management-process}
 
 The project followed an interactive development approach using Gitlab for issue tracking and planning.
@@ -16,13 +20,13 @@ We decided to hold the following Scrum ceremonies after each sprint:
 		\toprule
 		\textbf{Sprint Planning} & \textbf{Sprint Review} & \textbf{Sprint Retro} & \textbf{Checkpoint} \\
 		\midrule
-		Select milestone with sprint goal & Close open tickets & Reflect on sprint & Present sprint results \\ 
+		Select milestone with sprint goal & Close open tickets & Reflect on sprint & Present sprint results \\
 		\midrule
-		Check issues for DoR and obstacles & Gather stakeholder feedback & Identify improvements & Get stakeholder feedback \\ 
+		Check issues for DoR and obstacles & Gather stakeholder feedback & Identify improvements & Get stakeholder feedback \\
 		\midrule
-		Ensure issues are clear & Validate delivered features & Discuss what went well & Define next tasks \\ 
+		Ensure issues are clear & Validate delivered features & Discuss what went well & Define next tasks \\
 		\midrule
-		Create sprint backlog & Review progress & Discuss issues/problems & Discuss issues/problems \\ 
+		Create sprint backlog & Review progress & Discuss issues/problems & Discuss issues/problems \\
 		\bottomrule
 	\end{tabularx}
 	\caption{Key Scrum Meetings}
@@ -48,7 +52,7 @@ The workflow used for ticket tracking consisted of the following stages:
 	\label{tab:issue-board}
 \end{table}
 
-\subsection{Definition of Ready (DoR)}\label{sec:definition-of-ready}
+\subsection{Definition of Ready (DoR)}\label{subsec:definition-of-ready}
 \begin{table}[H]
 	\centering
 	\begin{tabularx}{\textwidth}{lX}
@@ -61,13 +65,13 @@ The workflow used for ticket tracking consisted of the following stages:
 			\item Objective or problem described in two to three sentences
 			\item Scope clearly defined
 		\end{itemize} \\
-		
+
 		Scope &
 		\begin{itemize}
 			\item Affected module specified (drill, scenario, core, container, frontend)
 			\item External dependencies identified
 		\end{itemize} \\
-		
+
 		Validation &
 		\begin{itemize}
 			\item Testable acceptance criteria defined
@@ -79,6 +83,7 @@ The workflow used for ticket tracking consisted of the following stages:
 	\label{tab:definition-of-ready}
 \end{table}
 
+\subsection{Definition of Done (DoD)}\label{subsec:definition-of-done}
 \begin{table}[H]
 	\centering
 	\begin{tabularx}{\textwidth}{lX}
@@ -92,7 +97,7 @@ The workflow used for ticket tracking consisted of the following stages:
 			\item Pre-commit hooks pass
 			\item Logging and error handling consistent
 		\end{itemize} \\
-		
+
 		Testing &
 		\begin{itemize}
 			\item Feature or bug fix tested
@@ -100,7 +105,7 @@ The workflow used for ticket tracking consisted of the following stages:
 			\item Relevant edge cases considered
 			\item Execution reproducible
 		\end{itemize} \\
-		
+
 		Documentation &
 		\begin{itemize}
 			\item README updated if required
@@ -143,15 +148,11 @@ Per our definition a milestone has at least one epic and the mandatory milestone
 
 \subsection{Issues}\label{subsec:issue} Each Story is assigned a weight, sprint, milestone and epic and are usually represented by an \enquote{Issue} in gitlab.
 
-\subsection{Stakeholder}\label{sec:stakeholer}
-Professor Hj. Wenger Instructor and Network Specialist \\
-Urs Keller Expert and Entrepreneur
+\section{Sprints / Iterations}\label{sec:sprints-iterations}
 
-\section{Sprints Ceremonies}\label{sec:sprint-ceremonies}
-
-\subsubsection{Planning}
-quote{Task} and \enquote{Issue}, the terms are often used interchangeably with \enquote{Stories}.
-Stories must meet the~\ref{sec:definition-of-ready} before implementation and~\ref{sec:definition-of-done} before closing.
+\subsection{Planning}\label{subsec:planning}
+\enquote{Task} and \enquote{Issue}, the terms are often used interchangeably with \enquote{Stories}.
+Stories must meet the~\ref{subsec:definition-of-ready} before implementation and~\ref{subsec:definition-of-done} before closing.
 
 \section{Planning and Estimation}\label{sec:planning-and-estimation}
 
@@ -181,18 +182,19 @@ state of the project.
 	\label{fig:roadmap-sprint2}
 \end{figure}
 
-\section{Stakeholder}\label{sec:stakeholer}
-
-
-\section{Sprints Ceremonies}\label{sec:sprint-ceremonies}
+\section{Sprint Ceremonies}\label{sec:sprint-ceremonies}
 \subsection{Sprint1}\label{subsec:sprint1}
 \subsubsection{Planning}
-In planning of sprint1 we derived all issues from the milestone project management~\ref{tab:gitlab-milestones} and had an overall weight from 89  
+In planning of sprint1 we derived all issues from the milestone project management~\ref{tab:gitlab-milestones} and had an overall weight from 89
 \subsubsection{Review}
 
-All deliverables were fulfilled. However, the deadlines of the milestone had to be adjusted because project management required more time than initially expected. The milestone was successfully reached, and the board was cleared in preparation for the next sprint. All issues were reviewed and moved to the *Done* column.
+All deliverables were fulfilled.
+However, the deadlines of the milestone had to be adjusted because project management required more time than initially expected.
+The milestone was successfully reached, and the board was cleared in preparation for the next sprint.
+All issues were reviewed and moved to the *Done* column.
 
-Feedback and demonstrations were not considered necessary during the Sprint Review. Instead, they were moved to dedicated checkpoints together with the stakeholders.
+Feedback and demonstrations were not considered necessary during the Sprint Review.
+Instead, they were moved to dedicated checkpoints together with the stakeholders.
 
 
 \begin{figure}[H]
