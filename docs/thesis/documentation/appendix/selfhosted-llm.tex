@@ -2,9 +2,8 @@
 
 \newpage
 \section{Self-Hosted \glsxtrshort{LLM}}\label{sec:self_hosted_llm}
-During the~\ref{subsubsec:risk_evaluation} we realized that the costs for \glsxtrshort{AI} tokens required to use cloud based \glsxtrshort{LLM}s might cause huge costs.
-\todo{Add source for the cost claim}
-As the project team already has existing hardware which is suitable for running smaller \glsxtrshort{LLM}s, one of the possibilities to avoid this risk is the usage of self-hosted \glsxtrshort{LLM}s.
+During the risk assessment~\ref{subsec:risk_assessment} we identified that the \glsxtrshort{AI} tokens required to use cloud based \glsxtrshort{LLM}s might be very expensive, and it's really hard to estimate the costs.
+One of the possibilities to avoid this risk was the usage of self-hosted \glsxtrshort{LLM}s, and luckily we already had existing hardware at home which is suitable for running smaller \glsxtrshort{LLM}s.
 Besides eliminating the costs for \glsxtrshort{AI} tokens, at least during the development phase, it also allows the quick evaluation of different \glsxtrshort{AI} Models.
 Depending on the quality and performance of the smaller models running in the self-hosted setup we can consider not using a cloud based \glsxtrshort{LLM} at all.
 
@@ -17,7 +16,7 @@ Depending on the quality and performance of the smaller models running in the se
         \textbf{Component} & \textbf{Specification} \\
         \hline
         CPU & AMD Ryzen 5\ 3600 (6 cores / 12 threads, up to 4.2 GHz) \\
-        GPU & NVIDIA GeForce RTX 3070 (8 GB VRAM) \\
+        GPU & NVIDIA GeForce RTX 3070 (8 GB \glsxshort{VRAM}) \\
         System Memory & 32 GB RAM \\
         \hline
     \end{tabular}
@@ -25,18 +24,41 @@ Depending on the quality and performance of the smaller models running in the se
     \label{tab:llm_hardware_setup}
 \end{table}
 
-The 8 GB VRAM of the RTX 3070 allows us to run models with 7 Billion parameters
+The 8 GB \glsxshort{VRAM} of the RTX 3070 allows us to run models with up to 7 billion parameters, depending on the specific model~\cite{simplr2025vramllm}.
 
 \subsection{System Setup}\label{subsec:system_setup}
 
 
+\begin{lstlisting}[language=bash,caption={UFW configuration},label={lst:llm-base-system-setup}]
+# Create a new user for isolating the services
+sudo useradd -m ai
+
+# Enable linger for user ai, required to run services such as rootles containers without being logged in
+sudo loginctl enable-linger ai
+
+systemctl --user daemon-reexec
+
+# Install podman
+sudo pacman -Syu podman
+
+# Login as user ai
+sudo su ai
+
+\end{lstlisting}
+
 \subsubsection{LLM Model Manager - Ollama}\label{subsubsec:llm_model_manager_ollama}
 
+\begin{lstlisting}[language=bash,caption={UFW configuration},label={lst:ollama-setup}]
+# Install Ollama
+
+\end{lstlisting}
 
 \subsubsection{Webserver - Nginx}\label{subsubsec:webserver_nginx}
 
 
+
 \subsubsection{LLM Chat GUI - Open WebUI}\label{subsubsec:open_webui}
+
 
 
 \subsubsection{System Hardening}\label{subsubsec:system_hardening}
