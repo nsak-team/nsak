@@ -1,12 +1,24 @@
-\chapter{Project Management}
-\section{Agile Management Process}
+\chapter{Project Management}\label{ch:project-management}
 
-The project followed an interactive development approach using Gitlab for issue tracking and planning. Work items were organized into epics, milestones and issues. Each iteration lasted two weeks.
+\section{Agile Management Process}\label{sec:agile-management-process}
 
-\paragraph{Issue Lifecycle}
+The project followed an interactive development approach using Gitlab for issue tracking and planning.
+We defined our project management in a Scrum-like manner, but we individualized the process according to the projects scope and our needs.
+Work items where organized into epics, milestones and issues.
+Each iteration lasts two weeks.
+We decided to hold the following Scrum ceremonies after each sprint:
 
-The workflow used for ticket tracking consisted of the following stages
+\begin{itemize}
+	\item Sprint planning
+	\item Sprint review
+	\item Sprint retro
+\end{itemize}
 
+
+
+The workflow used for ticket tracking consisted of the following stages:
+
+\paragraph{Issue Lifecycle:}
 \begin{itemize}
 	\item Backlog
 	\item Todo
@@ -14,38 +26,34 @@ The workflow used for ticket tracking consisted of the following stages
 	\item Done
 \end{itemize}
 
-\section{Definition of Ready (DoR)}
+\section{Definition of Ready (DoR)}\label{sec:definition-of-ready}
 
-An ticket is considered ready for implementation when the following
-criteria are fulfilled.
-\paragraph{Clarity}
+A ticket is considered ready for implementation when the following criteria are fulfilled.
 
+\paragraph{Clarity:}
 \begin{itemize}
 	\item Clear and precise title
 	\item Objective or problem described in two to three sentences
 	\item Scope clearly defined
 \end{itemize}
 
-\paragraph{Scope}
-
+\paragraph{Scope:}
 \begin{itemize}
 	\item Affected module specified (drill, scenario, core, container, frontend)
 	\item External dependencies identified
 \end{itemize}
 
-\paragraph{Validation}
-
+\paragraph{Validation:}
 \begin{itemize}
 	\item Testable acceptance criteria defined
 	\item Expected behavior clearly specified
 \end{itemize}
 
-\section{Definition of Done (DoD)}
+\section{Definition of Done (DoD)}\label{sec:definition-of-done}
 
 A ticket is considered done when all the following criteria are fulfilled.
 
-\paragraph{Implementation}
-
+\paragraph{Implementation:}
 \begin{itemize}
 	\item All acceptance criteria fulfilled
 	\item Container execution verified
@@ -53,8 +61,7 @@ A ticket is considered done when all the following criteria are fulfilled.
 	\item Logging and error handling consistent
 \end{itemize}
 
-\paragraph{Testing}
-
+\paragraph{Testing:}
 \begin{itemize}
 	\item Feature or bug fix tested
 	\item Acceptance criteria verifiable (automated or manual)
@@ -62,8 +69,7 @@ A ticket is considered done when all the following criteria are fulfilled.
 	\item Execution reproducible
 \end{itemize}
 
-\paragraph{Documentation}
-
+\paragraph{Documentation:}
 \begin{itemize}
 	\item README updated if required
 	\item Architecture changes documented
@@ -72,40 +78,34 @@ A ticket is considered done when all the following criteria are fulfilled.
 	\item Required documentation stored for thesis or appendix
 \end{itemize}
 
-\section{Project Structure}\label{lab:project-structure}
+\section{Project Structure}\label{sec:project-structure}
 
-\paragraph{Milestones}
+\paragraph{Milestones} represent crucial steps toward the overall project goal.
+Per our definition a milestone has at least one epic.
 
-Milestones represent crucial steps toward the overall project goal.
+\paragraph{Epics} consist of multiple stories and contribute to fulfilling milestones.
 
-\paragraph{Epics}
-Epics consist of multiple stories and contribute to fulfilling milestones.
+\paragraph{Stories} Each story is assigned a weight, sprint, milestone and epic and are usually represented by an \enquote{Issue} in gitlab.
+While Gitlab differences between \enquote{Task} and \enquote{Issue}, the terms are often used interchangeably with \enquote{Stories}.
+Stories must meet the~\ref{sec:definition-of-ready} before implementation and~\ref{sec:definition-of-done} before closing.
 
-\paragraph{Stories}
-
-Each story is assigned a priority, sprint, milestone and epic.
-Stories must meet the Definition of Ready before implementation.
-
-\section{Planning and Estimation}
+\section{Planning and Estimation}\label{sec:planning-and-estimation}
 
 The following estimation strategy was used:
 
 \begin{itemize}
-	\item 1 hour corresponds to 1 weight point
+	\item 1 hour corresponds roughly to 1 weight point
 	\item Iteration length: 2 weeks
-	\item Sprint Planning duration: 1.5 hours per iteration
-	\item Sprint Review duration: 1 h per iteration
-	\item Sprint Retro duration: 1 h per iteration
+	\item Weights per iteration: ~40h per person = ~80 weight per iteration
+	\item Sprint planning duration: 1.5 hours per iteration
+	\item Sprint review duration: 1 h per iteration
+	\item Sprint retro duration: 1 h per iteration
 \end{itemize}
 
-\todo{maybe subsection would be better}
-\paragraph{Roadmap}
+\section{Project Roadmap}\label{sec:project-roadmap}
 
-
-
-The introduced project structure is illustrated in the roadmap shown in
-Figure~\ref{fig:roadmap-sprint2}. The structure shown in
-Label~\ref{lab:project-structure} helps to visualize the project goals
+The introduced project structure is illustrated in the roadmap shown in Figure~\ref{fig:roadmap-sprint2}.
+The structure shown in~\ref{sec:project-structure} helps to visualize the project goals
 and keeps track of the progress towards achieving goals and milestones.
 Furthermore, the visualization helps stakeholders to grasp the current
 state of the project.
@@ -116,4 +116,3 @@ state of the project.
 	\caption{Roadmap}
 	\label{fig:roadmap-sprint2}
 \end{figure}
-
