@@ -10,83 +10,147 @@ Work items where organized into epics, milestones and issues.
 Each iteration lasts two weeks.
 We decided to hold the following Scrum ceremonies after each sprint:
 
-\begin{itemize}
-	\item Sprint planning
-	\item Sprint review
-	\item Sprint retro
-\end{itemize}
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{YYYY}
+		\toprule
+		\textbf{Sprint Planning} & \textbf{Sprint Review} & \textbf{Sprint Retro} & \textbf{Checkpoint} \\
+		\midrule
+		Select milestone with sprint goal & Close open tickets & Reflect on sprint & Present sprint results \\ 
+		\midrule
+		Check issues for DoR and obstacles & Gather stakeholder feedback & Identify improvements & Get stakeholder feedback \\ 
+		\midrule
+		Ensure issues are clear & Validate delivered features & Discuss what went well & Define next tasks \\ 
+		\midrule
+		Create sprint backlog & Review progress & Discuss issues/problems & Discuss issues/problems \\ 
+		\bottomrule
+	\end{tabularx}
+	\caption{Key Scrum Meetings}
+	\label{tab:scrum-meetings}
+\end{table}
 
 The workflow used for ticket tracking consisted of the following stages:
 
-\paragraph{Issue Lifecycle:}
-\begin{itemize}
-	\item Backlog
-	\item Todo
-	\item Q\&A
-	\item Done
-\end{itemize}
+\subsection{Issue Lifecycle:}\label{subsec:lifecycle}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ll}
+		\toprule
+		\textbf{Buckets} & \textbf{Description} \\
+		\midrule
+		Backlog & List of all tasks and features planned for the project. \\
+		Todo & Tasks selected for the current sprint that are ready to be worked on. \\
+		Q\&A & Tasks waiting for clarification, review, or testing. \\
+		Done & Completed tasks that meet the defined acceptance criteria. \\
+		\bottomrule
+	\end{tabular}
+	\caption{Issue Board}
+	\label{tab:issue-board}
+\end{table}
 
-\section{Definition of Ready (DoR)}\label{sec:definition-of-ready}
+\subsection{Definition of Ready (DoR)}\label{sec:definition-of-ready}
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{lX}
+		\toprule
+		\textbf{Category} & \textbf{Criteria} \\
+		\midrule
+		Clarity &
+		\begin{itemize}
+			\item Clear and precise title
+			\item Objective or problem described in two to three sentences
+			\item Scope clearly defined
+		\end{itemize} \\
+		
+		Scope &
+		\begin{itemize}
+			\item Affected module specified (drill, scenario, core, container, frontend)
+			\item External dependencies identified
+		\end{itemize} \\
+		
+		Validation &
+		\begin{itemize}
+			\item Testable acceptance criteria defined
+			\item Expected behavior clearly specified
+		\end{itemize} \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Definition of Ready Criteria for Tickets}
+	\label{tab:definition-of-ready}
+\end{table}
 
-A ticket is considered ready for implementation when the following criteria are fulfilled.
-
-\paragraph{Clarity:}
-\begin{itemize}
-	\item Clear and precise title
-	\item Objective or problem described in two to three sentences
-	\item Scope clearly defined
-\end{itemize}
-
-\paragraph{Scope:}
-\begin{itemize}
-	\item Affected module specified (drill, scenario, core, container, frontend)
-	\item External dependencies identified
-\end{itemize}
-
-\paragraph{Validation:}
-\begin{itemize}
-	\item Testable acceptance criteria defined
-	\item Expected behavior clearly specified
-\end{itemize}
-
-\section{Definition of Done (DoD)}\label{sec:definition-of-done}
-
-A ticket is considered done when all the following criteria are fulfilled.
-
-\paragraph{Implementation:}
-\begin{itemize}
-	\item All acceptance criteria fulfilled
-	\item Container execution verified
-	\item Pre-commit hooks pass
-	\item Logging and error handling consistent
-\end{itemize}
-
-\paragraph{Testing:}
-\begin{itemize}
-	\item Feature or bug fix tested
-	\item Acceptance criteria verifiable (automated or manual)
-	\item Relevant edge cases considered
-	\item Execution reproducible
-\end{itemize}
-
-\paragraph{Documentation:}
-\begin{itemize}
-	\item README updated if required
-	\item Architecture changes documented
-	\item Thesis relevance briefly noted
-	\item Limitations documented
-	\item Required documentation stored for thesis or appendix
-\end{itemize}
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{lX}
+		\toprule
+		\textbf{Category} & \textbf{Criteria} \\
+		\midrule
+		Implementation &
+		\begin{itemize}
+			\item All acceptance criteria fulfilled
+			\item Container execution verified
+			\item Pre-commit hooks pass
+			\item Logging and error handling consistent
+		\end{itemize} \\
+		
+		Testing &
+		\begin{itemize}
+			\item Feature or bug fix tested
+			\item Acceptance criteria verifiable (automated or manual)
+			\item Relevant edge cases considered
+			\item Execution reproducible
+		\end{itemize} \\
+		
+		Documentation &
+		\begin{itemize}
+			\item README updated if required
+			\item Architecture changes documented
+			\item Thesis relevance briefly noted
+			\item Limitations documented
+			\item Required documentation stored for thesis or appendix
+		\end{itemize} \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Definition of Done Criteria for Tickets}
+	\label{tab:definition-of-done}
+\end{table}
 
 \section{Project Structure}\label{sec:project-structure}
 
-\paragraph{Milestones} represent crucial steps toward the overall project goal.
-Per our definition a milestone has at least one epic.
+\subsection{Milestones}\label{subsec:milestone} A milestone represent crucial steps toward the overall project goal.
+Per our definition a milestone has at least one epic and the mandatory milestones are listed in ~Table\ref{tab:gitlab-milestones}
 
-\paragraph{Epics} consist of multiple stories and contribute to fulfilling milestones.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l}
+		\toprule
+		\textbf{GitLab Milestones} \\
+		\midrule
+		\href{https://gitlab.ti.bfh.ch/groups/gausf1-vonal3/-/milestones/1#tab-issues}{Milestone Project Management} \\
+		\href{https://gitlab.ti.bfh.ch/groups/gausf1-vonal3/-/milestones/19#tab-issues}{Research AI Integration} \\
+		\href{https://gitlab.ti.bfh.ch/groups/gausf1-vonal3/-/milestones/16#tab-issues}{Research: Compare Frameworks} \\
+		\href{https://gitlab.ti.bfh.ch/groups/gausf1-vonal3/-/milestones/5#tab-issues}{NSAK Framework: Configuration Management} \\
+		\href{https://gitlab.ti.bfh.ch/groups/gausf1-vonal3/-/milestones/7#tab-issues}{NSAK Scenario: Network Discovery - Red Team} \\
+		\href{https://gitlab.ti.bfh.ch/groups/gausf1-vonal3/-/milestones/18#tab-issues}{NSAK Scenario: AI - Purple Team} \\
+		\href{https://gitlab.ti.bfh.ch/groups/gausf1-vonal3/-/milestones/20}{Reproducible Test Environment} \\
+		\bottomrule
+	\end{tabular}
+	\caption{Project Milestones in GitLab}
+	\label{tab:gitlab-milestones}
+\end{table}
 
-\paragraph{Stories} Each story is assigned a weight, sprint, milestone and epic and are usually represented by an \enquote{Issue} in gitlab.
-While Gitlab differences between \enquote{Task} and \enquote{Issue}, the terms are often used interchangeably with \enquote{Stories}.
+\subsection{Epics}\label{subsec:epic} consist of multiple stories and contribute to fulfilling milestones.
+
+\subsection{Issues}\label{subsec:issue} Each Story is assigned a weight, sprint, milestone and epic and are usually represented by an \enquote{Issue} in gitlab.
+
+\subsection{Stakeholder}\label{sec:stakeholer}
+Professor Hj. Wenger Instructor and Network Specialist \\
+Urs Keller Expert and Entrepreneur
+
+\section{Sprints Ceremonies}\label{sec:sprint-ceremonies}
+
+\subsubsection{Planning}
+quote{Task} and \enquote{Issue}, the terms are often used interchangeably with \enquote{Stories}.
 Stories must meet the~\ref{sec:definition-of-ready} before implementation and~\ref{sec:definition-of-done} before closing.
 
 \section{Planning and Estimation}\label{sec:planning-and-estimation}
@@ -104,15 +168,100 @@ The following estimation strategy was used:
 
 \section{Project Roadmap}\label{sec:project-roadmap}
 
-The introduced project structure is illustrated in the roadmap shown in Figure~\ref{fig:roadmap-sprint2}.
+The introduced project structure is illustrated in the roadmap shown in ~\ref{fig:roadmap-sprint2}.
 The structure shown in~\ref{sec:project-structure} helps to visualize the project goals
 and keeps track of the progress towards achieving goals and milestones.
 Furthermore, the visualization helps stakeholders to grasp the current
 state of the project.
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{appendix/appendix-media/Project-Management/roadmap-sprint2}
 	\caption{Roadmap}
 	\label{fig:roadmap-sprint2}
 \end{figure}
+
+\section{Stakeholder}\label{sec:stakeholer}
+
+
+\section{Sprints Ceremonies}\label{sec:sprint-ceremonies}
+\subsection{Sprint1}\label{subsec:sprint1}
+\subsubsection{Planning}
+In planning of sprint1 we derived all issues from the milestone project management~\ref{tab:gitlab-milestones} and had an overall weight from 89  
+\subsubsection{Review}
+
+All deliverables were fulfilled. However, the deadlines of the milestone had to be adjusted because project management required more time than initially expected. The milestone was successfully reached, and the board was cleared in preparation for the next sprint. All issues were reviewed and moved to the *Done* column.
+
+Feedback and demonstrations were not considered necessary during the Sprint Review. Instead, they were moved to dedicated checkpoints together with the stakeholders.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{appendix/appendix-media/Project-Management/Milestone-PM-checklist-and-burndown}
+	\caption{Checklist and Burndown Sprint1}
+	\label{fig:milestone-pm-checklist-and-burndown}
+\end{figure}
+
+\subsubsection{Retro}\label{subsubsec:retro1}
+
+\textbf{Key Takeaways:}
+
+\begin{itemize}
+	\item Maintain clear and consistent communication with the instructor.
+	\item Be aware of maintaining a healthy work–life balance during the project.
+	\item Apply lean project management practices to keep the process efficient and focused.
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{"appendix/appendix-media/Project-Management/Retro Sprint 1"}
+	\caption{Retro Sprint 1}
+	\label{fig:retro-sprint-1}
+\end{figure}
+
+
+\subsection{Sprint2}\label{subsec:sprint2}
+\subsubsection{Planning}\label{subsubsec:planning2}
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{l l X}
+		\toprule
+		\textbf{Week} & \textbf{Responsible} & \textbf{Task} \\
+		\midrule
+		Week 1 & Lukas & Configuration management implementation \\
+		Week 1 & Frank & Research and comparison of frameworks \\
+		Week 1 & Team & AI workshop on Thursday and writing of the related issues \\
+		Week 2 & Team & AI research and evaluation \\
+		Week 2 & Team & Preparation and pitch of the project deliverables \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Planned Sprint Activities}
+	\label{tab:sprint-plan}
+\end{table}
+
+\subsubsection{Review}
+\subsubsection{Retro}
+\subsection{Sprint3}
+\subsubsection{Planning}
+\subsubsection{Review}
+\subsubsection{Retro}
+\subsection{Sprint4}
+\subsubsection{Planning}
+\subsubsection{Review}
+\subsubsection{Retro}
+\subsection{Sprint5}
+\subsubsection{Planning}
+\subsubsection{Review}
+\subsubsection{Retro}
+\subsection{Sprint6}
+\subsubsection{Planning}
+\subsubsection{Review}
+\subsubsection{Retro}
+\subsection{Sprint7}
+\subsubsection{Planning}
+\subsubsection{Review}
+\subsubsection{Retro}
+\subsection{Sprint8}
+\subsubsection{Planning}
+\subsubsection{Review}
+\subsubsection{Retro}
