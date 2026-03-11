@@ -1,3 +1,65 @@
 % Time form: Past tense
 
 \chapter{Implementation}\label{ch:implementation}
+
+
+
+\newpage
+\section{Configuration Management Implementation}\label{sec:configuration-management-implementation}
+
+\subsection{Device Configuration Management}\label{subsec:device-configuration-management}
+
+
+\subsubsection{Create New Resource Type: Device}\label{subsubsec:create-new-resource-type-device}
+
+In the context of \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} this resource type was already defined conceptionally and the~\gls{BananaPI R4} was added as an example in the library under \texttt{lib/devices/bananapi\_r4/}.
+But the resource type was not actually added to the \glsxtrshort{NSAK} core and be able to manage device configurations we need to implement the Device resource type first.
+Analog to the other resource types, a yaml specification for defining devices in the library and multiple classes for representing and managing devices in the core are required.
+The listing~\ref{lst:device-resource-yaml-specification} shows the initial specification for a device resource, which will get extended later on with a section for configuration management.
+
+\begin{lstlisting}[language=bash,caption={Device Resource YAML Specification},label={lst:device-resource-yaml-specification}]
+device: <str:resource-version>
+
+metadata:
+  id: <str:device-id>
+  name: <str:device-name>
+  description: <str:device-description>
+  author: <str:author-email>
+  repository: <str:resource-repository>
+\end{lstlisting}
+
+In the following table~\ref{tab:device-resource-python-classes} the required Python classes are listed and described.
+The classes will be located under \texttt{src/nsak/core/device} within their respective files.
+
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{llX}
+        \hline
+        \textbf{Class} & \textbf{File Name} & \textbf{Description} \\
+        \hline
+        Device & device.py & A dataclass, which represents a device resource as objects during runtime (usually quite similar to the yaml specification). \\
+        DeviceLoader & device\_loader.py & This class returns Device objects and is used by the DeviceManager to find and load device resources from the library. \\
+        DeviceManager & device\_manager.py & The manager class implements the business logic and exposes an API, which can be used by the \glsxtrshort{CLI}. \\
+        \hline
+    \end{tabularx}
+    \caption{Device Resource Python Classes}
+    \label{tab:device-resource-python-classes}
+\end{table}
+
+
+
+\subsection{Drill Configuration Management}\label{subsec:drill-configuration-management}
+
+
+
+
+\subsection{Scenario Configuration Management}\label{subsec:scenario-configuration-management}
+
+
+\subsection{Configuration via CLI}
+
+
+\subsection{Configuration via CLI --config\_file}
+
+
+\subsection{Configuration via interactive CLI Dialog}

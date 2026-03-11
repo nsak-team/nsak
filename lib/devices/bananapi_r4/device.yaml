@@ -1,0 +1,8 @@
+device: v1
+
+metadata:
+  id: bananapi_r4
+  name: BananaPI R4
+  description: ""
+  author: vonal3@bfh.ch
+  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
