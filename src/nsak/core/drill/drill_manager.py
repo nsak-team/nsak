@@ -2,32 +2,22 @@ import importlib.util
 import inspect
 import logging
 import sys
-from typing import Any, List
+from typing import Any
 
-from nsak.core.drill import Drill, DrillLoader
-from nsak.core.drill.drill_loader import DrillNotFoundError, InvalidDrillError
+from nsak.core.resource import ResourceManager
+
+from .drill import Drill
+from .drill_loader import DrillLoader
 
 logger = logging.getLogger(__name__)
 
 
-class DrillManager:
+class DrillManager(ResourceManager[Drill]):
     """
     A collection of methods to manage drills.
     """
 
-    @classmethod
-    def list(cls) -> List[Drill]:
-        """
-        Lists all drills.
-        """
-        return DrillLoader.load_all()
-
-    @classmethod
-    def get(cls, name: str) -> Drill:
-        """
-        Get a drill by name.
-        """
-        return DrillLoader.load(name)
+    ResourceLoaderClass = DrillLoader
 
     @classmethod
     def execute(cls, drill: Drill | str, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
@@ -42,7 +32,7 @@ class DrillManager:
             module_name, drill.path / "drill.py"
         )
         if spec is None or spec.loader is None:
-            raise DrillNotFoundError(drill.name)
+            raise Drill.ResourceNotFoundError(drill.name)
 
         module = importlib.util.module_from_spec(spec)
         sys.modules[module_name] = module
@@ -51,7 +41,7 @@ class DrillManager:
         run_fn = getattr(module, "run", None)
         if run_fn is None or not callable(run_fn):
             msg = f"Drill '{drill.name}' has no callable run()"
-            raise InvalidDrillError(msg)
+            raise Drill.InvalidResourceError(msg)
 
         logger.warning("EXEC DRILL: %s", drill.name)
 
@@ -84,17 +74,17 @@ class DrillManager:
         )
 
         if spec is None:
-            raise DrillNotFoundError(drill.name)
+            raise Drill.ResourceNotFoundError(drill.name)
         module = importlib.util.module_from_spec(spec)
         if module is None:
-            raise DrillNotFoundError(drill.name)
+            raise Drill.ResourceNotFoundError(drill.name)
         sys.modules[module_name] = module
         if spec.loader is None:
-            raise DrillNotFoundError(drill.name)
+            raise Drill.ResourceNotFoundError(drill.name)
         spec.loader.exec_module(module)
 
         cleanup_fn = getattr(module, "cleanup", None)
         if not callable(cleanup_fn):
-            raise InvalidDrillError(drill.name)
+            raise Drill.InvalidResourceError(drill.name)
 
         cleanup_fn()
