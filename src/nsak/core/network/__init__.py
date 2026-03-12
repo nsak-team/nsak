@@ -6,10 +6,11 @@ from .network_interface import (
     get_target_network_interfaces,
 )
 from .network_service import NetworkService, NetworkServiceEndpoint
-from .types import IPAddress
+from .types import IPAddress, IPInterface
 
 __all__ = [
     "IPAddress",
+    "IPInterface",
     "NetworkDiscoveryResult",
     "NetworkDiscoveryResultMap",
     "NetworkInterface",

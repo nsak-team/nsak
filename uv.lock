@@ -146,6 +146,18 @@ wheels = [
 ]
 
 [[package]]
+name = "netplan"
+version = "0.3.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyyaml" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/36/46/284e325e534b615f591fcf2b61381f67c82fce01de110be3f3fdb8db08a7/netplan-0.3.3.tar.gz", hash = "sha256:a7ba8377d9fde05cb1a446f0082c0f4011ca74537e1647e4e9c227b893c031b1", size = 12765, upload-time = "2019-08-20T17:07:00.914Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a2/61/3d64b6422f5c44f00aba0ade39cb4b96707bcdcab740b9c7e2a9bb777298/netplan-0.3.3-py3-none-any.whl", hash = "sha256:4a0c08243ef26a3816bd3aecacebd4b57865f8e80e727c9198b1b7b66e65c4ce", size = 10985, upload-time = "2019-08-20T17:06:58.625Z" },
+]
+
+[[package]]
 name = "nodeenv"
 version = "1.9.1"
 source = { registry = "https://pypi.org/simple" }
@@ -160,6 +172,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
+    { name = "netplan" },
     { name = "pyyaml" },
     { name = "scapy" },
     { name = "tabulate" },
@@ -179,6 +192,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.3.1" },
+    { name = "netplan", specifier = ">=0.3.3" },
     { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "scapy", specifier = ">=2.6.1" },
     { name = "tabulate", specifier = ">=0.10.0" },

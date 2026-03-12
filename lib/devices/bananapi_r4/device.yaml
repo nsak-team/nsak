@@ -6,3 +6,15 @@ metadata:
   description: ""
   author: vonal3@bfh.ch
   repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+configuration:
+  network:
+    ethernets:
+      lan1@eth0:
+        addresses:
+          "10.10.10.30/24":
+            is_target: true
+            is_management: false
+          "10.10.20.30/24":
+            is_target: false
+            is_management: true
