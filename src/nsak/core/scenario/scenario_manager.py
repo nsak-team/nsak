@@ -10,8 +10,8 @@ import yaml
 
 from nsak.core import config
 from nsak.core.drill import Drill, DrillLoader
+from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
-from nsak.core.scenario.scenario_loader import ScenarioNotFoundError
 
 
 # TODO: Keep flexibility low with default mount /runtime/<scenario-name>
@@ -70,24 +70,12 @@ def parse_runtime(manifest: dict[str, Any]) -> RuntimeSpec:
     return RuntimeSpec(env=env, mounts=mounts)
 
 
-class ScenarioManager:
+class ScenarioManager(ResourceManager[Scenario]):
     """
     A collection of methods to manage scenarios.
     """
 
-    @classmethod
-    def list(cls) -> list[Scenario]:
-        """
-        Lists all available scenarios.
-        """
-        return ScenarioLoader.load_all()
-
-    @classmethod
-    def get(cls, name: str) -> Scenario:
-        """
-        Get a scenario by name.
-        """
-        return ScenarioLoader.load(name)
+    ResourceLoaderClass = ScenarioLoader
 
     @classmethod
     def build(cls, scenario: Scenario) -> None:
@@ -205,12 +193,12 @@ class ScenarioManager:
             module_name, scenario.path / "scenario.py"
         )
         if spec is None:
-            raise ScenarioNotFoundError(scenario.name)
+            raise Scenario.ResourceNotFoundError(scenario.name)
         module = importlib.util.module_from_spec(spec)
         if module is None:
-            raise ScenarioNotFoundError(scenario.name)
+            raise Scenario.ResourceNotFoundError(scenario.name)
         sys.modules[module_name] = module
         if spec.loader is None:
-            raise ScenarioNotFoundError(scenario.name)
+            raise Scenario.ResourceNotFoundError(scenario.name)
         spec.loader.exec_module(module)
         return module.run(*args, **kwargs)
