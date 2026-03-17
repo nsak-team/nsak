@@ -2,5 +2,70 @@
 
 \chapter{Related Research}\label{ch:related-research}
 
+\section{Framework Comparison}\label{sec:framework-comparison}
+Previous research, such as \enquote*{SOK: A Survey of Open-Source Threat Emulators}, compares multiple types of threat emulation frameworks using both quantitative and qualitative metrics \cite{Zilberman2020SoKThreatEmulators}. Among the evaluated frameworks, Atomic Red Team, Mitre Caldera, and Metasploit recieved high scores in categories as environments and operator, environment configuration and scenario execution. 
 
-\section{Comparison Nsak - Caldera}\label{sec:comparison-nsak-caldera}
+n the following section, the selected frameworks are briefly introduced, and the unique selling point of the NSAK is highlighted. As a point of reference, the cybersecurity community increasingly relies on the concepts of MITRE ATT\&CK, which has established itself as a standard framework in the field since its introduction in 2014 \cite{mitreattack, alsada2023attack}.
+
+
+The MITRE ATT\&CK is a globally accessible knowledge base of adversary tactics and techniques based on real-world observations \cite{mitreattack}. The knowledge base is structured into TTP (Tactics, Techniques, and Procedures), which are organized into 14 attack behavior groups. The TTP is getting continuously updated and extended, which helps to defend against the capabilities of threat actors.  
+
+The evaluation of the proposed frameworks is based on information obtained from official documentation\cite{caldera,atomicredteam,metasploitdocs} and the findings of Zilberman et al. \cite{Zilberman2020SoKThreatEmulators}.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
+		\hline
+		\textbf{Characteristic} & \textbf{Metasploit Framework} & \textbf{Atomic Red Team} & \textbf{MITRE Caldera} \\
+		\hline
+		Primary Purpose & Exploitation and penetration testing framework & Security testing through small atomic ATT\&CK tests & Automated adversary emulation platform \\
+		\hline
+		Relation to MITRE ATT\&CK & Partial mapping via modules & Direct mapping to ATT\&CK techniques & Built around ATT\&CK adversary emulation \\
+		\hline
+		Automation Level & Medium (scripts and modules) & Low (manual execution of tests) & High (automated attack chains) \\
+		\hline
+		Main Functionality & Exploit development, payload delivery, post-exploitation & Execute small ATT\&CK technique tests & Simulate adversary campaigns across hosts \\
+		\hline
+		Architecture & Modular framework with exploits, payloads, and auxiliary modules & Collection of scripts/tests organized by ATT\&CK techniques & Client-server platform \\
+		\hline
+		Typical Use Case & Penetration testing and vulnerability validation & Detection validation and security control testing & Red team automation and purple team exercises \\
+		\hline
+		Difficulty Level & Medium--High & Low--Medium & Medium--High \\
+		\hline
+	\end{tabular}
+	\label{tab:framework-comparison}
+	\caption{Comparison of Metasploit, Atomic Red Team, and MITRE Caldera (\cite{Zilberman2020SoKThreatEmulators, atomicredteam, caldera, metasploitdocs})}
+\end{table}
+
+As shown in Table~\ref{tab:framework-comparison}, the key characteristics of the frameworks are differ greatly. 
+For \textbf{Atomic Red Team} provides libraries of attack scripts that implement individual TTP of MITRE ATT\&CK. Each attack can be executed independently or chained together into a larger attack scenario. \textbf{Mitre Caldera} is a a complex, agent based adversary simulation tool, whereas \textbf{Metasploit} is a framework that provides exploits, payloads and auxiliary modules. Further details of the frameworks are presented in the following sections. \ref{subsec:atomic-red-team-evaluation}\ref{subsec:caldera-evaluation}\ref{subsec:metasploit-evalutaion}
+
+\subsection{Atomic Red Team}\label{subsec:atomic-red-team-evaluation}
+
+The Atomic Red Team repository provides documentation and configuration files for each technique.
+For every TTP, a YAML configuration file defines the execution parameters, while an enhanced Markdown file contains a human-readable description of the attack.
+This documentation includes a short description of the technique, execution instructions, and additional contextual information.\cite{atomicredteam} 
+
+The framework can be executed directly from the command line and provides features such as logging, detailed error messages, and automatic prerequisite checks.
+If a technique cannot be executed, for example due to operating system constraints, the framework reports the issue and can optionally attempt to install the required prerequisites.\cite{atomicredteam}
+
+ Zilberman et al. recommends deeper cyber security knowledge to use Atomic Red Team framework effectively \cite{Zilberman2020SoKThreatEmulators}. The Open Source mentality, expandability and easily usable scripts can be a great asset for an independent framework such as the NSAK. 
+
+
+\subsection{Caldera}\label{subsec:caldera-evaluation}
+
+Mitre Caldera is also built on the MITRE ATT\&CK knowledge base and functions as a command-and-control center. A central server controls agents running on the target system, executes attacks called abilities, and sends the operation results back to the server. Every Ability is a single attack step built on the TTP. The framework ships with a graphical user interface and is primarily used for red team attack simulation, purple teaming, and detection engineering. The additional feature, like a training plugin for educational purposes, includes facts that can be configured as dynamic safe values, which can be stored and parsed in later steps.\cite{caldera}
+
+With its provided interface and functionality, Caldera is most suitable as a threat emulator, offering a wide range of built-in features, including lateral movement and \gls{cnc} communication \cite{Zilberman2020SoKThreatEmulators}.
+
+\subsection{Metasploit}\label{subsec:metasploit-evalutaion}
+
+Metasploit is a widely used penetration testing framework for testing or attacking systems and exploiting known vulnerabilities. Metasploit follows a sequence of steps to identify a vulnerability in a target system, select a vulnerability for the attack, select an exploit that uses this vulnerability, and deliver a payload that runs on the target system. The configuration via the CLI requires knowledge of the target network and system and requires partial configuration.\cite{metasploitbook, metasploitdocs}
+
+According to Zilberman et al., an operator requires extensive cybersecurity knowledge to effectively use the framework. To support the operator, the GUI \enquote{Armitage}, which is not further evaluated in this work, can be used \cite{Zilberman2020SoKThreatEmulators}.
+
+
+\subsection{NSAK}\label{subsec:nsak-usp}
+The NSAK framework, as an independent universal Network Swiss Army Knife, is not confined and can leverage, if needed, different sets of attack frameworks. An approach could be to use an AI-Enhanced Network Discovery Scenario, which provides the necessary information to configure a Metasploit attack that leads to an attack operation in Caldera and an atomic red team detection script. Hardware-based isolation and network position provide flexibility and should help reduce the operational costs of red and blue teams by reducing simple configuration overhead.\cite{nsakRepository2026} 
+
+\paragraph{AI in framework}
