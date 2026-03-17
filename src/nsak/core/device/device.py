@@ -47,6 +47,7 @@ class DeviceConfigration:
     Represents the device configuration.
     """
 
+    raw: object
     network: NetworkConfiguration
 
 
