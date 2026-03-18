@@ -1,5 +1,4 @@
 import importlib.util
-import inspect
 import logging
 import sys
 from typing import Any
@@ -43,7 +42,7 @@ class DrillManager(ResourceManager[Drill]):
                 message = f"Required argument {name} is missing."
                 raise ArgumentParsingError(message)
             value = kwargs.get(name) or argument.default
-            if str(type(value)) not in argument.type:
+            if type(value).__name__ not in argument.type:
                 message = f"Invalid type {type(value)} for argument {name}, expected {argument.type}."
                 raise ArgumentParsingError(message)
             arguments[name] = value
@@ -78,21 +77,6 @@ class DrillManager(ResourceManager[Drill]):
         logger.warning("EXEC DRILL: %s", drill.name)
 
         return run_fn(**arguments)
-
-        sig = inspect.signature(run_fn)
-
-        # if a drill has **kwargs pass everything
-        # TODO design this part to pass arguments to a drill
-        if any(
-            p.kind == inspect.Parameter.VAR_KEYWORD for p in sig.parameters.values()
-        ):
-            return run_fn(*args, **kwargs)
-
-        # pass only expected keyword parameters
-        allowed = set(sig.parameters.keys())
-        filtered_kwargs = {k: v for k, v in kwargs.items() if k in allowed}
-
-        return run_fn(*args, **filtered_kwargs)
 
     @classmethod
     def clean_up(cls, drill: Drill) -> None:

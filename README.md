@@ -79,6 +79,22 @@ nsak device loaded
 nsak device unload
 ```
 
+### Drill Management
+
+```bash
+# List all subcommands for the Drill resource
+nsak drill --help
+
+# List all available Drill resources
+nsak drill list
+
+# Execute a drill (usually for testing)
+nsak drill execute <drill> --argument <value>
+
+# Show available options for drill execution
+nsak drill execute <drill> --help
+```
+
 ### Simulate a specific scenario in a environment
 
 **Host system configuration:**

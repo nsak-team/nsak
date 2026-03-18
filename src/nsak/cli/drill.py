@@ -47,7 +47,11 @@ def create_drill_command(drill: Drill) -> click.Command:
     :return:
     """
 
-    @click.command(name=drill.id)
+    @click.command(
+        name=drill.id,
+        help=drill.description,
+        short_help=drill.description,
+    )
     def cmd(*args: Any, **kwargs: Any) -> None:  # noqa: ANN401
         """
         Generated drill specific command.
@@ -63,7 +67,6 @@ def create_drill_command(drill: Drill) -> click.Command:
 
     for name, argument in drill.interface.arguments.items():
         cmd = click.option(f"--{name}", default=argument.default)(cmd)
-
     return cmd
 
 

@@ -12,11 +12,9 @@ def run(interface: str) -> None:
 
     :return: None
     """
-    network_interface = LOADED_DEVICE.get_ethernet(interface)
-
     network_discovery_result_map: NetworkDiscoveryResultMap = DrillManager.execute(
         "discover_hosts",
-        network_interface=network_interface,
+        interface=interface,
     )
     DrillManager.execute(
         "transparent_tcp_proxy",

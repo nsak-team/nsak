@@ -61,6 +61,12 @@ class Device(Resource):
         :param name:
         :return:
         """
+        if name not in self.ethernets:
+            interfaces = ", ".join(self.ethernets.keys())
+            message = (
+                f"Could not find interface {name}, available options: {interfaces}"
+            )
+            raise ValueError(message)
         return self.ethernets[name]
 
 
