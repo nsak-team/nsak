@@ -1,7 +1,7 @@
 import dataclasses
 from pathlib import Path
 
-from nsak.core.network.types import IPInterface
+from nsak.core.network.configuration import NetworkConfiguration
 from nsak.core.resource import (
     InvalidResourceError,
     MultipleResourcesFoundError,
@@ -9,36 +9,6 @@ from nsak.core.resource import (
     ResourceError,
     ResourceNotFoundError,
 )
-
-
-@dataclasses.dataclass(frozen=True, kw_only=True)
-class IPConfiguration:
-    """
-    Represents an ip configuration on an interface.
-    """
-
-    ip: IPInterface
-    is_target: bool
-    is_management: bool
-
-
-@dataclasses.dataclass(frozen=True, kw_only=True)
-class EthernetConfiguration:
-    """
-    Represents an ethernet node.
-    """
-
-    name: str
-    addresses: dict[str, IPConfiguration]
-
-
-@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
-class NetworkConfiguration:
-    """
-    Represents the networking part of the configuration, heavily inspired by netplan.
-    """
-
-    ethernets: dict[str, EthernetConfiguration]
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)

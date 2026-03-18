@@ -2,9 +2,12 @@ import socket
 import struct
 import subprocess
 import threading
+import logging
 
-from nsak.core import NetworkInterface
 from nsak.core.network import NetworkDiscoveryResultMap
+from nsak.core.network.configuration import EthernetConfiguration
+
+logger = logging.getLogger(__name__)
 
 SO_ORIGINAL_DST = 80  # from linux/netfilter_ipv4.h
 INTERNAL_PORT = 5_000
@@ -22,7 +25,7 @@ def set_ip_forwarding(value: bool) -> None:
         f.write(str_value)
 
 
-def configure_iptables(network_interface: NetworkInterface, ip: str, port: int) -> None:
+def configure_iptables(network_interface: EthernetConfiguration, ip: str, port: int) -> None:
     """
     Setup iptables rules for forwarding packets to netfilter queue.
 
@@ -131,8 +134,8 @@ def run(network_discovery_result_map: NetworkDiscoveryResultMap) -> None:
     port = 5_000
 
     set_ip_forwarding(True)
-    for network_interface, network_discovery_result in network_discovery_result_map.results.items():
-        nsak_ip = network_discovery_result.network_interface.nsak_ip
-        configure_iptables(network_interface, nsak_ip, port)
-        print(f"[+] MITM TCP proxy listening on iface {network_interface.name}: {nsak_ip}:{port}")
+    for name, network_discovery_result in network_discovery_result_map.results.items():
+        nsak_ip = str(network_discovery_result.network_interface.ip.ip)
+        configure_iptables(network_discovery_result.network_interface, nsak_ip, port)
+        logger.info(f"[+] MITM TCP proxy listening on iface {name}: {nsak_ip}:{port}")
         threading.Thread(target=start_tcp_proxy, args=[nsak_ip]).start()

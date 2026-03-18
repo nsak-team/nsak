@@ -2,11 +2,13 @@ from ipaddress import IPv4Interface
 
 from nsak.core.device.device import (
     DeviceConfigration,
+)
+from nsak.core.device.device_loader import DeviceLoader
+from nsak.core.network.configuration import (
     EthernetConfiguration,
     IPConfiguration,
     NetworkConfiguration,
 )
-from nsak.core.device.device_loader import DeviceLoader
 
 
 def test_device_loader_configuration() -> None:
@@ -16,7 +18,20 @@ def test_device_loader_configuration() -> None:
     This test could be improved by mocking the device library, but is good enough for now.
     """
     # Arrange
+    raw = {
+        "network": {
+            "ethernets": {
+                "lan1@eth0": {
+                    "addresses": {
+                        "10.10.10.30/24": {"is_target": True, "is_management": False},
+                        "10.10.20.30/24": {"is_target": False, "is_management": True},
+                    }
+                }
+            }
+        }
+    }
     expected_configuration = DeviceConfigration(
+        raw=raw,
         network=NetworkConfiguration(
             ethernets={
                 "lan1@eth0": EthernetConfiguration(
@@ -33,9 +48,10 @@ def test_device_loader_configuration() -> None:
                             is_management=True,
                         ),
                     },
+                    _network_interface=None,
                 )
             }
-        )
+        ),
     )
 
     # Act

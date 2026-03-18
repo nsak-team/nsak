@@ -1,10 +1,13 @@
+import logging
 import dataclasses
 import subprocess
 from ipaddress import IPv4Address, IPv6Address
 
-from nsak.core import NetworkInterface, IPAddress
+from nsak.core import IPAddress
 from nsak.core.network import NetworkDiscoveryResultMap, NetworkDiscoveryResult, NetworkService, NetworkServiceEndpoint
+from nsak.core.network.configuration import EthernetConfiguration
 
+logger = logging.getLogger(__name__)
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class ARPScanResult:
@@ -38,7 +41,7 @@ def parse_arp_scan_result(arp_scan_result_output: str) -> list[ARPScanResult]:
     return entries
 
 
-def discover_hosts(network_interface: NetworkInterface) -> NetworkDiscoveryResult:
+def discover_hosts(network_interface: EthernetConfiguration) -> NetworkDiscoveryResult:
     """
     Uses nmap to discover hosts on the provided network interfaces.
 
@@ -72,7 +75,7 @@ def discover_hosts(network_interface: NetworkInterface) -> NetworkDiscoveryResul
     )
 
 
-def run(network_interfaces: list[NetworkInterface]) -> NetworkDiscoveryResultMap:
+def run(network_interfaces: list[EthernetConfiguration]) -> NetworkDiscoveryResultMap:
     """
 
 
@@ -83,9 +86,9 @@ def run(network_interfaces: list[NetworkInterface]) -> NetworkDiscoveryResultMap
 
     for network_interface in network_interfaces:
         try:
-            results[network_interface] = discover_hosts(network_interface)
+            results[network_interface.name] = discover_hosts(network_interface)
         except subprocess.CalledProcessError:
-            # @TODO: maybe log this?
+            logger.exception(f"Error while discovering hosts for interface: {network_interface.name}.")
             continue
 
     # @TODO: It makes sense to create an own datastructure for host discovery results,
