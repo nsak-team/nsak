@@ -17,7 +17,14 @@ from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
 logger = logging.getLogger(__name__)
 
 
-# TODO: Keep flexibility low with default mount /runtime/<scenario-name>
+class ScenarioArgumentParsingError(ValueError):
+    """
+    Exception thrown when argument parsing fails.
+    """
+
+    pass
+
+
 @dataclass(frozen=True)
 class RuntimeMount:
     """
@@ -79,6 +86,28 @@ class ScenarioManager(ResourceManager[Scenario]):
     """
 
     ResourceLoaderClass = ScenarioLoader
+
+    @classmethod
+    def _parse_arguments(cls, scenario: Scenario, **kwargs: Any) -> dict[str, Any]:  # noqa: ANN401
+        """
+        Parse arguments for drill execution.
+
+        :param kwargs:
+        :return:
+        """
+        arguments = {}
+        for name, argument in scenario.interface.arguments.items():
+            if argument.default is None and (
+                name not in kwargs or kwargs[name] is None
+            ):
+                message = f"Required argument {name} is missing."
+                raise ScenarioArgumentParsingError(message)
+            value = kwargs.get(name) or argument.default
+            if type(value).__name__ not in argument.type:
+                message = f"Invalid type {type(value)} for argument {name}, expected {argument.type}."
+                raise ScenarioArgumentParsingError(message)
+            arguments[name] = value
+        return arguments
 
     @classmethod
     def build(cls, scenario: Scenario) -> None:
@@ -151,8 +180,7 @@ class ScenarioManager(ResourceManager[Scenario]):
 
         args.append(f"nsak/scenario/{scenario.path.name}")
         args.append(scenario.path.name)
-        for key, value in kwargs.items():
-            args += [f"--{key}", value]
+        args.extend(kwargs)
         completed_process = subprocess.run(args)  # noqa: S603
 
         return completed_process.returncode
@@ -192,6 +220,8 @@ class ScenarioManager(ResourceManager[Scenario]):
         if isinstance(scenario, str):
             scenario = cls.get(scenario)
 
+        arguments = cls._parse_arguments(scenario, **kwargs)
+
         module_name = scenario.path.name
         spec = importlib.util.spec_from_file_location(
             module_name, scenario.path / "scenario.py"
@@ -212,4 +242,4 @@ class ScenarioManager(ResourceManager[Scenario]):
             raise Scenario.InvalidResourceError(msg)
 
         logger.warning("EXEC SCENARIO: %s", scenario.name)
-        return run_fn(**kwargs)
+        return run_fn(**arguments)

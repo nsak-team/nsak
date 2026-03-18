@@ -3,7 +3,7 @@ from typing import Any
 import click
 
 from nsak.core import Drill, DrillManager
-from nsak.core.drill.drill_manager import ArgumentParsingError
+from nsak.core.drill.drill_manager import DrillArgumentParsingError
 
 drill_group = click.Group("drill")
 
@@ -62,7 +62,7 @@ def create_drill_command(drill: Drill) -> click.Command:
         """
         try:
             DrillManager.execute(drill, *args, **kwargs)
-        except ArgumentParsingError as e:
+        except DrillArgumentParsingError as e:
             click.echo(e)
 
     for name, argument in drill.interface.arguments.items():

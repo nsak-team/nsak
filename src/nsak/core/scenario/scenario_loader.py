@@ -4,6 +4,7 @@ from typing import Any
 from nsak.core.resource import ResourceLoader
 from nsak.core.scenario.scenario import (
     Scenario,
+    ScenarioArgument,
     ScenarioDependencies,
     ScenarioInterface,
 )
@@ -21,6 +22,8 @@ class ScenarioLoader(ResourceLoader[Scenario]):
         """
         Creates a Scenario object from a dict containing the scenario's metadata.
         """
+        arguments = data["interface"].get("arguments", {}) or {}
+
         return Scenario(
             id=str(data["metadata"]["id"]),
             name=str(data["metadata"]["name"]),
@@ -38,7 +41,13 @@ class ScenarioLoader(ResourceLoader[Scenario]):
                 python=set(data["dependencies"]["python"]),
             ),
             interface=ScenarioInterface(
-                arguments=tuple(data["interface"]["arguments"]),
+                arguments={
+                    name: ScenarioArgument(
+                        type=argument["type"],
+                        default=argument.get("default", None),
+                    )
+                    for name, argument in arguments.items()
+                },
                 return_type=str(data["interface"]["return_type"]),
             ),
         )

@@ -11,7 +11,7 @@ from .drill_loader import DrillLoader
 logger = logging.getLogger(__name__)
 
 
-class ArgumentParsingError(ValueError):
+class DrillArgumentParsingError(ValueError):
     """
     Exception thrown when argument parsing fails.
     """
@@ -40,11 +40,11 @@ class DrillManager(ResourceManager[Drill]):
                 name not in kwargs or kwargs[name] is None
             ):
                 message = f"Required argument {name} is missing."
-                raise ArgumentParsingError(message)
+                raise DrillArgumentParsingError(message)
             value = kwargs.get(name) or argument.default
             if type(value).__name__ not in argument.type:
                 message = f"Invalid type {type(value)} for argument {name}, expected {argument.type}."
-                raise ArgumentParsingError(message)
+                raise DrillArgumentParsingError(message)
             arguments[name] = value
         return arguments
 
