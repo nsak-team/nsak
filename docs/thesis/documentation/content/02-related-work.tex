@@ -56,7 +56,7 @@ If a technique cannot be executed, for example due to operating system constrain
 
 Mitre Caldera is also built on the MITRE ATT\&CK knowledge base and functions as a command-and-control center. A central server controls agents running on the target system, executes attacks called abilities, and sends the operation results back to the server. Every Ability is a single attack step built on the TTP. The framework ships with a graphical user interface and is primarily used for red team attack simulation, purple teaming, and detection engineering. The additional feature, like a training plugin for educational purposes, includes facts that can be configured as dynamic safe values, which can be stored and parsed in later steps.\cite{caldera}
 
-With its provided interface and functionality, Caldera is most suitable as a threat emulator, offering a wide range of built-in features, including lateral movement and \gls{cnc} communication \cite{Zilberman2020SoKThreatEmulators}.
+With its provided interface and functionality, Caldera is most suitable as a threat emulator, offering a wide range of built-in features, including lateral movement and \gls{CNC} communication \cite{Zilberman2020SoKThreatEmulators}.
 
 \subsection{Metasploit}\label{subsec:metasploit-evalutaion}
 
@@ -68,4 +68,48 @@ According to Zilberman et al., an operator requires extensive cybersecurity know
 \subsection{NSAK}\label{subsec:nsak-usp}
 The NSAK framework, as an independent universal Network Swiss Army Knife, is not confined and can leverage, if needed, different sets of attack frameworks. An approach could be to use an AI-Enhanced Network Discovery Scenario, which provides the necessary information to configure a Metasploit attack that leads to an attack operation in Caldera and an atomic red team detection script. Hardware-based isolation and network position provide flexibility and should help reduce the operational costs of red and blue teams by reducing simple configuration overhead.\cite{nsakRepository2026} 
 
-\paragraph{AI in framework}
+\section{AI-Research}\label{sec:ai-research}
+
+\subsection{AI and Language Model}
+
+
+The development of \gls{LM} can be divided into several stages \cite{zhao2023survey}. \gls{LM} describes the technique for advancing language intelligence in machines. The first stage \gls{SLM} emerged around the 1990s, and the basic idea is to assume, that one can predict the next word. This model's lack of accuracy is due to the fact that an exponential number of transition probabilities are needed.
+
+To overcome these limitations, \gls{NLM} was introduced to learn a distributed representation of words and capture more complex patterns, leading to a major breakthrough. Building on this, the advancement of pre-trained language models \gls{PLM}, which are first trained on large datasets and then fine-tuned for specific tasks, represented another significant development.
+
+Building on this development, \gls{LLM} further increase the scale of PLMs by expanding parameter count and computational power.
+
+These advances have led to Agentic AIs, in which LLMs empower autonomous agents capable of decision-making and executing complex tasks. 
+
+\subsection{MCP}\label{subsec:mcp}
+
+Anthropic, a US software company focused on AI research, introduced the \gls{MCP} in 2024. The \gls{MCP} is an open source standard that enables AI assistants to connect to external systems, including databases, business tools, and development environments.\cite{anthropic-mcp}
+With \gls{MCP}, models and external dynamic functions can interact autonomously. Dynamic tool discovery and schema negotiation help clients access these functions in a standardized manner.
+Additionally, \gls{MCP} allows information to flow in both directions, so the model can send requests, and tools can send updates or events.  
+
+This architectural approach shifts the AI integration from static toward an interoperable ecosystem of AI-enabled services. On the other hand, the flexible design and open source approach of \gls{MCP} unlock multiple novel and systematic security risks that are in need of enhanced security and governance\cite{hasan2025modelcontextprotocolmcp}.
+
+\subsection{Agentic-AI}\label{subsec:agentic-ai}
+
+ \gls{AGENTIC-AI} can be understood as an advanced machine intelligence that is capable of perceiving, reasoning, and acting with a certain level of autonomy. Traditional systems are more limited to executing predefined commands, whereas \gls{AGENTIC-AI} is not restricted in this way. Due to their ability to adapt in real time, they can continuously refine their knowledge, techniques, and data. The ability to access multiple inputs, from natural language processing to sensor data, allows \gls{AI AGENT}s to develop a deep understanding of their environment \cite{huang2025agentic}.
+
+2. AI Agents in Red Team Operations
+3. AI Agents in Defensive Security
+4. Future Trends
+5. Concepts of Claw AI
+
+IS MCP Dead \cite{riskybiz_mcp}
+
+
+\subsubsection{Evaluated Frameworks and MCP}
+Caldera uses a \gls{MCP} plugin as a bridge between the model and the \gls{REST-API}, allowing the agent to plan and issue commands in a manner similar to a human operator. 
+
+Caldera introduces three main research areas. Firstly, a planner determines the order and selection of abilities and can dynamically construct new adversaries based on user requirements through prompt-based interaction. 
+
+Secondly, an adversary factory model is used to generate adversaries tailored to the operator's specific use cases. 
+
+Thirdly, a forward-deployed agent is enhanced with \gls{RAG} for \gls{CTI}, leveraging \gls{STIX}-based data to create reproducible and testable adversaries.\cite{caldera_mcp_blog}
+
+
+
+
