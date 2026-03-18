@@ -1,7 +1,7 @@
 import dataclasses
 from pathlib import Path
 
-from nsak.core.network.configuration import NetworkConfiguration
+from nsak.core.network.configuration import EthernetConfiguration, NetworkConfiguration
 from nsak.core.resource import (
     InvalidResourceError,
     MultipleResourcesFoundError,
@@ -33,6 +33,35 @@ class Device(Resource):
     author: str
     repository: str
     configuration: DeviceConfigration | None = None
+
+    @property
+    def network(self) -> NetworkConfiguration | None:
+        """
+        Shortcut for accessing network configurations.
+        """
+        if self.configuration is None:
+            return None
+
+        return self.configuration.network
+
+    @property
+    def ethernets(self) -> dict[str, EthernetConfiguration]:
+        """
+        Shortcut for accessing ethernets.
+        """
+        if self.network is None:
+            return {}
+
+        return self.network.ethernets
+
+    def get_ethernet(self, name: str) -> EthernetConfiguration:
+        """
+        Gets an ethernet configuration by interface name.
+
+        :param name:
+        :return:
+        """
+        return self.ethernets[name]
 
 
 class DeviceError(ResourceError):

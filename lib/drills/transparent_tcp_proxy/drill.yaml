@@ -11,5 +11,7 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments: [ NetworkDiscoveryResultMap ]
+  arguments:
+    network_discovery_result_map:
+      type: NetworkDiscoveryResultMap
   return_type: None

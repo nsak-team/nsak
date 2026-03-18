@@ -16,5 +16,7 @@ dependencies:
   python: [ scapy ]
 
 interface:
-  arguments: None
+  arguments:
+    interface:
+      type: str
   return_type: None

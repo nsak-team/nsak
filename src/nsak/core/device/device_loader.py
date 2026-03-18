@@ -84,7 +84,7 @@ class DeviceLoader(ResourceLoader[Device]):
         )
 
     @classmethod
-    def load_by_path(cls, path: Path) -> Device | None:
+    def load_by_path(cls, path: Path) -> Device:
         """
         Load the device by path.
         """

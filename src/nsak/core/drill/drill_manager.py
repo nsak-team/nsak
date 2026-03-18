@@ -12,6 +12,14 @@ from .drill_loader import DrillLoader
 logger = logging.getLogger(__name__)
 
 
+class ArgumentParsingError(ValueError):
+    """
+    Exception thrown when argument parsing fails.
+    """
+
+    pass
+
+
 class DrillManager(ResourceManager[Drill]):
     """
     A collection of methods to manage drills.
@@ -20,12 +28,36 @@ class DrillManager(ResourceManager[Drill]):
     ResourceLoaderClass = DrillLoader
 
     @classmethod
+    def _parse_arguments(cls, drill: Drill, **kwargs: Any) -> dict[str, Any]:  # noqa: ANN401
+        """
+        Parse arguments for drill execution.
+
+        :param kwargs:
+        :return:
+        """
+        arguments = {}
+        for name, argument in drill.interface.arguments.items():
+            if argument.default is None and (
+                name not in kwargs or kwargs[name] is None
+            ):
+                message = f"Required argument {name} is missing."
+                raise ArgumentParsingError(message)
+            value = kwargs.get(name) or argument.default
+            if str(type(value)) not in argument.type:
+                message = f"Invalid type {type(value)} for argument {name}, expected {argument.type}."
+                raise ArgumentParsingError(message)
+            arguments[name] = value
+        return arguments
+
+    @classmethod
     def execute(cls, drill: Drill | str, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
         """
         Load the drills entrypoint and execute it.
         """
         if isinstance(drill, str):
             drill = cls.get(drill)
+
+        arguments = cls._parse_arguments(drill, **kwargs)
 
         module_name = drill.path.name
         spec = importlib.util.spec_from_file_location(
@@ -44,6 +76,8 @@ class DrillManager(ResourceManager[Drill]):
             raise Drill.InvalidResourceError(msg)
 
         logger.warning("EXEC DRILL: %s", drill.name)
+
+        return run_fn(**arguments)
 
         sig = inspect.signature(run_fn)
 

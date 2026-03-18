@@ -12,5 +12,7 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments: [str]
-  return_type: dict
+  arguments:
+    interface:
+      type: str
+  return_type: subprocess.Popen

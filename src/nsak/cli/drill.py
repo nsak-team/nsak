@@ -1,6 +1,9 @@
+from typing import Any
+
 import click
 
-from nsak.core import DrillManager
+from nsak.core import Drill, DrillManager
+from nsak.core.drill.drill_manager import ArgumentParsingError
 
 drill_group = click.Group("drill")
 
@@ -28,24 +31,44 @@ def list_drills() -> None:
         click.echo(drill.name)
 
 
-@drill_group.command("execute")
-@click.argument("name", shell_complete=complete_drill_name)  # type: ignore [call-arg]
-@click.option(
-    "--interface",
-    "network-interface",
-    required=True,
-    help="Network interface to bind to",
-)
-def execute_drill(name: str, interface_: str) -> None:
+@drill_group.group("execute")
+def execute() -> None:
     """
-    Execute the drill script.
+    Execute subcommand group.
+    """
+    pass
 
-    :param interface_: Network interface to bind to
-    :param name: The name of the drill for which you want to execute the script.
+
+def create_drill_command(drill: Drill) -> click.Command:
+    """
+    Create a specific Drill command.
+
+    :param drill:
     :return:
     """
-    drill = DrillManager.get(name)
-    DrillManager.execute(drill, {"interface": interface_})
+
+    @click.command(name=drill.id)
+    def cmd(*args: Any, **kwargs: Any) -> None:  # noqa: ANN401
+        """
+        Generated drill specific command.
+
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        try:
+            DrillManager.execute(drill, *args, **kwargs)
+        except ArgumentParsingError as e:
+            click.echo(e)
+
+    for name, argument in drill.interface.arguments.items():
+        cmd = click.option(f"--{name}", default=argument.default)(cmd)
+
+    return cmd
+
+
+for _drill in DrillManager.list():
+    execute.add_command(create_drill_command(_drill))
 
 
 @drill_group.command("clear")
