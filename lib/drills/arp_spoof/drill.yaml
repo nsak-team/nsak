@@ -12,5 +12,7 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments: [ NetworkDiscoveryResultMap ]
-  return_type: "list[subprocess.Popen]"
+  arguments:
+    network_discovery_result_map:
+      type: NetworkDiscoveryResultMap
+  return_type: list[subprocess.Popen]

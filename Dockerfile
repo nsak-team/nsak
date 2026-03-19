@@ -19,7 +19,6 @@ ARG SCENARIO
 ENV SYSTEM_DEPENDENCIES=${SYSTEM_DEPENDENCIES}
 ENV PYTHON_DEPENDENCIES=${PYTHON_DEPENDENCIES}
 ENV SCENARIO=${SCENARIO}
-ENV ENTRYPOINT="nsak scenario execute $SCENARIO"
 ENV NSAK_LIBRARY_PATH="lib/"
 
 RUN apt-get install -y $SYSTEM_DEPENDENCIES
@@ -30,4 +29,4 @@ RUN uv sync && \
     uv build && \
     uv tool install dist/nsak-0.1.0-py3-none-any.whl
 
-CMD $ENTRYPOINT
+ENTRYPOINT ["nsak", "scenario", "execute"]

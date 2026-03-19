@@ -30,13 +30,15 @@ class DeviceManager(ResourceManager[Device]):
         """
         Return the active device.
         """
-        return nsak.core.config.LOADED_DEVICE
+        loaded_device = nsak.core.config.LOADED_DEVICE
+        if loaded_device is None:
+            cls.load("unknown")
+        loaded_device = nsak.core.config.LOADED_DEVICE
+        return loaded_device
 
     @classmethod
     def unload(cls) -> None:
         """
-        Unload the loaded device.
+        Load the unknown device.
         """
-        with open(DEVICE_FILE, "r+") as file:
-            file.truncate(0)
-        nsak.core.config.LOADED_DEVICE = None
+        cls.load("unknown")

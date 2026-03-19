@@ -39,6 +39,13 @@ def add_nat_rules(interface: str, uplink_interface: str):
     logger.info("----------------------------------------------------")
 
 
-def run(args: dict):
+def run(interface: str, uplink_interface: str) -> None:
+    """
+    Runs the NAT Forwarding Drill.
+
+    :param interface:
+    :param uplink_interface:
+    :return:
+    """
     enable_ip_forwarding()
-    add_nat_rules(args['interface'], args['uplink_interface'])
+    add_nat_rules(interface, uplink_interface)

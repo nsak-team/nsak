@@ -27,5 +27,9 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments: [ str, str ]
-  return_type: None
+  arguments:
+    wlan_interface:
+      type: str
+    uplink_interface:
+      type: str
+  return_type: dict[str, Any]

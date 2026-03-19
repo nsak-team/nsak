@@ -1,5 +1,6 @@
 import dataclasses
 from pathlib import Path
+from typing import Any
 
 from nsak.core.resource import (
     InvalidResourceError,
@@ -11,12 +12,22 @@ from nsak.core.resource import (
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+class ScenarioArgument:
+    """
+    Represents a specific scenario argument.
+    """
+
+    type: str
+    default: Any
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
 class ScenarioInterface:
     """
     Represents a scenarios arguments and return value types.
     """
 
-    arguments: tuple[str]
+    arguments: dict[str, ScenarioArgument]
     return_type: str
 
 

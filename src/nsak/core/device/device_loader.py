@@ -5,9 +5,15 @@ from typing import Any
 from nsak.core.device.device import (
     Device,
     DeviceConfigration,
+)
+from nsak.core.network.configuration import (
     EthernetConfiguration,
     IPConfiguration,
     NetworkConfiguration,
+)
+from nsak.core.network.utils import (
+    get_network_interface_or_none,
+    get_network_interfaces,
 )
 from nsak.core.resource.resource_loader import ResourceLoader
 
@@ -25,8 +31,22 @@ class DeviceLoader(ResourceLoader[Device]):
     ) -> DeviceConfigration | None:
         if "configuration" not in data:
             return None
-
-        ethernets = data["configuration"].get("network", {}).get("ethernets", {})
+        network = data["configuration"].get("network", {})
+        if network == "auto":
+            ethernets = {}
+            for interface in get_network_interfaces():
+                ethernets[interface.name] = {
+                    "addresses": {
+                        ip: {
+                            "is_target": True,
+                            "is_management": False,
+                        }
+                        for ips in interface.ips.values()
+                        for ip in ips
+                    }
+                }
+        else:
+            ethernets = network.get("ethernets", {})
 
         return DeviceConfigration(
             raw=data["configuration"],
@@ -42,6 +62,7 @@ class DeviceLoader(ResourceLoader[Device]):
                             )
                             for ip, address in ethernet.get("addresses", {}).items()
                         },
+                        _network_interface=get_network_interface_or_none(interface),
                     )
                     for interface, ethernet in ethernets.items()
                 }
@@ -63,7 +84,7 @@ class DeviceLoader(ResourceLoader[Device]):
         )
 
     @classmethod
-    def load_by_path(cls, path: Path) -> Device | None:
+    def load_by_path(cls, path: Path) -> Device:
         """
         Load the device by path.
         """

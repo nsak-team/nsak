@@ -13,5 +13,5 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments: None
-  return_type: None
+  arguments:
+  return_type:

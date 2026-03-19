@@ -2,8 +2,10 @@ import subprocess
 from typing import Any, List
 
 from nsak.core.environment import Environment, EnvironmentLoader
-from nsak.core.network import get_network_interface
-from nsak.core.network.network_interface import NetworkInterfaceNotFoundError
+from nsak.core.network.utils import (
+    NetworkInterfaceNotFoundError,
+    get_network_interface,
+)
 from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioLoader, ScenarioManager
 
@@ -61,7 +63,8 @@ class EnvironmentManager(ResourceManager[Environment]):
         except NetworkInterfaceNotFoundError as e:
             raise RuntimeError(ENVIRONMENT_SIMULATION_IFACE_SETUP) from e
 
-        if not dummy_network_interface.is_up:
+        is_up = bool(dummy_network_interface.flags & 0x1)
+        if not is_up:
             raise RuntimeError(ENVIRONMENT_SIMULATION_IFACE_DOWN)
 
     @classmethod

@@ -1,6 +1,10 @@
+from collections.abc import Callable
+from typing import Any
+
 import click
 
-from nsak.core import ScenarioManager
+from nsak.core import Scenario, ScenarioManager
+from nsak.core.scenario.scenario_manager import ScenarioArgumentParsingError
 
 scenario_group = click.Group("scenario")
 
@@ -43,62 +47,45 @@ def build_scenario(name: str) -> None:
     ScenarioManager.build(scenario)
 
 
-@scenario_group.command("run")
-@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
-@click.option(
-    "--env-file",
-    type=str,
-    required=False,
-    help="Path to a .env file with environment variables",
-)
-def run_scenario(name: str, env_file: str | None) -> None:
+@scenario_group.group("run")
+def run() -> None:
     """
-    Run the scenario container.
-
-    :param env_file:
-    :param name: The name of the scenario for which you want to run the container.
-    :return:
+    Execute subcommand group.
     """
-    scenario = ScenarioManager.get(name)
-    ScenarioManager.run(scenario, env_file=env_file)
+    pass
 
 
-def _parse_args(raw_args: list[str]) -> dict[str, str]:
-    args: dict[str, str] = {}
-
-    for item in raw_args:
-        if "=" not in item:
-            msg = f"Invalid argument '{item}', expected key=value"
-            raise click.UsageError(msg)
-        key, value = item.split("=", 1)
-        args[key] = value
-
-    return args
-
-
-@scenario_group.command(
-    "execute",
-    context_settings={
-        "ignore_unknown_options": True,
-        "allow_extra_args": True,
-    },
-)
-# todo design a way to pass the arguments to the run method of the container
-@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
-@click.pass_context
-def execute_scenario(ctx: click.Context, name: str) -> None:
+@scenario_group.group("execute")
+def execute() -> None:
     """
-    Execute the scenario script.
-
-    :param name: The name of the scenario for which you want to execute the script.
-    :param ctx: The click context.
-    :return:
+    Execute subcommand group.
     """
-    scenario = ScenarioManager.get(name)
+    pass
 
-    # everything after `--`
-    raw_args = ctx.args
 
-    args = _parse_args(raw_args)
+def create_scenario_command(
+    scenario: Scenario, method: Callable[..., Any]
+) -> click.Command:
+    """
+    Create a specific Scenario execute command.
+    """
 
-    ScenarioManager.execute(scenario, args=args)
+    @click.command(
+        name=scenario.id,
+        help=scenario.description,
+        short_help=scenario.description,
+    )
+    def cmd(*args: Any, **kwargs: Any) -> None:  # noqa: ANN401
+        try:
+            method(scenario, *args, **kwargs)
+        except ScenarioArgumentParsingError as e:
+            click.echo(e)
+
+    for name, argument in scenario.interface.arguments.items():
+        cmd = click.option(f"--{name}", default=argument.default)(cmd)
+    return cmd
+
+
+for _scenario in ScenarioManager.list():
+    run.add_command(create_scenario_command(_scenario, ScenarioManager.run))
+    execute.add_command(create_scenario_command(_scenario, ScenarioManager.execute))

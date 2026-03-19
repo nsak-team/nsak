@@ -1,11 +1,14 @@
 import subprocess
+import logging
 
-from nsak.core import NetworkInterface, IPAddress
+from nsak.core import IPAddress
 from nsak.core.network import NetworkDiscoveryResultMap
+from nsak.core.network.configuration import EthernetConfiguration
 
+logger = logging.getLogger(__name__)
 
 def arp_spoof(
-        network_interface: NetworkInterface,
+        network_interface: EthernetConfiguration,
         spoof_ip: IPAddress,
         target_ip: IPAddress | None = None
 ) -> subprocess.Popen:
@@ -30,17 +33,16 @@ def run(network_discovery_result_map: NetworkDiscoveryResultMap) -> list[subproc
     Start arp spoofing on the provided interface.
     """
     processes = []
-    # @TODO: We could further restrict the spoofing to only the target some specific ips
-    # target_ips = [None]
 
     # @TODO: this should have more sophisticated logic:
     # spoof only ips on interfaces which are in the respective subnet
-    for network_interface, network_discovery_result in network_discovery_result_map.results.items():
+    for name, network_discovery_result in network_discovery_result_map.results.items():
+        network_interface = network_discovery_result.network_interface
         for spoof_ip in network_discovery_result.target_ips:
             for target_ip in network_discovery_result.target_ips:
                 if spoof_ip == target_ip:
                     continue
-                print(f"[+] Spoofing {spoof_ip} on {network_interface.name}")
+                logger.info(f"[+] Spoofing {spoof_ip} on {name}")
                 process = arp_spoof(network_interface, spoof_ip, target_ip)
                 processes.append(process)
 

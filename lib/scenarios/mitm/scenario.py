@@ -1,25 +1,20 @@
 """
 Scenario entrypoint for MITM with arp spoofing and transparent tcp proxy.
 """
-from typing import Any
-
-from nsak.core import DrillManager, get_target_network_interfaces
+from nsak.core import DrillManager
+from nsak.core.config import LOADED_DEVICE
 from nsak.core.network import NetworkDiscoveryResultMap
 
 
-def run(network_interfaces: list[str] | None = None, *args: Any, **kwargs: Any) -> None:
+def run(interface: str) -> None:
     """
     Scenario, which runs MITM attack, based on arp spoofing.
 
     :return: None
     """
-
-    if not network_interfaces:
-        network_interfaces = get_target_network_interfaces()
-
     network_discovery_result_map: NetworkDiscoveryResultMap = DrillManager.execute(
         "discover_hosts",
-        network_interfaces=network_interfaces,
+        interface=interface,
     )
     DrillManager.execute(
         "transparent_tcp_proxy",

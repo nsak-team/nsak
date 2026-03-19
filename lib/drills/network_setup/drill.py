@@ -4,7 +4,7 @@ import subprocess
 logger = logging.getLogger(__name__)
 
 
-def run(interface: str):
+def run(interface: str) -> None:
     # start process
     gateway_ip = "10.0.0.1/24"
     proc = subprocess.run(

@@ -1,7 +1,12 @@
 from pathlib import Path
 from typing import Any
 
-from nsak.core.drill.drill import Drill, DrillDependencies, DrillInterface
+from nsak.core.drill.drill import (
+    Drill,
+    DrillArgument,
+    DrillDependencies,
+    DrillInterface,
+)
 from nsak.core.resource import ResourceLoader
 
 
@@ -17,6 +22,8 @@ class DrillLoader(ResourceLoader[Drill]):
         """
         Creates a Drill object from a dict containing the drill's metadata.
         """
+        arguments = data["interface"].get("arguments", {}) or {}
+
         return Drill(
             id=str(data["metadata"]["id"]),
             name=str(data["metadata"]["name"]),
@@ -33,7 +40,13 @@ class DrillLoader(ResourceLoader[Drill]):
                 python=set(data["dependencies"]["python"]),
             ),
             interface=DrillInterface(
-                arguments=tuple(data["interface"]["arguments"]),
-                return_type=str(data["interface"]["return_type"]),
+                arguments={
+                    name: DrillArgument(
+                        type=argument["type"],
+                        default=argument.get("default", None),
+                    )
+                    for name, argument in arguments.items()
+                },
+                return_type=data["interface"]["return_type"],
             ),
         )

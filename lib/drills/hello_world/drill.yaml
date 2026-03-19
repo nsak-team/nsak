@@ -12,5 +12,5 @@ dependencies:
   python: [ art ]
 
 interface:
-  arguments: [ ]
+  arguments:
   return_type: str

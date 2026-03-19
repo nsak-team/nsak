@@ -4,10 +4,6 @@ from nsak.core.environment import Environment, EnvironmentLoader, EnvironmentMan
 from nsak.core.network import (
     IPAddress,
     IPInterface,
-    NetworkInterface,
-    get_network_interface,
-    get_network_interfaces,
-    get_target_network_interfaces,
 )
 from nsak.core.scenario import Scenario, ScenarioLoader, ScenarioManager
 from nsak.core.setup import setup
@@ -16,18 +12,15 @@ __all__ = [
     "Device",
     "DeviceManager",
     "Drill",
+    "DrillLoader",
     "DrillManager",
     "Environment",
     "EnvironmentLoader",
     "EnvironmentManager",
     "IPAddress",
     "IPInterface",
-    "NetworkInterface",
     "Scenario",
     "ScenarioLoader",
     "ScenarioManager",
-    "get_network_interface",
-    "get_network_interfaces",
-    "get_target_network_interfaces",
     "setup",
 ]
