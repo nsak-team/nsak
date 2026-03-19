@@ -34,4 +34,4 @@ DEBUG = True
 DOCKER_CONTEXT = BASE_PATH
 RUN_PATH = Path(ENV_RUN_PATH) if ENV_RUN_PATH else BASE_PATH.joinpath("run")
 DEVICE_FILE = RUN_PATH / "device.yaml"
-LOADED_DEVICE: Device
+LOADED_DEVICE: Device = None  # type: ignore

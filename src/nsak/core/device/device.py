@@ -54,6 +54,28 @@ class Device(Resource):
 
         return self.network.ethernets
 
+    @property
+    def target_ethernets(self) -> dict[str, EthernetConfiguration]:
+        """
+        Shortcut for accessing target ethernets.
+        """
+        return {
+            name: ethernet
+            for name, ethernet in self.ethernets.items()
+            if ethernet.is_target
+        }
+
+    @property
+    def management_ethernets(self) -> dict[str, EthernetConfiguration]:
+        """
+        Shortcut for accessing management ethernets.
+        """
+        return {
+            name: ethernet
+            for name, ethernet in self.ethernets.items()
+            if ethernet.is_management
+        }
+
     def get_ethernet(self, name: str) -> EthernetConfiguration:
         """
         Gets an ethernet configuration by interface name.
