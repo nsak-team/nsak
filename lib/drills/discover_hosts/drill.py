@@ -4,6 +4,7 @@ import subprocess
 from ipaddress import IPv4Address, IPv6Address
 
 from nsak.core import IPAddress
+from nsak.core.config import LOADED_DEVICE
 from nsak.core.network import NetworkDiscoveryResultMap, NetworkDiscoveryResult, NetworkService, NetworkServiceEndpoint
 from nsak.core.network.configuration import EthernetConfiguration
 
@@ -75,21 +76,19 @@ def discover_hosts(network_interface: EthernetConfiguration) -> NetworkDiscovery
     )
 
 
-def run(network_interfaces: list[EthernetConfiguration]) -> NetworkDiscoveryResultMap:
+def run(interface: str) -> NetworkDiscoveryResultMap:
     """
+    Runs the DiscoverHosts Drill.
 
-
-    :param network_interfaces:
+    :param interface:
     :return:
     """
     results = dict()
-
-    for network_interface in network_interfaces:
-        try:
-            results[network_interface.name] = discover_hosts(network_interface)
-        except subprocess.CalledProcessError:
-            logger.exception(f"Error while discovering hosts for interface: {network_interface.name}.")
-            continue
+    ethernet = LOADED_DEVICE.get_ethernet(interface)
+    try:
+        results[ethernet.name] = discover_hosts(ethernet)
+    except subprocess.CalledProcessError:
+        logger.exception(f"Error while discovering hosts for interface: {ethernet.name}.")
 
     # @TODO: It makes sense to create an own datastructure for host discovery results,
     # as it greatly diverges from the service discovery results and

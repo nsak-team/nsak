@@ -1,5 +1,6 @@
 import dataclasses
 from pathlib import Path
+from typing import Any
 
 from nsak.core.resource import (
     InvalidResourceError,
@@ -11,12 +12,22 @@ from nsak.core.resource import (
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
-class DrillInterface:
+class DrillArgument:
     """
-    Represents a drill arguments and return value types.
+    Represents a specific drill argument.
     """
 
-    arguments: tuple[str]
+    type: str
+    default: Any
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+class DrillInterface:
+    """
+    Represents drill arguments and return value types.
+    """
+
+    arguments: dict[str, DrillArgument]
     return_type: str
 
 

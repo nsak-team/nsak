@@ -3,6 +3,10 @@ version: "3.9"
 services:
   malcom:
     image: nsak/scenario/mitm:latest
+    command: [
+      "mitm",
+      "--interface", "eth0"
+    ]
     privileged: true
     cap_add:
       - NET_ADMIN

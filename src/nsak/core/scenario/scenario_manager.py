@@ -1,4 +1,5 @@
 import importlib.util
+import logging
 import os
 import subprocess
 import sys
@@ -12,6 +13,8 @@ from nsak.core import config
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
+
+logger = logging.getLogger(__name__)
 
 
 # TODO: Keep flexibility low with default mount /runtime/<scenario-name>
@@ -108,7 +111,7 @@ class ScenarioManager(ResourceManager[Scenario]):
         )
 
     @classmethod
-    def run(cls, scenario: Scenario, env_file: str | None = None) -> int:
+    def run(cls, scenario: Scenario, **kwargs: Any) -> int:  # noqa: ANN401
         """
         Run a scenario image.
         """
@@ -146,9 +149,10 @@ class ScenarioManager(ResourceManager[Scenario]):
             if val:
                 args += ["-e", f"{key}={val!s}"]
 
-        if env_file is not None:
-            args.extend(["--env-file", env_file])
         args.append(f"nsak/scenario/{scenario.path.name}")
+        args.append(scenario.path.name)
+        for key, value in kwargs.items():
+            args += [f"--{key}", value]
         completed_process = subprocess.run(args)  # noqa: S603
 
         return completed_process.returncode
@@ -201,4 +205,11 @@ class ScenarioManager(ResourceManager[Scenario]):
         if spec.loader is None:
             raise Scenario.ResourceNotFoundError(scenario.name)
         spec.loader.exec_module(module)
-        return module.run(*args, **kwargs)
+
+        run_fn = getattr(module, "run", None)
+        if run_fn is None or not callable(run_fn):
+            msg = f"Scenario '{scenario.name}' has no callable run()"
+            raise Scenario.InvalidResourceError(msg)
+
+        logger.warning("EXEC SCENARIO: %s", scenario.name)
+        return run_fn(**kwargs)

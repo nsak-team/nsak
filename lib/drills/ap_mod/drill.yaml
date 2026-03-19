@@ -12,5 +12,5 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments: [ str ]
-  return_type:
+  arguments:
+  return_type: dict[str, Any]

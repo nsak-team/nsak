@@ -5,6 +5,24 @@ from nsak.core import ScenarioManager
 scenario_group = click.Group("scenario")
 
 
+def _parse_arguments(raw_args: list[str]) -> dict[str, str]:
+    args: dict[str, str | None] = {}
+    key = None
+
+    for arg in raw_args:
+        if arg.startswith("--"):
+            key = arg.lstrip("-")
+            args[key] = None
+        else:
+            if key is None:
+                message = f"Unexpected value: {arg}"
+                raise click.ClickException(message)
+            args[key] = arg
+            key = None
+
+    return {key: value for key, value in args.items() if value is not None}
+
+
 def complete_scenario_name(
     ctx: click.Context, param: click.Parameter, incomplete: str
 ) -> list[str]:
@@ -43,24 +61,25 @@ def build_scenario(name: str) -> None:
     ScenarioManager.build(scenario)
 
 
-@scenario_group.command("run")
-@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
-@click.option(
-    "--env-file",
-    type=str,
-    required=False,
-    help="Path to a .env file with environment variables",
+@scenario_group.command(
+    "run",
+    context_settings={
+        "ignore_unknown_options": True,
+        "allow_extra_args": True,
+    },
 )
-def run_scenario(name: str, env_file: str | None) -> None:
+@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
+@click.pass_context
+def run_scenario(
+    ctx: click.Context,
+    name: str,
+) -> None:
     """
     Run the scenario container.
-
-    :param env_file:
-    :param name: The name of the scenario for which you want to run the container.
-    :return:
     """
+    arguments = _parse_arguments(ctx.args)
     scenario = ScenarioManager.get(name)
-    ScenarioManager.run(scenario, env_file=env_file)
+    ScenarioManager.run(scenario, **arguments)
 
 
 def _parse_args(raw_args: list[str]) -> dict[str, str]:
@@ -94,11 +113,6 @@ def execute_scenario(ctx: click.Context, name: str) -> None:
     :param ctx: The click context.
     :return:
     """
+    arguments = _parse_arguments(ctx.args)
     scenario = ScenarioManager.get(name)
-
-    # everything after `--`
-    raw_args = ctx.args
-
-    args = _parse_args(raw_args)
-
-    ScenarioManager.execute(scenario, args=args)
+    ScenarioManager.execute(scenario, **arguments)

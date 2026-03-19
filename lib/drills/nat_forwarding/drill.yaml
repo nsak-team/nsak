@@ -12,5 +12,9 @@ dependencies:
   python: [ ]
 
 interface:
-  arguments: [ str, str ]
-  return_type: dict
+  arguments:
+    interface:
+      type: str
+    uplink_interface:
+      type: str
+  return_type: None
