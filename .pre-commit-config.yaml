@@ -21,4 +21,4 @@ repos:
         args: [--strict, --ignore-missing-imports]
         exclude: lib/
         # Additional type dependencies as hooks are run in a separate virtual environment.
-        additional_dependencies: [types-click, types-PyYAML]
+        additional_dependencies: [types-click, types-PyYAML, types-tabulate]

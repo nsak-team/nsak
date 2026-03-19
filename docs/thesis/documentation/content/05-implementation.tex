@@ -28,7 +28,7 @@ metadata:
   repository: <str:resource-repository>
 \end{lstlisting}
 
-In the following table~\ref{tab:device-resource-python-classes} the required Python classes are listed and described.
+In the following table~\ref{tab:device-resource-classes} the required Python classes are listed and described.
 The classes will be located under \texttt{src/nsak/core/device} within their respective files.
 
 \begin{table}[h]
@@ -42,10 +42,44 @@ The classes will be located under \texttt{src/nsak/core/device} within their res
         DeviceManager & device\_manager.py & The manager class implements the business logic and exposes an API, which can be used by the \glsxtrshort{CLI}. \\
         \hline
     \end{tabularx}
-    \caption{Device Resource Python Classes}
-    \label{tab:device-resource-python-classes}
+    \caption{Device Resource Classes}
+    \label{tab:device-resource-classes}
 \end{table}
 
+In \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} it became already clear, that the described classes share a lot of boilerplate code between each other.
+For this reason the base classes described in~\ref{tab:device-resource-classes} where added to get rid of the duplicated logic, which leads to better compliance with the \gls{DRY} principles.
+The classes will be located under \texttt{src/nsak/core/resource} within their respective files.
+
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{llX}
+        \hline
+        \textbf{Class} & \textbf{File Name} & \textbf{Description} \\
+        \hline
+        Resource & resource.py & Base class for all resources: Scenario, Drill, Environment and Device. \\
+        ResourceLoader & resource\_loader.py & Base class which handles searching and loading resources from the filesystem. \\
+        ResourceManager & resource\_manager.py & Base class which defines common methods for all resource manager classes. \\
+        \hline
+    \end{tabularx}
+    \caption{Resource Python Classes}
+    \label{tab:resource-base-classes}
+\end{table}
+
+To complete the integration of the device resource, the new functionality must be exposed via \glsxtrshort{CLI}.
+The available bash commands are shown in the following listing~\ref{lst:nsak-cli-list-devices}.
+
+\begin{lstlisting}[language=bash,caption={NSAK CLI: List Devices},label={lst:nsak-cli-list-devices}]
+# Show usage, options and subcommands for the device resource
+nsak device --list
+
+# List all devices found in the resource library
+nsak device list
+
+# Output:
+❯ nsak device list
+ID           NAME         PATH
+bananapi_r4  BananaPI R4  /home/lukas/CLionProjects/swiss-army-knife-network-sniffer/lib/devices/bananapi_r4
+\end{lstlisting}
 
 
 \subsection{Drill Configuration Management}\label{subsec:drill-configuration-management}
