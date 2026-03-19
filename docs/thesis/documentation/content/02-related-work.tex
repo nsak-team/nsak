@@ -3,14 +3,18 @@
 \chapter{Related Research}\label{ch:related-research}
 
 \section{Framework Comparison}\label{sec:framework-comparison}
-Previous research, such as \enquote*{SOK: A Survey of Open-Source Threat Emulators}, compares multiple types of threat emulation frameworks using both quantitative and qualitative metrics \cite{Zilberman2020SoKThreatEmulators}. Among the evaluated frameworks, Atomic Red Team, Mitre Caldera, and Metasploit recieved high scores in categories as environments and operator, environment configuration and scenario execution. 
+Previous research, such as \enquote*{SOK: A Survey of Open-Source Threat Emulators}, compares multiple types of threat emulation frameworks using both quantitative and qualitative metrics~\cite{Zilberman2020SoKThreatEmulators}.
+Among the evaluated frameworks, Atomic Red Team, Mitre Caldera, and Metasploit received high scores in categories as environments and operator, environment configuration and scenario execution.
 
-n the following section, the selected frameworks are briefly introduced, and the unique selling point of the NSAK is highlighted. As a point of reference, the cybersecurity community increasingly relies on the concepts of MITRE ATT\&CK, which has established itself as a standard framework in the field since its introduction in 2014 \cite{mitreattack, alsada2023attack}.
+n the following section, the selected frameworks are briefly introduced, and the unique selling point of the \gls{NSAK} is highlighted.
+As a point of reference, the cybersecurity community increasingly relies on the concepts of MITRE ATT\&CK, which has established itself as a standard framework in the field since its introduction in 2014~\cite{mitreattack, alsada2023attack}.
 
 
-The MITRE ATT\&CK is a globally accessible knowledge base of adversary tactics and techniques based on real-world observations \cite{mitreattack}. The knowledge base is structured into TTP (Tactics, Techniques, and Procedures), which are organized into 14 attack behavior groups. The TTP is getting continuously updated and extended, which helps to defend against the capabilities of threat actors.  
+The MITRE ATT\&CK is a globally accessible knowledge base of adversary tactics and techniques based on real-world observations~\cite{mitreattack}.
+The knowledge base is structured into TTP (Tactics, Techniques, and Procedures), which are organized into 14 attack behavior groups.
+The TTP is getting continuously updated and extended, which helps to defend against the capabilities of threat actors.
 
-The evaluation of the proposed frameworks is based on information obtained from official documentation\cite{caldera,atomicredteam,metasploitdocs} and the findings of Zilberman et al. \cite{Zilberman2020SoKThreatEmulators}.
+The evaluation of the proposed frameworks is based on information obtained from official documentation\cite{caldera,atomicredteam,metasploitdocs} and the findings of Zilberman et al.~\cite{Zilberman2020SoKThreatEmulators}.
 
 \begin{table}[H]
 	\centering
@@ -33,47 +37,62 @@ The evaluation of the proposed frameworks is based on information obtained from 
 		Difficulty Level & Medium--High & Low--Medium & Medium--High \\
 		\hline
 	\end{tabular}
-	\label{tab:framework-comparison}
 	\caption{Comparison of Metasploit, Atomic Red Team, and MITRE Caldera (\cite{Zilberman2020SoKThreatEmulators, atomicredteam, caldera, metasploitdocs})}
+	\label{tab:framework-comparison}
 \end{table}
 
-As shown in Table~\ref{tab:framework-comparison}, the key characteristics of the frameworks are differ greatly. 
-For \textbf{Atomic Red Team} provides libraries of attack scripts that implement individual TTP of MITRE ATT\&CK. Each attack can be executed independently or chained together into a larger attack scenario. \textbf{Mitre Caldera} is a a complex, agent based adversary simulation tool, whereas \textbf{Metasploit} is a framework that provides exploits, payloads and auxiliary modules. Further details of the frameworks are presented in the following sections. \ref{subsec:atomic-red-team-evaluation}\ref{subsec:caldera-evaluation}\ref{subsec:metasploit-evalutaion}
+\todo{Table formatting}
+
+As shown in Table~\ref{tab:framework-comparison}, the key characteristics of the frameworks are differ greatly.
+\textbf{Atomic Red Team} provides libraries of attack scripts that implement individual TTP of MITRE ATT\&CK. Each attack can be executed independently or chained together into a larger attack scenario. \textbf{Mitre Caldera} is a complex, agent based adversary simulation tool, whereas \textbf{Metasploit} is a framework that provides exploits, payloads and auxiliary modules.
+Further details of the frameworks are presented in the following sections.
+\ref{subsec:atomic-red-team-evaluation}\ref{subsec:caldera-evaluation}\ref{subsec:metasploit-evalutaion}
 
 \subsection{Atomic Red Team}\label{subsec:atomic-red-team-evaluation}
 
 The Atomic Red Team repository provides documentation and configuration files for each technique.
 For every TTP, a YAML configuration file defines the execution parameters, while an enhanced Markdown file contains a human-readable description of the attack.
-This documentation includes a short description of the technique, execution instructions, and additional contextual information.\cite{atomicredteam} 
+This documentation includes a short description of the technique, execution instructions, and additional contextual information.\cite{atomicredteam}
 
 The framework can be executed directly from the command line and provides features such as logging, detailed error messages, and automatic prerequisite checks.
 If a technique cannot be executed, for example due to operating system constraints, the framework reports the issue and can optionally attempt to install the required prerequisites.\cite{atomicredteam}
 
- Zilberman et al. recommends deeper cyber security knowledge to use Atomic Red Team framework effectively \cite{Zilberman2020SoKThreatEmulators}. The Open Source mentality, expandability and easily usable scripts can be a great asset for an independent framework such as the NSAK. 
+\textit{Zilberman et al.} recommends deeper cybersecurity knowledge to use Atomic Red Team framework effectively~\cite{Zilberman2020SoKThreatEmulators}.
+The Open Source mentality, expandability and easily usable scripts can be a great asset for an independent framework such as the \gls{NSAK}.
 
 
 \subsection{Caldera}\label{subsec:caldera-evaluation}
 
-Mitre Caldera is also built on the MITRE ATT\&CK knowledge base and functions as a command-and-control center. A central server controls agents running on the target system, executes attacks called abilities, and sends the operation results back to the server. Every Ability is a single attack step built on the TTP. The framework ships with a graphical user interface and is primarily used for red team attack simulation, purple teaming, and detection engineering. The additional feature, like a training plugin for educational purposes, includes facts that can be configured as dynamic safe values, which can be stored and parsed in later steps.\cite{caldera}
+Mitre Caldera is also built on the MITRE ATT\&CK knowledge base and functions as a command-and-control center.
+A central server controls agents running on the target system, executes attacks called abilities, and sends the operation results back to the server.
+Every Ability is a single attack step built on the TTP.
+The framework ships with a graphical user interface and is primarily used for red team attack simulation, purple teaming, and detection engineering.
+The additional features, like a training plugin for educational purposes, includes facts that can be configured as dynamic safe values, which can be stored and parsed in later steps.\cite{caldera}
 
-With its provided interface and functionality, Caldera is most suitable as a threat emulator, offering a wide range of built-in features, including lateral movement and \gls{CNC} communication \cite{Zilberman2020SoKThreatEmulators}.
+With its provided interface and functionality, Caldera is most suitable as a threat emulator, offering a wide range of built-in features, including lateral movement and \gls{CNC} communication~\cite{Zilberman2020SoKThreatEmulators}.
 
 \subsection{Metasploit}\label{subsec:metasploit-evalutaion}
 
-Metasploit is a widely used penetration testing framework for testing or attacking systems and exploiting known vulnerabilities. Metasploit follows a sequence of steps to identify a vulnerability in a target system, select a vulnerability for the attack, select an exploit that uses this vulnerability, and deliver a payload that runs on the target system. The configuration via the CLI requires knowledge of the target network and system and requires partial configuration\cite{metasploitbook, metasploitdocs}.
+Metasploit is a widely used penetration testing framework for testing or attacking systems and exploiting known vulnerabilities.
+Metasploit follows a sequence of steps to identify a vulnerability in a target system, select a vulnerability for the attack, select an exploit that uses this vulnerability, and deliver a payload that runs on the target system.
+The configuration via the \gls{CLI} requires knowledge of the target network and system and requires partial configuration\cite{metasploitbook, metasploitdocs}.
 
-According to Zilberman et al., an operator requires extensive cybersecurity knowledge to effectively use the framework. To support the operator, the GUI \enquote{Armitage}, which is not further evaluated in this work, can be used \cite{Zilberman2020SoKThreatEmulators}.
+According to Zilberman et al., an operator requires extensive cybersecurity knowledge to effectively use the framework.
+To support the operator, the GUI \enquote{Armitage}, which is not further evaluated in this work, can be used~\cite{Zilberman2020SoKThreatEmulators}.
 
 
 \subsection{NSAK}\label{subsec:nsak-usp}
-The NSAK framework, as an independent universal Network Swiss Army Knife, is not confined and can leverage, if needed, different sets of attack frameworks. An approach could be to use an AI-Enhanced Network Discovery Scenario, which provides the necessary information to configure a Metasploit attack that leads to an attack operation in Caldera and an atomic red team detection script. Hardware-based isolation and network position provide flexibility and should help reduce the operational costs of red and blue teams by reducing simple configuration overhead\cite{nsakRepository2026}.
+The \gls{NSAK} framework, as an independent universal Network Swiss Army Knife, is not confined and can leverage, if needed, different sets of attack frameworks.
+An approach could be to use an \gls{AI}-Enhanced Network Discovery Scenario, which provides the necessary information to configure a Metasploit attack that leads to an attack operation in Caldera and an atomic red team detection script.
+Hardware-based isolation and network position provide flexibility and should help reduce the operational costs of red and blue teams by reducing simple configuration overhead\cite{nsakRepository2026}.
 
 \section{AI-Research}\label{sec:ai-research}
 
-\subsection{AI and Language Model}
+\subsection{AI and Language Model}\label{subsec:ai-and-language-model}
 
-
-The development of \gls{LM} can be divided into several stages. \gls{LM} describes the technique for advancing language intelligence in machines. The first stage \gls{SLM} emerged around the 1990s, and the basic idea is to assume, that one can predict the next word. This model's lack of accuracy is due to the fact that an exponential number of transition probabilities are needed.
+The development of \gls{LM} can be divided into several stages. \gls{LM} describes the technique for advancing language intelligence in machines.
+The first stage \gls{SLM} emerged around the 1990s, and the basic idea is to assume, that one can predict the next word.
+This model's lack of accuracy is due to the fact that an exponential number of transition probabilities are needed.
 
 To overcome these limitations, \gls{NLM} was introduced to learn a distributed representation of words and capture more complex patterns, leading to a major breakthrough. Building on this, the advancement of pre-trained language models \gls{PLM}, which are first trained on large datasets and then fine-tuned for specific tasks, represented another significant development.
 
@@ -87,15 +106,15 @@ These advances have led to \gls{MCP}, a protocol that enables \gls{LLM}s to inte
 
 Anthropic, a US software company focused on AI research, introduced the \gls{MCP} in 2024. The \gls{MCP} is an open source standard that enables AI assistants to connect to external systems, including databases, business tools, and development environments.\cite{anthropic-mcp}
 With \gls{MCP}, models and external dynamic functions can interact autonomously. Dynamic tool discovery and schema negotiation help clients access these functions in a standardized manner.
-Additionally, \gls{MCP} allows information to flow in both directions, so the model can send requests, and tools can send updates or events.  
+Additionally, \gls{MCP} allows information to flow in both directions, so the model can send requests, and tools can send updates or events.
 
 This architectural approach shifts the AI integration from static toward an interoperable ecosystem of AI-enabled services. On the other hand, the flexible design and open source approach of \gls{MCP} unlock multiple novel and systematic security risks that are in need of enhanced security and governance\cite{hasan2025modelcontextprotocolmcp}.
 
 \subsection{Agentic-AI}\label{subsec:agentic-ai}
 
- \gls{AGENTIC-AI} can be understood as an advanced machine intelligence that is capable of perceiving, reasoning, and acting with a certain level of autonomy. Traditional systems are more limited to executing predefined commands, whereas \gls{AGENTIC-AI} is not restricted in this way. Due to their ability to adapt in real time, they can continuously refine their knowledge, techniques, and data. The ability to access multiple inputs, from natural language processing to sensor data, allows \gls{AI AGENT}s to develop a deep understanding of their environment \cite{chapter1}. 
- 
- \gls{MAS} defines a way in which multiple specialist agent coordinate and cooperate with each other to solve a task, that would not be solvable to one agent alone. 
+ \gls{AGENTIC-AI} can be understood as an advanced machine intelligence that is capable of perceiving, reasoning, and acting with a certain level of autonomy. Traditional systems are more limited to executing predefined commands, whereas \gls{AGENTIC-AI} is not restricted in this way. Due to their ability to adapt in real time, they can continuously refine their knowledge, techniques, and data. The ability to access multiple inputs, from natural language processing to sensor data, allows \gls{AI AGENT}s to develop a deep understanding of their environment \cite{chapter1}.
+
+ \gls{MAS} defines a way in which multiple specialist agent coordinate and cooperate with each other to solve a task, that would not be solvable to one agent alone.
 
 Therefore, the agents need a form of interaction that allows them to act reactively, often through a shared mental model, which helps create a common understanding of the complex tasks to be solved. To implement a \gls{MAS} efficiently, modern design principles such as encapsulation and modularity are important. These help to load balance resources of the system and \gls{LLM} \cite{chapter3}
 
@@ -115,14 +134,10 @@ This provocative claim is based on the observation that, in order to handle the 
 
 
 \subsubsection{Evaluated Frameworks and MCP}
-Caldera uses a \gls{MCP} plugin as a bridge between the model and the \gls{REST-API}, allowing the agent to plan and issue commands in a manner similar to a human operator. 
+Caldera uses a \gls{MCP} plugin as a bridge between the model and the \gls{REST-API}, allowing the agent to plan and issue commands in a manner similar to a human operator.
 
-Caldera introduces three main research areas. Firstly, a planner determines the order and selection of abilities and can dynamically construct new adversaries based on user requirements through prompt-based interaction. 
+Caldera introduces three main research areas. Firstly, a planner determines the order and selection of abilities and can dynamically construct new adversaries based on user requirements through prompt-based interaction.
 
-Secondly, an adversary factory model is used to generate adversaries tailored to the operator's specific use cases. 
+Secondly, an adversary factory model is used to generate adversaries tailored to the operator's specific use cases.
 
 Thirdly, a forward-deployed agent is enhanced with \gls{RAG} for \gls{CTI}, leveraging \gls{STIX}-based data to create reproducible and testable adversaries\cite{caldera_mcp_blog}.
-
-
-
-
