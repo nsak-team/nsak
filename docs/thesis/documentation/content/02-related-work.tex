@@ -60,26 +60,28 @@ With its provided interface and functionality, Caldera is most suitable as a thr
 
 \subsection{Metasploit}\label{subsec:metasploit-evalutaion}
 
-Metasploit is a widely used penetration testing framework for testing or attacking systems and exploiting known vulnerabilities. Metasploit follows a sequence of steps to identify a vulnerability in a target system, select a vulnerability for the attack, select an exploit that uses this vulnerability, and deliver a payload that runs on the target system. The configuration via the CLI requires knowledge of the target network and system and requires partial configuration.\cite{metasploitbook, metasploitdocs}
+Metasploit is a widely used penetration testing framework for testing or attacking systems and exploiting known vulnerabilities. Metasploit follows a sequence of steps to identify a vulnerability in a target system, select a vulnerability for the attack, select an exploit that uses this vulnerability, and deliver a payload that runs on the target system. The configuration via the CLI requires knowledge of the target network and system and requires partial configuration\cite{metasploitbook, metasploitdocs}.
 
 According to Zilberman et al., an operator requires extensive cybersecurity knowledge to effectively use the framework. To support the operator, the GUI \enquote{Armitage}, which is not further evaluated in this work, can be used \cite{Zilberman2020SoKThreatEmulators}.
 
 
 \subsection{NSAK}\label{subsec:nsak-usp}
-The NSAK framework, as an independent universal Network Swiss Army Knife, is not confined and can leverage, if needed, different sets of attack frameworks. An approach could be to use an AI-Enhanced Network Discovery Scenario, which provides the necessary information to configure a Metasploit attack that leads to an attack operation in Caldera and an atomic red team detection script. Hardware-based isolation and network position provide flexibility and should help reduce the operational costs of red and blue teams by reducing simple configuration overhead.\cite{nsakRepository2026} 
+The NSAK framework, as an independent universal Network Swiss Army Knife, is not confined and can leverage, if needed, different sets of attack frameworks. An approach could be to use an AI-Enhanced Network Discovery Scenario, which provides the necessary information to configure a Metasploit attack that leads to an attack operation in Caldera and an atomic red team detection script. Hardware-based isolation and network position provide flexibility and should help reduce the operational costs of red and blue teams by reducing simple configuration overhead\cite{nsakRepository2026}.
 
 \section{AI-Research}\label{sec:ai-research}
 
 \subsection{AI and Language Model}
 
 
-The development of \gls{LM} can be divided into several stages \cite{zhao2023survey}. \gls{LM} describes the technique for advancing language intelligence in machines. The first stage \gls{SLM} emerged around the 1990s, and the basic idea is to assume, that one can predict the next word. This model's lack of accuracy is due to the fact that an exponential number of transition probabilities are needed.
+The development of \gls{LM} can be divided into several stages. \gls{LM} describes the technique for advancing language intelligence in machines. The first stage \gls{SLM} emerged around the 1990s, and the basic idea is to assume, that one can predict the next word. This model's lack of accuracy is due to the fact that an exponential number of transition probabilities are needed.
 
 To overcome these limitations, \gls{NLM} was introduced to learn a distributed representation of words and capture more complex patterns, leading to a major breakthrough. Building on this, the advancement of pre-trained language models \gls{PLM}, which are first trained on large datasets and then fine-tuned for specific tasks, represented another significant development.
 
-Building on this development, \gls{LLM} further increase the scale of PLMs by expanding parameter count and computational power.
+Building on this development, \gls{LLM} further increases the scale of PLMs by expanding parameter count and computational power \cite{zhao2023survey}.
 
-These advances have led to Agentic AIs, in which LLMs empower autonomous agents capable of decision-making and executing complex tasks. 
+In large language models, parameters are the trainable numerical values that define how the model processes input and generates output. During training, these parameters are continually adjusted to enable the model to learn patterns and language context \cite{shoeybi2020megatronlmtrainingmultibillionparameter}.
+
+These advances have led to \gls{MCP}, a protocol that enables \gls{LLM}s to interact with tools and Agentic AIs, in which LLMs empower autonomous agents capable of decision-making and executing complex tasks.
 
 \subsection{MCP}\label{subsec:mcp}
 
@@ -91,14 +93,25 @@ This architectural approach shifts the AI integration from static toward an inte
 
 \subsection{Agentic-AI}\label{subsec:agentic-ai}
 
- \gls{AGENTIC-AI} can be understood as an advanced machine intelligence that is capable of perceiving, reasoning, and acting with a certain level of autonomy. Traditional systems are more limited to executing predefined commands, whereas \gls{AGENTIC-AI} is not restricted in this way. Due to their ability to adapt in real time, they can continuously refine their knowledge, techniques, and data. The ability to access multiple inputs, from natural language processing to sensor data, allows \gls{AI AGENT}s to develop a deep understanding of their environment \cite{huang2025agentic}.
+ \gls{AGENTIC-AI} can be understood as an advanced machine intelligence that is capable of perceiving, reasoning, and acting with a certain level of autonomy. Traditional systems are more limited to executing predefined commands, whereas \gls{AGENTIC-AI} is not restricted in this way. Due to their ability to adapt in real time, they can continuously refine their knowledge, techniques, and data. The ability to access multiple inputs, from natural language processing to sensor data, allows \gls{AI AGENT}s to develop a deep understanding of their environment \cite{chapter1}. 
+ 
+ \gls{MAS} defines a way in which multiple specialist agent coordinate and cooperate with each other to solve a task, that would not be solvable to one agent alone. 
 
-2. AI Agents in Red Team Operations
-3. AI Agents in Defensive Security
-4. Future Trends
-5. Concepts of Claw AI
+Therefore, the agents need a form of interaction that allows them to act reactively, often through a shared mental model, which helps create a common understanding of the complex tasks to be solved. To implement a \gls{MAS} efficiently, modern design principles such as encapsulation and modularity are important. These help to load balance resources of the system and \gls{LLM} \cite{chapter3}
 
-IS MCP Dead \cite{riskybiz_mcp}
+Huang et al. provide evidence that \gls{AGENTIC-AI} and \gls{MAS} are capable of solving complex tasks across various sectors, including security and banking. However, these systems also introduce new potential vulnerabilities, both within \gls{AI AGENT} systems themselves and through their interactions with external environments.
+
+The identified vulnerabilities can be categorized into two types: accidental and deliberate. Accidental vulnerabilities include software bugs, logical errors introduced by agents, hardware malfunctions, and poor data quality. Deliberate attacks, on the other hand, encompass adversarial attacks targeting \gls{LLM}s, data poisoning, and model theft.
+
+To mitigate these risks, a comprehensive framework consisting of governance mechanisms, proactive monitoring, regulatory compliance, and rigorous testing is required to ensure the secure and reliable operation of agentic systems\cite{chapter12}.
+
+
+\subsubsection{Fazit MCP and Agentic AI}
+
+In the cybersecurity podcast Risky Business, it is mentioned that \gls{MCP} is “dead.” The open-source strategy of Anthropic (\ref{subsec:mcp}) has led to the development of multiple \gls{MCP} implementations that were not designed with a strong focus on security, but rather on rapid adoption of a novel technique.
+
+This provocative claim is based on the observation that, in order to handle the excessive \gls{MCP} tooling, \gls{AI AGENT}s may instead rely on direct access to a root shell, as it provides a more efficient way of interaction \cite{riskybiz_mcp}.
+
 
 
 \subsubsection{Evaluated Frameworks and MCP}
@@ -108,7 +121,7 @@ Caldera introduces three main research areas. Firstly, a planner determines the 
 
 Secondly, an adversary factory model is used to generate adversaries tailored to the operator's specific use cases. 
 
-Thirdly, a forward-deployed agent is enhanced with \gls{RAG} for \gls{CTI}, leveraging \gls{STIX}-based data to create reproducible and testable adversaries.\cite{caldera_mcp_blog}
+Thirdly, a forward-deployed agent is enhanced with \gls{RAG} for \gls{CTI}, leveraging \gls{STIX}-based data to create reproducible and testable adversaries\cite{caldera_mcp_blog}.
 
 
 
