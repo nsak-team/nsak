@@ -4,6 +4,7 @@ from typing import Any, List
 from nsak.core.environment import Environment, EnvironmentLoader
 from nsak.core.network import get_network_interface
 from nsak.core.network.network_interface import NetworkInterfaceNotFoundError
+from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioLoader, ScenarioManager
 
 ENVIRONMENT_SIMULATION_IFACE = "nsak0"
@@ -26,24 +27,12 @@ ip link show {ENVIRONMENT_SIMULATION_IFACE}
 """
 
 
-class EnvironmentManager:
+class EnvironmentManager(ResourceManager[Environment]):
     """
     A collection of methods to manage environments.
     """
 
-    @classmethod
-    def list(cls) -> List[Environment]:
-        """
-        Lists all environments.
-        """
-        return EnvironmentLoader.load_all()
-
-    @classmethod
-    def get(cls, name: str) -> Environment:
-        """
-        Get an environment by name.
-        """
-        return EnvironmentLoader.load(name)
+    ResourceLoaderClass = EnvironmentLoader
 
     @classmethod
     def list_scenarios(cls, environment: Environment | str) -> List[Scenario]:

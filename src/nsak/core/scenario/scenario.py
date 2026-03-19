@@ -1,6 +1,14 @@
 import dataclasses
 from pathlib import Path
 
+from nsak.core.resource import (
+    InvalidResourceError,
+    MultipleResourcesFoundError,
+    Resource,
+    ResourceError,
+    ResourceNotFoundError,
+)
+
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
 class ScenarioInterface:
@@ -23,7 +31,7 @@ class ScenarioDependencies:
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
-class Scenario:
+class Scenario(Resource):
     """
     Represents a scenario.
     """
@@ -35,6 +43,40 @@ class Scenario:
     author: str
     repository: str
     drills: set[str]
+    scenarios: set[str]
     environments: set[str]
     dependencies: ScenarioDependencies
     interface: ScenarioInterface
+
+
+class ScenarioError(ResourceError):
+    """
+    Base class for scenario errors.
+    """
+
+    ResourceType = Scenario
+
+
+class InvalidScenarioError(InvalidResourceError, ScenarioError):
+    """
+    Exception raised when a scenario is invalid.
+    """
+
+
+class ScenarioNotFoundError(ResourceNotFoundError, ScenarioError):
+    """
+    Exception raised when a scenario is not found.
+    """
+
+
+class MultipleScenariosFoundError(MultipleResourcesFoundError, ScenarioError):
+    """
+    Exception raised when multiple scenarios with the same folder name are found.
+    """
+
+
+# Avoids circularity issues
+Scenario.ResourceError = ScenarioError
+Scenario.InvalidResourceError = InvalidScenarioError
+Scenario.ResourceNotFoundError = ScenarioNotFoundError
+Scenario.MultipleResourcesFoundError = MultipleScenariosFoundError

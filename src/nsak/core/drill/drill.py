@@ -1,6 +1,14 @@
 import dataclasses
 from pathlib import Path
 
+from nsak.core.resource import (
+    InvalidResourceError,
+    MultipleResourcesFoundError,
+    Resource,
+    ResourceError,
+    ResourceNotFoundError,
+)
+
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
 class DrillInterface:
@@ -23,7 +31,7 @@ class DrillDependencies:
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
-class Drill:
+class Drill(Resource):
     """
     Represents a drill.
     """
@@ -36,3 +44,36 @@ class Drill:
     repository: str
     dependencies: DrillDependencies
     interface: DrillInterface
+
+
+class DrillError(ResourceError):
+    """
+    Base class for drill errors.
+    """
+
+    ResourceType = Drill
+
+
+class InvalidDrillError(InvalidResourceError, DrillError):
+    """
+    Exception raised when a drill is invalid.
+    """
+
+
+class DrillNotFoundError(ResourceNotFoundError, DrillError):
+    """
+    Exception raised when a drill is not found.
+    """
+
+
+class MultipleDrillsFoundError(MultipleResourcesFoundError, DrillError):
+    """
+    Exception raised when multiple drills with the same folder name are found.
+    """
+
+
+# Avoids circularity issues
+Drill.ResourceError = DrillError
+Drill.InvalidResourceError = InvalidDrillError
+Drill.ResourceNotFoundError = DrillNotFoundError
+Drill.MultipleResourcesFoundError = MultipleDrillsFoundError
