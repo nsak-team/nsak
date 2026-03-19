@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 import click
@@ -42,3 +43,49 @@ def list_devices() -> None:
         data, headers=[column.upper() for column in columns], tablefmt="plain"
     )
     click.echo(table)
+
+
+@device_group.command("show")
+@click.argument("name", shell_complete=complete_device_name)  # type: ignore [call-arg]
+def show_device(name: str) -> None:
+    """
+    Show the device details.
+    """
+    device = DeviceManager.get(name)
+    if device.configuration is not None:
+        click.echo(json.dumps(device.configuration.raw, indent=2))
+
+
+@device_group.command("load")
+@click.argument("name", shell_complete=complete_device_name)  # type: ignore [call-arg]
+def load_device(name: str) -> None:
+    """
+    Load a device config.
+    """
+    device = DeviceManager.load(name)
+    click.echo(f"Successfully loaded device config: {name}")
+    if device.configuration is not None:
+        click.echo(json.dumps(device.configuration.raw, indent=2))
+
+
+@device_group.command("loaded")
+def loaded_device() -> None:
+    """
+    Get the active device.
+    """
+    device = DeviceManager.get_loaded()
+    if device is None:
+        click.echo("No device loaded.")
+    else:
+        click.echo(f"Loaded device: {device.name} (id = {device.id})")
+        if device.configuration is not None:
+            click.echo(json.dumps(device.configuration.raw, indent=2))
+
+
+@device_group.command("unload")
+def unload_device() -> None:
+    """
+    Get the active device.
+    """
+    DeviceManager.unload()
+    click.echo("Device unloaded.")

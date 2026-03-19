@@ -1,8 +1,9 @@
 from nsak.core.device import Device, DeviceManager
-from nsak.core.drill import Drill, DrillManager
+from nsak.core.drill import Drill, DrillLoader, DrillManager
 from nsak.core.environment import Environment, EnvironmentLoader, EnvironmentManager
 from nsak.core.network import (
     IPAddress,
+    IPInterface,
     NetworkInterface,
     get_network_interface,
     get_network_interfaces,
@@ -20,6 +21,7 @@ __all__ = [
     "EnvironmentLoader",
     "EnvironmentManager",
     "IPAddress",
+    "IPInterface",
     "NetworkInterface",
     "Scenario",
     "ScenarioLoader",
