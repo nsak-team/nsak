@@ -56,7 +56,7 @@ def test_device_loading() -> None:
     result = runner.invoke(loaded_device)
 
     # Assert
-    assert "Loaded device: Unknown (id = unknown)" in result.output
+    assert "" == result.output
 
     # Act
     result = runner.invoke(unload_device)

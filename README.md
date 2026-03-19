@@ -95,6 +95,29 @@ nsak drill execute <drill> --argument <value>
 nsak drill execute <drill> --help
 ```
 
+
+### Scenario Management
+
+```bash
+# List all subcommands for the Scenario resource
+nsak scenario --help
+
+# List all available Scenario resources
+nsak scenario list
+
+# Rum a Scenario Container
+nsak scenario execute <scenario> --argument <value>
+
+# Show available options for Scenario Container
+nsak scenario execute <scenario> --help
+
+# Execute a Scenario (usually for testing)
+nsak scenario execute <scenario> --argument <value>
+
+# Show available options for scenario execution
+nsak scenario execute <scenario> --help
+```
+
 ### Simulate a specific scenario in a environment
 
 **Host system configuration:**

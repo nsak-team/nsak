@@ -1,6 +1,7 @@
 import logging
 import os
 import signal
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -30,27 +31,23 @@ def run_drill(name: str, *args, **kwargs):
         return None
     return DrillManager.execute(DrillManager.get(name), *args, **kwargs)
 
-# todo change args to network interface class from core, set up conf context object provided at build time
-def run(args: dict, state: dict | None = None) -> dict:
+def run(wlan_interface: str, uplink_interface: str) -> dict[str, Any]:
     """
     Rogue AP orchestration.
     """
-    ap_if = args.get("ap_interface") or os.getenv("NSAK_AP_IF")
-    uplink_if = args.get("uplink_interface") or os.getenv("NSAK_UPLINK_IF")
-
-    if not ap_if:
+    if not wlan_interface:
         raise KeyError("ap_interface (or NSAK_AP_IF) is required")
-    if not uplink_if:
+    if not uplink_interface:
         raise KeyError("uplink_interface (or NSAK_UPLINK_IF) is required")
 
-    state = state or {}
+    state = {}
     results = {}
 
     hostapd = run_drill("ap_mod", state=state)
-    net = run_drill("network_setup", ap_if)
-    dnsmasq = run_drill("dnsmasq", ap_if)
-    nat = run_drill("nat_forwarding", {"interface": ap_if, "uplink_interface": uplink_if})
-    sniff = run_drill("tshark_capture", ap_if)
+    net = run_drill("network_setup", wlan_interface)
+    dnsmasq = run_drill("dnsmasq", wlan_interface)
+    nat = run_drill("nat_forwarding", {"interface": wlan_interface, "uplink_interface": uplink_interface})
+    sniff = run_drill("tshark_capture", wlan_interface)
     results["hostapd"] = hostapd
     results["net"] = net
     results["dnsmasq"] = dnsmasq
