@@ -9,13 +9,74 @@ configuration and code for the BFH (Bern University of Applied Sciences) Module 
 - Frank Gauss <gausf1@bfh.ch>
 - Lukas von Allmen <vonal3@bfh.ch>
 
-### Tutor
+### Stakeholders
 - Wenger Hansjürg <wgh1@bfh.ch>
+- Urs Keller <>
+TODO: Ask expert and tutor if we are allowed to them to the readme
+
+## Documentation
+The project documentation is written in LaTeX and can be found in the `docs/` folder.
+
+To build the documentation, you need to install LaTeX on your system, which may take several hours to complete:
+- LaTeX quick installation guide: https://tug.org/texlive/quickinstall.html
+- LaTeX full installation guide: https://tug.org/texlive/doc/texlive-en/texlive-en.html#installation
+
+Check the following links for the BFH LaTeX templates, which are used for the documentation:
+- Installation: https://latex.ti.bfh.ch/doc_gettingStarted/index.html
+- BFH Thesis Class: https://latex.ti.bfh.ch/doc_bfhclass/thesis.html
+
+### Build PDF documentation
+```bash
+make <thesis|project2> <documentation|presentation>
+
+# For example the following command renders the thesis documentation as PDF
+make thesis documentaiton
+```
+
+### Clean documentation, including the generated PDF
+```bash
+make clean <thesis|project2> <documentation|presentation>
+```
+
+## Installation
+
+To build and install the nsak executable, run the following commands:
+
+```bash
+# Build and install nsak executable
+uv build
+# uv tool install dist/nsak-<version>-py3-none-any.whl
+uv tool install dist/nsak-0.1.0-py3-none-any.whl
+```
 
 ## Usage
 
+NSAK CLI
 ```bash
+# List all subcommands for the nsak CLI
+nsak --help
+```
 
+### NSAK device configuration management
+
+```bash
+# List all subcommands for the Device resource
+nsak device --help
+
+# List all available devices
+nsak device list
+
+# Show the device details and configuration
+nsak device show <str:device-id>
+
+# Load a device and its configuration
+nsak device load <str:device-id>
+
+# Show the currently loaded device
+nsak device loaded
+
+# Reset the loaded device
+nsak device unload
 ```
 
 ### Simulate a specific scenario in a environment
@@ -41,32 +102,6 @@ nsak scenario build mitm # Build the scenario which you want to simulate
 nsak environment simulate simple_tcp_client_server mitm
 ```
 
-## Documentation
-The project documentation is written in LaTeX and can be found in the `docs/` folder.
-
-To build the documentation, you need to install LaTeX on your system, which may take several hours to complete:
-- LaTeX quick installation guide: https://tug.org/texlive/quickinstall.html
-- LaTeX full installation guide: https://tug.org/texlive/doc/texlive-en/texlive-en.html#installation
-
-Check the following links for the BFH LaTeX templates, which are used for the documentation:
-- Installation: https://latex.ti.bfh.ch/doc_gettingStarted/index.html
-- BFH Thesis Class: https://latex.ti.bfh.ch/doc_bfhclass/thesis.html
-
-### Build PDF documentation
-```bash
-make docs
-```
-
-### Clean documentation, including the generated PDF
-```bash
-make clean-docs
-```
-
-### Clean and rebuild PDF documentation
-```bash
-make clean-docs && make docs
-```
-
 ## Development
 
 @TODO: Describe development environment
@@ -86,16 +121,6 @@ The virtual environment and packages are management with [uv](https://docs.astra
 For development and the build process to work correctly, it is required to install nsak in editable mode with the following command:
 
 `uv pip install -e .`
-
-### Build and install nsak executable
-
-To build and install the nsak executable, run the following commands:
-
-```bash
-uv build
-# uv tool install dist/nsak-<version>-py3-none-any.whl
-uv tool install dist/nsak-0.1.0-py3-none-any.whl
-```
 
 ### Enable nsak command completion
 
@@ -140,50 +165,3 @@ Additional links:
 
 ## License
 @TODO: Evaluate and add license
-
-### timeline
-
-```mermaid
-timeline
-    title Project 2 Timeline
-    section Planning & Brainstorm
-    🗓️ 2025-09-12 : Kickoff & Setup
-    🗓️ 2025-09-26 : Planning
-    🗓️ 2025-10-10 : Research & Analysis
-    section Design & Resarch
-    🗓️ 2025-10-24 : Concept & Timeplan
-    2025-11-02 : Research & Product comparison
-    🗓️ 2025-11-07 : Architecture and Design
-    section Implementation
-    🗓️ 2025-11-21 : Finalized Scenario MITM with required drills and environments
-    🗓️ 2025-12-05 : Finalized Scenario "W-lan Spoofing" with required drills and enviornments
-    🗓️ 2025-12-19 : Integration & Testing
-    section Documentation & Delivery
-    2025-01-03 : Final Presentation and Documentation finish
-    2025-01-16 : Final Presentation
-    2025-01-19 : Project Submission
- ```
-### changed timeline
-
-```mermaid
-timeline
-    title Project 2 Timeline
-    section Planning & Brainstorm
-    🗓️ 2025-09-12 : Kickoff & Setup
-    🗓️ 2025-09-26 : Planning
-    🗓️ 2025-10-10 : Research & Analysis
-    section Design & Resarch
-    🗓️ 2025-10-24 : Concept & Timeplan
-    2025-11-02 : Research & Product comparison
-    🗓️ 2025-11-07 : Architecture and Design
-    section Hardware Setup
-    🗓️ 2025-11-28 : Nano Pi r76s, Banana Pi R4 with debian image and configured interfaces
-    section Implementation
-    2025-12-05 : POC nsak framework
-    🗓️ 2025-12-19 : Finalized Scenario MITM with required drills and environments, integration and testing
-    🗓️ 2025-12-19 : Finalized Scenario "W-lan Spoofing" with required drills and enviornments, integration and testing
-    section Documentation & Delivery
-    2025-01-03 : Final Presentation and Documentation finish
-    2025-01-16 : Final Presentation
-    2025-01-19 : Project Submission
-```

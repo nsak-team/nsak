@@ -32,7 +32,7 @@ The system setup described in~\ref{lst:llm-system-setup} will configure and expo
 which provided a chat GUI to interact with Ollama.
 In contrast to Ollama, which runs directly on the host, the other services are run in containers managed by rootles podman and defined the docker-compose.yml~\ref{lst:nginx-openwebui-docker-compose-yml}.
 The Nginx default.conf~\ref{lst:nginx-default-conf} configures the web server to terminate the SSL connection and
-act as reverse proxy for the \enquote{Open WebUI} and the Ollama API under the directory \enquote{/llm/}.
+act as reverse proxy for the \enquote{Open WebUI} and the Ollama API under the directory \texttt{/llm/}.
 
 \paragraph{Services:}
 \begin{itemize}
@@ -285,4 +285,4 @@ The screenshot~\ref{fig:open_webui_evaluation} shows a quick test with \enquote{
     \label{fig:open_webui_evaluation}
 \end{figure}
 
-Later on we can use the Ollama API served under \enquote{/llm/} as a backend for \glsxtrshort{AI} agents.
+Later on we can use the Ollama API served under \texttt{/llm/} as a backend for \glsxtrshort{AI} agents.

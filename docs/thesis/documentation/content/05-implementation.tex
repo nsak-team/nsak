@@ -1,3 +1,250 @@
 % Time form: Past tense
 
 \chapter{Implementation}\label{ch:implementation}
+
+
+
+\newpage
+\section{Configuration Management Implementation}\label{sec:configuration-management-implementation}
+
+\subsection{Device Configuration Management}\label{subsec:device-configuration-management}
+
+
+\subsubsection{Create New Device Resource Type}\label{subsubsec:create-new-device-resource-type}
+
+In the context of \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} this resource type was already defined conceptionally and the~\gls{BananaPI R4} was added as an example in the library under \texttt{lib/devices/bananapi\_r4/}.
+But the resource type was not actually added to the \glsxtrshort{NSAK} core and be able to manage device configurations we need to implement the Device resource type first.
+Analog to the other resource types, a yaml specification for defining devices in the library and multiple classes for representing and managing devices in the core are required.
+The listing~\ref{lst:device-resource-yaml-specification} shows the initial specification for a device resource, which will get extended later on with a section for configuration management.
+
+\begin{lstlisting}[language=bash,caption={Device Resource YAML Specification},label={lst:device-resource-yaml-specification}]
+device: <str:resource-version>
+
+metadata:
+  id: <str:device-id>
+  name: <str:device-name>
+  description: <str:device-description>
+  author: <str:author-email>
+  repository: <str:resource-repository>
+\end{lstlisting}
+
+In the following table~\ref{tab:device-resource-classes} the required Python classes are listed and described.
+The classes will be located under \texttt{src/nsak/core/device} within their respective files.
+
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{llX}
+        \hline
+        \textbf{Class} & \textbf{File Name} & \textbf{Description} \\
+        \hline
+        Device & device.py & A dataclass, which represents a device resource as objects during runtime (usually quite similar to the yaml specification). \\
+        DeviceLoader & device\_loader.py & This class returns Device objects and is used by the DeviceManager to find and load device resources from the library. \\
+        DeviceManager & device\_manager.py & The manager class implements the business logic and exposes an API, which can be used by the \glsxtrshort{CLI}. \\
+        \hline
+    \end{tabularx}
+    \caption{Device Resource Classes}
+    \label{tab:device-resource-classes}
+\end{table}
+
+In \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} it became already clear, that the described classes share a lot of boilerplate code between each other.
+For this reason the base classes described in~\ref{tab:device-resource-classes} where added to get rid of the duplicated logic, which leads to better compliance with the \gls{DRY} principles.
+The classes will be located under \texttt{src/nsak/core/resource} within their respective files.
+
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{llX}
+        \hline
+        \textbf{Class} & \textbf{File Name} & \textbf{Description} \\
+        \hline
+        Resource & resource.py & Base class for all resources: Scenario, Drill, Environment and Device. \\
+        ResourceLoader & resource\_loader.py & Base class which handles searching and loading resources from the filesystem. \\
+        ResourceManager & resource\_manager.py & Base class which defines common methods for all resource manager classes. \\
+        \hline
+    \end{tabularx}
+    \caption{Resource Python Classes}
+    \label{tab:resource-base-classes}
+\end{table}
+
+To complete the integration of the device resource, the new functionality must be exposed via \glsxtrshort{CLI}.
+The available bash commands are shown in the following listing~\ref{lst:nsak-cli-list-devices}.
+
+\begin{lstlisting}[language=bash,caption={NSAK CLI: List Devices},label={lst:nsak-cli-list-devices}]
+# Show usage, options and subcommands for the device resource
+nsak device --list
+
+# List all devices found in the resource library
+nsak device list
+
+# Output:
+❯ nsak device list
+ID           NAME         PATH
+bananapi_r4  BananaPI R4  /home/lukas/CLionProjects/swiss-army-knife-network-sniffer/lib/devices/bananapi_r4
+\end{lstlisting}
+
+
+\subsubsection{Device Configuration Management Implementation}\label{subsubsec:device-configuration-management-implementation}
+
+To allow a device to expose its configuration options, the \glsxtrshort{YAML} specification needs to be extended accordingly.
+For now, the focus is only on network configuration as this is the most important information for the scenarios and drills, but the specification was done in such a way that other sections can be added later on.
+The following excerpt~\ref{lst:device-resource-configuration-yaml-specification} shows the specification for the configuration section of the device resource \glsxtrshort{YAML}.
+
+\begin{lstlisting}[language=bash,caption={Device Resource Configuration YAML Specification},label={lst:device-resource-configuration-yaml-specification}]
+device: <str:resource-version>
+
+metadata:
+  ...
+
+configuration:
+  network:
+    ethernets:
+      <str:intreface-name>:
+        addresses:
+          <str:ip-address-with-subnet>:
+            is_target: <boolean>
+            is_management: <boolean>
+\end{lstlisting}
+
+The following code snippet located under \texttt{src/nsak/core/device/device\_loader.py}~\ref{lst:device-loader-configuration-parsing} shows how the \glsxtrshort{YAML} configuration gets parsed to the respective datastructures defined in~\texttt{src/nsak/core/device/device.py}~\ref{lst:device-configuration-datastructures}.
+
+\begin{lstlisting}[language=bash,caption={DeviceLoader Configration Parsing},label={lst:device-loader-configuration-parsing}]
+class DeviceLoader(ResourceLoader[Device]):
+    """
+    Finds and loads devices from the library paths.
+    """
+
+    ResourceClass = Device
+
+    @classmethod
+    def _parse_device_configuration(
+        cls, data: dict[str, Any]
+    ) -> DeviceConfigration | None:
+        if "configuration" not in data:
+            return None
+
+        ethernets = data["configuration"].get("network", {}).get("ethernets", {})
+
+        return DeviceConfigration(
+            network=NetworkConfiguration(
+                ethernets={
+                    interface: EthernetConfiguration(
+                        name=interface,
+                        addresses={
+                            ip: IPConfiguration(
+                                ip=ip_interface(ip),
+                                is_target=address.get("is_target", False),
+                                is_management=address.get("is_management", False),
+                            )
+                            for ip, address in ethernet.get("addresses", {}).items()
+                        },
+                    )
+                    for interface, ethernet in ethernets.items()
+                }
+            )
+        )
+
+    @classmethod
+    def _to_resource(cls, data: dict[str, Any], path: Path) -> Device:
+        """
+        Creates a Device object from a dict containing the device's metadata.
+        """
+        return cls.ResourceClass(
+            id=str(data["metadata"]["id"]),
+            name=str(data["metadata"]["name"]),
+            path=path,
+            author=str(data["metadata"]["author"]),
+            repository=str(data["metadata"]["repository"]),
+            configuration=cls._parse_device_configuration(data),
+        )
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash,caption={Device Configration Datastructures},label={lst:device-configuration-datastructures}]
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class IPConfiguration:
+    """
+    Represents an ip configuration on an interface.
+    """
+
+    ip: IPInterface
+    is_target: bool
+    is_management: bool
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class EthernetConfiguration:
+    """
+    Represents an ethernet node.
+    """
+
+    name: str
+    addresses: dict[str, IPConfiguration]
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+class NetworkConfiguration:
+    """
+    Represents the networking part of the configuration, heavily inspired by netplan.
+    """
+
+    ethernets: dict[str, EthernetConfiguration]
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+class DeviceConfigration:
+    """
+    Represents the device configuration.
+    """
+
+    network: NetworkConfiguration
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+class Device(Resource):
+    """
+    Represents a device.
+    """
+
+    id: str
+    name: str
+    path: Path
+    author: str
+    repository: str
+    configuration: DeviceConfigration | None = None
+\end{lstlisting}
+
+In the following listing shows the newly available \glsxtrshort{CLI} commands for managing device configurations~\ref{lst:device-configuration-cli-management}:
+
+\begin{lstlisting}[language=bash,caption={Device Configuration CLI Management},label={lst:device-configuration-cli-management}]
+# List all subcommands for the Device resource
+nsak device --help
+
+# List all available devices
+nsak device list
+
+# Show the device details and configuration
+nsak device show <str:device-id>
+
+# Load a device and its configuration
+nsak device load <str:device-id>
+
+# Show the currently loaded device
+nsak device loaded
+
+# Reset the loaded device
+nsak device unload
+\end{lstlisting}
+
+
+\subsection{Drill Configuration Management}\label{subsec:drill-configuration-management}
+
+
+\subsection{Scenario Configuration Management}\label{subsec:scenario-configuration-management}
+
+
+\subsection{Configuration via CLI}
+
+
+\subsection{Configuration via CLI --config\_file}
+
+
+\subsection{Configuration via interactive CLI Dialog}
