@@ -54,7 +54,29 @@ uv tool install dist/nsak-0.1.0-py3-none-any.whl
 NSAK CLI
 ```bash
 # List all subcommands for the nsak CLI
-nsak -help
+nsak --help
+```
+
+### NSAK device configuration management
+
+```bash
+# List all subcommands for the Device resource
+nsak device --help
+
+# List all available devices
+nsak device list
+
+# Show the device details and configuration
+nsak device show <str:device-id>
+
+# Load a device and its configuration
+nsak device load <str:device-id>
+
+# Show the currently loaded device
+nsak device loaded
+
+# Reset the loaded device
+nsak device unload
 ```
 
 ### Simulate a specific scenario in a environment

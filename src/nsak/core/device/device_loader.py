@@ -29,6 +29,7 @@ class DeviceLoader(ResourceLoader[Device]):
         ethernets = data["configuration"].get("network", {}).get("ethernets", {})
 
         return DeviceConfigration(
+            raw=data["configuration"],
             network=NetworkConfiguration(
                 ethernets={
                     interface: EthernetConfiguration(
@@ -44,7 +45,7 @@ class DeviceLoader(ResourceLoader[Device]):
                     )
                     for interface, ethernet in ethernets.items()
                 }
-            )
+            ),
         )
 
     @classmethod
@@ -60,3 +61,11 @@ class DeviceLoader(ResourceLoader[Device]):
             repository=str(data["metadata"]["repository"]),
             configuration=cls._parse_device_configuration(data),
         )
+
+    @classmethod
+    def load_by_path(cls, path: Path) -> Device | None:
+        """
+        Load the device by path.
+        """
+        data = cls._load(path)
+        return cls._safe_to_resource(data, path)
