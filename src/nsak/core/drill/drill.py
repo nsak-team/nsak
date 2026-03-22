@@ -47,6 +47,9 @@ class Drill(Resource):
     Represents a drill.
     """
 
+    NAME = "drill"
+    KEY = "drills"
+
     id: str
     name: str
     description: str

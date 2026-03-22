@@ -4,7 +4,7 @@ from typing import Any
 import click
 from tabulate import tabulate
 
-from nsak.core import DeviceManager
+from nsak.core import DeviceManager, config
 
 device_group = click.Group("device")
 
@@ -73,13 +73,12 @@ def loaded_device() -> None:
     """
     Get the active device.
     """
-    device = DeviceManager.get_loaded()
-    if device is None:
+    if config.device is None:
         click.echo("No device loaded.")
     else:
-        click.echo(f"Loaded device: {device.name} (id = {device.id})")
-        if device.configuration is not None:
-            click.echo(json.dumps(device.configuration.raw, indent=2))
+        click.echo(f"Loaded device: {config.device.name} (id = {config.device.id})")
+        if config.device.configuration is not None:
+            click.echo(json.dumps(config.device.configuration.raw, indent=2))
 
 
 @device_group.command("unload")

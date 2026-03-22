@@ -66,6 +66,8 @@ class Resource:
     Abstract base class for all resources.
     """
 
+    NAME = "resource"
+    KEY = "resources"
     ResourceError = ResourceError
     InvalidResourceError = InvalidResourceError
     ResourceNotFoundError = ResourceNotFoundError

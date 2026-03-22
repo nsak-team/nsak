@@ -3,7 +3,7 @@ from typing import Any
 
 import click
 
-from nsak.core import DeviceManager, Scenario, ScenarioManager
+from nsak.core import Scenario, ScenarioManager, config
 from nsak.core.scenario.scenario_manager import ScenarioArgumentParsingError
 
 scenario_group = click.Group("scenario")
@@ -86,9 +86,8 @@ def create_scenario_command(
             default=argument.default,
             prompt=name,
         )
-        loaded_device = DeviceManager.get_loaded()
-        if name == "interface" and loaded_device is not None:
-            kwargs["type"] = click.Choice(loaded_device.target_ethernets.keys())
+        if name == "interface":
+            kwargs["type"] = click.Choice(config.device.target_ethernets.keys())
         cmd = click.option(f"--{name}", **kwargs)(cmd)
     return cmd
 

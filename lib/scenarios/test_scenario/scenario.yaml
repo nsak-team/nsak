@@ -1,17 +1,15 @@
-scenario: v1
+scenarios:
+  test_scenario:
+    name: Test Scenario
+    author: gausf1@bfh.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-metadata:
-  id: test_scenario
-  name: Test Scenario
-  author: gausf1@bfh.ch
-  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+    drills: [ hello_world ]
 
-drills: [ hello_world ]
+    dependencies:
+      system: [ ]
+      python: [ ]
 
-dependencies:
-  system: [ ]
-  python: [ ]
-
-interface:
-  arguments:
-  return_type:
+    interface:
+      arguments:
+      return_type:

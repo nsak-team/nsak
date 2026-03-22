@@ -48,7 +48,6 @@ def test_device_loader_configuration() -> None:
                             is_management=True,
                         ),
                     },
-                    _network_interface=None,
                 )
             }
         ),

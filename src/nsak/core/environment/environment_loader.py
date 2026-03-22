@@ -13,14 +13,20 @@ class EnvironmentLoader(ResourceLoader[Environment]):
     ResourceClass = Environment
 
     @classmethod
-    def _to_resource(cls, data: dict[str, Any], path: Path) -> Environment:
+    def _to_resource(
+        cls, id: str, data: dict[str, Any], path: Path | str
+    ) -> Environment:
         """
         Creates an Environment object from a dict containing the environment's metadata.
         """
+        if isinstance(path, str):
+            path = Path(path)
+
         return Environment(
-            id=str(data["metadata"]["id"]),
-            name=str(data["metadata"]["name"]),
+            id=id,
+            name=str(data.get("name") or ""),
+            description=str(data.get("description") or ""),
             path=path,
-            author=str(data["metadata"]["author"]),
-            repository=str(data["metadata"]["repository"]),
+            author=str(data.get("author") or ""),
+            repository=str(data.get("repository") or ""),
         )

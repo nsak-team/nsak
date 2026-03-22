@@ -1,12 +1,10 @@
-device: v1
+devices:
+  unknown:
+    name: Unknown
+    description: "Fallback device for unknown HW"
+    author: None
+    repository: None
 
-metadata:
-  id: unknown
-  name: Unknown
-  description: "Fallback device for unknown HW"
-  author: None
-  repository: None
-
-# The configuration of this special device will be auto generated
-configuration:
-  network: auto
+    configuration:
+      # The network configuration of this special device will be auto generated
+      network: auto

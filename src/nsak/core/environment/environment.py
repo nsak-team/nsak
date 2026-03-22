@@ -16,8 +16,12 @@ class Environment(Resource):
     Represents an environment.
     """
 
+    NAME = "environment"
+    KEY = "environments"
+
     id: str
     name: str
+    description: str
     path: Path
     author: str
     repository: str

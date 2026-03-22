@@ -47,6 +47,9 @@ class Scenario(Resource):
     Represents a scenario.
     """
 
+    NAME = "scenario"
+    KEY = "scenarios"
+
     id: str
     name: str
     description: str | None

@@ -2,7 +2,7 @@ from typing import Any
 
 import click
 
-from nsak.core import DeviceManager, Drill, DrillManager
+from nsak.core import Drill, DrillManager, config
 from nsak.core.drill.drill_manager import DrillArgumentParsingError
 
 drill_group = click.Group("drill")
@@ -70,9 +70,8 @@ def create_drill_command(drill: Drill) -> click.Command:
             default=argument.default,
             prompt=name,
         )
-        loaded_device = DeviceManager.get_loaded()
-        if name == "interface" and loaded_device is not None:
-            kwargs["type"] = click.Choice(loaded_device.target_ethernets.keys())
+        if name == "interface":
+            kwargs["type"] = click.Choice(config.device.target_ethernets.keys())
         cmd = click.option(f"--{name}", **kwargs)(cmd)
     return cmd
 
