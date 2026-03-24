@@ -1,16 +1,14 @@
-drill: v1
+drills:
+  hello_world:
+    name: hello_world_drill
+    description: "hello world drill"
+    author: gausf1@bfh.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-metadata:
-  id: hello_world
-  name: hello_world_drill
-  description: "hello world drill"
-  author: gausf1@bfh.ch
-  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+    dependencies:
+      system: [ ]
+      python: [ art ]
 
-dependencies:
-  system: [ ]
-  python: [ art ]
-
-interface:
-  arguments:
-  return_type: str
+    interface:
+      arguments:
+      return_type: str

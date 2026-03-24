@@ -18,35 +18,38 @@ class DrillLoader(ResourceLoader[Drill]):
     ResourceClass = Drill
 
     @classmethod
-    def _to_resource(cls, data: dict[str, Any], path: Path) -> Drill:
+    def _to_resource(cls, id: str, data: dict[str, Any], path: Path | str) -> Drill:
         """
         Creates a Drill object from a dict containing the drill's metadata.
         """
-        arguments = data["interface"].get("arguments", {}) or {}
+        if isinstance(path, str):
+            path = Path(path)
+
+        interface = data.get("interface") or {}
+        arguments = interface.get("arguments") or {}
+        dependencies = data.get("dependencies") or {}
+        system = set(dependencies.get("system") or [])
+        python = set(dependencies.get("python") or [])
 
         return Drill(
-            id=str(data["metadata"]["id"]),
-            name=str(data["metadata"]["name"]),
-            description=str(
-                data["metadata"]["description"]
-                if "description" in data["metadata"]
-                else None
-            ),
+            id=id,
+            name=str(data.get("name") or ""),
+            description=str(data.get("description") or ""),
             path=path,
-            author=str(data["metadata"]["author"]),
-            repository=str(data["metadata"]["repository"]),
+            author=str(data.get("author") or ""),
+            repository=str(data.get("repository") or ""),
             dependencies=DrillDependencies(
-                system=set(data["dependencies"]["system"]),
-                python=set(data["dependencies"]["python"]),
+                system=system,
+                python=python,
             ),
             interface=DrillInterface(
                 arguments={
                     name: DrillArgument(
-                        type=argument["type"],
-                        default=argument.get("default", None),
+                        type=argument.get("type"),
+                        default=argument.get("default") or None,
                     )
                     for name, argument in arguments.items()
                 },
-                return_type=data["interface"]["return_type"],
+                return_type=str(interface.get("return_type") or ""),
             ),
         )

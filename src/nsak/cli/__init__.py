@@ -1,7 +1,5 @@
 import click
 
-from nsak import core
-
 from .device import device_group
 from .drill import drill_group
 from .environment import environment_group
@@ -13,7 +11,8 @@ def cli() -> None:
     """
     CLI root.
     """
-    core.setup()
+    # Load the configuration for initialization
+    from nsak.core import config  # noqa
 
 
 cli.add_command(scenario_group)

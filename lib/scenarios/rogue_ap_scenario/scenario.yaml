@@ -1,35 +1,33 @@
-scenario: v1
+scenarios:
+  rogue_access_point:
+    name: Rogue Access Point
+    author: gausf1@bfh.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-metadata:
-  id: rogue_ap_scenario
-  name: rogue_ap_scenario
-  author: gausf1@bfh.ch
-  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+    drills: [ap_mod, network_setup, dnsmasq, nat_forwarding, tshark_capture]
 
-drills: [ap_mod, network_setup, dnsmasq, nat_forwarding, tshark_capture ]
+    runtime:
+      env:
+        - NSAK_DISABLE_DRILLS
+        - NSAK_AP_IF
+        - NSAK_UPLINK_IF
+        - NSAK_SSID
+        - NSAK_CHANNEL
+        - NSAK_COUNTRY
 
-runtime:
-  env:
-    - NSAK_DISABLE_DRILLS
-    - NSAK_AP_IF
-    - NSAK_UPLINK_IF
-    - NSAK_SSID
-    - NSAK_CHANNEL
-    - NSAK_COUNTRY
+      mounts:
+        - host_path: "/home/pi/nsak/rogue_ap_scenario"
+          container_path: "/run/nsak"
+          mode: "rw"
 
-  mounts:
-    - host_path: "/home/pi/nsak/rogue_ap_scenario"
-      container_path: "/run/nsak"
-      mode: "rw"
+    dependencies:
+      system: [ hostapd, iw, iptables, dnsmasq, procps, tshark ]
+      python: [ ]
 
-dependencies:
-  system: [ hostapd, iw, iptables, dnsmasq, procps, tshark ]
-  python: [ ]
-
-interface:
-  arguments:
-    wlan_interface:
-      type: str
-    uplink_interface:
-      type: str
-  return_type: dict[str, Any]
+    interface:
+      arguments:
+        wlan_interface:
+          type: str
+        uplink_interface:
+          type: str
+      return_type: dict[str, Any]

@@ -1,18 +1,16 @@
-drill: v1
+drills:
+  dnsmasq:
+    name: DNSmasq
+    description: "Generate a dnsmasq config at runtime and start/stop dnsmasq for a given interface."
+    author: gausf1@bfh.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-metadata:
-  id: dnsmasq_drill
-  name: dnsmasq_drill
-  description: "Generate a dnsmasq config at runtime and start/stop dnsmasq for a given interface."
-  author: gausf1@bfh.ch
-  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+    dependencies:
+      system: [ dnsmasq ]
+      python: [ ]
 
-dependencies:
-  system: [ dnsmasq ]
-  python: [ ]
-
-interface:
-  arguments:
     interface:
-      type: str
-  return_type: subprocess.Popen
+      arguments:
+        interface:
+          type: str
+      return_type: subprocess.Popen

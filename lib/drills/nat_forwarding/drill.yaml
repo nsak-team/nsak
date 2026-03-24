@@ -1,20 +1,18 @@
-drill: v1
+drills:
+  nat_forwarding:
+    name: NAT Forwarding
+    description: "Add nat_forwarding rules to ip tables"
+    author: gausf1@bfh.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
-metadata:
-  id: nat_forwarding
-  name: nat_forwarding
-  description: "Add nat_forwarding rules to ip tables"
-  author: gausf1@bfh.ch
-  repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+    dependencies:
+      system: [ ]
+      python: [ ]
 
-dependencies:
-  system: [ ]
-  python: [ ]
-
-interface:
-  arguments:
     interface:
-      type: str
-    uplink_interface:
-      type: str
-  return_type: None
+      arguments:
+        interface:
+          type: str
+        uplink_interface:
+          type: str
+      return_type: None

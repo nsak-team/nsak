@@ -12,7 +12,6 @@ from nsak.core.network.configuration import (
     NetworkConfiguration,
 )
 from nsak.core.network.utils import (
-    get_network_interface_or_none,
     get_network_interfaces,
 )
 from nsak.core.resource.resource_loader import ResourceLoader
@@ -31,7 +30,7 @@ class DeviceLoader(ResourceLoader[Device]):
     ) -> DeviceConfigration | None:
         if "configuration" not in data:
             return None
-        network = data["configuration"].get("network", {})
+        network = data["configuration"].get("network") or {}
         if network == "auto":
             ethernets = {}
             for interface in get_network_interfaces():
@@ -46,7 +45,7 @@ class DeviceLoader(ResourceLoader[Device]):
                     }
                 }
         else:
-            ethernets = network.get("ethernets", {})
+            ethernets = network.get("ethernets") or {}
 
         return DeviceConfigration(
             raw=data["configuration"],
@@ -62,7 +61,6 @@ class DeviceLoader(ResourceLoader[Device]):
                             )
                             for ip, address in ethernet.get("addresses", {}).items()
                         },
-                        _network_interface=get_network_interface_or_none(interface),
                     )
                     for interface, ethernet in ethernets.items()
                 }
@@ -70,23 +68,19 @@ class DeviceLoader(ResourceLoader[Device]):
         )
 
     @classmethod
-    def _to_resource(cls, data: dict[str, Any], path: Path) -> Device:
+    def _to_resource(cls, id: str, data: dict[str, Any], path: Path | str) -> Device:
         """
         Creates a Device object from a dict containing the device's metadata.
         """
+        if isinstance(path, str):
+            path = Path(path)
+
         return cls.ResourceClass(
-            id=str(data["metadata"]["id"]),
-            name=str(data["metadata"]["name"]),
+            id=id,
+            name=str(data.get("name") or ""),
+            description=str(data.get("description") or ""),
             path=path,
-            author=str(data["metadata"]["author"]),
-            repository=str(data["metadata"]["repository"]),
+            author=str(data.get("author") or ""),
+            repository=str(data.get("repository") or ""),
             configuration=cls._parse_device_configuration(data),
         )
-
-    @classmethod
-    def load_by_path(cls, path: Path) -> Device:
-        """
-        Load the device by path.
-        """
-        data = cls._load(path)
-        return cls._safe_to_resource(data, path)

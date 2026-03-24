@@ -9,7 +9,7 @@ from typing import Any, List
 
 import yaml
 
-from nsak.core import config
+from nsak.core import settings
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
@@ -127,7 +127,7 @@ class ScenarioManager(ResourceManager[Scenario]):
                 "/usr/bin/podman",
                 "build",
                 "--network=host",
-                config.DOCKER_CONTEXT,
+                settings.DOCKER_CONTEXT,
                 "-t",
                 f"nsak/scenario/{scenario.path.name}",
                 "--build-arg",

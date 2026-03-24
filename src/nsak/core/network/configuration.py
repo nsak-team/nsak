@@ -3,6 +3,7 @@ import dataclasses
 from scapy.interfaces import NetworkInterface
 
 from .types import IPInterface
+from .utils import get_network_interface_or_none
 
 # Interface flag to check if an interface is UP, where UNKNOWN is considered UP.
 IFF_UP = 0x1
@@ -28,8 +29,14 @@ class EthernetConfiguration:
     name: str
     addresses: dict[str, IPConfiguration]
 
-    # The underlying scapy NetworkInterface object is marked as private because it might change in future versions.
-    _network_interface: NetworkInterface | None
+    @property
+    def _network_interface(self) -> NetworkInterface | None:
+        """
+        Returns the network interface from scapy or None.
+
+        :return:
+        """
+        return get_network_interface_or_none(self.name)
 
     @property
     def ip(self) -> IPInterface | None:
