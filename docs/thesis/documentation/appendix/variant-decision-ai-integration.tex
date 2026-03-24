@@ -5,7 +5,7 @@
 
 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includesvg[width=1.0\linewidth]{../assets/diagrams/research/llm_agent_mcp_communications.drawio}
     \caption{AI Integration Variants}
@@ -14,12 +14,25 @@
 
 
 \subsection{Variant 1: AI Agent in NSAK}\label{subsec:variant-1}
-
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant1-internal-agent.drawio}
+	\caption{Variant 1, AI Agent in NSAK}
+	\label{fig:variant1-internal-agent}
+\end{figure}
+In this architecture, the AI agent is integrated within NSAK. NSAK provides the execution environment and defines the task structure and output format, while the agent autonomously plans and performs the required steps. This approach ensures strong control and consistency but limits flexibility compared to externally orchestrated systems.
 
 
 \subsection{Variant 2: NSAK MCP Server}\label{subsec:variant-2}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant2-external-ai-client.drawio}
+	\caption{Variant 2 NSAK MCP Server}
+	\label{fig:variant2-external-ai-client}
+\end{figure}
 
+In this architecture, an external AI agent orchestrates multiple MCP servers, including NSAK and other specialized security tools and is MCP client. The agent is responsible for task interpretation, planning, and coordination, while each MCP server only provides execution capabilities. This design  flexibility and modularity but the control is delegated to the agent. 
 
 \subsection{Decision}\label{subsec:variant-decision-ai-integration}
 
