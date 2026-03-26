@@ -1,0 +1,10 @@
+environments:
+  company_network:
+    name: Company Network (Red/Blue Team Lab)
+    description: >
+      Simulated enterprise network with DMZ, firewall, and intranet zones
+      for Red and Blue team security exercises. Includes an intentionally
+      vulnerable web application (DVWA), LDAP directory, file server, and
+      database — all isolated behind an iptables-based firewall.
+    author: lukas
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer

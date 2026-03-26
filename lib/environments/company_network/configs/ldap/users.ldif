@@ -1,0 +1,64 @@
+# Organisational units
+dn: ou=users,dc=corp,dc=local
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=groups,dc=corp,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+# Users (weak passwords intentional — red team target)
+dn: uid=alice,ou=users,dc=corp,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+cn: Alice Johnson
+sn: Johnson
+uid: alice
+uidNumber: 1001
+gidNumber: 1001
+homeDirectory: /home/alice
+loginShell: /bin/bash
+userPassword: alice123
+mail: alice@corp.local
+description: Senior Developer
+
+dn: uid=bob,ou=users,dc=corp,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+cn: Bob Smith
+sn: Smith
+uid: bob
+uidNumber: 1002
+gidNumber: 1001
+homeDirectory: /home/bob
+loginShell: /bin/bash
+userPassword: Password1
+mail: bob@corp.local
+description: IT Administrator
+
+dn: uid=svcweb,ou=users,dc=corp,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+cn: Web Service Account
+sn: ServiceAccount
+uid: svcweb
+uidNumber: 2001
+gidNumber: 2001
+homeDirectory: /home/svcweb
+loginShell: /sbin/nologin
+userPassword: webservice!
+description: Service account for web application
+
+# Groups
+dn: cn=employees,ou=groups,dc=corp,dc=local
+objectClass: posixGroup
+cn: employees
+gidNumber: 1001
+memberUid: alice
+memberUid: bob
+
+dn: cn=admins,ou=groups,dc=corp,dc=local
+objectClass: posixGroup
+cn: admins
+gidNumber: 2000
+memberUid: bob
