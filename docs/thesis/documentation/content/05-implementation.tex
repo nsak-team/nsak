@@ -12,7 +12,7 @@
 
 \subsubsection{Create New Device Resource Type}\label{subsubsec:create-new-device-resource-type}
 
-In the context of \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} this resource type was already defined conceptionally and the~\gls{BananaPI R4} was added as an example in the library under \texttt{lib/devices/bananapi\_r4/}.
+In the context of \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} this resource type was already defined conceptionally and the~\gls{BananaPI R4} was added as an example in the library under \mintinline{text}{lib/devices/bananapi_r4/}.
 But the resource type was not actually added to the \glsxtrshort{NSAK} core and be able to manage device configurations we need to implement the Device resource type first.
 Analog to the other resource types, a yaml specification for defining devices in the library and multiple classes for representing and managing devices in the core are required.
 The listing~\ref{lst:device-resource-yaml-specification} shows the initial specification for a device resource, which will get extended later on with a section for configuration management.
@@ -33,7 +33,7 @@ metadata:
 \end{listing}
 
 In the following table~\ref{tab:device-resource-classes} the required Python classes are listed and described.
-The classes will be located under \texttt{src/nsak/core/device} within their respective files.
+The classes will be located under \mintinline{text}{src/nsak/core/device} within their respective files.
 
 \begin{table}[h]
     \centering
@@ -52,7 +52,7 @@ The classes will be located under \texttt{src/nsak/core/device} within their res
 
 In \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} it became already clear, that the described classes share a lot of boilerplate code between each other.
 For this reason the base classes described in~\ref{tab:device-resource-classes} where added to get rid of the duplicated logic, which leads to better compliance with the \gls{DRY} principles.
-The classes will be located under \texttt{src/nsak/core/resource} within their respective files.
+The classes will be located under \mintinline{text}{src/nsak/core/resource} within their respective files.
 
 \begin{table}[h]
     \centering
@@ -83,7 +83,7 @@ nsak device list
 # Output:
 ❯ nsak device list
 ID           NAME         PATH
-bananapi_r4  BananaPI R4  /home/lukas/CLionProjects/swiss-army-knife-network-sniffer/lib/devices/bananapi_r4
+bananapi_r4  BananaPI R4  <repository>/lib/devices/bananapi_r4
 \end{minted}
 \caption{NSAK CLI: List Devices}
 \label{lst:nsak-cli-list-devices}
@@ -116,7 +116,7 @@ configuration:
 \label{lst:device-resource-configuration-yaml-specification}
 \end{listing}
 
-The following code snippet located under \texttt{src/nsak/core/device/device\_loader.py}~\ref{lst:device-loader-configuration-parsing} shows how the \glsxtrshort{YAML} configuration gets parsed to the respective datastructures defined in~\texttt{src/nsak/core/device/device.py}~\ref{lst:device-configuration-datastructures}.
+The following code snippet located under \mintinline{text}{src/nsak/core/device/device_loader.py}~\ref{lst:device-loader-configuration-parsing} shows how the \glsxtrshort{YAML} configuration gets parsed to the respective datastructures defined in~\mintinline{text}{src/nsak/core/device/device.py}~\ref{lst:device-configuration-datastructures}.
 
 \begin{listing}[H]
 \begin{minted}{python}
