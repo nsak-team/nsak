@@ -11,15 +11,15 @@ Depending on the quality and performance of the smaller models running in the se
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{ll}
-        \hline
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
         \textbf{Component} & \textbf{Specification} \\
-        \hline
+        \midrule
         CPU & AMD Ryzen 5\ 3600 (6 cores / 12 threads, up to 4.2 GHz) \\
         GPU & NVIDIA GeForce RTX 3070 (8 GB \glsxtrshort{VRAM}) \\
         System Memory & 32 GB RAM \\
-        \hline
-    \end{tabular}
+        \bottomrule
+    \end{tabularx}
     \caption{Hardware configuration of the self-hosted \glsxtrshort{LLM} inference server.}
     \label{tab:llm_hardware_setup}
 \end{table}
@@ -305,4 +305,4 @@ The screenshot~\ref{fig:open_webui_evaluation} shows a quick test with \enquote{
     \label{fig:open_webui_evaluation}
 \end{figure}
 
-Later on we can use the Ollama API served under \mintinline{text}{/llm/} as a backend for \glsxtrshort{AI} agents.
+Later on we can use the Ollama \gls{API} served under \mintinline{text}{/llm/} as a backend for \glsxtrshort{AI} agents.

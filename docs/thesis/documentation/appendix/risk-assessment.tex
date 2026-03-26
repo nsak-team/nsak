@@ -21,7 +21,7 @@ which describes the risk assessment process according to \gls{iso27001}, was use
 The table~\ref{tab:risk-categories} shows four commonly used categories, which where used to group the risks.
 
 \begin{table}[h]
-    \begin{tabular}{ll}
+    \begin{tabularx}{\textwidth}{lX}
         \toprule
         \textbf{Category} & \textbf{Description} \\
         \midrule
@@ -30,14 +30,14 @@ The table~\ref{tab:risk-categories} shows four commonly used categories, which w
         Financial Risk & Risks related to costs and expenses (e.g., hardware costs). \\
         External Risk & Risks related to uncontrollable sources (e.g., force majeure). \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
     \caption{Risk categories used for the project risk assessment}\label{tab:risk-categories}
 \end{table}
 
 The criteria for analysing the risks are summarized in the table~\ref{tab:risk-criteria}
 
 \begin{table}[h]
-    \begin{tabular}{ll}
+    \begin{tabularx}{\textwidth}{lX}
         \toprule
         \textbf{Criterion} & \textbf{Description} \\
         \midrule
@@ -45,14 +45,14 @@ The criteria for analysing the risks are summarized in the table~\ref{tab:risk-c
         Impact & Severity of consequences if the risk materializes. \\
         Level & Risk level calculated as Probability + Impact. \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
     \caption{Risk evaluation criteria}\label{tab:risk-criteria}
 \end{table}
 
 The levels of the criteria and their respective numerical weights are listed in the tables~\ref{tab:risk-probability-scale} and~\ref{tab:risk-impact-scale}.
 
 \begin{table}[h]
-    \begin{tabular}{lll}
+    \begin{tabularx}{\textwidth}{llX}
         \toprule
         \textbf{Level} & \textbf{Weight} & \textbf{Description} \\
         \midrule
@@ -60,12 +60,12 @@ The levels of the criteria and their respective numerical weights are listed in 
         Medium & 2 & Possible \\
         High & 3 & Likely \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
     \caption{Risk probability scale}\label{tab:risk-probability-scale}
 \end{table}
 
 \begin{table}[h]
-    \begin{tabular}{lll}
+    \begin{tabularx}{\textwidth}{llX}
         \toprule
         \textbf{Level} & \textbf{Weight} & \textbf{Description} \\
         \midrule
@@ -73,14 +73,14 @@ The levels of the criteria and their respective numerical weights are listed in 
         Medium & 2 & Delays milestones or reduces scope \\
         High & 3 & Threat to the thesis \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
     \caption{Risk impact scale}\label{tab:risk-impact-scale}
 \end{table}
 
 The following table~\ref{tab:risk-level} defines the calculation method and the resulting risk levels, used for the assessment.
 
 \begin{table}[h]
-    \begin{tabular}{lll}
+    \begin{tabularx}{\textwidth}{llX}
         \toprule
         \textbf{Risk Level} & \textbf{Weight} & \textbf{Calculation} \\
         \midrule
@@ -90,7 +90,7 @@ The following table~\ref{tab:risk-level} defines the calculation method and the 
         High & 5 & Medium + High \\
         Critical & 6 & High + High \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
     \caption{Risk level classification (probability and impact are interchangeable)}\label{tab:risk-level}
 \end{table}
 
@@ -132,13 +132,16 @@ After sorting the table by the calculated risk level, the risk evaluation was co
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{p{3cm} p{10cm}}
-        \textbf{Strategy} & \textbf{Description} \\ \hline
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        \textbf{Strategy} & \textbf{Description} \\
+        \midrule
         \textbf{Mitigate} & Reduce the likelihood or impact of a risk. \\
         \textbf{Transfer} & Move the risk to a third party. \\
         \textbf{Accept} & Acknowledge the risk and take no further action. \\
         \textbf{Avoid} & Eliminate or circumvent the cause of the risk. \\
-    \end{tabular}
+        \bottomrule
+    \end{tabularx}
     \caption{Risk Treatment Strategies}
     \label{tab:risk-treatment-strategies}
 \end{table}
