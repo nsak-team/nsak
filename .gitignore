@@ -32,6 +32,7 @@ tmp
 *.glg
 *.gls
 **/_minted/
+*.minted
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

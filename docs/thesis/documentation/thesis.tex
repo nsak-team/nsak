@@ -113,11 +113,21 @@
 \usepackage{color}
 \usepackage{csquotes}
 \usepackage{todonotes}
-\usepackage{listings}
 \usepackage{svg}
 \usepackage{booktabs}
 \usepackage{tabularx}
-\usepackage{pdfpages}\usepackage{minted}
+\usepackage{pdfpages}
+\usepackage{fontspec}
+\usepackage{minted}
+\setmonofont{MesloLGS NF}
+\setminted{
+    fontfamily=tt,
+    fontsize=\small,
+    breaklines=true,
+    frame=lines,
+    framesep=2mm,
+    baselinestretch=1.2,
+}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
 %---------------------------------------------------------------------------
@@ -222,9 +232,7 @@
 \listoftables
 
 %------------ List of Listings -----------
-\lstlistoflistings
-% Use for "minted"
-% \listoflistings
+\listoflistings
 
 %------------ Glossary -------------------
 \printglossary

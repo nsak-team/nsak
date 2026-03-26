@@ -17,7 +17,8 @@ But the resource type was not actually added to the \glsxtrshort{NSAK} core and 
 Analog to the other resource types, a yaml specification for defining devices in the library and multiple classes for representing and managing devices in the core are required.
 The listing~\ref{lst:device-resource-yaml-specification} shows the initial specification for a device resource, which will get extended later on with a section for configuration management.
 
-\begin{lstlisting}[language=bash,caption={Device Resource YAML Specification},label={lst:device-resource-yaml-specification}]
+\begin{listing}[H]
+\begin{minted}{yaml}
 device: <str:resource-version>
 
 metadata:
@@ -26,7 +27,10 @@ metadata:
   description: <str:device-description>
   author: <str:author-email>
   repository: <str:resource-repository>
-\end{lstlisting}
+\end{minted}
+\caption{Device Resource YAML Specification}
+\label{lst:device-resource-yaml-specification}
+\end{listing}
 
 In the following table~\ref{tab:device-resource-classes} the required Python classes are listed and described.
 The classes will be located under \texttt{src/nsak/core/device} within their respective files.
@@ -68,7 +72,8 @@ The classes will be located under \texttt{src/nsak/core/resource} within their r
 To complete the integration of the device resource, the new functionality must be exposed via \glsxtrshort{CLI}.
 The available bash commands are shown in the following listing~\ref{lst:nsak-cli-list-devices}.
 
-\begin{lstlisting}[language=bash,caption={NSAK CLI: List Devices},label={lst:nsak-cli-list-devices}]
+\begin{listing}[H]
+\begin{minted}{bash}
 # Show usage, options and subcommands for the device resource
 nsak device --list
 
@@ -79,7 +84,10 @@ nsak device list
 ❯ nsak device list
 ID           NAME         PATH
 bananapi_r4  BananaPI R4  /home/lukas/CLionProjects/swiss-army-knife-network-sniffer/lib/devices/bananapi_r4
-\end{lstlisting}
+\end{minted}
+\caption{NSAK CLI: List Devices}
+\label{lst:nsak-cli-list-devices}
+\end{listing}
 
 
 \subsubsection{Device Configuration Management Implementation}\label{subsubsec:device-configuration-management-implementation}
@@ -88,7 +96,8 @@ To allow a device to expose its configuration options, the \glsxtrshort{YAML} sp
 For now, the focus is only on network configuration as this is the most important information for the scenarios and drills, but the specification was done in such a way that other sections can be added later on.
 The following excerpt~\ref{lst:device-resource-configuration-yaml-specification} shows the specification for the configuration section of the device resource \glsxtrshort{YAML}.
 
-\begin{lstlisting}[language=bash,caption={Device Resource Configuration YAML Specification},label={lst:device-resource-configuration-yaml-specification}]
+\begin{listing}[H]
+\begin{minted}{yaml}
 device: <str:resource-version>
 
 metadata:
@@ -102,11 +111,15 @@ configuration:
           <str:ip-address-with-subnet>:
             is_target: <boolean>
             is_management: <boolean>
-\end{lstlisting}
+\end{minted}
+\caption{Device Resource Configuration YAML Specification}
+\label{lst:device-resource-configuration-yaml-specification}
+\end{listing}
 
 The following code snippet located under \texttt{src/nsak/core/device/device\_loader.py}~\ref{lst:device-loader-configuration-parsing} shows how the \glsxtrshort{YAML} configuration gets parsed to the respective datastructures defined in~\texttt{src/nsak/core/device/device.py}~\ref{lst:device-configuration-datastructures}.
 
-\begin{lstlisting}[language=bash,caption={DeviceLoader Configration Parsing},label={lst:device-loader-configuration-parsing}]
+\begin{listing}[H]
+\begin{minted}{python}
 class DeviceLoader(ResourceLoader[Device]):
     """
     Finds and loads devices from the library paths.
@@ -156,9 +169,13 @@ class DeviceLoader(ResourceLoader[Device]):
             configuration=cls._parse_device_configuration(data),
         )
 
-\end{lstlisting}
+\end{minted}
+\caption{DeviceLoader Configration Parsing}
+\label{lst:device-loader-configuration-parsing}
+\end{listing}
 
-\begin{lstlisting}[language=bash,caption={Device Configration Datastructures},label={lst:device-configuration-datastructures}]
+\begin{listing}[H]
+\begin{minted}{python}
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class IPConfiguration:
     """
@@ -210,11 +227,15 @@ class Device(Resource):
     author: str
     repository: str
     configuration: DeviceConfigration | None = None
-\end{lstlisting}
+\end{minted}
+\caption{Device Configration Datastructures}
+\label{lst:device-configuration-datastructures}
+\end{listing}
 
 In the following listing shows the newly available \glsxtrshort{CLI} commands for managing device configurations~\ref{lst:device-configuration-cli-management}:
 
-\begin{lstlisting}[language=bash,caption={Device Configuration CLI Management},label={lst:device-configuration-cli-management}]
+\begin{listing}[H]
+\begin{minted}{bash}
 # List all subcommands for the Device resource
 nsak device --help
 
@@ -232,7 +253,10 @@ nsak device loaded
 
 # Reset the loaded device
 nsak device unload
-\end{lstlisting}
+\end{minted}
+\caption{Device Configuration CLI Management}
+\label{lst:device-configuration-cli-management}
+\end{listing}
 
 
 \subsection{Drill Configuration Management}\label{subsec:drill-configuration-management}

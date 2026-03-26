@@ -42,7 +42,8 @@ act as reverse proxy for the \enquote{Open WebUI} and the Ollama API under the d
 \end{itemize}
 
 \newpage
-\begin{lstlisting}[language=bash,caption={Local LLM System Setup},label={lst:llm-system-setup}]
+\begin{listing}[H]
+\begin{minted}{bash}
 # Login as default user in sudoers or root user
 
 # Check nvidia driver is loaded and the GPU was correctly detected, otherwise install the according drivers
@@ -96,10 +97,14 @@ vim swag/nginx/site-confs/default.conf
 # Certbot will fail to perform the http challange for issueing the TLS certifiacte,
 # as long as DynDNS and the port forwarding are not set up properly.
 podman-compose up -d
-\end{lstlisting}
+\end{minted}
+\caption{Local LLM System Setup}
+\label{lst:llm-system-setup}
+\end{listing}
 
 \newpage
-\begin{lstlisting}[language=bash,caption={/home/ai/docker-compose.yml},label={lst:nginx-openwebui-docker-compose-yml}]
+\begin{listing}[H]
+\begin{minted}{yaml}
 services:
   swag:
     image: lscr.io/linuxserver/swag:latest
@@ -136,10 +141,14 @@ services:
     environment:
       OLLAMA_BASE_URL: http://host.docker.internal:11434
     restart: always
-\end{lstlisting}
+\end{minted}
+\caption{/home/ai/docker-compose.yml}
+\label{lst:nginx-openwebui-docker-compose-yml}
+\end{listing}
 
 \newpage
-\begin{lstlisting}[language=bash,caption={swag/nginx/site-confs/default.conf},label={lst:nginx-default-conf}]
+\begin{listing}[H]
+\begin{minted}{nginx}
 # redirect all traffic to https
 server {
     listen 80 default_server;
@@ -196,7 +205,10 @@ server {
         proxy_read_timeout 300s;
     }
 }
-\end{lstlisting}
+\end{minted}
+\caption{swag/nginx/site-confs/default.conf}
+\label{lst:nginx-default-conf}
+\end{listing}
 
 \newpage
 \subsubsection{System Hardening}\label{subsubsec:system_hardening}
@@ -206,7 +218,8 @@ but for our purposes we can just disable the port forwarding when we don't use t
 It still makes sense to perform a minimal system hardening as shown in the following listing~\ref{lst:ufw-configuration},
 before exposing the services to the internet.
 
-\begin{lstlisting}[language=bash,caption={UFW configuration},label={lst:ufw-configuration}]
+\begin{listing}[H]
+\begin{minted}{bash}
 # Install UFW
 sudo pacman -Syu ufw
 sudo ufw status
@@ -233,7 +246,10 @@ sudo ufw allow 11434/tcp
 sudo ufw enable
 
 sudo ufw status
-\end{lstlisting}
+\end{minted}
+\caption{UFW configuration}
+\label{lst:ufw-configuration}
+\end{listing}
 
 \subsubsection{Expose Open WebUI and Ollama}\label{subsubsec:expose-openwebui-and-ollama}
 
@@ -268,10 +284,14 @@ This can be achieved with port forwarding rules on the \gls{FRITZ!Box}, as shown
 The Open WebUI and Ollama API should already be reachable via \enquote{ai.hiube.ch}, but we will receive a security warning because there is no valid SSL certificate.
 The easiest way to generate the certificate, is to trigger certbot by restarting the \enquote{swag} service as shown in the listing below~\ref{lst:restart-swag-container}.\\
 
-\begin{lstlisting}[language=bash,caption={Restart SWAG Container},label={lst:restart-swag-container}]
+\begin{listing}[H]
+\begin{minted}{bash}
 # Login as user ai and restart the swag service
 podman-compose restart swag
-\end{lstlisting}
+\end{minted}
+\caption{Restart SWAG Container}
+\label{lst:restart-swag-container}
+\end{listing}
 
 \subsection{Evaluation}\label{subsec:evaluation}
 
