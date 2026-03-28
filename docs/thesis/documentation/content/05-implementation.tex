@@ -116,119 +116,18 @@ configuration:
 \label{lst:device-resource-configuration-yaml-specification}
 \end{listing}
 
-The following code snippet located under \mintinline{text}{src/nsak/core/device/device_loader.py}~\ref{lst:device-loader-configuration-parsing} shows how the \glsxtrshort{YAML} configuration gets parsed to the respective datastructures defined in~\mintinline{text}{src/nsak/core/device/device.py}~\ref{lst:device-configuration-datastructures}.
+The following code snippet located under \mintinline{text}{src/nsak/core/device/device_loader.py}~\ref{lst:device-loader-configuration-parsing} shows how the \glsxtrshort{YAML} configuration gets parsed to the respective datastructures defined in~\mintinline{text}{src/nsak/core/network/configuration.py} and~\mintinline{text}{src/nsak/core/device/device.py}~\ref{lst:device-configuration-datastructures}.
 
 \begin{listing}[H]
-\begin{minted}{python}
-class DeviceLoader(ResourceLoader[Device]):
-    """
-    Finds and loads devices from the library paths.
-    """
-
-    ResourceClass = Device
-
-    @classmethod
-    def _parse_device_configuration(
-        cls, data: dict[str, Any]
-    ) -> DeviceConfigration | None:
-        if "configuration" not in data:
-            return None
-
-        ethernets = data["configuration"].get("network", {}).get("ethernets", {})
-
-        return DeviceConfigration(
-            network=NetworkConfiguration(
-                ethernets={
-                    interface: EthernetConfiguration(
-                        name=interface,
-                        addresses={
-                            ip: IPConfiguration(
-                                ip=ip_interface(ip),
-                                is_target=address.get("is_target", False),
-                                is_management=address.get("is_management", False),
-                            )
-                            for ip, address in ethernet.get("addresses", {}).items()
-                        },
-                    )
-                    for interface, ethernet in ethernets.items()
-                }
-            )
-        )
-
-    @classmethod
-    def _to_resource(cls, data: dict[str, Any], path: Path) -> Device:
-        """
-        Creates a Device object from a dict containing the device's metadata.
-        """
-        return cls.ResourceClass(
-            id=str(data["metadata"]["id"]),
-            name=str(data["metadata"]["name"]),
-            path=path,
-            author=str(data["metadata"]["author"]),
-            repository=str(data["metadata"]["repository"]),
-            configuration=cls._parse_device_configuration(data),
-        )
-
-\end{minted}
-\caption{DeviceLoader Configration Parsing}
+\inputminted[firstline=20, lastline=87]{python}{../../../src/nsak/core/device/device_loader.py}
+\caption{DeviceLoader Configuration Parsing}
 \label{lst:device-loader-configuration-parsing}
 \end{listing}
 
 \begin{listing}[H]
-\begin{minted}{python}
-@dataclasses.dataclass(frozen=True, kw_only=True)
-class IPConfiguration:
-    """
-    Represents an ip configuration on an interface.
-    """
-
-    ip: IPInterface
-    is_target: bool
-    is_management: bool
-
-
-@dataclasses.dataclass(frozen=True, kw_only=True)
-class EthernetConfiguration:
-    """
-    Represents an ethernet node.
-    """
-
-    name: str
-    addresses: dict[str, IPConfiguration]
-
-
-@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
-class NetworkConfiguration:
-    """
-    Represents the networking part of the configuration, heavily inspired by netplan.
-    """
-
-    ethernets: dict[str, EthernetConfiguration]
-
-
-@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
-class DeviceConfigration:
-    """
-    Represents the device configuration.
-    """
-
-    network: NetworkConfiguration
-
-
-@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
-class Device(Resource):
-    """
-    Represents a device.
-    """
-
-    id: str
-    name: str
-    path: Path
-    author: str
-    repository: str
-    configuration: DeviceConfigration | None = None
-\end{minted}
-\caption{Device Configration Datastructures}
+\inputminted[firstline=12, lastline=30]{python}{../../../src/nsak/core/network/configuration.py}
+\inputminted[firstline=14, lastline=39]{python}{../../../src/nsak/core/device/device.py}
+\caption{Device Configuration Datastructures}
 \label{lst:device-configuration-datastructures}
 \end{listing}
 
@@ -263,12 +162,3 @@ nsak device unload
 
 
 \subsection{Scenario Configuration Management}\label{subsec:scenario-configuration-management}
-
-
-\subsection{Configuration via CLI}
-
-
-\subsection{Configuration via CLI --config\_file}
-
-
-\subsection{Configuration via interactive CLI Dialog}
