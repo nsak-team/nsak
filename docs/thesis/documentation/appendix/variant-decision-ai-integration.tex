@@ -14,26 +14,28 @@
 
 
 \subsection{Variant 1: AI Agent in NSAK}\label{subsec:variant-1}
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant1-internal-agent.drawio}
-%	\caption{Variant 1, AI Agent in NSAK}
-%	\label{fig:variant1-internal-agent}
-%\end{figure}
-In this architecture, the AI agent is integrated within NSAK. NSAK provides the execution environment and defines the task structure and output format, while the agent autonomously plans and performs the required steps. This approach ensures strong control and consistency but limits flexibility compared to externally orchestrated systems.
-
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant1-internal-agent.drawio}
+	\caption{Variant 1, AI Agent in NSAK}
+	\label{fig:variant1-internal-agent}
+\end{figure}
+In this architecture, the AI agent is embedded within the NSAK device. The NSAK core establishes the operational guardrails and schema, and provides the initial prompt to the \gls{AI AGENT}.The agent uses the provided LLM over the management network and operates within an iterative loop, in which it may either invoke external tools via a command-line interface (e.g., nmap, Metasploit) or interact with them through an MCP server interface. The results of these operations are subsequently processed and returned to the NSAK core in a structured schema-compliant format.
 
 \subsection{Variant 2: NSAK MCP Server}\label{subsec:variant-2}
 
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant2-external-ai-client.drawio}
-%	\caption{Variant 2 NSAK MCP Server}
-%	\label{fig:variant2-external-ai-client}
-%\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant2-external-ai-client.drawio}
+	\caption{Variant 2 NSAK MCP Server}
+	\label{fig:variant2-external-ai-client}
+\end{figure}
 
-In this architecture, an external AI agent orchestrates multiple MCP servers, including NSAK and other specialized security tools and is MCP client. The agent is responsible for task interpretation, planning, and coordination, while each MCP server only provides execution capabilities. This design  flexibility and modularity but the control is delegated to the agent.
+Variant 1, in which the \gls{AGENTIC-AI} is embedded within the NSAK device, enables the definition and enforcement of schemas and security policies within a controlled environment. Furthermore, it allows direct interaction with tools via the command-line interface and integration with MCP servers. This results in a tightly coupled architecture with high control and consistency.
 
-\subsection{Decision}\label{subsec:variant-decision-ai-integration}
+In contrast, Variant 2 relies on an external agent that accesses the NSAK device through an exposed MCP server interface. While this approach provides increased modularity, it also introduces limitations in flexibility, as the agent is restricted to the set of tools exposed by the NSAK device.
 
-\todo{Add the decision}
+From a holistic and multi-layered architectural perspective, Variant 1 is preferred. It enables deeper system integration, higher security, and a wider range of executable tools.
+
+The third variant, use an \gls{AI AGENT} and grant root access to the command line \ref{subsec:mcp-is-dead} is not further evaluated because the concept is a nightmare from a security perspective.
+
