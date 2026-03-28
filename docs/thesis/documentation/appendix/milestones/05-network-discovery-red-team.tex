@@ -1,0 +1,20 @@
+\subsubsection{\href{https://gitlab.ti.bfh.ch/groups/gausf1-vonal3/-/milestones/7}{NSAK Scenario: Network Discovery -- Red Team}}\label{subsubsec:milestone-network-discovery}
+\textit{02.04.2026 -- 16.04.2026}
+
+Network discovery is one of the most essential Red Team activities in the reconnaissance phase.
+This milestone covered the implementation of a scenario that identifies network participants and services, producing a structured network map that can be consumed by subsequent drills such as \gls{ARP} spoofing.
+
+\textbf{Goals (Must):}
+\begin{itemize}
+    \item[$\square$] The scenario identifies the available ports and interfaces on the device
+    \item[$\square$] The scenario discovers the available subnets and obtains valid \glsxtrshort{IP} addresses
+    \item[$\square$] The scenario discovers \glsxtrshort{MAC} addresses, \glsxtrshort{IP} addresses and services (port scan)
+    \item[$\square$] The scenario supports at least a fast full-search mode
+    \item[$\square$] The scenario returns a network map as a structured data type
+\end{itemize}
+
+\textbf{Goals (Could):}
+\begin{itemize}
+    \item[$\square$] A human interaction hook allows the operator to select the discovery mode
+    \item[$\square$] Additional modes: slow full search, distinct search
+\end{itemize}
