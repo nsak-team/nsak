@@ -7,32 +7,113 @@
 \newpage
 \section{Configuration Management Implementation}\label{sec:configuration-management-implementation}
 
+The configuration management in \glsxtrshort{NSAK} is organised into three distinct layers, each serving a different scope and lifetime.
+
+The \textbf{static configuration} layer resolves fixed filesystem paths at import time.
+It derives all relevant paths from a single base directory, which can be overridden via an environment variable to support different deployment contexts such as Docker containers or automated test environments.
+
+The \textbf{runtime configuration} layer holds mutable state that persists across \glsxtrshort{CLI} invocations.
+It is loaded from a \glsxtrshort{YAML} file on every command execution and written back whenever state changes, for example when a different device is loaded.
+This layer is the source of truth for any information that must be shared between separate \glsxtrshort{CLI} calls.
+
+The \textbf{resource configuration} layer is defined by the resource library itself.
+Each resource type — devices, drills, scenarios, and environments — declares its configuration inside a \glsxtrshort{YAML} file stored in the library.
+For devices this includes network interface assignments, while drills and scenarios additionally declare their typed argument interfaces, which the \glsxtrshort{CLI} uses to generate the correct command options at runtime.
+
+\subsection{NSAK Configuration Management}\label{subsec:nsak-configuration-management}
+
+The \glsxtrshort{NSAK} configuration is split into two distinct layers: a static layer that resolves fixed paths at import time, and a mutable runtime layer that is persisted to disk and loaded on every invocation.
+
+\subsubsection{Static Configuration}\label{subsubsec:static-configuration}
+
+The static configuration is defined in \mintinline{text}{src/nsak/core/settings.py} and shown in listing~\ref{lst:nsak-settings}.
+It derives all relevant paths from a single \mintinline{text}{BASE\_PATH}, which is either supplied via the \mintinline{text}{NSAK\_BASE\_PATH} environment variable or resolved automatically to the repository root at import time.
+\mintinline{text}{RUN\_PATH} points to the \mintinline{text}{run/} directory where runtime data such as the persisted config is stored, and \mintinline{text}{LIBRARY\_PATHS} holds the set of directories that are searched for resource libraries.
+Overriding \mintinline{text}{NSAK\_BASE\_PATH} is the primary mechanism to run \glsxtrshort{NSAK} from a different base directory, e.g.\ inside a Docker container or during automated testing.
+
+\begin{listing}[H]
+\inputminted{python}{../../../src/nsak/core/settings.py}
+\caption{NSAK Static Configuration}
+\label{lst:nsak-settings}
+\end{listing}
+
+\subsubsection{Runtime Configuration}\label{subsubsec:runtime-configuration}
+
+The runtime configuration is defined as the \mintinline{text}{Config} dataclass in \mintinline{text}{src/nsak/core/\_config.py} and holds all state that can change during normal operation, currently the \mintinline{text}{debug} flag and the active \mintinline{text}{Device}.
+It is persisted as a \glsxtrshort{YAML} file at \mintinline{text}{run/config.yaml} and loaded on every \glsxtrshort{CLI} invocation.
+
+To avoid loading the configuration on import, the module-level \mintinline{text}{config} object is wrapped in a \mintinline{text}{lazy\_object\_proxy.Proxy}.
+The proxy defers the actual \mintinline{text}{Config.load()} call until the object is first accessed.
+Since the root \glsxtrshort{CLI} group imports \mintinline{text}{config} on every command invocation (listing~\ref{lst:nsak-cli-init}), this ensures the configuration is always initialised before any command logic runs.
+If \mintinline{text}{run/config.yaml} does not yet exist, \mintinline{text}{Config.init()} is called automatically to create a default configuration and write it to disk, so no manual setup is required on first run.
+
+\begin{listing}[H]
+\inputminted{python}{../../../src/nsak/core/_config.py}
+\caption{NSAK Runtime Configuration}
+\label{lst:nsak-config}
+\end{listing}
+
+\begin{listing}[H]
+\inputminted{python}{../../../src/nsak/cli/__init__.py}
+\caption{NSAK CLI Initialisation}
+\label{lst:nsak-cli-init}
+\end{listing}
+
+Mutations to the runtime configuration always follow the same pattern: a manager method (e.g.\ \mintinline{text}{DeviceManager.load()}) updates the relevant field on the \mintinline{text}{config} object and calls \mintinline{text}{config.save()} to persist the change.
+Custom \glsxtrshort{YAML} representers are registered for \mintinline{text}{IPInterface} and \mintinline{text}{PosixPath} so that these types are serialised as plain strings rather than Python-specific tags.
+Listing~\ref{lst:nsak-config-yaml} shows an example of the persisted \mintinline{text}{run/config.yaml} after loading the \mintinline{text}{bananapi\_r4} device.
+
+\begin{listing}[H]
+\begin{minted}{yaml}
+debug: true
+device:
+  id: bananapi_r4
+  name: BananaPI R4
+  path: <base-path>/lib/devices/bananapi_r4
+  author: vonal3@bfh.ch
+  repository: <repository-url>
+  configuration:
+    network:
+      ethernets:
+        lan1@eth0:
+          addresses:
+            10.10.10.30/24:
+              is_target: true
+              is_management: false
+\end{minted}
+\caption{Persisted Runtime Configuration (run/config.yaml)}
+\label{lst:nsak-config-yaml}
+\end{listing}
+
+
 \subsection{Device Configuration Management}\label{subsec:device-configuration-management}
-
-
-\subsubsection{Create New Device Resource Type}\label{subsubsec:create-new-device-resource-type}
 
 In the context of \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} this resource type was already defined conceptionally and the~\gls{BananaPI R4} was added as an example in the library under \mintinline{text}{lib/devices/bananapi_r4/}.
 But the resource type was not actually added to the \glsxtrshort{NSAK} core and be able to manage device configurations we need to implement the Device resource type first.
+
+\subsubsection{Create New Device Resource Type}\label{subsubsec:create-new-device-resource-type}
+
 Analog to the other resource types, a yaml specification for defining devices in the library and multiple classes for representing and managing devices in the core are required.
+Because the existing resource \gls{YAML} specifications do not allow to merge the \gls{YAML} files,
+this implementation proposes a new base structure which fulfills this trait.
+Section~\ref{subsubsec:refactor-existing-resources} describes the necessary changes to the existing \gls{YAML} specifications.
 The listing~\ref{lst:device-resource-yaml-specification} shows the initial specification for a device resource, which will get extended later on with a section for configuration management.
 
 \begin{listing}[H]
 \begin{minted}{yaml}
-device: <str:resource-version>
-
-metadata:
-  id: <str:device-id>
-  name: <str:device-name>
-  description: <str:device-description>
-  author: <str:author-email>
-  repository: <str:resource-repository>
+devices:
+    <str:resource-id>:
+        id: <str:device-id>
+        name: <str:device-name>
+        description: <str:device-description>
+        author: <str:author-email>
+        repository: <str:resource-repository>
 \end{minted}
 \caption{Device Resource YAML Specification}
 \label{lst:device-resource-yaml-specification}
 \end{listing}
 
-In the following table~\ref{tab:device-resource-classes} the required Python classes are listed and described.
+In the table~\ref{tab:device-resource-classes} below, the required Python classes are listed and described.
 The classes will be located under \mintinline{text}{src/nsak/core/device} within their respective files.
 
 \begin{table}[h]
@@ -43,7 +124,7 @@ The classes will be located under \mintinline{text}{src/nsak/core/device} within
         \hline
         Device & device.py & A dataclass, which represents a device resource as objects during runtime (usually quite similar to the yaml specification). \\
         DeviceLoader & device\_loader.py & This class returns Device objects and is used by the DeviceManager to find and load device resources from the library. \\
-        DeviceManager & device\_manager.py & The manager class implements the business logic and exposes an API, which can be used by the \glsxtrshort{CLI}. \\
+        DeviceManager & device\_manager.py & The manager class implements the business logic and exposes an \gls{API}, which can be used by the \glsxtrshort{CLI}. \\
         \hline
     \end{tabularx}
     \caption{Device Resource Classes}
@@ -52,7 +133,7 @@ The classes will be located under \mintinline{text}{src/nsak/core/device} within
 
 In \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2} it became already clear, that the described classes share a lot of boilerplate code between each other.
 For this reason the base classes described in~\ref{tab:device-resource-classes} where added to get rid of the duplicated logic, which leads to better compliance with the \gls{DRY} principles.
-The classes will be located under \mintinline{text}{src/nsak/core/resource} within their respective files.
+The classes will be located under \mintinline{text}{src/nsak/core/resource} within their respective files and the adoption of the existing classes is described in section~\ref{subsubsec:refactor-existing-resources}.
 
 \begin{table}[h]
     \centering
@@ -98,19 +179,17 @@ The following excerpt~\ref{lst:device-resource-configuration-yaml-specification}
 
 \begin{listing}[H]
 \begin{minted}{yaml}
-device: <str:resource-version>
-
-metadata:
-  ...
-
-configuration:
-  network:
-    ethernets:
-      <str:intreface-name>:
-        addresses:
-          <str:ip-address-with-subnet>:
-            is_target: <boolean>
-            is_management: <boolean>
+devices:
+    <str:resource-id>:
+        # ...
+        configuration:
+          network:
+            ethernets:
+              <str:intreface-name>:
+                addresses:
+                  <str:cidr>:
+                    is_target: <boolean>
+                    is_management: <boolean>
 \end{minted}
 \caption{Device Resource Configuration YAML Specification}
 \label{lst:device-resource-configuration-yaml-specification}
@@ -144,10 +223,10 @@ nsak device list
 # Show the device details and configuration
 nsak device show <str:device-id>
 
-# Load a device and its configuration
+# Load a device into in the NSAK configuration
 nsak device load <str:device-id>
 
-# Show the currently loaded device
+# Show the currently loaded device stored in the NSAK configuration
 nsak device loaded
 
 # Reset the loaded device
@@ -157,8 +236,86 @@ nsak device unload
 \label{lst:device-configuration-cli-management}
 \end{listing}
 
+\subsubsection{Refactor Existing Resources}\label{subsubsec:refactor-existing-resources}
 
-\subsection{Drill Configuration Management}\label{subsec:drill-configuration-management}
+The implementation of the device resource~\ref{subsec:device-configuration-management} introduced an improved base structure for the resource \gls{YAML} specifications and
+three base classes which are abstracting the common structure and functionality.
+This section describes the resulting changes in the existing code and resource \gls{YAML} specifications.
 
+As already stated in section~\ref{subsubsec:device-configuration-management-implementation} all resource type specific classes were refactored to inherit from their respective base classes
+as described in table~\ref{tab:device-resource-classes}.
+With the example of the \mintedinline{EnvironmentLoader}, the diff below~\ref{fig:environment-loader-base-class-refactor-diff} illustrates how the abstraction of common properties and methods allows to remove a lot of boilerplate code.
 
-\subsection{Scenario Configuration Management}\label{subsec:scenario-configuration-management}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{../assets/screenshots/configuration_management/environment_loader_base_class_refactoring_diff}
+    \caption{EnvironmentLoader Base Class Refactoring Diff}
+    \label{fig:environment-loader-base-class-refactor-diff}
+\end{figure}
+
+The structure of all resources were aligned by nesting the resource under their respective resource type key (\mintinline{text}{scenarios}, \mintinline{text}{drills}, \mintinline{text}{environments} and \mintinline{text}{devices}),
+so that we could merge all \gls{YAML} resource files into a single library datastructure without key conflicts.
+In the \gls{YAML} specification~\ref{lst:mergeable-resource-yaml-specification} below, the new base structure derived from the device resource~\ref{subsubsec:create-new-device-resource-type} is illustrated.
+All existing resource \gls{YAML} files in the library were adjusted accordingly and thanks to the introduction of the \mintinline{text}{ResourceLoader} base class,
+the required adjustments in the code were minimal.
+
+\begin{listing}[H]
+\begin{minted}{yaml}
+# Resource type version was removed, as it was not used anyway
+
+# scenarios|drills|environments|devices
+<str:resource-type-key>:
+    # unique resource identifier
+    <str:resource-id>:
+        # The "metadata" key is removed and the children are now nested directly under the resource
+        name: <str:name>
+        description: <str:description>
+        author: <str:email>
+        repository: <str:link>
+        # ... resource type specific properties, which previously were at the top level
+\end{minted}
+\caption{Mergeable Resource YAML Specification}
+\label{lst:mergeable-resource-yaml-specification}
+\end{listing}
+
+\subsection{Scenario \& Drill Configuration Management}\label{subsec:drill-configuration-management}
+
+Both the scenario and drill resource types were already fully implemented in \enquote{Project 2}\ref{sec:predecessor-project-enquote-project-2}.
+Their \glsxtrshort{YAML} specifications already contained an \mintinline{text}{interface} section describing argument and return types, but this information was purely documentary and had no effect at runtime.
+
+As part of this project, the \mintinline{text}{interface.arguments} section was extended~\ref{lst:updated-interface-specification} so that each argument carries an explicit \mintinline{text}{type} annotation and an optional \mintinline{text}{default} value.
+
+\begin{listing}[H]
+\begin{minted}{yaml}
+<str:resource-type-key>:
+    <str:resource-id>:
+        # Unchanged properties...
+
+        interface:
+            arguments:
+                <str:argument-name>:
+                    type: <str:type-annotation>
+                    default: <any:default-value>
+            return_type: <str:type-annotation>
+\end{minted}
+\caption{Updated Interface Specification}
+\label{lst:updated-interface-specification}
+\end{listing}
+
+The \glsxtrshort{CLI} reads these annotations at runtime to generate typed command options for each drill and scenario automatically, without requiring any additional handwritten code.
+The \mintinline{text}{discover\_hosts} drill in listing~\ref{lst:discover-hosts-yaml} illustrates this: its single \mintinline{text}{interface} argument of type \mintinline{text}{str} is translated directly into a \mintinline{text}{--interface} option on the generated \glsxtrshort{CLI} command.
+
+\begin{listing}[H]
+\inputminted{yaml}{../../../lib/drills/discover_hosts/drill.yaml}
+\caption{discover\_hosts Drill YAML}
+\label{lst:discover-hosts-yaml}
+\end{listing}
+
+Scenarios follow the same \mintinline{text}{interface} convention and additionally declare the drills and environments they depend on.
+The \mintinline{text}{mitm} scenario in listing~\ref{lst:mitm-scenario-yaml} chains the \mintinline{text}{discover\_hosts}, \mintinline{text}{arp\_spoof}, and \mintinline{text}{transparent\_tcp\_proxy} drills together and exposes a single typed \mintinline{text}{interface} argument, which the \glsxtrshort{CLI} surfaces in the same way as for individual drills.
+
+\begin{listing}[H]
+\inputminted{yaml}{../../../lib/scenarios/mitm/scenario.yaml}
+\caption{mitm Scenario YAML}
+\label{lst:mitm-scenario-yaml}
+\end{listing}
