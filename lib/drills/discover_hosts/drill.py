@@ -4,7 +4,7 @@ import subprocess
 from ipaddress import IPv4Address, IPv6Address
 
 from nsak.core import IPAddress
-from nsak.core.config import LOADED_DEVICE
+from nsak.core import config
 from nsak.core.network import NetworkDiscoveryResultMap, NetworkDiscoveryResult, NetworkService, NetworkServiceEndpoint
 from nsak.core.network.configuration import EthernetConfiguration
 
@@ -84,7 +84,7 @@ def run(interface: str) -> NetworkDiscoveryResultMap:
     :return:
     """
     results = dict()
-    ethernet = LOADED_DEVICE.get_ethernet(interface)
+    ethernet = config.device.get_ethernet(interface)
     try:
         results[ethernet.name] = discover_hosts(ethernet)
     except subprocess.CalledProcessError:
