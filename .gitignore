@@ -40,3 +40,6 @@ __pycache__/
 
 # Binary lock files
 *.~lock.*
+
+# ContainerLab generated files
+**/clab-*/
