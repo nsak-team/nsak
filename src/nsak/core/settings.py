@@ -1,6 +1,10 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def get_base_path() -> Path:
     """
@@ -8,7 +12,7 @@ def get_base_path() -> Path:
 
     :return:
     """
-    base_path = os.environ.get("NSAK_BASE_PATH", None)
+    base_path = os.getenv("NSAK_BASE_PATH", None)
 
     if base_path is not None:
         return Path(base_path)
@@ -20,3 +24,4 @@ BASE_PATH = get_base_path()
 RUN_PATH = BASE_PATH / "run"
 LIBRARY_PATHS = {BASE_PATH / "lib"}
 DOCKER_CONTEXT = BASE_PATH
+OLLAMA_BASE_URL = os.getenv("NSAK_OLLAMA_BASE_URL", None)
