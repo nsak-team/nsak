@@ -2,7 +2,6 @@
 Scenario entrypoint for MITM with arp spoofing and transparent tcp proxy.
 """
 from nsak.core import DrillManager
-from nsak.core.config import LOADED_DEVICE
 from nsak.core.network import NetworkDiscoveryResultMap
 
 

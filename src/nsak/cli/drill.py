@@ -71,7 +71,15 @@ def create_drill_command(drill: Drill) -> click.Command:
             prompt=name,
         )
         if name == "interface":
-            kwargs["type"] = click.Choice(config.device.target_ethernets.keys())
+            try:
+                # Try to get known interfaces from device config
+                choices = list(config.device.target_ethernets.keys())
+            except (AttributeError, TypeError):
+                # Config/device not available → fallback to free-text
+                choices = []
+            # Only enforce choices if we actually have them
+            if choices:
+                kwargs["type"] = click.Choice(choices)
         cmd = click.option(f"--{name}", **kwargs)(cmd)
     return cmd
 
