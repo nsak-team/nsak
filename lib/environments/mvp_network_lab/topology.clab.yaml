@@ -1,28 +1,49 @@
 name: enterprise-network-lab
 
-# ┌──────────────────────────────────────────────────────────────────┐
-# │  MVP Enterprise Network Lab – Stufe 1                             │
-# │                                                                    │
-# │  internet-client (203.0.113.100)                                   │
-# │        │                                                           │
-# │    [wan-br]  203.0.113.0/24                                        │
-# │        │                                                           │
-# │   [firewall]  203.0.113.1 / 172.16.1.1 / 192.168.10.1             │
-# │        │                      │                                    │
-# │    [dmz-br] 172.16.1.0/24  [lan-br] 192.168.10.0/24               │
-# │       ├─ web  172.16.1.10          ├─ db  192.168.10.10           │
-# │       ├─ dns  172.16.1.20          ├─ ws1 192.168.10.100          │
-# │       └─ nsak eth2=172.16.1.50     ├─ ws2 192.168.10.101          │
-# │                                    └─ nsak eth1=192.168.10.50     │
-# │                                                                    │
-# │  NSAK sits on both LAN and DMZ — mirrors the is_target           │
-# │  interfaces of the physical BananaPI R4 device.                  │
-# │                                                                    │
-# │  Build:    docker build -t nsak:latest .   (project root)        │
-# │  Deploy:   sudo containerlab deploy -t topology.clab.yaml        │
-# │  Destroy:  sudo containerlab destroy -t topology.clab.yaml       │
-# │  Shell:    docker exec -it clab-enterprise-network-lab-nsak bash │
-# └──────────────────────────────────────────────────────────────────┘
+# ┌──────────────────────────────────────────────────────────────────────┐
+# │  MVP Enterprise Network Lab – Stufe 1                                │
+# │                                                                      │
+# │  internet-client (203.0.113.100)                                     │
+# │        │                                                             │
+# │    [wan-br]  203.0.113.0/24                                          │
+# │        │                                                             │
+# │   [firewall]  203.0.113.1 / 172.16.1.1 / 192.168.10.1               │
+# │        │                      │                                      │
+# │    [dmz-br] 172.16.1.0/24  [lan-br] 192.168.10.0/24                 │
+# │       ├─ web  172.16.1.10          ├─ db  192.168.10.10              │
+# │       ├─ dns  172.16.1.20          ├─ ws1 192.168.10.100             │
+# │       └─ nsak eth2=172.16.1.50     ├─ ws2 192.168.10.101             │
+# │                                    └─ nsak eth1=192.168.10.50        │
+# │                                                                      │
+# │  Nodes:                                                              │
+# │    internet-client  203.0.113.100  external perspective              │
+# │    firewall         .1 on WAN/DMZ/LAN  iptables, NAT                 │
+# │    dns              172.16.1.20    dnsmasq, zone lab.local           │
+# │    web              172.16.1.10    nginx HTTP                        │
+# │    db               192.168.10.10  MariaDB (appdb)                  │
+# │    ws1              192.168.10.100  internal client 1               │
+# │    ws2              192.168.10.101  internal client 2               │
+# │    nsak   192.168.10.50/172.16.1.50  dual-homed recon node          │
+# │                                                                      │
+# │  Firewall Rules:                                                     │
+# │    WAN → DMZ  : TCP 80 (web), UDP/TCP 53 (dns)                      │
+# │    WAN → LAN  : BLOCKED                                              │
+# │    DMZ → LAN  : TCP 3306 (web → db only)                            │
+# │    LAN → DMZ  : ALLOWED                                              │
+# │    LAN → WAN  : all (NAT masquerade)                                 │
+# │                                                                      │
+# │  Prerequisites:                                                      │
+# │    sudo ip link add wan-br type bridge && sudo ip link set wan-br up │
+# │    sudo ip link add dmz-br type bridge && sudo ip link set dmz-br up │
+# │    sudo ip link add lan-br type bridge && sudo ip link set lan-br up │
+# │    docker build -t nsak:latest .                                     │
+# │                                                                      │
+# │  Deploy:   sudo containerlab deploy -t topology.clab.yaml           │
+# │  Destroy:  sudo containerlab destroy -t topology.clab.yaml          │
+# │  Shell:    docker exec -it clab-enterprise-network-lab-nsak bash    │
+# │  NSAK:     nsak scenario execute mitm --interface eth1              │
+# │  Sniff:    sudo tcpdump -i lan-br -n                                │
+# └──────────────────────────────────────────────────────────────────────┘
 
 topology:
 
