@@ -2,6 +2,7 @@
 .rep
 .DS_Store
 tmp/
+.env
 
 # IDEs
 .idea
