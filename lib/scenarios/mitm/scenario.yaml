@@ -15,6 +15,9 @@ scenarios:
 
     dependencies:
       system:
+        - arp-scan
+        - dsniff
+        - iptables
       python:
         - scapy
 

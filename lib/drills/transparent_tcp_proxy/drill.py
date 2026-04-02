@@ -44,11 +44,8 @@ def configure_iptables(network_interface: EthernetConfiguration, ip: str, port: 
         "-A", "PREROUTING",
         "-i", network_interface.name,
         "-p", "tcp",
-
-        # "--dport", str(port),
-        # "-m", "conntrack",
-        # "--ctstate", "NEW",
-
+        "-m", "conntrack",
+        "--ctstate", "NEW",
         "!", "-s", ip,
         "-j", "REDIRECT",
         "--to-ports", str(INTERNAL_PORT)
@@ -83,8 +80,6 @@ def forward_tcp_connection(source: socket.socket, destination: socket.socket) ->
     :param destination:
     :return:
     """
-    print(f"[+] Forwarding connection from {source.getpeername()} to {destination.getpeername()}")
-
     while True:
         data = source.recv(4096)
         if not data:
@@ -106,6 +101,10 @@ def terminate_tcp_connection(client: socket.socket) -> None:
     address = get_original_address(client)
     print(f"[+] Terminating connection to {address}")
     server = socket.create_connection(address)
+
+    client_addr = client.getpeername()
+    server_addr = server.getpeername()
+    print(f"[+] Forwarding connection from {client_addr} to {server_addr}")
 
     threading.Thread(target=forward_tcp_connection, args=(client, server)).start()
     threading.Thread(target=forward_tcp_connection, args=(server, client)).start()

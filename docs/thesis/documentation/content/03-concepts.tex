@@ -2,6 +2,7 @@
 
 \chapter{Concepts}\label{ch:concepts}
 
+
 \section{Framework Resources}\label{sec:framework-resources-concepts}
 
 The \glsxtrshort{NSAK} framework is built around four resource types that were originally defined in \enquote{Project 2}~\ref{sec:predecessor-project-enquote-project-2}~\cite{nsakRepository2026}.
@@ -40,6 +41,7 @@ Where a drill is a single reusable action, a scenario gives that action meaning 
 Like drills, scenarios declare a typed \mintinline{text}{interface} with input arguments, allowing operators to parameterise a scenario at execution time via the \glsxtrshort{CLI} without modifying the scenario definition itself.
 This separation keeps scenarios reusable across different network configurations while still allowing runtime flexibility.
 
+
 \section{Configuration Management}\label{sec:configuration-management-concepts}
 
 The \glsxtrshort{NSAK} framework distinguishes three configuration layers, each with a different scope, lifetime, and owner.
@@ -57,29 +59,25 @@ No other code needs to be aware of the deployment context.
 
 The runtime configuration layer holds mutable state that must be shared across separate \glsxtrshort{CLI} invocations.
 Each invocation of the \glsxtrshort{CLI} is a new process, so any state that needs to carry over — such as which device is currently active — must be persisted between calls.
-
 The runtime configuration is therefore stored as a \glsxtrshort{YAML} file and loaded at the start of every invocation.
 Commands that change state write the updated configuration back to disk before they exit.
 This design keeps the state model simple: there is one authoritative file on disk, and any process can read or update it without requiring a background service.
-
 Loading is deferred until the configuration is first accessed rather than at import time.
-This avoids unnecessary disk reads when the configuration is not needed and keeps startup fast.
-If no configuration file exists yet, a default is created automatically on first access, so no explicit initialisation step is required from the user.
+This avoids unnecessary disk reads when the configuration is not needed and keeps the startup fast.
+If no configuration file exists yet, a default is created automatically on first access, so no explicit initialization step is required from the user.
 
 \subsection{Resource Configuration}\label{subsec:resource-configuration-concept}
-
 The resource configuration layer is owned by the resource library rather than the framework core.
 Each resource — device, drill, scenario, or environment — declares its own configuration inside a \glsxtrshort{YAML} file stored alongside its implementation.
-The framework reads these files to discover and load resources at runtime without requiring any code changes when new resources are added.
+The framework reads these files to discover and load resources at runtime, without requiring any code changes when adding new resources.
 
 \subsubsection{Mergeable YAML Structure}\label{subsubsec:mergeable-yaml-structure}
-
 All resource \glsxtrshort{YAML} files follow a common structure in which resources are nested under a resource-type key (e.g.\ \mintinline{text}{drills:}, \mintinline{text}{scenarios:}).
 This structure ensures that \glsxtrshort{YAML} files from different parts of the library can be merged into a single in-memory data structure without key conflicts, which is a prerequisite for supporting multiple library paths and composite library configurations in the future.
 
 \subsubsection{Typed Interface Arguments}\label{subsubsec:typed-interface-arguments}
-
 Drills and scenarios declare a typed \mintinline{text}{interface} in their \glsxtrshort{YAML} file that lists the arguments they accept, each with an explicit type annotation and an optional default value.
-The framework reads these annotations at runtime and uses them to generate the correct \glsxtrshort{CLI} options for each resource automatically.
+The framework reads these annotations at runtime and automatically generates the correct \glsxtrshort{CLI} options for each resource.
 This means that adding a new argument to a drill or scenario immediately exposes it as a typed \glsxtrshort{CLI} option without requiring any changes to the framework or the \glsxtrshort{CLI} code.
-The separation of the argument declaration from the \glsxtrshort{CLI} implementation keeps the two concerns independent and makes the interface of each resource self-describing.
+Separating the argument declaration from the \glsxtrshort{CLI} implementation keeps the two concerns independent and makes each resource's interface self-describing.
+

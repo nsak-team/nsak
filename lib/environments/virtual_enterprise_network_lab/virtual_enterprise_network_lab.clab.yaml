@@ -1,0 +1,323 @@
+name: virtual-enterprise-network-lab
+
+# ┌─────────────────────────────────────────────────────────────────────────────┐
+# │  Virtual Enterprise Network Lab  —  Acme Corp AG  /  lab.local                 │
+# │                                                                             │
+# │  Authorized Recon & Enumeration Training Lab                                │
+# │  8 Nodes, 3 Zones — physically replicable with Raspberry Pis / old HW       │
+# │                                                                             │
+# │  WAN  10.0.1.0/24                                                           │
+# │  ┌─────────────────────────────────────────────────────────────────────┐    │
+# │  │  [external]  10.0.1.10  — neutral outside host (firewall testing)   │    │
+# │  └────────────────┬────────────────────────────────────────────────────┘    │
+# │                   │ wan-br                                                  │
+# │              [firewall]  eth1:10.0.1.1 / eth2:172.16.1.1 / eth3:192.168.10.1│
+# │         ┌─────────┤──────────────────────────────────┐                      │
+# │         │ dmz-br  │                              lan-br                     │
+# │  DMZ  172.16.1.0/24                    LAN  192.168.10.0/24                 │
+# │  ┌──────────────────────┐     ┌──────────────────────────────────────────┐  │
+# │  │  dmz-server  .10     │     │  ctrl-server .5  22,139,389,445          │  │
+# │  │    80,443  HTTP/S    │     │  alice   .100  22,445,3389,5985          │  │
+# │  │    53      DNS/AXFR  │     │  bob     .101  22,445,3389,5985          │  │
+# │  │                      │     │  printer  .50  80,161/udp,631            │  │
+# │  └──────────────────────┘     │  nsak-lan.200  (recon node)              │  │
+# │                               └──────────────────────────────────────────┘  │
+# │                                                                             │
+# │  Firewall policy (iptables):                                                │
+# │    WAN → DMZ  : 80/443 + 53 → dmz-server only                               │
+# │    WAN → LAN  : BLOCKED                                                     │
+# │    DMZ → LAN  : BLOCKED                                                     │
+# │    LAN → DMZ  : ALLOWED (employees browse DMZ services)                     │
+# │    LAN → WAN  : HTTP/HTTPS only via NAT                                     │
+# │    LAN → LAN  : ALLOWED                                                     │
+# │                                                                             │
+# │  Credentials:                                                               │
+# │    SSH alice    asmith  / Password123!                                      │
+# │    SSH bob      bjones  / Password123!                                      │
+# │    SSH ctrl-server  admin   / Password123!                                  │
+# │    SNMP printer public  (community string, read-only)                       │
+# │                                                                             │
+# │  Prerequisites:                                                             │
+# │    sudo ip link add wan-br type bridge && sudo ip link set wan-br up        │
+# │    sudo ip link add dmz-br type bridge && sudo ip link set dmz-br up        │
+# │    sudo ip link add lan-br type bridge && sudo ip link set lan-br up        │
+# │    docker build -t nsak:latest .                                            │
+# │                                                                             │
+# │  Deploy:   sudo containerlab deploy -t virtual_enterprise_network_lab.clab.yaml           │
+# │  Redeploy: sudo containerlab deploy -t virtual_enterprise_network_lab.clab.yaml --reconfigure │
+# │  Destroy:  sudo containerlab destroy -t virtual_enterprise_network_lab.clab.yaml          │
+# │  Shell:    docker exec -it clab-virtual-enterprise-network-lab-nsak bash       │
+# │  Sniff:    sudo tcpdump -i lan-br -n                                        │
+# └─────────────────────────────────────────────────────────────────────────────┘
+
+topology:
+  nodes:
+
+    # ── L2 Bridges ───────────────────────────────────────────────────────────────
+    # Virtual switches that connect nodes within each zone.
+    # In a physical setup these would be unmanaged switches.
+    wan-br:
+      kind: bridge
+    dmz-br:
+      kind: bridge
+    lan-br:
+      kind: bridge
+
+    # ── External Segment (WAN 10.0.1.0/24) ───────────────────────────────────────
+    # Simulates the external internet — a neutral outside host, not an attacker.
+    # Used to verify firewall rules from the outside perspective:
+    #   "What can someone on the internet actually reach?"
+    # Attack scenarios are run by nsak (internal, compromised-host model).
+    #
+    # Reachable through firewall:
+    #   172.16.1.10:80,443   dmz-server (HTTP/HTTPS)
+    #   172.16.1.10:53       dmz-server (DNS — zone transfer enabled)
+    # NOT reachable: anything in LAN (192.168.10.0/24)
+    external:
+      kind: linux
+      image: alpine:3.19
+      cmd: tail -f /dev/null  # keeps container alive without a daemon
+      cap-add:
+        - NET_ADMIN  # needed to configure interfaces and routes
+      exec:
+        - apk add --no-cache iproute2 curl bind-tools nmap netcat-openbsd openssl
+        - ip addr add 10.0.1.10/24 dev eth1
+        - ip route replace default via 10.0.1.1
+
+    # ── Firewall (Alpine + iptables) ──────────────────────────────────────────────
+    # Tri-homed router/firewall: eth1=WAN, eth2=DMZ, eth3=LAN.
+    # All inter-zone traffic is filtered here.
+    # ip_forward enables kernel-level packet routing between interfaces.
+    firewall:
+      kind: linux
+      image: alpine:3.19
+      cmd: tail -f /dev/null
+      cap-add:
+        - NET_ADMIN
+      sysctls:
+        net.ipv4.ip_forward: 1  # required to forward packets between interfaces
+      exec:
+        - apk add --no-cache iptables iproute2
+        - ip addr add 10.0.1.1/24 dev eth1
+        - ip addr add 172.16.1.1/24 dev eth2
+        - ip addr add 192.168.10.1/24 dev eth3
+        # Default FORWARD policy: drop everything not explicitly allowed
+        - iptables -P FORWARD DROP
+        # Allow return traffic for already-established connections (stateful firewall)
+        - iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+        # WAN → DMZ: only HTTP/HTTPS and DNS to dmz-server
+        - iptables -A FORWARD -i eth1 -o eth2 -d 172.16.1.10 -p tcp -m multiport --dports 80,443 -j ACCEPT
+        - iptables -A FORWARD -i eth1 -o eth2 -d 172.16.1.10 -p udp --dport 53 -j ACCEPT
+        - iptables -A FORWARD -i eth1 -o eth2 -d 172.16.1.10 -p tcp --dport 53 -j ACCEPT
+        # WAN → LAN: completely blocked (no rules = default DROP applies)
+        # DMZ → LAN: completely blocked
+        - iptables -A FORWARD -i eth2 -o eth3 -j DROP
+        # LAN → DMZ: allowed (internal users browse DMZ services)
+        - iptables -A FORWARD -i eth3 -o eth2 -j ACCEPT
+        # LAN → WAN: HTTP/HTTPS only, with source NAT (masquerade)
+        - iptables -A FORWARD -i eth3 -o eth1 -p tcp -m multiport --dports 80,443 -j ACCEPT
+        - iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -o eth1 -j MASQUERADE
+        - iptables -t nat -A POSTROUTING -s 172.16.1.0/24  -o eth1 -j MASQUERADE
+
+    # ─────────────────────────────────────────────────────────────────────────────
+    #  DMZ Nodes  (172.16.1.0/24)
+    # ─────────────────────────────────────────────────────────────────────────────
+
+    # ── DMZ: Combined Web + DNS Server ───────────────────────────────────────────
+    # Single DMZ node running both nginx (web) and BIND9 (DNS).
+    # Merging saves a device slot while covering two distinct attack surfaces.
+    #
+    # Web (nginx):
+    #   80/tcp   HTTP  — corporate landing page, /robots.txt, /api/v1/status
+    #   443/tcp  HTTPS — self-signed cert: CN=dmz-server.lab.local
+    #   Recon: Server header leaks version; /robots.txt disallows /admin /backup
+    #
+    # DNS (BIND9):
+    #   53/udp+tcp  queries and zone transfer
+    #   AXFR intentionally open (misconfiguration) — reveals all internal IPs
+    #   Recon: dig @172.16.1.10 lab.local AXFR  → full zone dump
+    dmz-server:
+      kind: linux
+      image: alpine:3.19
+      cmd: tail -f /dev/null
+      cap-add:
+        - NET_ADMIN
+      binds:
+        # setup script configures nginx vhost, self-signed TLS, and BIND zone file
+        - scripts/dmz_setup.py:/dmz_setup.py:ro
+      exec:
+        - apk add --no-cache nginx bind bind-tools iproute2 openssl python3
+        - ip addr add 172.16.1.10/24 dev eth1
+        - ip route replace default via 172.16.1.1
+        - python3 /dmz_setup.py
+
+    # ─────────────────────────────────────────────────────────────────────────────
+    #  LAN Nodes  (192.168.10.0/24)
+    # ─────────────────────────────────────────────────────────────────────────────
+
+    # ── LAN: Internal Server (Samba + LDAP + SSH) ────────────────────────────────
+    # Combines Domain Controller and File Server into one node.
+    # Samba provides SMB shares; OpenLDAP provides a lightweight directory.
+    # No full AD provisioning — covers the same recon/attack surface at less cost.
+    #
+    #   22/tcp   SSH   (admin / Password123!)
+    #   139/tcp  NetBIOS (Samba)
+    #   389/tcp  LDAP  — anonymous base read: DC=lab,DC=local (user list exposed)
+    #   445/tcp  SMB   — shares: public (anon read), finance (auth), it (auth)
+    #
+    # Recon:
+    #   smbclient -L //192.168.10.5 -N         → lists all shares
+    #   smbmap -H 192.168.10.5                 → share names + permissions
+    #   ldapsearch -x -H ldap://192.168.10.5   → user list, group memberships
+    ctrl-server:
+      kind: linux
+      image: alpine:3.19
+      cmd: tail -f /dev/null
+      cap-add:
+        - NET_ADMIN
+        - SYS_ADMIN  # needed for Samba AD provisioning
+      sysctls:
+        net.ipv6.conf.all.disable_ipv6: 1  # Samba dislikes dual-stack in containers
+      binds:
+        - scripts/server_setup.py:/server_setup.py:ro
+      exec:
+        - apk add --no-cache samba openldap openldap-back-mdb openssh iproute2 python3
+        - ip addr add 192.168.10.5/24 dev eth1
+        - ip route replace default via 192.168.10.1
+        - python3 /server_setup.py
+
+    # ── LAN: Workstation alice (Finance dept, user: asmith) ──────────────────────
+    # Simulates a Finance department workstation.
+    # Sensitive documents on disk; drive mappings reveal share paths.
+    #
+    #   22/tcp   SSH  (asmith / Password123!)
+    #   445/tcp  SMB  (Samba standalone)
+    #
+    # Recon:
+    #   SSH banner leaks org name and policy
+    #   /home/asmith/Documents/Q3_Finance.txt — confidential data (post-exploit)
+    #   /home/asmith/Desktop/drive_mappings.txt — reveals \\ctrl-server\finance path
+    alice:
+      kind: linux
+      image: alpine:3.19
+      cmd: tail -f /dev/null
+      cap-add:
+        - NET_ADMIN
+      exec:
+        - apk add --no-cache openssh samba iproute2
+        - ip addr add 192.168.10.100/24 dev eth1
+        - ip route replace default via 192.168.10.1
+        - ssh-keygen -A
+        - sh -c 'echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config'
+        - sh -c 'printf "Acme Corp AG - Authorized Access Only\nThis system is monitored.\n" > /etc/ssh/banner.txt'
+        - sh -c 'echo "Banner /etc/ssh/banner.txt" >> /etc/ssh/sshd_config'
+        - adduser -D -s /bin/sh asmith
+        - sh -c 'echo "asmith:Password123!" | chpasswd'
+        - mkdir -p /home/asmith/Documents /home/asmith/Desktop
+        - sh -c 'echo "Q3 2024 Finance Report - CONFIDENTIAL" > /home/asmith/Documents/Q3_Finance.txt'
+        - sh -c 'printf "DOMAIN=LAB\nUSER=asmith\nSHARE=\\\\\\\\ctrl-server\\\\finance\n" > /home/asmith/Desktop/drive_mappings.txt'
+        - /usr/sbin/sshd
+
+    # ── LAN: Workstation bob (IT dept, user: bjones) ─────────────────────────────
+    # Simulates an IT department workstation.
+    # bjones has elevated rights — scripts directory reveals full internal topology.
+    #
+    #   22/tcp   SSH  (bjones / Password123!)
+    #   445/tcp  SMB  (Samba standalone)
+    #
+    # Recon:
+    #   /home/bjones/Scripts/hosts.txt  — lists all internal IPs and roles
+    #   /home/bjones/Scripts/README.txt — hints at admin access
+    bob:
+      kind: linux
+      image: alpine:3.19
+      cmd: tail -f /dev/null
+      cap-add:
+        - NET_ADMIN
+      exec:
+        - apk add --no-cache openssh samba iproute2
+        - ip addr add 192.168.10.101/24 dev eth1
+        - ip route replace default via 192.168.10.1
+        - ssh-keygen -A
+        - sh -c 'echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config'
+        - sh -c 'printf "Acme Corp AG - Authorized Access Only\nThis system is monitored.\n" > /etc/ssh/banner.txt'
+        - sh -c 'echo "Banner /etc/ssh/banner.txt" >> /etc/ssh/sshd_config'
+        - adduser -D -s /bin/sh bjones
+        - sh -c 'echo "bjones:Password123!" | chpasswd'
+        - mkdir -p /home/bjones/Documents /home/bjones/Scripts
+        - sh -c 'printf "ctrl-server=192.168.10.5\nalice=192.168.10.100\nprinter=192.168.10.50\n" > /home/bjones/Scripts/hosts.txt'
+        - sh -c 'echo "# admin tooling — see ctrl-server at 192.168.10.5" > /home/bjones/Scripts/README.txt'
+        - /usr/sbin/sshd
+
+    # ── LAN: Network Printer (HP-like, intentionally misconfigured) ──────────────
+    # Simulates a typical enterprise network printer — the "forgotten device".
+    # Rarely patched, often misconfigured, rich source of OSINT and lateral movement.
+    #
+    #   80/tcp    HTTP  — unauthenticated web admin interface
+    #   161/udp   SNMP  — community string "public" (v1/v2c, full device info)
+    #   631/tcp   IPP   — Internet Printing Protocol (job history, no auth)
+    #
+    # Recon:
+    #   snmpwalk -v2c -c public 192.168.10.50  → model, serial, toner, job list, usernames
+    #   curl http://192.168.10.50              → unauthenticated admin page, firmware version
+    #   curl http://192.168.10.50:631/jobs     → print job history reveals internal usernames
+    printer:
+      kind: linux
+      image: alpine:3.19
+      cmd: tail -f /dev/null
+      cap-add:
+        - NET_ADMIN
+      binds:
+        # printer_sim.py serves the web admin UI (port 80) and IPP (port 631)
+        - scripts/printer_sim.py:/printer_sim.py:ro
+      exec:
+        - apk add --no-cache python3 net-snmp iproute2
+        - ip addr add 192.168.10.50/24 dev eth1
+        - ip route replace default via 192.168.10.1
+        # SNMP with open public community string — intentional misconfiguration
+        - sh -c 'printf "rocommunity public\nsysName HP-LaserJet-M428fdw\nsysLocation Server Room B2\nsysContact it@lab.local\n" > /etc/snmp/snmpd.conf'
+        - sh -c 'snmpd -f -Lo &'
+        # Web admin UI (80) and IPP job listener (631)
+        - sh -c 'python3 /printer_sim.py &'
+
+    # ── NSAK — Swiss Army Knife (Reconnaissance Node) ────────────────────────────
+    # The nsak tool itself runs here. Dual-homed to observe both LAN and DMZ.
+    #   eth1 → LAN 192.168.10.200  (full internal network visibility)
+    #   eth2 → DMZ 172.16.1.200    (DMZ visibility — same segment as dmz-server)
+    #
+    # Quickstart:
+    #   docker exec -it clab-virtual-enterprise-network-lab-nsak bash
+    #   nsak drill execute discover_hosts --interface eth1
+    #   nsak drill execute discover_hosts --interface eth2
+    #
+    # Prerequisite: docker build -t nsak:latest .  (from project root)
+    nsak:
+      kind: linux
+      image: nsak:latest
+      entrypoint: /usr/bin/tail
+      cmd: "-f /dev/null"
+      cap-add:
+        - NET_ADMIN
+        - NET_RAW  # needed for raw socket access (Scapy, tcpdump, ping)
+      env:
+        NSAK_BASE_PATH: /nsak
+      exec:
+        - ip addr add 192.168.10.200/24 dev eth1
+        - ip addr add 172.16.1.200/24   dev eth2
+        - ip route replace default via 192.168.10.1
+
+  links:
+    # WAN segment (WAN 10.0.1.0/24)
+    - endpoints: [ "firewall:eth1", "wan-br:fw1" ]
+    - endpoints: [ "external:eth1" , "wan-br:ext" ]
+    # DMZ segment (172.16.1.0/24)
+    - endpoints: [ "firewall:eth2", "dmz-br:fw2" ]
+    - endpoints: [ "dmz-server:eth1", "dmz-br:dmz-serv" ]
+    - endpoints: [ "nsak:eth2", "dmz-br:nsak-dmz" ]
+    # LAN segment (192.168.10.0/24)
+    - endpoints: [ "firewall:eth3", "lan-br:fw3" ]
+    - endpoints: [ "ctrl-server:eth1", "lan-br:ctrl" ]
+    - endpoints: [ "alice:eth1", "lan-br:A" ]
+    - endpoints: [ "bob:eth1", "lan-br:B" ]
+    - endpoints: [ "printer:eth1", "lan-br:print" ]
+    - endpoints: [ "nsak:eth1", "lan-br:nsak-lan" ]

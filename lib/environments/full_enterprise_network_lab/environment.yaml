@@ -1,0 +1,9 @@
+environments:
+  enterprise_network_lab2:
+    name: Enterprise Network Lab 2
+    description: >
+      Realistic multi-zone enterprise network for authorized Recon & Enumeration training.
+      Simulates Acme Corp AG (lab.local): AD/DC, DMZ web/mail/DNS, file server,
+      internal wiki, monitoring, workstations, and a tri-homed firewall.
+    author: vonal3@bfh.ch
+    topology: lib/environments/enterprise_network_lab2/topology.clab.yaml
