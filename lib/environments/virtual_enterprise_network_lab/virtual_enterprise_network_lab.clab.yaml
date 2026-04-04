@@ -1,7 +1,7 @@
 name: virtual-enterprise-network-lab
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  Virtual Enterprise Network Lab  —  Acme Corp AG  /  lab.local                 │
+# │  Virtual Enterprise Network Lab                                             │
 # │                                                                             │
 # │  Authorized Recon & Enumeration Training Lab                                │
 # │  8 Nodes, 3 Zones — physically replicable with Raspberry Pis / old HW       │

@@ -119,7 +119,7 @@
 \usepackage{pdfpages}
 \usepackage{fontspec}
 \usepackage{minted}
-\setmonofont{MesloLGS NF}
+\setmonofont{DejaVu Sans Mono}
 \setminted{
     fontfamily=tt,
     fontsize=\small,
@@ -129,6 +129,16 @@
     baselinestretch=1.2,
     linenos=true,
     style=emacs,
+}
+\newminted[yamlcode]{yaml}{
+	fontsize=\small,
+	breaklines=true,
+	framesep=2mm,
+	baselinestretch=1.2,
+	linenos=true,
+	style=emacs,
+	frame=none,
+	bgcolor={}
 }
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
@@ -209,6 +219,7 @@
 \input{content/03-concepts}
 \input{content/04-methodology}
 \input{content/05-implementation}
+\input{content/05.1-test-environment}
 \input{content/06-evaluation}
 \input{content/07-discussion}
 \input{content/08-conclusion}
