@@ -144,12 +144,12 @@ topology:
         - NET_ADMIN
       binds:
         # setup script configures nginx vhost, self-signed TLS, and BIND zone file
-        - scripts/dmz_setup.py:/dmz_setup.py:ro
+        - scripts/dmz_setup.sh:/dmz_setup.sh:ro
       exec:
         - apk add --no-cache nginx bind bind-tools iproute2 openssl python3
         - ip addr add 172.16.1.10/24 dev eth1
         - ip route replace default via 172.16.1.1
-        - python3 /dmz_setup.py
+        - sh /dmz_setup.sh
 
     # ─────────────────────────────────────────────────────────────────────────────
     #  LAN Nodes  (192.168.10.0/24)
