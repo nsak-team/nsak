@@ -1,5 +1,5 @@
 \newpage
-\section{Reproducible Test Environment}
+\section{Reproducible Test Environment}\label{sec:reproducible-test-environment}
 
 The scope of this thesis is confined to the AI-NSAK reconnaissance scenario, including the design and implementation of corresponding drills.
 
@@ -53,16 +53,32 @@ topology:
 \captionof{listing}{Excerpt of the Containerlab topology definition}
 \label{lst:containerlab}
 
-\subsection{Network Topology}
+\subsection{Network Topology}\label{subsec:test-network-topology}
 
 The network topology shown in Figure~\ref{fig:virtual-environments} illustrates the IP addressing scheme and the interconnections between the individual components. The \textit{external} node represents the perspective of an outside attacker interacting with the network from the WAN. The \textit{nsak} container can be deployed across different network segments, enabling the simulation of various attacker positions and reconnaissance scenarios.
 
-The 
+ 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../assets/diagrams/virtual-environments/virtual-environments.drawio}
-	\caption{}
-	\label{fig:virtual-environments}
+	\caption{topology-test-environment}
+	\label{fig:test-environments}
 \end{figure}
 
-\subsection{Services}
+\subsection{Services}\label{subsec:services}
+
+To evaluate reconnaissance scenarios, common services must run on endpoints.
+\gls{BIND} is a complete implementation of the DNS protocol that can be configured with named.conf file as an authoritative name server and resolver. In the test lab (see \ ref {fig:test-environments}), we combined the functionality of the web server and DNS server for simplicity. 
+
+During the DMZ-server container build process, a shell script located at \mintinline{python}|lib/environments/virtual_enterprise_network_lab/scripts/dmz_setup.sh | generates a named.conf file, specifying both options and master zones for reverse lookup. 
+In the forward zone, domain names map to IP addresses, and in the reverse zone, files are resolved to IP addresses. \todo{add filepath and combine with other sections}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../assets/screenshots/v-lab/authorative-zone-transfer-snippet}
+	\caption{}
+	\label{fig:authorative-zone-transfer-snippet}
+\end{figure}
+
+
+The output of a full zone transfer (see Figure \ref{fig:authorative-zone-transfer-snippet}) displays the resolved IP addresses and domain names. In our test environment, the restriction of AXFR requests to only trustworthy IPs is intentionally omitted; the devices are deliberately left unhardened.
