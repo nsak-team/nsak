@@ -3,7 +3,7 @@ import logging
 from dataclasses import asdict
 from ipaddress import IPv4Interface, IPv6Interface
 from pathlib import PosixPath
-from typing import Any, Self
+from typing import Any, Self, cast
 
 import yaml
 from lazy_object_proxy import Proxy
@@ -28,6 +28,8 @@ yaml.add_representer(IPv6Interface, represent_as_string, Dumper=SafeDumper)
 yaml.add_representer(IPv4Interface, represent_as_string, Dumper=SafeDumper)
 yaml.add_representer(PosixPath, represent_as_string, Dumper=SafeDumper)
 
+CONFIG_FILE = RUN_PATH / "config.yaml"
+
 
 @dataclasses.dataclass(kw_only=True)
 class Config:
@@ -39,7 +41,22 @@ class Config:
     device: Device
 
     @classmethod
-    def init(cls) -> Self:
+    def init(cls, **kwargs: Any) -> Self:  # noqa: ANN401
+        """
+        Initialize the config from data.
+        """
+        from .device.device_loader import DeviceLoader
+
+        _config = cls(
+            debug=kwargs.get("debug") or False,
+            device=DeviceLoader.config_to_resource(
+                cast(dict[str, Any], kwargs.get("device")), CONFIG_FILE
+            ),
+        )
+        return _config
+
+    @classmethod
+    def init_default(cls) -> Self:
         """
         Initialize the default config.
         """
@@ -57,13 +74,13 @@ class Config:
         """
         Loads the config from file.
         """
-        path = RUN_PATH / "config.yaml"
+        path = CONFIG_FILE
         try:
             with open(path) as file:
                 data = yaml.safe_load(file) or {}
-            _config = cls(**data)
+            _config = cls.init(**data)
         except (FileNotFoundError, TypeError):
-            _config = cls.init()
+            _config = cls.init_default()
         if _config.debug:
             logging.basicConfig(level=logging.DEBUG)
         return _config

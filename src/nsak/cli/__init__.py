@@ -1,5 +1,6 @@
 import click
 
+from .ai_agent import ai_agent_group
 from .device import device_group
 from .drill import drill_group
 from .environment import environment_group
@@ -19,3 +20,4 @@ cli.add_command(scenario_group)
 cli.add_command(drill_group)
 cli.add_command(device_group)
 cli.add_command(environment_group)
+cli.add_command(ai_agent_group)

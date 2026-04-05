@@ -6,6 +6,8 @@ import click
 from nsak.core import Scenario, ScenarioManager, config
 from nsak.core.scenario.scenario_manager import ScenarioArgumentParsingError
 
+from .utils import resource_list_table
+
 scenario_group = click.Group("scenario")
 
 
@@ -30,8 +32,8 @@ def list_scenarios() -> None:
     List all scenarios.
     """
     scenarios = ScenarioManager.list()
-    for scenario in scenarios:
-        click.echo(scenario.path.name)
+    table = resource_list_table(scenarios)
+    click.echo(table)
 
 
 @scenario_group.command("build")
@@ -87,17 +89,16 @@ def create_scenario_command(
             prompt=name,
         )
         if name == "interface":
-            if name == "interface":
-                try:
-                    # Try to get known interfaces from device config
-                    choices = list(config.device.target_ethernets.keys())
-                except (AttributeError, TypeError):
-                    # Config/device not available → fallback to free-text
-                    choices = []
+            try:
+                # Try to get known interfaces from device config
+                choices = list(config.device.target_ethernets.keys())
+            except (AttributeError, TypeError):
+                # Config/device not available → fallback to free-text
+                choices = []
 
-                # Only enforce choices if we actually have them
-                if choices:
-                    kwargs["type"] = click.Choice(choices)
+            # Only enforce choices if we actually have them
+            if choices:
+                kwargs["type"] = click.Choice(choices)
         cmd = click.option(f"--{name}", **kwargs)(cmd)
     return cmd
 
