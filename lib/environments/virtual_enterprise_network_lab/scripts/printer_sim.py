@@ -66,6 +66,10 @@ class IppHandler(BaseHTTPRequestHandler):
 
 
 def serve(handler, port):
+    """
+    Start threads for admin handler port 80 and Internet Printing Protocol handler port 631
+    """
+
     try:
         server = ThreadingHTTPServer(("0.0.0.0", port), handler)
         print(f"[printer_sim] listening on port {port}", flush=True)
