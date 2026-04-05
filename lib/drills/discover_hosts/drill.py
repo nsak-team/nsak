@@ -44,7 +44,7 @@ def parse_arp_scan_result(arp_scan_result_output: str) -> list[ARPScanResult]:
 
 def discover_hosts(network_interface: EthernetConfiguration) -> NetworkDiscoveryResult:
     """
-    Uses nmap to discover hosts on the provided network interfaces.
+    Uses arp-scan to discover hosts on the provided network interfaces.
 
     :param network_interface:
     :return:

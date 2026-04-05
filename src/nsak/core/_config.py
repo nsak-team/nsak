@@ -85,16 +85,21 @@ class Config:
             logging.basicConfig(level=logging.DEBUG)
         return _config
 
+    def asdict(self) -> dict[str, Any]:
+        """
+        Serializes the config object to a python dictionary.
+        """
+        return asdict(self)
+
     def save(self) -> None:
         """
         Persists the given runtime config to the file.
         """
         RUN_PATH.mkdir(parents=True, exist_ok=True)
         path = RUN_PATH / "config.yaml"
-        data = asdict(self)
 
         with open(path, "w") as file:
-            yaml.safe_dump(data, file)
+            yaml.safe_dump(self.asdict(), file)
 
 
-config = Proxy(lambda: Config.load())
+config: Config = Proxy(lambda: Config.load())

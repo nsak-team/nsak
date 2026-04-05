@@ -1,0 +1,20 @@
+scenarios:
+  ai_intrusion_detection:
+    id: ai_intrusion_detection
+    name: AI Intrusion Detection
+    author: vonal3@bfh.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+    drills:
+
+    environments:
+
+    dependencies:
+      system:
+      python:
+
+    interface:
+      arguments:
+        interface:
+          type: str
+      return_type: None
