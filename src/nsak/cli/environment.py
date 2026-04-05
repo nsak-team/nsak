@@ -2,6 +2,8 @@ import click
 
 from nsak.core import EnvironmentManager
 
+from .utils import resource_list_table
+
 environment_group = click.Group("environment")
 
 
@@ -44,8 +46,8 @@ def list_environments() -> None:
     List all environments.
     """
     environments = EnvironmentManager.list()
-    for environment in environments:
-        click.echo(environment.name)
+    table = resource_list_table(environments)
+    click.echo(table)
 
 
 @environment_group.command("list_scenarios")

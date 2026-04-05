@@ -1,7 +1,7 @@
 import logging
 import subprocess
 
-from nsak.core.config import RUN_PATH
+from nsak.core.settings import RUN_PATH
 
 logger = logging.getLogger(__name__)
 captures_dir = RUN_PATH / "captures"

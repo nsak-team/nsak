@@ -5,6 +5,8 @@ import click
 from nsak.core import Drill, DrillManager, config
 from nsak.core.drill.drill_manager import DrillArgumentParsingError
 
+from .utils import resource_list_table
+
 drill_group = click.Group("drill")
 
 
@@ -27,8 +29,8 @@ def list_drills() -> None:
     List all drills.
     """
     drills = DrillManager.list()
-    for drill in drills:
-        click.echo(drill.name)
+    table = resource_list_table(drills)
+    click.echo(table)
 
 
 @drill_group.group("execute")

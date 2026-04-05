@@ -1,10 +1,10 @@
 import json
-from typing import Any
 
 import click
-from tabulate import tabulate
 
 from nsak.core import DeviceManager, config
+
+from .utils import resource_list_table
 
 device_group = click.Group("device")
 
@@ -30,18 +30,7 @@ def list_devices() -> None:
     List all devices.
     """
     devices = DeviceManager.list()
-    columns: list[str] = ["id", "name", "path"]
-    data: list[list[Any]] = []
-
-    for device in devices:
-        row = []
-        for column in columns:
-            row.append(getattr(device, column))
-        data.append(row)
-
-    table = tabulate(
-        data, headers=[column.upper() for column in columns], tablefmt="plain"
-    )
+    table = resource_list_table(devices)
     click.echo(table)
 
 
