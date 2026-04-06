@@ -23,6 +23,20 @@ def get_base_path() -> Path:
     return Path(__file__).resolve().parents[3]
 
 
+def get_run_path() -> Path:
+    """
+    Returns the run path.
+
+    :return:
+    """
+    run_path = os.getenv("NSAK_RUN_PATH", None)
+
+    if run_path is not None:
+        return Path(run_path)
+
+    return get_base_path() / "run"
+
+
 def get_library_paths() -> set[Path]:
     """
     Returns a list of library paths.
@@ -49,7 +63,7 @@ def get_library_paths() -> set[Path]:
 
 
 BASE_PATH = get_base_path()
-RUN_PATH = BASE_PATH / "run"
+RUN_PATH = get_run_path()
 LIBRARY_PATHS = get_library_paths()
 DOCKER_CONTEXT = BASE_PATH
 OLLAMA_BASE_URL = os.getenv("NSAK_OLLAMA_BASE_URL", None)

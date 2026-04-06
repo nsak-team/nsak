@@ -100,7 +100,8 @@ def create_scenario_command(
                     for c in choices  # noqa: B023
                     if c.startswith(incomplete)
                 ]
-            except (AttributeError, TypeError):
+            except (AttributeError, TypeError) as e:
+                click.echo(e)
                 pass
 
         cmd = click.option(f"--{name}", **kwargs)(cmd)
