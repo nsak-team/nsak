@@ -4,8 +4,7 @@ from email.message import EmailMessage
 
 from lazy_object_proxy import Proxy
 
-from nsak.core import EmailEncryptionType, config
-from nsak.core._config import EmailConfig
+from nsak.core.configuration import EmailConfiguration, EmailEncryptionType, config
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +30,7 @@ class EmailBackend:
 
     backend: smtplib.SMTP | LoggerEmailBackend
 
-    def __init__(self, email_config: EmailConfig | None) -> None:
+    def __init__(self, email_config: EmailConfiguration | None) -> None:
         """
         Set up the SMTP client with the correct configuration for encryption.
         """
@@ -56,7 +55,7 @@ class EmailBackend:
                 case EmailEncryptionType.SSL:
                     self.backend = smtplib.SMTP_SSL(self.config.host, self.config.port)
 
-            self.backend.login(self.config.user, self.config.password)
+            self.backend.login(self.config.username, self.config.password)
 
     def _get_template(self) -> EmailMessage:
         """

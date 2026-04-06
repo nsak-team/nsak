@@ -13,9 +13,9 @@ from langchain_ollama.chat_models import ChatOllama
 from langchain_openai.chat_models import ChatOpenAI
 from lazy_object_proxy import Proxy
 
-from nsak.core import config
+from nsak.core.configuration import config
+from nsak.core.configuration.configuration_serializer import ConfigurationSerializer
 from nsak.core.email.email_backend import email_backend
-from nsak.core.settings import AI_MODEL, OLLAMA_BASE_URL
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ def host_configuration() -> dict[str, Any]:
     - Use `is_management=True` interfaces for device access or data extraction
     - `configuration` may be None if the device has not been configured yet
     """
-    return config.asdict()
+    return ConfigurationSerializer.serialize(config)
 
 
 @tool  # type: ignore[misc]
@@ -281,15 +281,12 @@ class AiAgent:
 
 def create_ai_agent() -> AiAgent:
     """
-    Creates an AI-agent from the system settings.
+    Creates an AI-agent from the runtime configuration.
     """
-    if OLLAMA_BASE_URL is None:
-        message = "NSAK_OLLAMA_BASE_URL no set"
+    if config.ai is None:
+        message = "ai is not configured. Run: nsak config set ai.model <provider:model:tag> and nsak config set ai.base_url <url>"
         raise RuntimeError(message)
-    if AI_MODEL is None:
-        message = "NSAK_AI_MODEL no set"
-        raise RuntimeError(message)
-    return AiAgent(AI_MODEL, OLLAMA_BASE_URL)
+    return AiAgent(config.ai.model, config.ai.base_url)
 
 
 ai_agent: AiAgent = Proxy(create_ai_agent)

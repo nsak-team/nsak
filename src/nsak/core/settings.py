@@ -65,6 +65,5 @@ def get_library_paths() -> set[Path]:
 BASE_PATH = get_base_path()
 RUN_PATH = get_run_path()
 LIBRARY_PATHS = get_library_paths()
+CONFIG_FILE = RUN_PATH / "config.yaml"
 DOCKER_CONTEXT = BASE_PATH
-OLLAMA_BASE_URL = os.getenv("NSAK_OLLAMA_BASE_URL", None)
-AI_MODEL = os.getenv("NSAK_AI_MODEL", None)
