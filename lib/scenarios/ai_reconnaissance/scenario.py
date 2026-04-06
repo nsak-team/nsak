@@ -18,14 +18,14 @@ def run(interface: str) -> None:
 
     # Initial prompt
     prompt = f"""
-    Goal:
-    Discover all subnets, hosts and services on the following interface: {interface}
+Goal:
+Discover all subnets, hosts and services on the following interface: {interface}
 
-    Steps:
-    1. Use the the `host_configuration` tool to get the IPs and subnets on the interface.
-    2. Use the `cli` tool to invoke commands like nmap to scan the subnets for available hosts.
-    3. Use the `cli` tool to invoke commands like nmap to scan the host for exposed services.
-    3. List all subnets, hosts and services.
+Steps:
+1. Use the the `host_configuration` tool to get the IPs and subnets on the interface.
+2. Use the `cli` tool to invoke commands like nmap to scan the subnets for available hosts.
+3. Use the `cli` tool to invoke commands like nmap to scan the host for exposed services.
+4. List all subnets, hosts and services.
     """
 
     # Run agent

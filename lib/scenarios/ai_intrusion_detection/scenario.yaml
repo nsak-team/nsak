@@ -8,9 +8,10 @@ scenarios:
     drills:
 
     environments:
+      - simple_tcp_client_server
 
     dependencies:
-      system:
+      system: [ tshark ]
       python:
 
     interface:
