@@ -1,6 +1,7 @@
 import dataclasses
 import logging
 from dataclasses import asdict
+from datetime import datetime
 from ipaddress import IPv4Interface, IPv6Interface
 from pathlib import Path, PosixPath
 from typing import Any, Self, cast
@@ -31,17 +32,33 @@ yaml.add_representer(PosixPath, represent_as_string, Dumper=SafeDumper)
 CONFIG_FILE = RUN_PATH / "config.yaml"
 
 
-def _get_container_id() -> str | None:
+@dataclasses.dataclass(frozen=True)
+class ContainerInfo:
     """
-    Return the container ID if running inside a container, else None.
+    Runtime container identity, parsed from the container runtime environment.
+    """
+
+    id: str | None = None
+    name: str | None = None
+
+
+def _get_container_info() -> ContainerInfo:
+    """
+    Return container ID and name if running inside a container.
 
     Checks for Podman (/run/.containerenv) first, then Docker (/.dockerenv + cgroup).
+    The name field is only available for Podman.
     """
     containerenv = Path("/run/.containerenv")
     if containerenv.exists():
+        container_id = None
+        container_name = None
         for line in containerenv.read_text(encoding="utf-8").splitlines():
             if line.startswith("id="):
-                return line.split("=", 1)[1].strip('"')
+                container_id = line.split("=", 1)[1].strip('"')
+            elif line.startswith("name="):
+                container_name = line.split("=", 1)[1].strip('"')
+        return ContainerInfo(id=container_id, name=container_name)
 
     if Path("/.dockerenv").exists():
         try:
@@ -50,11 +67,29 @@ def _get_container_id() -> str | None:
             ):
                 parts = line.rsplit("/", 1)
                 if len(parts) > 1 and len(parts[-1]) >= 12:
-                    return parts[-1][:12]
+                    return ContainerInfo(id=parts[-1][:12])
         except OSError:
             pass
 
-    return None
+    return ContainerInfo()
+
+
+def _get_log_file(container: ContainerInfo) -> Path:
+    """
+    Return the log file path.
+
+    Uses the container ID as part of the filename when running inside a container.
+    """
+    now = datetime.now().astimezone()
+    now_formated = now.strftime("%Y_%m_%d_%H_%M_%S")
+
+    logs_path = RUN_PATH / "logs"
+    logs_path.mkdir(parents=True, exist_ok=True)
+    if container.name:
+        log_filename = f"{now_formated}_{container.name}.log"
+    else:
+        log_filename = f"{now_formated}.log"
+    return logs_path / log_filename
 
 
 @dataclasses.dataclass(kw_only=True)
@@ -65,7 +100,9 @@ class Config:
 
     debug: bool
     device: Device
-    container_id: str | None = dataclasses.field(default=None, compare=False)
+    container: ContainerInfo = dataclasses.field(
+        default_factory=ContainerInfo, compare=False
+    )
 
     @classmethod
     def init(cls, **kwargs: Any) -> Self:  # noqa: ANN401
@@ -79,7 +116,7 @@ class Config:
             device=DeviceLoader.config_to_resource(
                 cast(dict[str, Any], kwargs.get("device")), CONFIG_FILE
             ),
-            container_id=_get_container_id(),
+            container=_get_container_info(),
         )
         return _config
 
@@ -93,7 +130,7 @@ class Config:
         _config = cls(
             debug=True,
             device=DeviceManager.get("unknown"),
-            container_id=_get_container_id(),
+            container=_get_container_info(),
         )
         _config.save()
         return _config
@@ -111,16 +148,12 @@ class Config:
         except (FileNotFoundError, TypeError):
             _config = cls.init_default()
 
-        logs_path = RUN_PATH / "logs"
-        logs_path.mkdir(parents=True, exist_ok=True)
-        log_filename = (
-            f"nsak_{_config.container_id}.log" if _config.container_id else "nsak.log"
-        )
+        log_file = _get_log_file(_config.container)
         logging.basicConfig(
             level=logging.DEBUG if _config.debug else logging.INFO,
             handlers=[
                 logging.StreamHandler(),
-                logging.FileHandler(logs_path / log_filename),
+                logging.FileHandler(log_file),
             ],
         )
         return _config
