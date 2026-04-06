@@ -14,6 +14,7 @@ from langchain_openai.chat_models import ChatOpenAI
 from lazy_object_proxy import Proxy
 
 from nsak.core import config
+from nsak.core.email.email_backend import email_backend
 from nsak.core.settings import AI_MODEL, OLLAMA_BASE_URL
 
 logger = logging.getLogger(__name__)
@@ -95,6 +96,22 @@ def human_interaction_hook(question: str) -> str:
 
 
 @tool  # type: ignore[misc]
+def send_email(subject: str, message: str) -> None:
+    """
+    Send an email notification to the configured receiver.
+
+    Use this tool to alert the human operator about findings, incidents, or
+    completed tasks that require their attention outside the current session.
+
+    Args:
+        subject: A short, descriptive subject line for the email, which is added to the subject prefix `NSAK - AI Agent:`.
+        message: The full body of the email.
+    """
+    subject = f"NSAK - AI Agent: {subject}"
+    email_backend.send(subject, message)
+
+
+@tool  # type: ignore[misc]
 def cli(command: str, timeout: int = 120) -> tuple[int, str, str]:
     """
     Run an arbitrary CLI command and return its output.
@@ -155,6 +172,7 @@ class AiAgent:
     tools = (
         cli,
         host_configuration,
+        send_email,
     )
     system_prompt = "You are in a cybersecurity simulation and act as the purple team."
 
@@ -224,17 +242,18 @@ class AiAgent:
             yield f"[{role}]\n{content}\n"
 
     def run_interactive(
-        self, prompt: str, stop_command: str = "exit"
+        self,
+        prompt: str,
     ) -> Generator[str]:
         """
         Run the agent in a continuous interactive loop, maintaining conversation history.
 
         After each agent response the human operator is prompted for the next instruction.
-        The loop ends when the operator enters an empty line or the stop_command.
+        The loop ends when the operator enters an empty line or the 'exit' string.
 
         :param prompt: The initial prompt to start the session.
-        :param stop_command: Keyword that terminates the loop (default: 'exit').
         """
+        stop_command = "exit"
         messages: list[Any] = [{"role": "user", "content": prompt}]
 
         while True:

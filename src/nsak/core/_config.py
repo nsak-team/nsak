@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import dataclasses
 import logging
 from dataclasses import asdict
 from datetime import datetime
+from enum import Enum
 from ipaddress import IPv4Interface, IPv6Interface
 from pathlib import Path, PosixPath
 from typing import Any, Self, cast
@@ -12,6 +15,8 @@ from yaml import SafeDumper, ScalarNode
 
 from .device import Device
 from .settings import RUN_PATH
+
+logger = logging.getLogger(__name__)
 
 
 def represent_as_string(dumper: SafeDumper, data: Any) -> ScalarNode:  # noqa: ANN401
@@ -92,6 +97,53 @@ def _get_log_file(container: ContainerInfo) -> Path:
     return logs_path / log_filename
 
 
+class EmailEncryptionType(Enum):
+    """
+    Possible encryption options for the email backend.
+    """
+
+    NONE = 0
+    TLS = 1
+    SSL = 2
+
+
+@dataclasses.dataclass(kw_only=True)
+class EmailConfig:
+    """
+    SMTP Configuration.
+    """
+
+    host: str
+    port: int
+    encryption: EmailEncryptionType
+    user: str
+    password: str
+    sender: str
+    receiver: str
+
+    @staticmethod
+    def create(**kwargs: Any) -> EmailConfig | None:  # noqa: ANN401
+        """
+        Tries to create the EmailConfig from kwargs.
+
+        :param kwargs:
+        :return:
+        """
+        try:
+            return EmailConfig(
+                host=kwargs.get("host"),  # type: ignore [arg-type]
+                port=kwargs.get("port"),  # type: ignore [arg-type]
+                encryption=EmailEncryptionType(kwargs.get("encryption")),
+                user=kwargs.get("user"),  # type: ignore [arg-type]
+                password=kwargs.get("password"),  # type: ignore [arg-type]
+                sender=kwargs.get("sender"),  # type: ignore [arg-type]
+                receiver=kwargs.get("receiver"),  # type: ignore [arg-type]
+            )
+        except ValueError as e:
+            logger.info("Could not parse Email settings", exc_info=e)
+            return None
+
+
 @dataclasses.dataclass(kw_only=True)
 class Config:
     """
@@ -103,6 +155,7 @@ class Config:
     container: ContainerInfo = dataclasses.field(
         default_factory=ContainerInfo, compare=False
     )
+    email: EmailConfig | None
 
     @classmethod
     def init(cls, **kwargs: Any) -> Self:  # noqa: ANN401
@@ -117,6 +170,7 @@ class Config:
                 cast(dict[str, Any], kwargs.get("device")), CONFIG_FILE
             ),
             container=_get_container_info(),
+            email=EmailConfig.create(**kwargs),
         )
         return _config
 
@@ -131,6 +185,7 @@ class Config:
             debug=True,
             device=DeviceManager.get("unknown"),
             container=_get_container_info(),
+            email=None,
         )
         _config.save()
         return _config
