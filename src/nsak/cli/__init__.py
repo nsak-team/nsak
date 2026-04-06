@@ -4,7 +4,7 @@ from .ai_agent import ai_agent_group
 from .device import device_group
 from .drill import drill_group
 from .environment import environment_group
-from .scenario import scenario_group
+from .scenario import kill_all_scenarios, scenario_group
 
 
 @click.group()
@@ -21,3 +21,4 @@ cli.add_command(drill_group)
 cli.add_command(device_group)
 cli.add_command(environment_group)
 cli.add_command(ai_agent_group)
+cli.add_command(kill_all_scenarios, name="killswitch")
