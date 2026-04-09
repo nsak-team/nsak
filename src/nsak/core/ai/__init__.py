@@ -1,6 +1,6 @@
-from .ai_agent import AiAgent, ai_agent
+from .ai_agent import AiAgent, create_ai_agent
 
 __all__ = (
     "AiAgent",
-    "ai_agent",
+    "create_ai_agent",
 )

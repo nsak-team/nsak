@@ -17,4 +17,7 @@ scenarios:
       arguments:
         prompt:
           type: str
+        interactive:
+          type: bool
+          default: True
       return_type: None

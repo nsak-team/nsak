@@ -18,4 +18,7 @@ scenarios:
       arguments:
         interface:
           type: str
+        interactive:
+          type: bool
+          default: False
       return_type: None

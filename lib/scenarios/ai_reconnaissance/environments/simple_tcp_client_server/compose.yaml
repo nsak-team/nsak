@@ -5,7 +5,8 @@ services:
     image: nsak/scenario/ai_reconnaissance:latest
     command: [
       "ai_reconnaissance",
-      "--interface", "eth1"
+      "--interface", "eth1",
+      "--interactive", "0",
     ]
     privileged: true
     cap_add:

@@ -1,4 +1,4 @@
-from nsak.core.ai.ai_agent import AiAgent, ai_agent
+from nsak.core.ai.ai_agent import AiAgent, create_ai_agent
 from nsak.core.configuration import EmailConfiguration, EmailEncryptionType, config
 from nsak.core.device import Device, DeviceManager
 from nsak.core.drill import Drill, DrillLoader, DrillManager
@@ -28,6 +28,6 @@ __all__ = [
     "Scenario",
     "ScenarioLoader",
     "ScenarioManager",
-    "ai_agent",
     "config",
+    "create_ai_agent",
 ]

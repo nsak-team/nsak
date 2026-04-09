@@ -11,7 +11,6 @@ from langchain_core.messages import AIMessage
 from langchain_core.tools import tool
 from langchain_ollama.chat_models import ChatOllama
 from langchain_openai.chat_models import ChatOpenAI
-from lazy_object_proxy import Proxy
 
 from nsak.core.configuration import config
 from nsak.core.configuration.configuration_serializer import ConfigurationSerializer
@@ -176,14 +175,12 @@ class AiAgent:
     )
     system_prompt = "You are in a cybersecurity simulation and act as the purple team."
 
-    def __init__(
-        self, model: str, base_url: str, human_interaction: bool = True
-    ) -> None:
+    def __init__(self, model: str, base_url: str, interactive: bool = False) -> None:
         """
         Initializes the AiAgent and the connection to its backend model.
         """
         tools = list(self.tools)
-        if human_interaction:
+        if interactive:
             tools.append(human_interaction_hook)
 
         self.model = AiAgent.create_model(model, base_url)
@@ -279,14 +276,11 @@ class AiAgent:
             messages.append({"role": "user", "content": next_instruction})
 
 
-def create_ai_agent() -> AiAgent:
+def create_ai_agent(interactive: bool = False) -> AiAgent:
     """
     Creates an AI-agent from the runtime configuration.
     """
     if config.ai is None:
         message = "ai is not configured. Run: nsak config set ai.model <provider:model:tag> and nsak config set ai.base_url <url>"
         raise RuntimeError(message)
-    return AiAgent(config.ai.model, config.ai.base_url)
-
-
-ai_agent: AiAgent = Proxy(create_ai_agent)
+    return AiAgent(config.ai.model, config.ai.base_url, interactive)
