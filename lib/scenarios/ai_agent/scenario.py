@@ -21,6 +21,3 @@ def run(prompt: str) -> None:
 
     for line in ai_agent.run_interactive(prompt):
         logger.warning(line)
-
-    # Altering
-    # alert_system.send_mail()

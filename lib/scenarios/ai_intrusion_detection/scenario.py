@@ -1,7 +1,6 @@
 """
 Scenario entrypoint for AI based intrusion detection.
 """
-import ipaddress
 import logging
 import subprocess
 
@@ -12,7 +11,24 @@ logger = logging.getLogger()
 
 PACKET_COUNT = 200
 CAPTURE_DURATION = 60  # seconds
+PROMPT_TEMPLATE = """
+You are analyzing network traffic for intrusion detection on interface %(interface)s.
 
+Network Discovery Result Map:
+%(host_discovery_result_map)s
+
+Captured packets (CSV):
+%(csv_summary)s
+
+Identify at most 5 suspicious events if any. For each, output:
+- src/dst IP and MAC
+- protocol
+- reason it is suspicious
+
+Identify malicious hosts (MAC and/or IP) if any.
+
+Be concise. Do not repeat packet data.
+"""
 
 def run(interface: str) -> None:
     """
@@ -56,24 +72,11 @@ def run(interface: str) -> None:
         logger.info("No relevant traffic captured.")
         return
 
-    prompt = f"""
-You are analyzing network traffic for intrusion detection on interface {interface}.
-
-Network Discovery Result Map:
-{host_discovery_result_map.as_table()}
-
-Captured packets (CSV):
-{csv_summary}
-
-Identify at most 5 suspicious events if any. For each, output:
-- src/dst IP and MAC
-- protocol
-- reason it is suspicious
-
-Identify malicious hosts (MAC and/or IP) if any.
-
-Be concise. Do not repeat packet data.
-"""
+    prompt = PROMPT_TEMPLATE % {
+        "interface": interface,
+        "host_discovery_result_map": host_discovery_result_map.as_table(),
+        "csv_summary": csv_summary,
+    }
 
     for line in ai_agent.run(prompt):
         logger.warning(line)
