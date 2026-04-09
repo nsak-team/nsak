@@ -1,1 +1,0 @@
-# TODO: configure Samba shares (public, finance, it) and OpenLDAP with lab users

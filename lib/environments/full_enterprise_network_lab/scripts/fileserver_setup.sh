@@ -123,9 +123,9 @@ EOF
 # ── Samba configuration ────────────────────────────────────────────────────────
 cat > /etc/samba/smb.conf << 'EOF'
 [global]
-    workgroup = LAB
-    realm = LAB.LOCAL
-    server string = Acme Corp AG File Server
+    workgroup = VLAB
+    realm = VLAB.LOCAL
+    server string = NSAK Enterprise File Server
     netbios name = FILESERVER
     security = user
     map to guest = Bad User
@@ -185,3 +185,5 @@ nmbd -D 2>/dev/null || true
 smbd -D
 /usr/sbin/sshd
 echo "[fileserver] Samba and SSH started."
+
+#

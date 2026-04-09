@@ -179,12 +179,12 @@ topology:
       sysctls:
         net.ipv6.conf.all.disable_ipv6: 1  # Samba dislikes dual-stack in containers
       binds:
-        - scripts/server_setup.py:/server_setup.py:ro
+        - scripts/server_setup.sh:/server_setup.sh:ro
       exec:
-        - apk add --no-cache samba openldap openldap-back-mdb openssh iproute2 python3
+        - apk add --no-cache samba openldap openldap-back-mdb openldap-clients openssh iproute2
         - ip addr add 192.168.10.5/24 dev eth1
         - ip route replace default via 192.168.10.1
-        - python3 /server_setup.py
+        - sh /server_setup.sh
 
     # ── LAN: Workstation alice (Finance dept, user: asmith) ──────────────────────
     # Simulates a Finance department workstation.
@@ -302,6 +302,7 @@ topology:
       env:
         NSAK_BASE_PATH: /nsak
       exec:
+        - apt-get install -y smbclient ldap-utils
         - ip addr add 192.168.10.200/24 dev eth1
         - ip addr add 172.16.1.200/24   dev eth2
         - ip route replace default via 192.168.10.1
