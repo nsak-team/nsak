@@ -1,9 +1,12 @@
+import logging
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(os.getenv("NSAK_ENV_FILE", None))
+
+logger = logging.getLogger()
 
 
 def get_base_path() -> Path:
@@ -26,12 +29,21 @@ def get_library_paths() -> set[Path]:
 
     :return:
     """
-    library_paths = {BASE_PATH / "lib"}
+    library_paths = set()
+
+    default_path = BASE_PATH / "lib"
+    if default_path.exists():
+        library_paths.add(default_path)
 
     library_path = os.getenv("NSAK_LIBRARY_PATH", None)
-
     if library_path is not None:
-        library_paths.add(Path(library_path))
+        _library_path = Path(library_path)
+        if not _library_path.exists():
+            message = (
+                f"Library path '{library_path}' in NSAK_LIBRARY_PATH does not exist!"
+            )
+            logger.warning(message)
+        library_paths.add(_library_path)
 
     return library_paths
 

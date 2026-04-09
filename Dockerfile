@@ -1,7 +1,7 @@
 FROM docker.io/kalilinux/kali-rolling as base_image
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates python3 python3-dev curl iproute2 arp-scan dsniff iptables
+    apt-get install -y --no-install-recommends ca-certificates python3 python3-dev curl iproute2 arp-scan dsniff iptables nmap
 
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -19,6 +19,7 @@ ARG SCENARIO
 ENV SYSTEM_DEPENDENCIES=${SYSTEM_DEPENDENCIES}
 ENV PYTHON_DEPENDENCIES=${PYTHON_DEPENDENCIES}
 ENV SCENARIO=${SCENARIO}
+ENV NSAK_ENV_FILE=".env"
 ENV NSAK_LIBRARY_PATH="lib/"
 
 RUN apt-get install -y $SYSTEM_DEPENDENCIES

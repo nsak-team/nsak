@@ -2,6 +2,7 @@ from collections.abc import Callable
 from typing import Any
 
 import click
+from click import shell_completion  # type: ignore [attr-defined]
 
 from nsak.core import Scenario, ScenarioManager, config
 from nsak.core.scenario.scenario_manager import ScenarioArgumentParsingError
@@ -90,15 +91,15 @@ def create_scenario_command(
         )
         if name == "interface":
             try:
-                # Try to get known interfaces from device config
                 choices = list(config.device.target_ethernets.keys())
+                kwargs["shell_complete"] = lambda ctx, param, incomplete: [
+                    shell_completion.CompletionItem(c)
+                    for c in choices  # noqa: B023
+                    if c.startswith(incomplete)
+                ]
             except (AttributeError, TypeError):
-                # Config/device not available → fallback to free-text
-                choices = []
+                pass
 
-            # Only enforce choices if we actually have them
-            if choices:
-                kwargs["type"] = click.Choice(choices)
         cmd = click.option(f"--{name}", **kwargs)(cmd)
     return cmd
 
