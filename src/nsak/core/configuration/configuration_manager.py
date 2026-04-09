@@ -4,6 +4,7 @@ import dataclasses
 import logging
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
 from ipaddress import IPv4Interface, IPv6Interface
 from pathlib import Path, PosixPath
 from typing import Any
@@ -21,6 +22,7 @@ from .configuration_serializer import (
     unwrap_optional,
 )
 from .container_info import ContainerInfo
+from .email_configuration import EmailEncryptionType
 
 logger = logging.getLogger(__name__)
 
@@ -29,9 +31,13 @@ def represent_as_string(dumper: SafeDumper, data: Any) -> ScalarNode:  # noqa: A
     """
     Used for serializing objects to strings (e.g., IPInterface or PosixPath).
     """
+    if isinstance(data, Enum):
+        return dumper.represent_str(str(data.value))
+
     return dumper.represent_str(str(data))
 
 
+yaml.add_representer(EmailEncryptionType, represent_as_string, Dumper=SafeDumper)
 yaml.add_representer(IPv6Interface, represent_as_string, Dumper=SafeDumper)
 yaml.add_representer(IPv4Interface, represent_as_string, Dumper=SafeDumper)
 yaml.add_representer(PosixPath, represent_as_string, Dumper=SafeDumper)
@@ -59,11 +65,8 @@ def _load_raw() -> dict[str, Any]:
     """
     Load the raw YAML config dict from CONFIG_FILE, returning {} if missing.
     """
-    try:
-        with open(CONFIG_FILE) as f:
-            return yaml.safe_load(f) or {}
-    except FileNotFoundError:
-        return {}
+    with open(CONFIG_FILE) as f:
+        return yaml.safe_load(f) or {}
 
 
 def _save_raw(data: dict[str, Any]) -> None:
@@ -160,11 +163,12 @@ class ConfigurationManager:
         Falls back to a default Configuration() when the file is absent or cannot be deserialized.
         Also initialises logging.
         """
-        data = _load_raw()
         try:
+            data = _load_raw()
             config = ConfigurationSerializer.deserialize(data)
         except (FileNotFoundError, TypeError):
             config = Configuration()
+            cls.save(config)
 
         log_file = _get_log_file(config.container)
         logging.basicConfig(

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 from enum import Enum
 from typing import Any
 
@@ -22,6 +23,10 @@ def _display(key: str, value: Any, indent: int = 0) -> None:  # noqa: ANN401
     Recursively pretty-print a config key/value pair.
     """
     prefix = "  " * indent
+
+    if dataclasses.is_dataclass(value) and not isinstance(value, type):
+        value = dataclasses.asdict(value)
+
     if isinstance(value, dict):
         click.echo(f"{prefix}{key}:")
         for k, v in value.items():
