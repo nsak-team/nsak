@@ -1,6 +1,0 @@
-environments:
-  mvp_network_lab:
-    id: mvp_network_lab
-    name: MVP Network LAB
-    description: "Minimal network lab environment."
-    author: vonal3@bfh.ch
