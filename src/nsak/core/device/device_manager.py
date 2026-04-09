@@ -9,11 +9,19 @@ class DeviceManager(ResourceManager[Device]):
     """
 
     ResourceLoaderClass = DeviceLoader
+    default_device = "unknown"
+
+    @classmethod
+    def get_default(cls) -> Device:
+        """
+        Get the default resource.
+        """
+        return cls.get(cls.default_device)
 
     @classmethod
     def load(cls, name: str) -> Device:
         """
-        Get a resource by name.
+        Load a resource by name and store it in the config.
         """
         from nsak.core import config
 
@@ -27,4 +35,4 @@ class DeviceManager(ResourceManager[Device]):
         """
         Load the unknown device.
         """
-        cls.load("unknown")
+        cls.load(cls.default_device)

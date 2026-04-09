@@ -18,9 +18,6 @@ def test_list_drills() -> None:
     """
     Tests the cli command `nsak drill list`, which should list all drills.
     """
-    # Arrange
-    expected_output = f"{'\n'.join([str(drill.name) for drill in fake_drills])}\n"
-
     with patch("nsak.core.DrillManager.list") as mock_list:
         mock_list.return_value = fake_drills
         runner = CliRunner()
@@ -29,4 +26,7 @@ def test_list_drills() -> None:
         result = runner.invoke(list_drills)
 
     # Assert
-    assert result.output == expected_output
+    for drill in fake_drills:
+        assert str(drill.id) in result.output
+        assert str(drill.name) in result.output
+        assert str(drill.path.relative_to()) in result.output

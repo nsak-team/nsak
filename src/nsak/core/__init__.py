@@ -1,5 +1,5 @@
-from nsak.core._config import Config, EmailEncryptionType, config
 from nsak.core.ai.ai_agent import AiAgent, ai_agent
+from nsak.core.configuration import EmailConfiguration, EmailEncryptionType, config
 from nsak.core.device import Device, DeviceManager
 from nsak.core.drill import Drill, DrillLoader, DrillManager
 from nsak.core.email import EmailBackend
@@ -12,13 +12,13 @@ from nsak.core.scenario import Scenario, ScenarioLoader, ScenarioManager
 
 __all__ = [
     "AiAgent",
-    "Config",
     "Device",
     "DeviceManager",
     "Drill",
     "DrillLoader",
     "DrillManager",
     "EmailBackend",
+    "EmailConfiguration",
     "EmailEncryptionType",
     "Environment",
     "EnvironmentLoader",

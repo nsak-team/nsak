@@ -42,7 +42,7 @@ def test_list_devices() -> None:
     for device in fake_devices:
         assert str(device.id) in result.output
         assert str(device.name) in result.output
-        assert str(device.path) in result.output
+        assert str(device.path.relative_to()) in result.output
 
 
 def test_device_loading() -> None:
@@ -56,7 +56,7 @@ def test_device_loading() -> None:
     result = runner.invoke(loaded_device)
 
     # Assert
-    assert "" == result.output
+    assert "Unknown (id = unknown)" in result.output
 
     # Act
     result = runner.invoke(unload_device)
