@@ -13,6 +13,7 @@ from nsak.core import settings
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
+from nsak.core.settings import RUN_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -168,8 +169,8 @@ class ScenarioManager(ResourceManager[Scenario]):
             "/usr/sbin/sudo",
             "/usr/sbin/podman",
             "run",
-            "-d",
-            "--rm",
+            # "-d",
+            # "--rm",
             "--privileged",
             "--network=host",
             f"--name={scenario.path.name}",
@@ -179,6 +180,9 @@ class ScenarioManager(ResourceManager[Scenario]):
             # ensure host dir exists
             os.makedirs(m.host_path, exist_ok=True)
             args += ["-v", f"{m.host_path}:{m.container_path}:{m.mode}"]
+        # Fallback mount
+        if not runtime.mounts:
+            args += ["-v", f"{RUN_PATH.absolute()}:/nsak/run/:rw"]
 
         # env pass-through (scenario-specific)
         for key in runtime.env:
@@ -188,7 +192,8 @@ class ScenarioManager(ResourceManager[Scenario]):
 
         args.append(f"nsak/scenario/{scenario.path.name}")
         args.append(scenario.path.name)
-        args.extend(kwargs)
+        for key, value in kwargs.items():
+            args.extend([f"--{key}", value])
         completed_process = subprocess.run(args)  # noqa: S603
 
         return completed_process.returncode

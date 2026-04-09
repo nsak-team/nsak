@@ -25,7 +25,7 @@ Steps:
 1. Use the the `host_configuration` tool to get the IPs and subnets on the interface.
 2. Use the `cli` tool to invoke commands like nmap to scan the subnets for available hosts.
 3. Use the `cli` tool to invoke commands like nmap to scan the host for exposed services.
-4. List all subnets, hosts and services.
+4. List all subnets, hosts and services and state if they are vulnerable.
     """
 
     # Run agent
