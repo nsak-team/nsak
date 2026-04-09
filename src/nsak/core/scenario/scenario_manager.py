@@ -13,6 +13,7 @@ from nsak.core import settings
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
+from nsak.core.settings import RUN_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +21,14 @@ logger = logging.getLogger(__name__)
 class ScenarioArgumentParsingError(ValueError):
     """
     Exception thrown when argument parsing fails.
+    """
+
+    pass
+
+
+class ScenarioLifecycleError(Exception):
+    """
+    Exception thrown when a scenario cannot be started, stopped or killed.
     """
 
     pass
@@ -160,8 +169,8 @@ class ScenarioManager(ResourceManager[Scenario]):
             "/usr/sbin/sudo",
             "/usr/sbin/podman",
             "run",
-            "-d",
-            "--rm",
+            "--interactive",
+            "--tty",
             "--privileged",
             "--network=host",
             f"--name={scenario.path.name}",
@@ -171,6 +180,9 @@ class ScenarioManager(ResourceManager[Scenario]):
             # ensure host dir exists
             os.makedirs(m.host_path, exist_ok=True)
             args += ["-v", f"{m.host_path}:{m.container_path}:{m.mode}"]
+        # Fallback mount
+        if not runtime.mounts:
+            args += ["-v", f"{RUN_PATH.absolute()}:/nsak/run/:rw"]
 
         # env pass-through (scenario-specific)
         for key in runtime.env:
@@ -180,10 +192,77 @@ class ScenarioManager(ResourceManager[Scenario]):
 
         args.append(f"nsak/scenario/{scenario.path.name}")
         args.append(scenario.path.name)
-        args.extend(kwargs)
+        for key, value in kwargs.items():
+            args.extend([f"--{key}", value])
         completed_process = subprocess.run(args)  # noqa: S603
 
         return completed_process.returncode
+
+    @classmethod
+    def _running_container_ids(cls, scenario: Scenario) -> list[str]:
+        """
+        Return IDs of all running containers based on the scenario image.
+        """
+        image = f"nsak/scenario/{scenario.path.name}"
+        result = subprocess.run(  # noqa: S603
+            [
+                "/usr/bin/sudo",
+                "/usr/bin/podman",
+                "ps",
+                "-q",
+                "--filter",
+                f"ancestor={image}",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        return [cid for cid in result.stdout.splitlines() if cid]
+
+    @classmethod
+    def stop(cls, scenario: Scenario) -> None:
+        """
+        Stop all running containers based on the scenario image.
+        """
+        container_ids = cls._running_container_ids(scenario)
+        if not container_ids:
+            return
+        completed_process = subprocess.run(  # noqa: S603
+            ["/usr/bin/sudo", "/usr/bin/podman", "stop", *container_ids]
+        )
+        if completed_process.returncode != 0:
+            message = f"Could not stop scenario {scenario.path.name}, return code: {completed_process.returncode}"
+            raise ScenarioLifecycleError(message)
+
+    @classmethod
+    def kill(cls, scenario: Scenario) -> None:
+        """
+        Forcefully kill all running containers based on the scenario image (SIGKILL, last resort).
+        """
+        container_ids = cls._running_container_ids(scenario)
+        if not container_ids:
+            return
+        completed_process = subprocess.run(  # noqa: S603
+            ["/usr/bin/sudo", "/usr/bin/podman", "kill", *container_ids]
+        )
+        if completed_process.returncode != 0:
+            message = f"Could not kill scenario {scenario.path.name}, return code: {completed_process.returncode}"
+            raise ScenarioLifecycleError(message)
+
+    @classmethod
+    def kill_all(cls) -> None:
+        """
+        Forcefully kill all known scenario containers (SIGKILL, last resort).
+
+        Attempts to kill every scenario; collects errors and raises after all attempts.
+        """
+        errors: list[str] = []
+        for scenario in cls.list():
+            try:
+                cls.kill(scenario)
+            except ScenarioLifecycleError as e:
+                errors.append(str(e))
+        if errors:
+            raise ScenarioLifecycleError("\n".join(errors))
 
     @classmethod
     def collect_dependencies(cls, scenario: Scenario) -> ScenarioDependencies:

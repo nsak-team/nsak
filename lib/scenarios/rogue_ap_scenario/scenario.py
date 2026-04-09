@@ -47,7 +47,7 @@ def run(wlan_interface: str, uplink_interface: str) -> dict[str, Any]:
     net = run_drill("network_setup", wlan_interface)
     dnsmasq = run_drill("dnsmasq", wlan_interface)
     nat = run_drill("nat_forwarding", {"interface": wlan_interface, "uplink_interface": uplink_interface})
-    sniff = run_drill("tshark_capture", wlan_interface)
+    sniff, _ = run_drill("tshark_capture", wlan_interface)
     results["hostapd"] = hostapd
     results["net"] = net
     results["dnsmasq"] = dnsmasq

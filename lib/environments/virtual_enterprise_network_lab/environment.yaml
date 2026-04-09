@@ -1,0 +1,6 @@
+environments:
+  virtual_enterprise_network_lab:
+    id: virtual_enterprise_network_lab
+    name: Virtual Enterprise Network LAB
+    description: "Virtual Enterprise Network LAB"
+    author: vonal3@bfh.ch

@@ -111,20 +111,21 @@ class ResourceLoader[T]:
     @classmethod
     def load_all(cls) -> list[T]:
         """
-        Load all devices and return a set of Device objects.
+        Load all resources and return a set of Device objects.
         """
         resource_type_name = cls.ResourceClass.NAME
-        all_devices: list[T] = list()
+        all_resources: list[T] = list()
         for search_path in cls.get_search_paths():
             for path in search_path.iterdir():
                 if not path.is_dir():
                     continue
                 try:
                     data = cls._load(path)
-                    resource = cls._safe_to_resource(path.name, data, path)
-                    all_devices.append(resource)
+                    for _, resource_data in data[cls.ResourceClass.KEY].items():
+                        resource = cls._safe_to_resource(path.name, resource_data, path)
+                        all_resources.append(resource)
                 except cls.ResourceClass.InvalidResourceError as e:
                     message = f"Skipping invalid {resource_type_name} '{path.name}'"
                     logger.warning(message, exc_info=e)
 
-        return all_devices
+        return all_resources

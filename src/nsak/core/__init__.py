@@ -1,6 +1,8 @@
-from nsak.core._config import config
+from nsak.core._config import Config, EmailEncryptionType, config
+from nsak.core.ai.ai_agent import AiAgent, ai_agent
 from nsak.core.device import Device, DeviceManager
 from nsak.core.drill import Drill, DrillLoader, DrillManager
+from nsak.core.email import EmailBackend
 from nsak.core.environment import Environment, EnvironmentLoader, EnvironmentManager
 from nsak.core.network import (
     IPAddress,
@@ -9,11 +11,15 @@ from nsak.core.network import (
 from nsak.core.scenario import Scenario, ScenarioLoader, ScenarioManager
 
 __all__ = [
+    "AiAgent",
+    "Config",
     "Device",
     "DeviceManager",
     "Drill",
     "DrillLoader",
     "DrillManager",
+    "EmailBackend",
+    "EmailEncryptionType",
     "Environment",
     "EnvironmentLoader",
     "EnvironmentManager",
@@ -22,5 +28,6 @@ __all__ = [
     "Scenario",
     "ScenarioLoader",
     "ScenarioManager",
+    "ai_agent",
     "config",
 ]

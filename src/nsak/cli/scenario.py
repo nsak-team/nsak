@@ -2,9 +2,15 @@ from collections.abc import Callable
 from typing import Any
 
 import click
+from click import shell_completion  # type: ignore [attr-defined]
 
 from nsak.core import Scenario, ScenarioManager, config
-from nsak.core.scenario.scenario_manager import ScenarioArgumentParsingError
+from nsak.core.scenario.scenario_manager import (
+    ScenarioArgumentParsingError,
+    ScenarioLifecycleError,
+)
+
+from .utils import resource_list_table
 
 scenario_group = click.Group("scenario")
 
@@ -30,8 +36,8 @@ def list_scenarios() -> None:
     List all scenarios.
     """
     scenarios = ScenarioManager.list()
-    for scenario in scenarios:
-        click.echo(scenario.path.name)
+    table = resource_list_table(scenarios)
+    click.echo(table)
 
 
 @scenario_group.command("build")
@@ -87,19 +93,65 @@ def create_scenario_command(
             prompt=name,
         )
         if name == "interface":
-            if name == "interface":
-                try:
-                    # Try to get known interfaces from device config
-                    choices = list(config.device.target_ethernets.keys())
-                except (AttributeError, TypeError):
-                    # Config/device not available → fallback to free-text
-                    choices = []
+            try:
+                choices = list(config.device.target_ethernets.keys())
+                kwargs["shell_complete"] = lambda ctx, param, incomplete: [
+                    shell_completion.CompletionItem(c)
+                    for c in choices  # noqa: B023
+                    if c.startswith(incomplete)
+                ]
+            except (AttributeError, TypeError) as e:
+                click.echo(e)
+                pass
 
-                # Only enforce choices if we actually have them
-                if choices:
-                    kwargs["type"] = click.Choice(choices)
         cmd = click.option(f"--{name}", **kwargs)(cmd)
     return cmd
+
+
+@scenario_group.command("stop")
+@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
+def stop_scenario(name: str) -> None:
+    """
+    Stop a running scenario container.
+
+    :param name: The name of the scenario you want to stop.
+    :return:
+    """
+    scenario = ScenarioManager.get(name)
+    try:
+        ScenarioManager.stop(scenario)
+        click.echo(f"Scenario '{name}' stopped.")
+    except ScenarioLifecycleError as e:
+        click.echo(e, err=True)
+
+
+@scenario_group.command("kill")
+@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
+def kill_scenario(name: str) -> None:
+    """
+    Forcefully kill a running scenario container (SIGKILL, last resort).
+
+    :param name: The name of the scenario you want to kill.
+    :return:
+    """
+    scenario = ScenarioManager.get(name)
+    try:
+        ScenarioManager.kill(scenario)
+        click.echo(f"Scenario '{name}' killed.")
+    except ScenarioLifecycleError as e:
+        click.echo(e, err=True)
+
+
+@scenario_group.command("kill-all")
+def kill_all_scenarios() -> None:
+    """
+    Forcefully kill all running scenario containers (SIGKILL, last resort).
+    """
+    try:
+        ScenarioManager.kill_all()
+        click.echo("All scenarios killed.")
+    except ScenarioLifecycleError as e:
+        click.echo(e, err=True)
 
 
 for _scenario in ScenarioManager.list():

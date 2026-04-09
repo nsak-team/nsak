@@ -1,5 +1,7 @@
 import dataclasses
 
+from tabulate import tabulate
+
 from nsak.core.network.network_service import NetworkService
 from nsak.core.network.types import IPAddress
 
@@ -76,3 +78,45 @@ class NetworkDiscoveryResultMap:
 
         lines.extend(["", "### -------------------------- ###", ""])
         return "\n".join(lines)
+
+    def as_table(self) -> str:
+        """
+        Return a human- and AI-readable table of all discovered network services.
+
+        Each row represents one endpoint with its associated service metadata.
+        :return:
+        """
+        headers = [
+            "Interface",
+            "MAC",
+            "IP",
+            "Port",
+            "Protocol",
+            "State",
+            "Service",
+            "Product",
+            "Version",
+        ]
+        rows = []
+
+        for iface_name, result in self.results.items():
+            for service in result.network_services:
+                for endpoint in service.endpoints:
+                    rows.append(
+                        [
+                            iface_name,
+                            endpoint.mac or "",
+                            str(endpoint.ip) if endpoint.ip is not None else "",
+                            str(endpoint.port) if endpoint.port is not None else "",
+                            endpoint.protocol or "",
+                            service.state or "",
+                            service.name or "",
+                            service.product or "",
+                            service.version or "",
+                        ]
+                    )
+
+        if not rows:
+            return "No network services discovered."
+
+        return tabulate(rows, headers=headers, tablefmt="github")

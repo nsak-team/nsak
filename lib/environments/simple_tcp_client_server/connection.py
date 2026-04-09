@@ -49,4 +49,4 @@ def communicate(conn, label):
             print(f"[{label}] Received: {data.decode()}")
 
             counter += 1
-            time.sleep(1)
+            time.sleep(5)

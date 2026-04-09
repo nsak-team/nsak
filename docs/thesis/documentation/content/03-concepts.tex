@@ -5,79 +5,72 @@
 
 \section{Framework Resources}\label{sec:framework-resources-concepts}
 
-The \glsxtrshort{NSAK} framework is built around four resource types that were originally defined in \enquote{Project 2}~\ref{sec:predecessor-project-enquote-project-2}~\cite{nsakRepository2026}.
-Each resource type has a distinct role in the framework and is stored as a \glsxtrshort{YAML} file in the resource library, from which the framework loads and manages them at runtime.
+The \glsxtrshort{NSAK} framework is built around four resource types that were originally defined in \enquote{Project 2}~\ref{sec:predecessor-project-project-2}~\cite{nsakRepository2026}.
+Each resource type has a distinct role in the framework and is stored as a \glsxtrshort{YAML} file in the resource library.
 
 \subsection{Device}\label{subsec:device-concept}
 
-A \textbf{device} is a physical or virtual machine that is capable of running the \glsxtrshort{NSAK} framework.
-It serves as the execution host for scenarios and drills and is typically deployed at a strategic network position — for instance, between segments or inline on a link — to give it the access required for the operations it performs.
+A \textbf{Device} resource describes a physical or virtual machine that is capable of running the \glsxtrshort{NSAK} framework.
+It serves as the execution host for scenarios and drills and is typically deployed at a strategic network position to give it the access required for the operations it performs.
 
 A device exposes its network configuration to the framework by declaring its interfaces and their \gls{IP} addresses in its resource \glsxtrshort{YAML}.
+As an alternative, a special device with the id \enquote{Unknown} was added, which auto discovers the hosts network configuration.
 This allows scenarios and drills to resolve interface names and target addresses without hardcoding network details, making the same scenario portable across different devices and network environments.
 
 \subsection{Environment}\label{subsec:environment-concept}
 
-An \textbf{environment} represents a specific network topology, including its infrastructure components, hosts, and services~\cite{nsakRepository2026}.
-It describes the target network context in which a scenario is intended to operate — for example, a simple client--server setup over a switch, a \gls{WLAN} access point with connected clients, or a segmented business network.
+An \textbf{Environment} represents a specific network topology, including its infrastructure components, hosts, and services~\cite{nsakRepository2026}.
+It describes the target network context in which a scenario is intended to operate.
+For example, a simple client--server setup over a switch, a \gls{WLAN} access point with connected clients, or a segmented business network.
 
 Environments are referenced by scenarios to make explicit which network context they are designed for, helping operators select and validate the right configuration before executing an operation.
 
 \subsection{Drill}\label{subsec:drill-concept}
 
-A \textbf{drill} is a self-contained, reusable unit of execution with a specific, well-defined goal~\cite{nsakRepository2026}.
+A \textbf{Drill} is a self-contained, reusable unit of execution with a specific, well-defined goal~\cite{nsakRepository2026}.
 Its goal can be an active or passive attack step, network discovery, traffic capture, a configuration change, or any other discrete action relevant to a red or blue team activity.
 
 Examples of drills include \gls{ARP} spoofing, host discovery via \gls{ARP} scan, transparent \gls{TCP} proxying, traffic capture with T-Shark, and network configuration tasks such as enabling IP forwarding or \gls{NAT}.
 
-Each drill declares the system and Python packages it requires as well as a typed \mintinline{text}{interface} that lists its input arguments and return type.
+Each drill declares the system and Python packages it requires as well as a typed \mintinline{bash}{interface} that lists its input arguments and return type.
 The return value of one drill can be consumed as the input of a subsequent drill within a scenario, enabling data to flow through a chain of execution steps.
 
 \subsection{Scenario}\label{subsec:scenario-concept}
 
-A \textbf{scenario} orchestrates a sequence of drills targeted at one or more environments and describes a concrete red or blue team use case~\cite{nsakRepository2026}.
-Where a drill is a single reusable action, a scenario gives that action meaning by placing it in context: it defines which drills are executed, in which order, and against which environment.
+A \textbf{Scenario} describes a concrete red or blue team use case and orchestrates a sequence of drills targeted at one or more environments~\cite{nsakRepository2026}.
+Where a drill is a single technical reusable and modular building block, a scenario is an implementation of a specific attack or defense operation.
 
-Like drills, scenarios declare a typed \mintinline{text}{interface} with input arguments, allowing operators to parameterise a scenario at execution time via the \glsxtrshort{CLI} without modifying the scenario definition itself.
+Like drills, scenarios declare a typed \mintinline{bash}{interface} with input arguments, allowing operators to parameterise a scenario at execution time via the \glsxtrshort{CLI} without modifying the scenario definition itself.
 This separation keeps scenarios reusable across different network configurations while still allowing runtime flexibility.
 
 
 \section{Configuration Management}\label{sec:configuration-management-concepts}
 
-The \glsxtrshort{NSAK} framework distinguishes three configuration layers, each with a different scope, lifetime, and owner.
+The \glsxtrshort{NSAK} framework distinguishes three configuration layers, each with a different scope and lifetime.
 Keeping them separate avoids coupling concerns that change at different rates and makes it easier to reason about where a given piece of configuration comes from.
 
 \subsection{Static Configuration}\label{subsec:static-configuration-concept}
 
-The static configuration layer resolves deployment-specific values that are fixed for the entire lifetime of a process.
-It establishes the filesystem layout that all other parts of the framework depend on: where the resource library is located, where runtime data is written, and what the base directory of the installation is.
-
-Because these values derive from a single base path, the whole framework can be relocated — into a Docker container, a test fixture, or a CI pipeline — by changing one environment variable.
-No other code needs to be aware of the deployment context.
+The static configuration layer involves values which are specific for a deployment and are very unlikely to change after the initial provision of the \gls{NSAK} device.
+It mainly establishes the filesystem layout that all other parts of the framework depend on.
+For example, where the resource library is located, where runtime data is written, and what the base directory of the installation is.
 
 \subsection{Runtime Configuration}\label{subsec:runtime-configuration-concept}
 
-The runtime configuration layer holds mutable state that must be shared across separate \glsxtrshort{CLI} invocations.
-Each invocation of the \glsxtrshort{CLI} is a new process, so any state that needs to carry over — such as which device is currently active — must be persisted between calls.
-The runtime configuration is therefore stored as a \glsxtrshort{YAML} file and loaded at the start of every invocation.
-Commands that change state write the updated configuration back to disk before they exit.
-This design keeps the state model simple: there is one authoritative file on disk, and any process can read or update it without requiring a background service.
-Loading is deferred until the configuration is first accessed rather than at import time.
-This avoids unnecessary disk reads when the configuration is not needed and keeps the startup fast.
+The runtime configuration layer holds mutable state, which might be changed by an operator via the \gls{CLI}.
+It is stored as a \glsxtrshort{YAML} file, which is currently loaded at the start of every invocation.
 If no configuration file exists yet, a default is created automatically on first access, so no explicit initialization step is required from the user.
 
 \subsection{Resource Configuration}\label{subsec:resource-configuration-concept}
-The resource configuration layer is owned by the resource library rather than the framework core.
-Each resource — device, drill, scenario, or environment — declares its own configuration inside a \glsxtrshort{YAML} file stored alongside its implementation.
-The framework reads these files to discover and load resources at runtime, without requiring any code changes when adding new resources.
-
-\subsubsection{Mergeable YAML Structure}\label{subsubsec:mergeable-yaml-structure}
-All resource \glsxtrshort{YAML} files follow a common structure in which resources are nested under a resource-type key (e.g.\ \mintinline{text}{drills:}, \mintinline{text}{scenarios:}).
-This structure ensures that \glsxtrshort{YAML} files from different parts of the library can be merged into a single in-memory data structure without key conflicts, which is a prerequisite for supporting multiple library paths and composite library configurations in the future.
+The resource configuration layer is provided by the resource library rather than the framework core.
+Each resource declares its own configuration inside a \glsxtrshort{YAML} file stored alongside its implementation.
+The framework reads these files to discover and load resources at runtime.
 
 \subsubsection{Typed Interface Arguments}\label{subsubsec:typed-interface-arguments}
-Drills and scenarios declare a typed \mintinline{text}{interface} in their \glsxtrshort{YAML} file that lists the arguments they accept, each with an explicit type annotation and an optional default value.
+Drills and scenarios declare a typed \mintinline{bash}{interface} in their resource configuration \glsxtrshort{YAML} file, that lists the arguments with an explicit type annotation and an optional default value.
 The framework reads these annotations at runtime and automatically generates the correct \glsxtrshort{CLI} options for each resource.
 This means that adding a new argument to a drill or scenario immediately exposes it as a typed \glsxtrshort{CLI} option without requiring any changes to the framework or the \glsxtrshort{CLI} code.
-Separating the argument declaration from the \glsxtrshort{CLI} implementation keeps the two concerns independent and makes each resource's interface self-describing.
 
+\subsubsection{Mergeable YAML Structure}\label{subsubsec:mergeable-yaml-structure}
+All resource \glsxtrshort{YAML} files follow a common structure in which resources are nested under a resource-type key (e.g.\ \mintinline{bash}{drills:}, \mintinline{bash}{scenarios:}).
+This structure ensures that \glsxtrshort{YAML} files from different parts of the library could be merged into a single in-memory data structure without key conflicts, which is a prerequisite for supporting multiple library paths and composite library configurations in the future.

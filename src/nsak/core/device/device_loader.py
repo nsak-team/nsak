@@ -84,3 +84,10 @@ class DeviceLoader(ResourceLoader[Device]):
             repository=str(data.get("repository") or ""),
             configuration=cls._parse_device_configuration(data),
         )
+
+    @classmethod
+    def config_to_resource(cls, data: dict[str, Any], path: Path | str) -> Device:
+        """
+        Creates a device resource from configuration.
+        """
+        return cls._to_resource("config", data, path)
