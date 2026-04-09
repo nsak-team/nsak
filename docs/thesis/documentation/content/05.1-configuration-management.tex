@@ -1,4 +1,3 @@
-
 \newpage
 \section{Configuration Management Implementation}\label{sec:configuration-management-implementation}
 
@@ -14,6 +13,8 @@ This layer serves as the single source of truth for any information that must be
 The \textbf{resource configuration} layer is defined by the resource library itself.
 Each resource type \textendash devices, drills, scenarios, and environments \textendash declares its configuration inside a \gls{YAML} file stored in the library.
 For devices, this includes network interface assignments, while drills and scenarios additionally declare their typed argument interfaces, which the \gls{CLI} uses to generate the correct command options at runtime.
+
+\todo{This section is repeating what's already stated in the concepts chapter...}
 
 \subsection{NSAK Configuration Management}\label{subsec:nsak-configuration-management}
 
