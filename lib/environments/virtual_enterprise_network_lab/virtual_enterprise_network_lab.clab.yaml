@@ -267,6 +267,7 @@ topology:
       cmd: tail -f /dev/null
       cap-add:
         - NET_ADMIN
+        - NET_BIND_SERVICE  # needed to bind to privileged ports 80 and 631
       binds:
         # printer_sim.py serves the web admin UI (port 80) and IPP (port 631)
         - scripts/printer_sim.py:/printer_sim.py:ro
@@ -278,7 +279,7 @@ topology:
         - sh -c 'printf "rocommunity public\nsysName HP-LaserJet-M428fdw\nsysLocation Server Room B2\nsysContact it@lab.local\n" > /etc/snmp/snmpd.conf'
         - sh -c 'snmpd -f -Lo &'
         # Web admin UI (80) and IPP job listener (631)
-        - sh -c 'python3 /printer_sim.py &'
+        - sh -c 'python3 /printer_sim.py > /var/log/printer_sim.log 2>&1 &'
 
     # ── NSAK — Swiss Army Knife (Reconnaissance Node) ────────────────────────────
     # The nsak tool itself runs here. Dual-homed to observe both LAN and DMZ.
