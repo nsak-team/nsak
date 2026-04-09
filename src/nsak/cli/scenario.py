@@ -5,7 +5,10 @@ import click
 from click import shell_completion  # type: ignore [attr-defined]
 
 from nsak.core import Scenario, ScenarioManager, config
-from nsak.core.scenario.scenario_manager import ScenarioArgumentParsingError
+from nsak.core.scenario.scenario_manager import (
+    ScenarioArgumentParsingError,
+    ScenarioLifecycleError,
+)
 
 from .utils import resource_list_table
 
@@ -102,6 +105,52 @@ def create_scenario_command(
 
         cmd = click.option(f"--{name}", **kwargs)(cmd)
     return cmd
+
+
+@scenario_group.command("stop")
+@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
+def stop_scenario(name: str) -> None:
+    """
+    Stop a running scenario container.
+
+    :param name: The name of the scenario you want to stop.
+    :return:
+    """
+    scenario = ScenarioManager.get(name)
+    try:
+        ScenarioManager.stop(scenario)
+        click.echo(f"Scenario '{name}' stopped.")
+    except ScenarioLifecycleError as e:
+        click.echo(e, err=True)
+
+
+@scenario_group.command("kill")
+@click.argument("name", shell_complete=complete_scenario_name)  # type: ignore [call-arg]
+def kill_scenario(name: str) -> None:
+    """
+    Forcefully kill a running scenario container (SIGKILL, last resort).
+
+    :param name: The name of the scenario you want to kill.
+    :return:
+    """
+    scenario = ScenarioManager.get(name)
+    try:
+        ScenarioManager.kill(scenario)
+        click.echo(f"Scenario '{name}' killed.")
+    except ScenarioLifecycleError as e:
+        click.echo(e, err=True)
+
+
+@scenario_group.command("kill-all")
+def kill_all_scenarios() -> None:
+    """
+    Forcefully kill all running scenario containers (SIGKILL, last resort).
+    """
+    try:
+        ScenarioManager.kill_all()
+        click.echo("All scenarios killed.")
+    except ScenarioLifecycleError as e:
+        click.echo(e, err=True)
 
 
 for _scenario in ScenarioManager.list():
