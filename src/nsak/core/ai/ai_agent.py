@@ -1,3 +1,4 @@
+import logging
 import shlex
 import subprocess
 from pprint import pformat
@@ -14,6 +15,8 @@ from lazy_object_proxy import Proxy
 
 from nsak.core import config
 from nsak.core.settings import AI_MODEL, OLLAMA_BASE_URL
+
+logger = logging.getLogger(__name__)
 
 PROVIDER_MAP: dict[str, Callable[[str, str, Any], BaseChatModel]] = {
     "ollama": lambda model, base_url, kwargs: ChatOllama(
@@ -74,6 +77,24 @@ def host_configuration() -> dict[str, Any]:
 
 
 @tool  # type: ignore[misc]
+def human_interaction_hook(question: str) -> str:
+    """
+    Ask the human operator a question and return their answer.
+
+    Use this tool when you need information, confirmation, or guidance that
+    cannot be determined from the available tools or the current context.
+
+    Args:
+        question: The question or request to present to the human operator.
+
+    Returns
+    -------
+        The human operator's response as a string.
+    """
+    return input(f"[Human Input Required]\n{question}\n> ")
+
+
+@tool  # type: ignore[misc]
 def cli(command: str, timeout: int = 120) -> tuple[int, str, str]:
     """
     Run an arbitrary CLI command and return its output.
@@ -121,6 +142,9 @@ def cli(command: str, timeout: int = 120) -> tuple[int, str, str]:
             e.stdout,
             e.stderr,
         )
+    except Exception as e:
+        logger.exception("An error occurred during CLI tool usage.", exc_info=e)
+        raise e
 
 
 class AiAgent:
@@ -134,14 +158,20 @@ class AiAgent:
     )
     system_prompt = "You are in a cybersecurity simulation and act as the purple team."
 
-    def __init__(self, model: str, base_url: str) -> None:
+    def __init__(
+        self, model: str, base_url: str, human_interaction: bool = True
+    ) -> None:
         """
         Initializes the AiAgent and the connection to its backend model.
         """
+        tools = list(self.tools)
+        if human_interaction:
+            tools.append(human_interaction_hook)
+
         self.model = AiAgent.create_model(model, base_url)
         self.agent = create_agent(
             self.model,
-            tools=self.tools,
+            tools=tools,
             system_prompt=self.system_prompt,
         )
 
@@ -192,6 +222,42 @@ class AiAgent:
                 content = pformat(message.content)
 
             yield f"[{role}]\n{content}\n"
+
+    def run_interactive(
+        self, prompt: str, stop_command: str = "exit"
+    ) -> Generator[str]:
+        """
+        Run the agent in a continuous interactive loop, maintaining conversation history.
+
+        After each agent response the human operator is prompted for the next instruction.
+        The loop ends when the operator enters an empty line or the stop_command.
+
+        :param prompt: The initial prompt to start the session.
+        :param stop_command: Keyword that terminates the loop (default: 'exit').
+        """
+        messages: list[Any] = [{"role": "user", "content": prompt}]
+
+        while True:
+            prev_count = len(messages)
+            result = self.agent.invoke({"messages": messages})
+            messages = result.get("messages", messages)
+
+            for message in messages[prev_count:]:
+                role = type(message).__name__.replace("Message", "")
+                if isinstance(message.content, str):
+                    content = message.content
+                else:
+                    content = pformat(message.content)
+                if content:
+                    yield f"[{role}]\n{content}\n"
+
+            next_instruction = input(
+                f"\n[Next instruction (empty or '{stop_command}' to stop)]\n> "
+            ).strip()
+            if not next_instruction or next_instruction.lower() == stop_command.lower():
+                break
+
+            messages.append({"role": "user", "content": next_instruction})
 
 
 def create_ai_agent() -> AiAgent:
