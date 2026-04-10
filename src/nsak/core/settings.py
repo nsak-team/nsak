@@ -18,9 +18,9 @@ def get_base_path() -> Path:
     base_path = os.getenv("NSAK_BASE_PATH", None)
 
     if base_path is not None:
-        return Path(base_path)
+        return Path(base_path).absolute()
 
-    return Path(__file__).resolve().parents[3]
+    return Path(__file__).resolve().parents[3].absolute()
 
 
 def get_run_path() -> Path:
@@ -32,9 +32,9 @@ def get_run_path() -> Path:
     run_path = os.getenv("NSAK_RUN_PATH", None)
 
     if run_path is not None:
-        return Path(run_path)
+        return Path(run_path).absolute()
 
-    return get_base_path() / "run"
+    return (get_base_path() / "run").absolute()
 
 
 def get_library_paths() -> set[Path]:
@@ -45,13 +45,13 @@ def get_library_paths() -> set[Path]:
     """
     library_paths = set()
 
-    default_path = BASE_PATH / "lib"
+    default_path = (BASE_PATH / "lib").absolute()
     if default_path.exists():
         library_paths.add(default_path)
 
     library_path = os.getenv("NSAK_LIBRARY_PATH", None)
     if library_path is not None:
-        _library_path = Path(library_path)
+        _library_path = Path(library_path).absolute()
         if not _library_path.exists():
             message = (
                 f"Library path '{library_path}' in NSAK_LIBRARY_PATH does not exist!"
@@ -65,5 +65,5 @@ def get_library_paths() -> set[Path]:
 BASE_PATH = get_base_path()
 RUN_PATH = get_run_path()
 LIBRARY_PATHS = get_library_paths()
-CONFIG_FILE = RUN_PATH / "config.yaml"
+CONFIG_FILE = (RUN_PATH / "config.yaml").absolute()
 DOCKER_CONTEXT = BASE_PATH

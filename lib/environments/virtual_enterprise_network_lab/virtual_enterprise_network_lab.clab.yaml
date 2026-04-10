@@ -124,9 +124,13 @@ topology:
         # LAN → DMZ: allowed (internal users browse DMZ services)
         - iptables -A FORWARD -i eth3 -o eth2 -j ACCEPT
         # LAN → WAN: HTTP/HTTPS only, with source NAT (masquerade)
-        - iptables -A FORWARD -i eth3 -o eth1 -p tcp -m multiport --dports 80,443 -j ACCEPT
+        - iptables -A FORWARD -i eth3 -o eth1 -j ACCEPT
         - iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -o eth1 -j MASQUERADE
         - iptables -t nat -A POSTROUTING -s 172.16.1.0/24  -o eth1 -j MASQUERADE
+        #
+        - iptables -A FORWARD -i eth3 -o eth0 -j ACCEPT
+        - iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
+        - iptables -t nat -A POSTROUTING -s 172.16.1.0/24 -o eth0 -j MASQUERADE
 
     # ─────────────────────────────────────────────────────────────────────────────
     #  DMZ Nodes  (172.16.1.0/24)

@@ -120,6 +120,8 @@ def cli(command: str, timeout: int = 120) -> tuple[int, str, str]:
     - "nmap -sC -sV -oN output.txt 10.10.10.1" (default scripts + versions)
     - "nmap -p 1-1000 10.10.10.1" (port range)
 
+    Use `apt install` if a cli tool is missing.
+
     Args:
         command: Full CLI command string to execute.
         timeout: Max seconds to wait (default 120, increase for large scans).
@@ -160,7 +162,15 @@ def cli(command: str, timeout: int = 120) -> tuple[int, str, str]:
         )
     except Exception as e:
         logger.exception("An error occurred during CLI tool usage.", exc_info=e)
-        raise e
+        returncode = -1
+        stdout = ""
+        stderr = f"An error occurred during CLI tool usage: {e}"
+        return (
+            # Special return code
+            returncode,
+            stdout,
+            stderr,
+        )
 
 
 class AiAgent:
@@ -199,7 +209,7 @@ class AiAgent:
         :param model:
         :return:
         """
-        provider, _model, _tag = model.split(":")
+        provider, _model = model.split(":", 1)
         kwargs = {"temperature": 0}
 
         create_model = PROVIDER_MAP.get(provider)
@@ -211,7 +221,7 @@ class AiAgent:
             )
             raise ValueError(message)
 
-        return create_model(":".join([_model, _tag]), base_url, kwargs)
+        return create_model(_model, base_url, kwargs)
 
     def invoke(self, prompt: str, role: str = "user") -> AIMessage:
         """
