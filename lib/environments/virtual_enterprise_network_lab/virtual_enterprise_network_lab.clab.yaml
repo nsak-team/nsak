@@ -91,7 +91,7 @@ topology:
       exec:
         - apk add --no-cache iproute2 curl bind-tools nmap netcat-openbsd openssl
         - ip addr add 10.0.1.10/24 dev eth1
-        - ip route replace default via 10.0.1.1
+        - ip route replace default via 10.0.1.254/24
 
     # ── Firewall (Alpine + iptables) ──────────────────────────────────────────────
     # Tri-homed router/firewall: eth1=WAN, eth2=DMZ, eth3=LAN.
@@ -110,6 +110,7 @@ topology:
         - ip addr add 10.0.1.1/24 dev eth1
         - ip addr add 172.16.1.1/24 dev eth2
         - ip addr add 192.168.10.1/24 dev eth3
+        - ip route replace default via 10.0.1.254
         # Default FORWARD policy: drop everything not explicitly allowed
         - iptables -P FORWARD DROP
         # Allow return traffic for already-established connections (stateful firewall)
@@ -124,13 +125,12 @@ topology:
         # LAN → DMZ: allowed (internal users browse DMZ services)
         - iptables -A FORWARD -i eth3 -o eth2 -j ACCEPT
         # LAN → WAN: HTTP/HTTPS only, with source NAT (masquerade)
-        - iptables -A FORWARD -i eth3 -o eth1 -j ACCEPT
+        - iptables -A FORWARD -i eth3 -o eth1 -p tcp -m multiport --dports 80,443 -j ACCEPT
         - iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -o eth1 -j MASQUERADE
         - iptables -t nat -A POSTROUTING -s 172.16.1.0/24  -o eth1 -j MASQUERADE
-        #
-        - iptables -A FORWARD -i eth3 -o eth0 -j ACCEPT
-        - iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
-        - iptables -t nat -A POSTROUTING -s 172.16.1.0/24 -o eth0 -j MASQUERADE
+        # DMZ → WAN: DNS forwarding (dmz-server forwards unknown queries to 8.8.8.8)
+        - iptables -A FORWARD -i eth2 -o eth1 -p udp --dport 53 -j ACCEPT
+        - iptables -A FORWARD -i eth2 -o eth1 -p tcp --dport 53 -j ACCEPT
 
     # ─────────────────────────────────────────────────────────────────────────────
     #  DMZ Nodes  (172.16.1.0/24)
@@ -195,6 +195,7 @@ topology:
         - apk add --no-cache samba openldap openldap-back-mdb openldap-clients openssh iproute2
         - ip addr add 192.168.10.5/24 dev eth1
         - ip route replace default via 192.168.10.1
+        - sh -c 'echo "nameserver 172.16.1.10" > /etc/resolv.conf'
         - sh /server_setup.sh
 
     # ── LAN: Workstation alice (Finance dept, user: asmith) ──────────────────────
@@ -218,6 +219,7 @@ topology:
         - apk add --no-cache openssh samba iproute2
         - ip addr add 192.168.10.100/24 dev eth1
         - ip route replace default via 192.168.10.1
+        - sh -c 'echo "nameserver 172.16.1.10" > /etc/resolv.conf'
         - ssh-keygen -A
         - sh -c 'echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config'
         - sh -c 'printf "Acme Corp AG - Authorized Access Only\nThis system is monitored.\n" > /etc/ssh/banner.txt'
@@ -249,6 +251,7 @@ topology:
         - apk add --no-cache openssh samba iproute2
         - ip addr add 192.168.10.101/24 dev eth1
         - ip route replace default via 192.168.10.1
+        - sh -c 'echo "nameserver 172.16.1.10" > /etc/resolv.conf'
         - ssh-keygen -A
         - sh -c 'echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config'
         - sh -c 'printf "Acme Corp AG - Authorized Access Only\nThis system is monitored.\n" > /etc/ssh/banner.txt'
@@ -286,6 +289,7 @@ topology:
         - apk add --no-cache python3 net-snmp iproute2
         - ip addr add 192.168.10.50/24 dev eth1
         - ip route replace default via 192.168.10.1
+        - sh -c 'echo "nameserver 172.16.1.10" > /etc/resolv.conf'
         # SNMP with open public community string — intentional misconfiguration
         - sh -c 'printf "rocommunity public\nsysName HP-LaserJet-M428fdw\nsysLocation Server Room B2\nsysContact it@lab.local\n" > /etc/snmp/snmpd.conf'
         - sh -c 'snmpd -f -Lo &'
@@ -318,6 +322,7 @@ topology:
         - ip addr add 192.168.10.200/24 dev eth1
         - ip addr add 172.16.1.200/24   dev eth2
         - ip route replace default via 192.168.10.1
+        - sh -c 'echo "nameserver 172.16.1.10" > /etc/resolv.conf'
 
   links:
     # WAN segment (WAN 10.0.1.0/24)
