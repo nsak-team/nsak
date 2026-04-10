@@ -50,7 +50,17 @@ name: virtual-enterprise-network-lab
 # │  Sniff:    sudo tcpdump -i lan-br -n                                        │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
+mgmt:
+  network: clab-mgmt
+  ipv4-subnet: 172.20.20.0/24
+  ipv6-subnet: ""
+
 topology:
+  defaults:
+    kind: linux
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+      net.ipv6.conf.default.disable_ipv6: 1
   nodes:
 
     # ── L2 Bridges ───────────────────────────────────────────────────────────────
@@ -62,7 +72,6 @@ topology:
       kind: bridge
     lan-br:
       kind: bridge
-
     # ── External Segment (WAN 10.0.1.0/24) ───────────────────────────────────────
     # Simulates the external internet — a neutral outside host, not an attacker.
     # Used to verify firewall rules from the outside perspective:
@@ -176,8 +185,6 @@ topology:
       cap-add:
         - NET_ADMIN
         - SYS_ADMIN  # needed for Samba AD provisioning
-      sysctls:
-        net.ipv6.conf.all.disable_ipv6: 1  # Samba dislikes dual-stack in containers
       binds:
         - scripts/server_setup.sh:/server_setup.sh:ro
       exec:
