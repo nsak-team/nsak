@@ -11,16 +11,18 @@ name: virtual-enterprise-network-lab
 # │  │  [external]  10.0.1.10  — neutral outside host (firewall testing)   │    │
 # │  └────────────────┬────────────────────────────────────────────────────┘    │
 # │                   │ wan-br                                                  │
+# │  [host: wan-br 10.0.1.254]  ← default gateway / "internet" (host bridge)    │
+# │                   │                                                         │
 # │              [firewall]  eth1:10.0.1.1 / eth2:172.16.1.1 / eth3:192.168.10.1│
 # │         ┌─────────┤──────────────────────────────────┐                      │
 # │         │ dmz-br  │                              lan-br                     │
 # │  DMZ  172.16.1.0/24                    LAN  192.168.10.0/24                 │
 # │  ┌──────────────────────┐     ┌──────────────────────────────────────────┐  │
 # │  │  dmz-server  .10     │     │  ctrl-server .5  22,139,389,445          │  │
-# │  │    80,443  HTTP/S    │     │  alice   .100  22,445,3389,5985          │  │
-# │  │    53      DNS/AXFR  │     │  bob     .101  22,445,3389,5985          │  │
-# │  │                      │     │  printer  .50  80,161/udp,631            │  │
-# │  └──────────────────────┘     │  nsak-lan.200  (recon node)              │  │
+# │  │    80,443  HTTP/S    │     │  alice   .100  22,445                    │  │
+# │  │    53      DNS/AXFR  │     │  bob     .101  22,445                    │  │
+# │  │  nsak-dmz   .200     │     │  printer  .50  80,161/udp,631            │  │
+# │  └──────────────────────┘     │  nsak-lan .200  (recon node, dual-homed) │  │
 # │                               └──────────────────────────────────────────┘  │
 # │                                                                             │
 # │  Firewall policy (iptables):                                                │
@@ -41,6 +43,7 @@ name: virtual-enterprise-network-lab
 # │    sudo ip link add wan-br type bridge && sudo ip link set wan-br up        │
 # │    sudo ip link add dmz-br type bridge && sudo ip link set dmz-br up        │
 # │    sudo ip link add lan-br type bridge && sudo ip link set lan-br up        │
+# │    sudo ip addr add 10.0.1.254/24 dev wan-br  # host = WAN gateway         │
 # │    docker build -t nsak:latest .                                            │
 # │                                                                             │
 # │  Deploy:   sudo containerlab deploy -t virtual_enterprise_network_lab.clab.yaml           │
@@ -156,13 +159,12 @@ topology:
       cap-add:
         - NET_ADMIN
       binds:
-        # setup script configures nginx vhost, self-signed TLS, and BIND zone file
-        - scripts/dmz_setup.sh:/dmz_setup.sh:ro
+        - scripts/dmz-web-server:/dmz-web-server:ro
       exec:
         - apk add --no-cache nginx bind bind-tools iproute2 openssl python3
         - ip addr add 172.16.1.10/24 dev eth1
         - ip route replace default via 172.16.1.1
-        - sh /dmz_setup.sh
+        - sh /dmz-web-server/setup.sh
 
     # ─────────────────────────────────────────────────────────────────────────────
     #  LAN Nodes  (192.168.10.0/24)
@@ -190,13 +192,13 @@ topology:
         - NET_ADMIN
         - SYS_ADMIN  # needed for Samba AD provisioning
       binds:
-        - scripts/server_setup.sh:/server_setup.sh:ro
+        - scripts/ctrl-file-server:/ctrl-file-server:ro
       exec:
         - apk add --no-cache samba openldap openldap-back-mdb openldap-clients openssh iproute2
         - ip addr add 192.168.10.5/24 dev eth1
         - ip route replace default via 192.168.10.1
         - sh -c 'echo "nameserver 172.16.1.10" > /etc/resolv.conf'
-        - sh /server_setup.sh
+        - sh /ctrl-file-server/server_setup.sh
 
     # ── LAN: Workstation alice (Finance dept, user: asmith) ──────────────────────
     # Simulates a Finance department workstation.
