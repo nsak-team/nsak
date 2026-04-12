@@ -7,7 +7,7 @@ from nsak.core import create_ai_agent
 
 logger = logging.getLogger(__name__)
 
-def run(interface: str, interactive: bool = False) -> None:
+async def run(interface: str, interactive: bool = False) -> None:
     """
     Scenario, which conducts AI-based network reconnaissance.
 
@@ -30,12 +30,9 @@ Steps:
     """
 
     # Run agent
-    ai_agent = create_ai_agent(interactive)
+    ai_agent = await create_ai_agent(interactive)
     result = ai_agent.run(prompt)
 
     # Logging
-    for line in result:
+    async for line in result:
         logger.warning(line)
-
-    # Altering
-    # alert_system.send_mail()

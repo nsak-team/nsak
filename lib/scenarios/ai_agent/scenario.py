@@ -7,7 +7,7 @@ from nsak.core import create_ai_agent
 
 logger = logging.getLogger(__name__)
 
-def run(prompt: str, interactive: bool = True) -> None:
+async def run(prompt: str, interactive: bool = True) -> None:
     """
     Scenario, which runs an AI agent with a custom prompt in an interactive loop.
 
@@ -19,7 +19,8 @@ def run(prompt: str, interactive: bool = True) -> None:
 
     logger.info("Starting scenario: AI Agent")
 
-    ai_agent = create_ai_agent(interactive)
+    ai_agent = await create_ai_agent(interactive)
+    result = ai_agent.run_interactive(prompt)
 
-    for line in ai_agent.run_interactive(prompt):
+    async for line in result:
         logger.warning(line)

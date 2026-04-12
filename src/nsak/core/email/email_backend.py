@@ -1,6 +1,8 @@
 import logging
+import mimetypes
 import smtplib
 from email.message import EmailMessage
+from pathlib import Path
 
 from lazy_object_proxy import Proxy
 
@@ -74,15 +76,38 @@ class EmailBackend:
 
         return template
 
-    def send(self, subject: str, message: str) -> None:
+    def send(
+        self,
+        subject: str,
+        message: str,
+        cc_recipients: list[str] | None = None,
+        attachments: list[str] | None = None,
+    ) -> None:
         """
-        Send email message.
+        Send email message with optional file attachments.
 
-        :return:
+        :param subject: Email subject line.
+        :param message: Plain-text body.
+        :param cc_recipients: Additional carbon copy recipients.
+        :param attachments: List of absolute file paths to attach.
         """
         email = self._get_template()
         email.set_content(message)
         email["Subject"] = subject
+        if cc_recipients:
+            email["Cc"] = ", ".join(cc_recipients)
+
+        for path_str in attachments or []:
+            path = Path(path_str)
+            data = path.read_bytes()
+            mime_type, _ = mimetypes.guess_type(path)
+            maintype, _, subtype = (mime_type or "application/octet-stream").partition(
+                "/"
+            )
+            email.add_attachment(
+                data, maintype=maintype, subtype=subtype, filename=path.name
+            )
+
         self.backend.send_message(email)
 
 

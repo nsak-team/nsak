@@ -16,6 +16,7 @@ dependencies = [
     "langchain-openai>=1.1.12",
     "langchain-ollama>=1.0.1",
     "python-dotenv>=1.2.2",
+    "langchain-mcp-adapters>=0.2.2",
 ]
 
 [dependency-groups]

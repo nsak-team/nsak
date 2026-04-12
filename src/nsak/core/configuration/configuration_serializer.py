@@ -88,6 +88,11 @@ def enum_deserializer(_type: type[Enum], value: Any) -> Enum:  # noqa: ANN401
             return _type[value.upper()]
         except KeyError:
             pass
+        # Handle string-encoded integers (e.g. "0", "1") written by old representer
+        try:
+            return _type(int(value))
+        except (ValueError, KeyError):
+            pass
     names = ", ".join(e.name for e in _type)
     values = ", ".join(str(e.value) for e in _type)
     message = f"Invalid value '{value}' for {_type.__name__}. Valid names: {names}. Valid values: {values}."
@@ -118,17 +123,6 @@ def container_info_deserializer(_type: type, _value: Any) -> Any:  # noqa: ANN40
     from nsak.core.configuration.container_info import ContainerInfo
 
     return ContainerInfo.load()
-
-
-def email_configuration_deserializer(_type: type, value: Any) -> Any:  # noqa: ANN401
-    """
-    Deserialize an EmailConfiguration from a dict.
-    """
-    from nsak.core.configuration.email_configuration import EmailConfiguration
-
-    if isinstance(value, EmailConfiguration):
-        return value
-    return EmailConfiguration.create(value)
 
 
 def dataclass_deserializer(_type: type, data: dict[str, Any]) -> dict[str, Any]:
@@ -178,14 +172,12 @@ def _get_deserializer_map() -> dict[type, Callable[[type, Any], Any]]:
     global _DESERIALIZER_MAP
     if _DESERIALIZER_MAP is None:
         from nsak.core.configuration.container_info import ContainerInfo
-        from nsak.core.configuration.email_configuration import EmailConfiguration
         from nsak.core.device.device import Device
 
         _DESERIALIZER_MAP = {
             bool: bool_deserializer,
             Device: device_deserializer,
             ContainerInfo: container_info_deserializer,
-            EmailConfiguration: email_configuration_deserializer,
         }
     return _DESERIALIZER_MAP
 

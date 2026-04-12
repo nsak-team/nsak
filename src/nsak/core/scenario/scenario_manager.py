@@ -1,4 +1,6 @@
+import asyncio
 import importlib.util
+import inspect
 import logging
 import os
 import subprocess
@@ -316,9 +318,18 @@ class ScenarioManager(ResourceManager[Scenario]):
         spec.loader.exec_module(module)
 
         run_fn = getattr(module, "run", None)
-        if run_fn is None or not callable(run_fn):
-            msg = f"Scenario '{scenario.name}' has no callable run()"
-            raise Scenario.InvalidResourceError(msg)
 
-        logger.warning("EXEC SCENARIO: %s", scenario.name)
-        return run_fn(**arguments)
+        if run_fn is None:
+            message = f"Scenario '{scenario.name}' has no 'run' function or coroutine."
+            raise Scenario.InvalidResourceError(message)
+
+        message = "EXEC %s SCENARIO: %s"
+        if inspect.iscoroutinefunction(run_fn):
+            logger.warning(message, "ASYNC", scenario.name)
+            return asyncio.run(run_fn(**arguments))
+        elif inspect.isfunction(run_fn):
+            logger.warning(message, "SYNC", scenario.name)
+            return run_fn(**arguments)
+
+        message = f"Scenario '{scenario.name}.run' is not a function or coroutine."
+        raise Scenario.InvalidResourceError(message)

@@ -30,15 +30,13 @@ Identify malicious hosts (MAC and/or IP) if any.
 Be concise. Do not repeat packet data.
 """
 
-def run(interface: str, interactive: bool = False) -> None:
+async def run(interface: str, interactive: bool = False) -> None:
     """
     Scenario, which listens to network traffic and tries to detect intruders.
 
     :return: None
     """
     logger.info("Starting scenario: AI Intrusion Detection")
-
-    ai_agent = create_ai_agent(interactive)
 
     host_discovery_result_map: NetworkDiscoveryResultMap = DrillManager.execute("discover_hosts", interface=interface)
 
@@ -80,5 +78,8 @@ def run(interface: str, interactive: bool = False) -> None:
         "csv_summary": csv_summary,
     }
 
-    for line in ai_agent.run(prompt):
+    ai_agent = await create_ai_agent(interactive)
+    result = ai_agent.run(prompt)
+
+    async for line in result:
         logger.warning(line)

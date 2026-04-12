@@ -1,4 +1,6 @@
+import asyncio
 import importlib.util
+import inspect
 import logging
 import sys
 from typing import Any
@@ -70,13 +72,21 @@ class DrillManager(ResourceManager[Drill]):
         spec.loader.exec_module(module)
 
         run_fn = getattr(module, "run", None)
-        if run_fn is None or not callable(run_fn):
-            msg = f"Drill '{drill.name}' has no callable run()"
-            raise Drill.InvalidResourceError(msg)
 
-        logger.warning("EXEC DRILL: %s", drill.name)
+        if run_fn is None:
+            message = f"Drill '{drill.name}' has no callable run()"
+            raise Drill.InvalidResourceError(message)
 
-        return run_fn(**arguments)
+        message = "EXEC %s SCENARIO: %s"
+        if inspect.iscoroutinefunction(run_fn):
+            logger.warning(message, "ASYNC", drill.name)
+            return asyncio.run(run_fn(**arguments))
+        elif inspect.isfunction(run_fn):
+            logger.warning(message, "SYNC", drill.name)
+            return run_fn(**arguments)
+
+        message = f"Scenario '{drill.name}.run' is not a function or coroutine."
+        raise Drill.InvalidResourceError(message)
 
     @classmethod
     def clean_up(cls, drill: Drill) -> None:

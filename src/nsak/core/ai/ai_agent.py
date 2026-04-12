@@ -1,20 +1,24 @@
+import asyncio
 import logging
-import shlex
-import subprocess
 from pprint import pformat
-from typing import Any, Callable, Generator
+from typing import Any, AsyncGenerator, Callable, Sequence
 
 from langchain.agents import create_agent
 from langchain_anthropic.chat_models import ChatAnthropic
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage
-from langchain_core.tools import tool
+from langchain_core.tools import BaseTool
+from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_ollama.chat_models import ChatOllama
 from langchain_openai.chat_models import ChatOpenAI
 
+from nsak.core.ai.tools import (
+    cli_tool,
+    host_configuration,
+    human_interaction_hook,
+    send_email,
+)
 from nsak.core.configuration import config
-from nsak.core.configuration.configuration_serializer import ConfigurationSerializer
-from nsak.core.email.email_backend import email_backend
 
 logger = logging.getLogger(__name__)
 
@@ -30,147 +34,15 @@ PROVIDER_MAP: dict[str, Callable[[str, str, Any], BaseChatModel]] = {
     ),
 }
 
-
-@tool  # type: ignore[misc]
-def host_configuration() -> dict[str, Any]:
-    """
-    Returns the host network configuration as a dictionary.
-
-    Use this tool first to understand the local network setup before running any scans or attacks.
-
-    The returned dictionary has the following structure:
+mcp_client = MultiServerMCPClient(
     {
-        "debug": bool,
-        "device": {
-            "id": str,
-            "name": str,
-            "description": str,
-            "configuration": {
-                "network": {
-                    "ethernets": {
-                        "<interface_name>": {
-                            "name": str,
-                            "is_up": bool,        # False means the interface is DOWN, skip it
-                            "is_target": bool,    # True means this interface is used for attacks/scans
-                            "is_management": bool # True means this interface is used for device access
-                            "addresses": {
-                                "<cidr>": {
-                                    "ip": str,        # e.g. "10.10.10.5/24" - use this as nmap source IP
-                                    "is_target": bool,
-                                    "is_management": bool,
-                                }
-                            },
-                        }
-                    }
-                }
-            }
+        "drawio": {
+            "transport": "stdio",
+            "command": "npx",
+            "args": ["drawio-mcp"],
         }
     }
-
-    Guidance:
-    - Use `is_target=True` interfaces/IPs when running nmap scans or attacks
-    - Skip interfaces where `is_up=False`
-    - Use `is_management=True` interfaces for device access or data extraction
-    - `configuration` may be None if the device has not been configured yet
-    """
-    return ConfigurationSerializer.serialize(config)
-
-
-@tool  # type: ignore[misc]
-def human_interaction_hook(question: str) -> str:
-    """
-    Ask the human operator a question and return their answer.
-
-    Use this tool when you need information, confirmation, or guidance that
-    cannot be determined from the available tools or the current context.
-
-    Args:
-        question: The question or request to present to the human operator.
-
-    Returns
-    -------
-        The human operator's response as a string.
-    """
-    return input(f"[Human Input Required]\n{question}\n> ")
-
-
-@tool  # type: ignore[misc]
-def send_email(subject: str, message: str) -> None:
-    """
-    Send an email notification to the configured receiver.
-
-    Use this tool to alert the human operator about findings, incidents, or
-    completed tasks that require their attention outside the current session.
-
-    Args:
-        subject: A short, descriptive subject line for the email, which is added to the subject prefix `NSAK - AI Agent:`.
-        message: The full body of the email.
-    """
-    subject = f"NSAK - AI Agent: {subject}"
-    email_backend.send(subject, message)
-
-
-@tool  # type: ignore[misc]
-def cli(command: str, timeout: int = 120) -> tuple[int, str, str]:
-    """
-    Run an arbitrary CLI command and return its output.
-
-    Use nmap for network scanning, e.g.:
-    - "nmap -sV 10.10.10.1" (service version detection)
-    - "nmap -sC -sV -oN output.txt 10.10.10.1" (default scripts + versions)
-    - "nmap -p 1-1000 10.10.10.1" (port range)
-
-    Use `apt install` if a cli tool is missing.
-
-    Args:
-        command: Full CLI command string to execute.
-        timeout: Max seconds to wait (default 120, increase for large scans).
-
-    Returns
-    -------
-        Tuple of (exit_code, stdout, stderr).
-        Exit code 0 means success. Check stderr on failure.
-    """
-    try:
-        completed_process = subprocess.run(  # noqa: S603
-            shlex.split(command),
-            capture_output=True,
-            text=True,
-            check=True,
-            timeout=timeout,
-        )
-        return (
-            completed_process.returncode,
-            completed_process.stdout,
-            completed_process.stderr,
-        )
-    except subprocess.TimeoutExpired as e:
-        returncode = -1
-        stdout = str(e.stdout) or ""
-        stderr = f"Command timed out after {timeout}s"
-        return (
-            # Special return code
-            returncode,
-            stdout,
-            stderr,
-        )
-    except subprocess.CalledProcessError as e:
-        return (
-            e.returncode,
-            e.stdout,
-            e.stderr,
-        )
-    except Exception as e:
-        logger.exception("An error occurred during CLI tool usage.", exc_info=e)
-        returncode = -1
-        stdout = ""
-        stderr = f"An error occurred during CLI tool usage: {e}"
-        return (
-            # Special return code
-            returncode,
-            stdout,
-            stderr,
-        )
+)
 
 
 class AiAgent:
@@ -178,21 +50,17 @@ class AiAgent:
     Abstraction for an AiAgent.
     """
 
-    tools = (
-        cli,
-        host_configuration,
-        send_email,
-    )
     system_prompt = "You are in a cybersecurity simulation and act as the purple team."
 
-    def __init__(self, model: str, base_url: str, interactive: bool = False) -> None:
+    def __init__(
+        self,
+        model: str,
+        base_url: str,
+        tools: Sequence[BaseTool | Callable[..., Any] | dict[str, Any]] | None = None,
+    ) -> None:
         """
         Initializes the AiAgent and the connection to its backend model.
         """
-        tools = list(self.tools)
-        if interactive:
-            tools.append(human_interaction_hook)
-
         self.model = AiAgent.create_model(model, base_url)
         self.agent = create_agent(
             self.model,
@@ -223,6 +91,16 @@ class AiAgent:
 
         return create_model(_model, base_url, kwargs)
 
+    async def ainvoke(self, prompt: str, role: str = "user") -> AIMessage:
+        """
+        Invoke a prompt.
+
+        :param role:
+        :param prompt:
+        :return:
+        """
+        return self.agent.ainvoke({"messages": [{"role": role, "content": prompt}]})
+
     def invoke(self, prompt: str, role: str = "user") -> AIMessage:
         """
         Invoke a prompt.
@@ -231,13 +109,13 @@ class AiAgent:
         :param prompt:
         :return:
         """
-        return self.agent.invoke({"messages": [{"role": role, "content": prompt}]})
+        return asyncio.run(self.ainvoke(prompt, role))
 
-    def run(self, prompt: str) -> Generator[str]:
+    async def run(self, prompt: str) -> AsyncGenerator[str, None]:
         """
         Run the AI-agent with the given prompt.
         """
-        result = self.invoke(prompt)
+        result = await self.ainvoke(prompt)
         for message in result.get("messages", []):
             role = type(message).__name__.replace("Message", "")
 
@@ -248,10 +126,10 @@ class AiAgent:
 
             yield f"[{role}]\n{content}\n"
 
-    def run_interactive(
+    async def run_interactive(
         self,
         prompt: str,
-    ) -> Generator[str]:
+    ) -> AsyncGenerator[str, None]:
         """
         Run the agent in a continuous interactive loop, maintaining conversation history.
 
@@ -265,7 +143,7 @@ class AiAgent:
 
         while True:
             prev_count = len(messages)
-            result = self.agent.invoke({"messages": messages})
+            result = await self.agent.ainvoke({"messages": messages})
             messages = result.get("messages", messages)
 
             for message in messages[prev_count:]:
@@ -286,11 +164,31 @@ class AiAgent:
             messages.append({"role": "user", "content": next_instruction})
 
 
-def create_ai_agent(interactive: bool = False) -> AiAgent:
+async def create_ai_agent(interactive: bool = False) -> AiAgent:
     """
     Creates an AI-agent from the runtime configuration.
     """
     if config.ai is None:
         message = "ai is not configured. Run: nsak config set ai.model <provider:model:tag> and nsak config set ai.base_url <url>"
         raise RuntimeError(message)
-    return AiAgent(config.ai.model, config.ai.base_url, interactive)
+
+    tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] = [
+        cli_tool,
+        host_configuration,
+        send_email,
+    ]
+
+    if interactive:
+        tools.append(human_interaction_hook)
+
+    try:
+        mcp_tools = await mcp_client.get_tools()
+        tools.extend(mcp_tools)
+    except Exception as e:
+        logger.warning("Failed to load MCP tools; continuing without them.", exc_info=e)
+
+    return AiAgent(
+        config.ai.model,
+        config.ai.base_url,
+        tools,
+    )

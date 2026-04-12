@@ -19,6 +19,7 @@ from .configuration_serializer import (
     ConfigurationSerializer,
     deserialize_value,
     resolved_hints,
+    serialize_value,
     unwrap_optional,
 )
 from .container_info import ContainerInfo
@@ -260,8 +261,9 @@ class ConfigurationManager:
             raise ValueError(message)
 
         coerced = deserialize_value(target_type, raw)
+        stored = serialize_value(target_type, coerced)
         data = _load_raw()
-        _set_nested(data, parts, coerced)
+        _set_nested(data, parts, stored)
         _save_raw(data)
 
     @classmethod

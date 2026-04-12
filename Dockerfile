@@ -3,7 +3,19 @@ FROM docker.io/kalilinux/kali-rolling as base_image
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ca-certificates python3 python3-dev curl iproute2 arp-scan dsniff iptables \
     openssh-client dnsutils nmap smbclient ldap-utils netcat-openbsd snmp vim iputils-* sshpass
+ \
+    # NVM environment variables
+ENV NVM_DIR=/root/.nvm
+ENV NODE_VERSION=18
 
+# Install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+# Install Node via nvm
+RUN bash -c "source $NVM_DIR/nvm.sh && \
+    nvm install $NODE_VERSION && \
+    nvm use $NODE_VERSION && \
+    nvm alias default $NODE_VERSION"
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
@@ -32,4 +44,5 @@ RUN uv sync && \
     uv build && \
     uv tool install dist/nsak-0.1.0-py3-none-any.whl
 
+# drawio-mcp-server
 ENTRYPOINT ["nsak", "scenario", "execute"]
