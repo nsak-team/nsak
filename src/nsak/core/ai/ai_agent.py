@@ -1,4 +1,5 @@
 import asyncio
+import base64
 import logging
 from pprint import pformat
 from typing import Any, AsyncGenerator, Callable, Sequence
@@ -11,6 +12,7 @@ from langchain_core.tools import BaseTool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_ollama.chat_models import ChatOllama
 from langchain_openai.chat_models import ChatOpenAI
+from langgraph_cli.cli import dev
 
 from nsak.core.ai.tools import (
     cli_tool,
@@ -34,12 +36,16 @@ PROVIDER_MAP: dict[str, Callable[[str, str, Any], BaseChatModel]] = {
     ),
 }
 
+credentials = base64.b64encode(b"nsak:fec515d7-07bb-4a0a-b089-a0588465ccaf").decode()
+
 mcp_client = MultiServerMCPClient(
     {
         "drawio": {
-            "transport": "stdio",
-            "command": "npx",
-            "args": ["drawio-mcp"],
+            "transport": "streamable_http",
+            "url": "https://drawio.hiube.ch/mcp",
+            "headers": {
+                "Authorization": f"Basic {credentials}",
+            },
         }
     }
 )
@@ -66,6 +72,8 @@ class AiAgent:
             self.model,
             tools=tools,
             system_prompt=self.system_prompt,
+            # Used in langchain webui
+            name="agent",
         )
 
     @staticmethod
@@ -187,8 +195,12 @@ async def create_ai_agent(interactive: bool = False) -> AiAgent:
     except Exception as e:
         logger.warning("Failed to load MCP tools; continuing without them.", exc_info=e)
 
-    return AiAgent(
+    ai_agent = AiAgent(
         config.ai.model,
         config.ai.base_url,
         tools,
     )
+
+    dev()
+
+    return ai_agent

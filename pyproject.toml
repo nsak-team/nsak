@@ -17,6 +17,7 @@ dependencies = [
     "langchain-ollama>=1.0.1",
     "python-dotenv>=1.2.2",
     "langchain-mcp-adapters>=0.2.2",
+    "langgraph-cli[inmem]>=0.4.21",
 ]
 
 [dependency-groups]

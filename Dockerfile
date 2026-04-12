@@ -1,12 +1,12 @@
 FROM docker.io/kalilinux/kali-rolling as base_image
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates python3 python3-dev curl iproute2 arp-scan dsniff iptables \
-    openssh-client dnsutils nmap smbclient ldap-utils netcat-openbsd snmp vim iputils-* sshpass
- \
-    # NVM environment variables
+    apt-get install -y --no-install-recommends ca-certificates python3 python3-dev curl wget iproute2 arp-scan dsniff iptables \
+    openssh-client dnsutils nmap smbclient ldap-utils netcat-openbsd snmp vim iputils-* sshpass autossh git
+
+# NVM environment variables
 ENV NVM_DIR=/root/.nvm
-ENV NODE_VERSION=18
+ENV NODE_VERSION=22
 
 # Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -17,10 +17,11 @@ RUN bash -c "source $NVM_DIR/nvm.sh && \
     nvm use $NODE_VERSION && \
     nvm alias default $NODE_VERSION"
 
+WORKDIR nsak
+RUN git clone https://github.com/langchain-ai/agent-chat-ui.git
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
 
-WORKDIR nsak
 COPY . .
 
 FROM base_image
