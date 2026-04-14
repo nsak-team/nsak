@@ -25,7 +25,7 @@ name: virtual-enterprise-network-lab
 # │  └──────────────────────┘     │  nsak-lan .200  (recon node, dual-homed) │  │
 # │                               └──────────────────────────────────────────┘  │
 # │                                                                             │
-# │  Firewall policy (iptables):                                                │
+# │  Firewall policy (nftables):                                                │
 # │    WAN → DMZ  : 80/443 + 53 → dmz-server only                               │
 # │    WAN → LAN  : BLOCKED                                                     │
 # │    DMZ → LAN  : BLOCKED                                                     │
@@ -96,7 +96,7 @@ topology:
         - ip addr add 10.0.1.10/24 dev eth1
         - ip route replace default via 10.0.1.254/24
 
-    # ── Firewall (Alpine + iptables) ──────────────────────────────────────────────
+    # ── Firewall (Alpine + nftables) ──────────────────────────────────────────────
     # Tri-homed router/firewall: eth1=WAN, eth2=DMZ, eth3=LAN.
     # All inter-zone traffic is filtered here.
     # ip_forward enables kernel-level packet routing between interfaces.
@@ -109,31 +109,35 @@ topology:
       sysctls:
         net.ipv4.ip_forward: 1  # required to forward packets between interfaces
       exec:
-        - apk add --no-cache iptables iproute2
+        - apk add --no-cache nftables iproute2
         - ip addr add 10.0.1.1/24 dev eth1
         - ip addr add 172.16.1.1/24 dev eth2
         - ip addr add 192.168.10.1/24 dev eth3
         - ip route replace default via 10.0.1.254
         # Default FORWARD policy: drop everything not explicitly allowed
-        - iptables -P FORWARD DROP
+        - nft add table inet filter
+        - sh -c "nft add chain inet filter forward '{ type filter hook forward priority 0; policy drop; }'"
         # Allow return traffic for already-established connections (stateful firewall)
-        - iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+        - nft add rule inet filter forward ct state established,related accept
         # WAN → DMZ: only HTTP/HTTPS and DNS to dmz-server
-        - iptables -A FORWARD -i eth1 -o eth2 -d 172.16.1.10 -p tcp -m multiport --dports 80,443 -j ACCEPT
-        - iptables -A FORWARD -i eth1 -o eth2 -d 172.16.1.10 -p udp --dport 53 -j ACCEPT
-        - iptables -A FORWARD -i eth1 -o eth2 -d 172.16.1.10 -p tcp --dport 53 -j ACCEPT
+        - sh -c "nft add rule inet filter forward iifname eth1 oifname eth2 ip daddr 172.16.1.10 tcp dport '{ 80, 443 }' accept"
+        - nft add rule inet filter forward iifname eth1 oifname eth2 ip daddr 172.16.1.10 udp dport 53 accept
+        - nft add rule inet filter forward iifname eth1 oifname eth2 ip daddr 172.16.1.10 tcp dport 53 accept
         # WAN → LAN: completely blocked (no rules = default DROP applies)
         # DMZ → LAN: completely blocked
-        - iptables -A FORWARD -i eth2 -o eth3 -j DROP
+        - nft add rule inet filter forward iifname eth2 oifname eth3 drop
         # LAN → DMZ: allowed (internal users browse DMZ services)
-        - iptables -A FORWARD -i eth3 -o eth2 -j ACCEPT
+        - nft add rule inet filter forward iifname eth3 oifname eth2 accept
         # LAN → WAN: HTTP/HTTPS only, with source NAT (masquerade)
-        - iptables -A FORWARD -i eth3 -o eth1 -p tcp -m multiport --dports 80,443 -j ACCEPT
-        - iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -o eth1 -j MASQUERADE
-        - iptables -t nat -A POSTROUTING -s 172.16.1.0/24  -o eth1 -j MASQUERADE
+        - sh -c "nft add rule inet filter forward iifname eth3 oifname eth1 tcp dport '{ 80, 443 }' accept"
+        # NAT: source masquerade for LAN and DMZ egress to WAN
+        - nft add table ip nat
+        - sh -c "nft add chain ip nat postrouting '{ type nat hook postrouting priority 100; }'"
+        - nft add rule ip nat postrouting ip saddr 192.168.10.0/24 oifname eth1 masquerade
+        - nft add rule ip nat postrouting ip saddr 172.16.1.0/24 oifname eth1 masquerade
         # DMZ → WAN: DNS forwarding (dmz-server forwards unknown queries to 8.8.8.8)
-        - iptables -A FORWARD -i eth2 -o eth1 -p udp --dport 53 -j ACCEPT
-        - iptables -A FORWARD -i eth2 -o eth1 -p tcp --dport 53 -j ACCEPT
+        - nft add rule inet filter forward iifname eth2 oifname eth1 udp dport 53 accept
+        - nft add rule inet filter forward iifname eth2 oifname eth1 tcp dport 53 accept
 
     # ─────────────────────────────────────────────────────────────────────────────
     #  DMZ Nodes  (172.16.1.0/24)
@@ -224,7 +228,7 @@ topology:
         - sh -c 'echo "nameserver 172.16.1.10" > /etc/resolv.conf'
         - ssh-keygen -A
         - sh -c 'echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config'
-        - sh -c 'printf "Acme Corp AG - Authorized Access Only\nThis system is monitored.\n" > /etc/ssh/banner.txt'
+        - sh -c 'printf "NSAK-Enterprise - Authorized Access Only\nThis system is monitored.\n" > /etc/ssh/banner.txt'
         - sh -c 'echo "Banner /etc/ssh/banner.txt" >> /etc/ssh/sshd_config'
         - adduser -D -s /bin/sh asmith
         - sh -c 'echo "asmith:Password123!" | chpasswd'
