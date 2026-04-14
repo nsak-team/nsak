@@ -54,8 +54,10 @@ topology:
 \subsection{Network Topology}\label{subsec:test-network-topology}
 
 The network topology shown in Figure~\ref{fig:virtual-test-environments} illustrates the IP addressing scheme and the interconnections between the individual components.
-The \mintinline{bash} |{external} node represents the perspective of an outside attacker interacting with the network from the \gls{WAN}.|
-The \mintinline{bash}| {nsak}  container can be deployed across different network segments, enabling the simulation of various attacker positions and reconnaissance scenarios. |
+
+The \texttt{external} node represents an external attacker interacting with the network from the \gls{WAN}.
+
+The \texttt{nsak} container can be deployed in different network segments, enabling the simulation of various attacker positions and reconnaissance scenarios.
 
 \begin{figure}[H]
 	\centering
@@ -63,12 +65,6 @@ The \mintinline{bash}| {nsak}  container can be deployed across different networ
 	\caption{topology-test-environment}
 	\label{fig:virtual-test-environments}
 \end{figure}
-
-\begin{listing}[H]
-	\inputminted{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{test}
-	\label{}
-\end{listing}
 
 
 \subsection{Services}\label{subsec:reproducible-test-environment-services}
@@ -78,10 +74,10 @@ To evaluate reconnaissance scenarios, common services must run on endpoints.
 \gls{BIND}  is a complete implementation of the DNS protocol that can be configured with \mintinline{bash} | {named.conf} | file as an authoritative name server and resolver.
 In the test lab illustrated in~\ref{fig:virtual-test-environments}, we combined the functionality of the web server and DNS server for simplicity.
 
-During the \gls{DMZ}-server container build process, a set-up shell script at \mintinline{bash} | {lib/environments/virtual_enterprise_network_lab/scripts/dmz_setup.sh} gets executed.|
+During the \gls{DMZ}-server container build process, a set-up shell script at \\ \mintinline{bash}| {lib/environments/virtual_enterprise_network_lab/scripts/dmz_setup.sh} | gets executed.
 
 In the First part the \gls{BIND} DNS authoritative \mintinline{bash} | {named.conf} | file, DNS options and master zones to map the domain and for reverse lookup getting created.
-In the forward zone, domain names map to IP addresses, and in the reverse zone, files are resolved to IP addresses.
+In the forward zone, domain names map to IP addresses, and in the reverse zone, files are resolved to IP addresses.The files are located under \mintinline{text}|libs/environments/virtual_enterprise_network_lab/scripts/dmz-web-server| \cite{nsakRepository2026}.
 
 \todo{add filepath and combine with other sections}
 
