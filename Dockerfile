@@ -18,7 +18,6 @@ RUN bash -c "source $NVM_DIR/nvm.sh && \
     nvm alias default $NODE_VERSION"
 
 WORKDIR nsak
-RUN git clone https://github.com/langchain-ai/agent-chat-ui.git
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
 

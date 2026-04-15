@@ -324,9 +324,6 @@ topology:
         - ip route replace default via 172.20.20.1 dev eth0
         - sh -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
       mgmt-ipv4: 172.20.20.10
-      ports:
-        - 3000:3000/tcp
-        - 2024:2024/tcp
 
   links:
     # WAN segment (WAN 10.0.1.0/24)

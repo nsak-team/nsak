@@ -12,7 +12,6 @@ from langchain_core.tools import BaseTool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_ollama.chat_models import ChatOllama
 from langchain_openai.chat_models import ChatOpenAI
-from langgraph_cli.cli import dev
 
 from nsak.core.ai.tools import (
     cli_tool,
@@ -72,8 +71,6 @@ class AiAgent:
             self.model,
             tools=tools,
             system_prompt=self.system_prompt,
-            # Used in langchain webui
-            name="agent",
         )
 
     @staticmethod
@@ -195,12 +192,8 @@ async def create_ai_agent(interactive: bool = False) -> AiAgent:
     except Exception as e:
         logger.warning("Failed to load MCP tools; continuing without them.", exc_info=e)
 
-    ai_agent = AiAgent(
+    return AiAgent(
         config.ai.model,
         config.ai.base_url,
         tools,
     )
-
-    dev()
-
-    return ai_agent

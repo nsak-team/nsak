@@ -1,0 +1,15 @@
+services:
+  # ...
+
+  drawio-mcp-server:
+    build: ./drawio-mcp-server
+    container_name: drawio-mcp-server
+    restart: unless-stopped
+    command:
+      - "node"
+      - "packages/drawio-mcp-server/build/index.js"
+      - "--transport"
+      - "http"
+      - "--editor"
+      - "--http-port"
+      - "3000"
