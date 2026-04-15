@@ -7,7 +7,7 @@
 	linenos=false,
 	fontsize=\tiny,
 	firstline=99,
-	lastline=136
+	lastline=140
 	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
 	\caption{Firewall}
 	\label{lst:firewall}
@@ -20,7 +20,7 @@ Listing \ref{lst:firewall} shows the nf-tabels rules set for segmentation of wan
 	linenos=false,
 	fontsize=\tiny,
 	firstline=142,
-	lastline=167
+	lastline=171
 	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
 	\caption{Web-Server and DNS}
 	\label{lst:dmz-server}
@@ -33,7 +33,7 @@ Listing~\ref{lst:dmz-server} shows a web server and DNS server node in the Conta
 	linenos=false,
 	fontsize=\tiny,
 	firstline=173,
-	lastline=201
+	lastline=205
 	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
 	\caption{File Server and Domain Control}
 	\label{lst:ctrl-server}
@@ -45,23 +45,26 @@ The LAN segment consists of four nodes, as shown in the following code snippets.
 	\inputminted[
 	linenos=false,
 	fontsize=\tiny,
-	firstline=203,
-	lastline=266
+	firstline=207,
+	lastline=270
 	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
 	\caption{Work-Stations Bob and Alice}
-	\label{lst:nodes}
+	\label{lst:workstations}
 \end{listing}
 
 \begin{listing}[H]
 	\inputminted[
 	linenos=false,
 	fontsize=\tiny,
-	firstline=268,
-	lastline=299
+	firstline=272,
+	lastline=303
 	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{Work-Stations}
+	\caption{Printer}
 	\label{lst:printer}
 \end{listing}
+
+
+Listing~\ref{lst:work-stations} illustrates two workstations, Alice and Bob, the printer shown in Listing~\ref{lst:printer}, and the domain controller with Samba file server shown in Listing~\ref{lst:ctrl-server}.
 
 \begin{listing}[H]
 	\inputminted[
@@ -70,18 +73,18 @@ The LAN segment consists of four nodes, as shown in the following code snippets.
 	firstline=329,
 	lastline=343
 	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{Work-Stations}
+	\caption{Links}
 	\label{lst:links}
 \end{listing}
 
-Listing~\ref{lst:work-stations} illustrates two workstations, Alice and Bob, the printer shown in Listing~\ref{lst:printer}, and the domain controller with Samba file server shown in Listing~\ref{lst:ctrl-server}.
+Listing~\ref{lst:links} shows the connection between endpoints over the defined interfaces.
 
-\subsection{Introduced Vulnerabilities}\label{subse:set-up-scripte}
+\subsection{Flaws and Vulnerabilities}\label{subsec:flaws-and-vulnerabilities}
 
 
 \begin{listing}[H]
 	\caption{Introduced Vulnerabilities in the Virtual Enterprise Network}
-	\label{lst:enumerated-findings}
+	\label{lst:flaws-and-vulnerabilities}
 	\begin{minted}[
 		fontsize=\scriptsize,
 		breaklines,
