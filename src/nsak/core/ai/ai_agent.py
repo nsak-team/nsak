@@ -1,4 +1,5 @@
 import asyncio
+import base64
 import logging
 from pprint import pformat
 from typing import Any, AsyncGenerator, Callable, Sequence
@@ -34,12 +35,16 @@ PROVIDER_MAP: dict[str, Callable[[str, str, Any], BaseChatModel]] = {
     ),
 }
 
+credentials = base64.b64encode(b"nsak:fec515d7-07bb-4a0a-b089-a0588465ccaf").decode()
+
 mcp_client = MultiServerMCPClient(
     {
         "drawio": {
-            "transport": "stdio",
-            "command": "npx",
-            "args": ["drawio-mcp"],
+            "transport": "streamable_http",
+            "url": "https://drawio.hiube.ch/mcp",
+            "headers": {
+                "Authorization": f"Basic {credentials}",
+            },
         }
     }
 )

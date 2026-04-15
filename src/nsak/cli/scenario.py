@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from pydoc import locate
 from typing import Any
 
 import click
@@ -88,10 +89,7 @@ def create_scenario_command(
             click.echo(e)
 
     for name, argument in scenario.interface.arguments.items():
-        kwargs = dict(
-            default=argument.default,
-            prompt=name,
-        )
+        kwargs = dict(default=argument.default, prompt=name, type=locate(argument.type))
         if name == "interface":
             try:
                 choices = list(config.device.target_ethernets.keys())

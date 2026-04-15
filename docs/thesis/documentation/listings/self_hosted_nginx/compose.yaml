@@ -1,0 +1,27 @@
+services:
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+      - URL=hiube.ch
+      - VALIDATION=http
+      - SUBDOMAINS=ai,
+      - EMAIL=<my-email>
+      - ONLY_SUBDOMAINS=true
+      - EXTRA_DOMAINS= #optional
+      - STAGING=false #optional
+      - DISABLE_F2B= #optional
+      - SWAG_AUTORELOAD= #optional
+      - SWAG_AUTORELOAD_WATCHLIST= #optional
+    volumes:
+      - /home/ai/swag:/config
+    ports:
+      - 443:443
+      - 80:80
+      - 443:443/udp
+    restart: unless-stopped

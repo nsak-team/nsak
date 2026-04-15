@@ -1,0 +1,11 @@
+services:
+  # ...
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    volumes:
+      - /home/ai/open_webui:/app/backend/data # Use a named volume for persistence
+    environment:
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+    restart: always

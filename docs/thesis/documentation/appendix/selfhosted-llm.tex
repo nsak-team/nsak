@@ -7,6 +7,8 @@ One of the possibilities to avoid this risk was the usage of self-hosted \glsxtr
 Besides eliminating the costs for \glsxtrshort{AI} tokens, at least during the development phase, it also allows the quick evaluation of different \glsxtrshort{AI} Models.
 Depending on the quality and performance of the smaller models running in the self-hosted setup we can consider not using a cloud based \glsxtrshort{LLM} at all.
 
+\todo{Refactor the section: Move all information in their respective subsections, etc.}
+
 \subsection{Hardware Setup}\label{subsec:hw_setup}
 
 \begin{table}[h]
@@ -28,187 +30,18 @@ The 8 GB \glsxtrshort{VRAM} of the RTX 3070 allows us to run models with up to 7
 
 \subsection{System Setup}\label{subsec:system_setup}
 
-The system setup described in~\ref{lst:llm-system-setup} will configure and expose the Ollama API and OpenWeb UI via NGINX,
-which provided a chat GUI to interact with Ollama.
+The system setup described in~\ref{lst:llm-system-setup} will configure and expose the Ollama \gls{API} and OpenWeb UI via NGINX,
+which provided a chat \gls{GUI} to interact with Ollama.
 In contrast to Ollama, which runs directly on the host, the other services are run in containers managed by rootles podman and defined the docker-compose.yml~\ref{lst:nginx-openwebui-docker-compose-yml}.
-The Nginx default.conf~\ref{lst:nginx-default-conf} configures the web server to terminate the SSL connection and
-act as reverse proxy for the \enquote{Open WebUI} and the Ollama API under the directory \mintinline{bash}{/llm/}.
+The \gls{Nginx} default.conf~\ref{lst:nginx-default-conf} configures the web server to terminate the SSL connection and
+act as reverse proxy for the \enquote{Open WebUI} and the Ollama \gls{API} under the directory \mintinline{bash}{/llm/}.
 
 \paragraph{Services:}
 \begin{itemize}
-    \item Ollama: \glsxtrshort{LLM} manager, exposing an API for prompts and other interactions (host).
-    \item Swag: Nginx web server with Certbot for automated SSL certificate generation (containerized).
+    \item Ollama: \glsxtrshort{LLM} manager, exposing an \gls{API} for prompts and other interactions (host).
+    \item Swag: \gls{Nginx} web server with Certbot for automated SSL certificate generation (containerized).
     \item Open WebUI: Web based chat interface for \glsxtrshort{LLM} managers (containerized).
 \end{itemize}
-
-\newpage
-\begin{listing}[H]
-\begin{minted}{bash}
-# Login as default user in sudoers or root user
-
-# Check nvidia driver is loaded and the GPU was correctly detected, otherwise install the according drivers
-nvidia-smi
-
-# Install Ollama, podman, podman-compose and enable systemd service
-sudo pacman -Syu ollama ollama-cuda podman podman-compose
-sudo systemctl enable --now ollama
-sudo systemctl status ollama
-
-# Download and run a qwen coder 7b model for testing
-ollama pull qwen2.5-coder:7b
-ollama run qwen2.5-coder
-
-# Create a new user for isolating the services
-sudo useradd -m ai
-sudo passwd ai
-
-# Enable linger for user ai, required to run services such as rootles containers without being logged in
-sudo loginctl enable-linger ai
-
-# Edit the sysctl.conf file
-sudo vim /etc/sysctl.conf
-
-# Add the following lines, required for rootless podman to use the ports 443 and 80
-net.ipv4.ip_unprivileged_port_start=443
-net.ipv4.ip_unprivileged_port_start=80
-
-# Load the new config
-sudo sysctl -p
-
-# Login as user ai and create the following directory and file
-mkdir -p .config.containers
-vim .config/containers/containers.conf
-
-# Add the following lines, required for rootless podman (podman mangages cgroups directly instead of systemd)
-[engine]
-cgroup_manager="cgroupfs"
-
-# Create a docker compose file and add contents from lst:nginx-openwebui-docker-compose-yml
-vim docker-compose.yml
-
-# Start the services, so that they create the volume mappings etc, the containers will probably fail for now
-podman-compose up -d
-podman-compose down
-
-# Open the nginx defalult.conf and add the contents from lst:nginx-default-conf
-vim swag/nginx/site-confs/default.conf
-
-# Start the services again, this time they should run successfully.
-# Certbot will fail to perform the http challange for issueing the TLS certifiacte,
-# as long as DynDNS and the port forwarding are not set up properly.
-podman-compose up -d
-\end{minted}
-\caption{Local LLM System Setup}
-\label{lst:llm-system-setup}
-\end{listing}
-
-\newpage
-\begin{listing}[H]
-\begin{minted}{yaml}
-services:
-  swag:
-    image: lscr.io/linuxserver/swag:latest
-    container_name: swag
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Zurich
-      - URL=hiube.ch
-      - VALIDATION=http
-      - SUBDOMAINS=ai,
-      - EMAIL=<my-email>
-      - ONLY_SUBDOMAINS=true
-      - EXTRA_DOMAINS= #optional
-      - STAGING=false #optional
-      - DISABLE_F2B= #optional
-      - SWAG_AUTORELOAD= #optional
-      - SWAG_AUTORELOAD_WATCHLIST= #optional
-    volumes:
-      - /home/ai/swag:/config
-    ports:
-      - 443:443
-      - 80:80 #optional
-      - 443:443/udp #optional
-    restart: unless-stopped
-
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    container_name: open-webui
-    volumes:
-      - /home/ai/open_webui:/app/backend/data # Use a named volume for persistence
-    environment:
-      OLLAMA_BASE_URL: http://host.docker.internal:11434
-    restart: always
-\end{minted}
-\caption{/home/ai/docker-compose.yml}
-\label{lst:nginx-openwebui-docker-compose-yml}
-\end{listing}
-
-\newpage
-\begin{listing}[H]
-\begin{minted}{nginx}
-# redirect all traffic to https
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name ai.hiube.ch;
-
-    location / {
-        return 301 https://$host$request_uri;
-    }
-}
-
-# main server block
-server {
-    listen 443 ssl default_server;
-    listen [::]:443 ssl default_server;
-    server_name ai.hiube.ch;
-    include /config/nginx/ssl.conf;
-    root /config/www;
-    index index.html index.htm index.php;
-
-    # enable subfolder method reverse proxy confs
-    # include /config/nginx/proxy-confs/*.subfolder.conf;
-
-    # Reverse proxy for Open WebUI
-    location / {
-        proxy_pass http://open-webui:8080;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        # Required for WebSockets
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_read_timeout 900s;
-        proxy_send_timeout 900s;
-    }
-
-    # Reverse proxy for Ollama
-    location /llm/ {
-        auth_basic "Restricted Access";
-        auth_basic_user_file /etc/nginx/.htpasswd;
-
-        # If authentication is successful, forward the request to Ollama
-        # The trailing slash is important, so that ollma does not see the /llm/ as part of the path!
-        proxy_pass http://host.docker.internal:11434/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-        # Increase timeouts for slow model responses to prevent 504 Gateway Timeout errors
-        proxy_connect_timeout 300s;
-        proxy_send_timeout 300s;
-        proxy_read_timeout 300s;
-    }
-}
-\end{minted}
-\caption{swag/nginx/site-confs/default.conf}
-\label{lst:nginx-default-conf}
-\end{listing}
 
 \newpage
 \subsubsection{System Hardening}\label{subsubsec:system_hardening}
@@ -223,12 +56,6 @@ before exposing the services to the internet.
 # Install UFW
 sudo pacman -Syu ufw
 sudo ufw status
-
-# Allow all outgoing connections
-sudo ufw default allow outgoing
-
-# Deny all incoming connections per default
-sudo ufw default deny incoming
 
 # Allow SSH for remote access
 sudo ufw allow ssh
@@ -281,7 +108,7 @@ This can be achieved with port forwarding rules on the \gls{FRITZ!Box}, as shown
     \label{fig:fritzbox_port_forwarding}
 \end{figure}
 
-The Open WebUI and Ollama API should already be reachable via \enquote{ai.hiube.ch}, but we will receive a security warning because there is no valid SSL certificate.
+The Open WebUI and Ollama \gls{API} should already be reachable via \enquote{ai.hiube.ch}, but we will receive a security warning because there is no valid SSL certificate.
 The easiest way to generate the certificate, is to trigger certbot by restarting the \enquote{swag} service as shown in the listing below~\ref{lst:restart-swag-container}.\\
 
 \begin{listing}[H]
@@ -305,4 +132,11 @@ The screenshot~\ref{fig:open_webui_evaluation} shows a quick test with \enquote{
     \label{fig:open_webui_evaluation}
 \end{figure}
 
-Later on we can use the Ollama API served under \mintinline{bash}{/llm/} as a backend for \glsxtrshort{AI} agents.
+Later on we can use the Ollama \gls{API} served under \mintinline{bash}{/llm/} as a backend for \glsxtrshort{AI} agents.
+
+\include{appendix/selfhosted-services/base-setup}
+\include{appendix/selfhosted-services/nginx-reverse-proxy}
+\include{appendix/selfhosted-services/ollama-llm-server}
+\include{appendix/selfhosted-services/openwebui-llm-web-chat}
+\include{appendix/selfhosted-services/drawio-mcp-diagram-tool}
+\include{appendix/selfhosted-services/netbox-network-inventory-system}
