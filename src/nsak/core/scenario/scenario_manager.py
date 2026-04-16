@@ -195,7 +195,7 @@ class ScenarioManager(ResourceManager[Scenario]):
         args.append(f"nsak/scenario/{scenario.path.name}")
         args.append(scenario.path.name)
         for key, value in kwargs.items():
-            args.extend([f"--{key}", value])
+            args.extend([f"--{key}", str(value)])
         completed_process = subprocess.run(args)  # noqa: S603
 
         return completed_process.returncode

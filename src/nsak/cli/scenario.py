@@ -140,7 +140,7 @@ def kill_scenario(name: str) -> None:
         click.echo(e, err=True)
 
 
-@scenario_group.command("kill-all")
+@scenario_group.command("killswitch")
 def kill_all_scenarios() -> None:
     """
     Forcefully kill all running scenario containers (SIGKILL, last resort).

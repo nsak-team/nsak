@@ -2,7 +2,7 @@ FROM docker.io/kalilinux/kali-rolling as base_image
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ca-certificates python3 python3-dev curl wget iproute2 arp-scan dsniff iptables \
-    openssh-client dnsutils nmap smbclient ldap-utils netcat-openbsd snmp vim iputils-* sshpass autossh git
+    openssh-client dnsutils nmap smbclient ldap-utils netcat-openbsd snmp vim iputils-* sshpass autossh git sudo
 
 # NVM environment variables
 ENV NVM_DIR=/root/.nvm

@@ -1,22 +1,94 @@
 \newpage
 \section{AI \textendash Scenarios}\label{sec:ai-scenarios-implementation}
 
+
+
 \subsection{AI Agent}\label{subsec:ai-scenarios-implementation-ai-agent}
 LangChain/LangGraph
 
+\subsubsection{Tool Calling Concepts}\label{subsubsec:ai-agent-tool-calling-concepts}
+
+\begin{itemize}
+    \item \gls{MCP}
+    \item Skills
+    \item \gls{CLI} Access
+    \item LangChain Tools
+\end{itemize}
+
+\subsubsection{Tool Calling Models}\label{subsubsec:ai-agent-tool-calling-models}
+Considering it's limited size of 7 billion parameters, we were quite happy with our first test model \enquote{qwen2.5:7b-coder}.
+But as it turns out, not all models are capable of calling tools.
+Often, multiple variants of the same model are available, and they don't only for differ in size,
+but also for different strengths or capabilities such as tool calling.
+The tool calling variants are often have the suffix \enquote{instruct}.
+Luckily, \enquote{qwen2.5:7b-coder} has such variant called \enquote{qwen2.5:7b-instruct}.
+
+\subsubsection{LangChain Tool: Host Configuration}\label{subsubsec:langchain-tool-host-configuration}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/ai/tools/host_configuration.py}
+    \caption{LangChain Tool: Host Configuration}
+    \label{lst:langchain-tool-host-configuraiton}
+\end{listing}
+
+\subsubsection{LangChain Tool: CLI Tool}\label{subsubsec:langchain-tool-cli-tool}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/ai/tools/cli_tool.py}
+    \caption{LangChain Tool: CLI Tool}
+    \label{lst:langchain-tool-cli-tool}
+\end{listing}
+
 \subsection{Human Interaction Hook}\label{subsec:ai-scenarios-implementation-human-interaction-hook-via-cli}
--> LangChain: Human-in-the-loop
+
+\subsubsection{LangChain Tool: Human Interaction Hook}\label{subsubsec:langchain-tool-human-interaction-hook}
+Even tough LangChain has its own concept, called \href{https://docs.langchain.com/oss/python/langchain/human-in-the-loop}{Human-in-the-loop}, to achieve the same goal,
+for now a simple pyton based tool was implemented as show in~\ref{lst:langchain-tool-human-interaction-hook}.
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/ai/tools/human_interaction_hook.py}
+    \caption{LangChain Tool: Human Interaction Hook}
+    \label{lst:langchain-tool-human-interaction-hook}
+\end{listing}
 
 \subsection{Local Logging}\label{subsec:ai-scenarios-implementation-local-logging}
 Python logger
 
-\subsection{E-Mail Altering}\label{subsec:ai-scenarios-implementation-e-mail-altering}
-SMTP
+\subsection{E-Mail Alerting}\label{subsec:ai-scenarios-implementation-e-mail-alerting}
+
+
+\subsubsection{LangChain Tool: E-Mail Alerting}\label{subsubsec:langchain-tool-e-mail-alerting}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/ai/tools/send_email.py}
+    \caption{LangChain Tool: E-Mail Alerting}
+    \label{lst:langchain-tool-email-alerting}
+\end{listing}
 
 \subsection{CLI Kill Switch}\label{subsec:ai-scenarios-implementation-cli-kill-switch}
-\mintinline{bash}{nsak kill}
+It's possible that an \gls{AI}-Agent starts doing unexpected, unwanted or even destructive actions.
+This was also identified as a possible risk in our~\ref{subsec:risk_assessment} and we
+This kind of misbehavior, combined with elevated permissions and tool calling capabilities via direct \gls{CLI} access,
+could lead to wide range of issues:
 
-\subsection{Scenario: AI Agent}\label{subsec:scenario:-ai-agent}
+\begin{itemize}
+    \item The \gls{AI}-Agent is stuck in a loop while using most system resources.
+    \item The \gls{AI}-Agent misconfigures the system, rendering it inaccessible or even unusable.
+    \item The \gls{AI}-Agent burns to many credits because of a bug, inefficient request or huge task.
+    \item The \gls{AI}-Agent starts an attack against a production network.
+\end{itemize}
+
+For these reasons we want to be able to kill a specific or all scenarios as fast as possible.
+As a first measure, the project team decided to add this functionality as simple \gls{CLI} commands:
+
+\begin{itemize}
+    \item \mintinline{bash}{nsak scenario kill <scenario-id>}: Kill specific scenario
+    \item \mintinline{bash}{nsak scenario killswitch}: Kill all scenarios
+    \item \mintinline{bash}{nsak killswitch}: Alias for \mintinline{nsak scenario killswitch}
+\end{itemize}
+
+
+\subsection{Scenario: AI Agent}\label{subsec:scenario-ai-agent}
 Initial and agnostic \gls{AI}-based scenario, which just starts an \gls{AI AGENT} with a custom prompt.
 
 \subsection{Scenario: AI Reconnaissance}\label{subsec:scenario-ai-reconnaissance}
