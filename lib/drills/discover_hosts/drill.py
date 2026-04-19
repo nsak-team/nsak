@@ -78,7 +78,7 @@ def discover_hosts(network_interface: EthernetConfiguration) -> NetworkDiscovery
 
 def run(interface: str) -> NetworkDiscoveryResultMap:
     """
-    Runs the DiscoverHosts Drill.
+    Drill used for discovering subnets, hosts and services for a given interface.
 
     :param interface:
     :return:

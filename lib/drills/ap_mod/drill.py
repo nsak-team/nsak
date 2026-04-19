@@ -69,6 +69,8 @@ def start(ap_config: HostapdConfig) -> int:
 #  todo use explicit arguments, maybe with the same data structure as used in MITM scenario
 def run() -> dict[str, Any]:
     """
+    AccessPoint setup used for SSID spoofing.
+
     Scenario entrypoint: create config, start hostapd, return result for cleanup.
     """
     ap_config = HostapdConfig()

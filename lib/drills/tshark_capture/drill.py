@@ -11,6 +11,9 @@ captures_dir.mkdir(parents=True, exist_ok=True)
 pcap_path = captures_dir / "rogue_ap.pcap"
 
 def run(interface: str) -> tuple[subprocess.Popen, Path]:
+    """
+    Capture packages with tshark.
+    """
     proc = subprocess.Popen([
         "tshark",
         "-i", interface,

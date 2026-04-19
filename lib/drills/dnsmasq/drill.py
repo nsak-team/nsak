@@ -1,7 +1,8 @@
 import logging
 import subprocess
 from pathlib import Path
-from nsak.core.config import RUN_PATH
+
+from nsak.core.settings import RUN_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -17,8 +18,8 @@ DEFAULT_DHCP = {
 
 def run(interface: str) -> subprocess.Popen:
     """
-    Generate a temporary dnsmasq DHCP configuration and start dnsmasq
-    bound to the given interface.
+    Generate a temporary dnsmasq DHCP configuration and start dnsmasq bound to the given interface.
+
     :param interface: ifc
     :return: subprocess.Popen
     """

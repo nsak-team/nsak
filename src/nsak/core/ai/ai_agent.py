@@ -15,6 +15,7 @@ from langchain_openai.chat_models import ChatOpenAI
 
 from nsak.core.ai.tools import (
     cli_tool,
+    generate_drill_tools,
     host_configuration,
     human_interaction_hook,
     send_email,
@@ -169,7 +170,10 @@ class AiAgent:
             messages.append({"role": "user", "content": next_instruction})
 
 
-async def create_ai_agent(interactive: bool = False) -> AiAgent:
+async def create_ai_agent(
+    interactive: bool = False,
+    enable_drill_tools: bool = False,
+) -> AiAgent:
     """
     Creates an AI-agent from the runtime configuration.
     """
@@ -182,6 +186,9 @@ async def create_ai_agent(interactive: bool = False) -> AiAgent:
         host_configuration,
         send_email,
     ]
+
+    if enable_drill_tools:
+        tools.extend(generate_drill_tools())
 
     if interactive:
         tools.append(human_interaction_hook)

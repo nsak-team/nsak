@@ -3,7 +3,9 @@ import importlib.util
 import inspect
 import logging
 import sys
-from typing import Any
+from typing import Any, Callable
+
+from mypy_extensions import KwArg
 
 from nsak.core.resource import ResourceManager
 
@@ -51,15 +53,10 @@ class DrillManager(ResourceManager[Drill]):
         return arguments
 
     @classmethod
-    def execute(cls, drill: Drill | str, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+    def get_drill_entrypoint(cls, drill: Drill) -> Callable[[KwArg(Any)], Any]:
         """
-        Load the drills entrypoint and execute it.
+        Get the drill entrypoint and return it as a synchronous callable.
         """
-        if isinstance(drill, str):
-            drill = cls.get(drill)
-
-        arguments = cls._parse_arguments(drill, **kwargs)
-
         module_name = drill.path.name
         spec = importlib.util.spec_from_file_location(
             module_name, drill.path / "drill.py"
@@ -71,22 +68,44 @@ class DrillManager(ResourceManager[Drill]):
         sys.modules[module_name] = module
         spec.loader.exec_module(module)
 
-        run_fn = getattr(module, "run", None)
+        entrypoint = getattr(module, "run", None)
 
-        if run_fn is None:
+        if entrypoint is None:
             message = f"Drill '{drill.name}' has no callable run()"
             raise Drill.InvalidResourceError(message)
 
-        message = "EXEC %s SCENARIO: %s"
-        if inspect.iscoroutinefunction(run_fn):
-            logger.warning(message, "ASYNC", drill.name)
-            return asyncio.run(run_fn(**arguments))
-        elif inspect.isfunction(run_fn):
-            logger.warning(message, "SYNC", drill.name)
-            return run_fn(**arguments)
+        def normalized_entrypoint(**kwargs: Any) -> Any:  # noqa: ANN401
+            """
+            Normalizes sync and async entrypoints.
 
-        message = f"Scenario '{drill.name}.run' is not a function or coroutine."
-        raise Drill.InvalidResourceError(message)
+            This docstring get's overwritten by the docstring of the original usage as langchain tool.
+            """
+            info = "EXEC %s SCENARIO: %s"
+            logger.info(info)
+            if inspect.iscoroutinefunction(entrypoint):
+                logger.debug(message, "ASYNC", drill.name)
+                return asyncio.run(entrypoint(**kwargs))
+            elif inspect.isfunction(entrypoint):
+                logger.debug(message, "SYNC", drill.name)
+                return entrypoint(**kwargs)
+
+            error = f"Scenario '{drill.name}.run' is not a function or coroutine."
+            raise Drill.InvalidResourceError(error)
+
+        normalized_entrypoint.__doc__ = entrypoint.__doc__
+        return normalized_entrypoint
+
+    @classmethod
+    def execute(cls, drill: Drill | str, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+        """
+        Load the drills entrypoint and execute it.
+        """
+        if isinstance(drill, str):
+            drill = cls.get(drill)
+
+        arguments = cls._parse_arguments(drill, **kwargs)
+        entrypoint = cls.get_drill_entrypoint(drill)
+        return entrypoint(**arguments)
 
     @classmethod
     def clean_up(cls, drill: Drill) -> None:

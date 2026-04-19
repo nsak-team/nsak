@@ -4,9 +4,14 @@ import subprocess
 logger = logging.getLogger(__name__)
 
 
-def run(interface: str) -> None:
+def run(interface: str, gateway_ip: str = "10.0.0.1/24") -> None:
+    """
+    Configure NSAK as the default gateway for the provided subnet on the given interface.
+
+    This is used in other drill like the nat forwarding drill.
+    """
+
     # start process
-    gateway_ip = "10.0.0.1/24"
     proc = subprocess.run(
         [
             "ip", "addr",
