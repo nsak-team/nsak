@@ -83,10 +83,10 @@ class DrillManager(ResourceManager[Drill]):
             info = "EXEC %s SCENARIO: %s"
             logger.info(info)
             if inspect.iscoroutinefunction(entrypoint):
-                logger.debug(message, "ASYNC", drill.name)
+                logger.debug(info, "ASYNC", drill.name)
                 return asyncio.run(entrypoint(**kwargs))
             elif inspect.isfunction(entrypoint):
-                logger.debug(message, "SYNC", drill.name)
+                logger.debug(info, "SYNC", drill.name)
                 return entrypoint(**kwargs)
 
             error = f"Scenario '{drill.name}.run' is not a function or coroutine."

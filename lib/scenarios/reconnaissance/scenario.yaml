@@ -1,0 +1,24 @@
+scenarios:
+  reconnaissance:
+    name: Reconnaissance
+    author: gausf1@bfh.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+    drills:
+      - discover_hosts
+
+
+    environments:
+
+    dependencies:
+      system:
+        - dsniff
+        - iptables
+      python:
+        - scapy
+
+    interface:
+      arguments:
+        interface:
+          type: str
+      return_type: None

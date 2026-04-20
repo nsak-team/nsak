@@ -18,6 +18,8 @@ dependencies = [
     "python-dotenv>=1.2.2",
     "langchain-mcp-adapters>=0.2.2",
     "art>=6.5",
+    "mypy-extensions>=1.0.0",
+
 ]
 
 [dependency-groups]
