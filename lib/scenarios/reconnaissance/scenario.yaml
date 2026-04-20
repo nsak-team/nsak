@@ -6,7 +6,7 @@ scenarios:
 
     drills:
       - discover_hosts
-
+      - port_scan
 
     environments:
 

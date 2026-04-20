@@ -15,12 +15,12 @@ def run(interface: str) -> None:
         "discover_hosts",
         interface=interface,
     )
+    DrillManager.execute(
+        "port_scan",
+        discovery_result=network_discovery_result_map,
+    )
     print(network_discovery_result_map.display())
     print(network_discovery_result_map.as_table())
-
-
-
-
 
     # for iface, result in network_discovery_result_map.results.items():
     #     print(f"[{iface}]")

@@ -1,0 +1,46 @@
+import logging
+import re
+import subprocess
+from typing import Literal
+
+from nsak.core.network import NetworkDiscoveryResultMap, NetworkService, NetworkServiceEndpoint
+
+logger = logging.getLogger(__name__)
+
+# matches: "22/tcp open  ssh     OpenSSH 8.9p1"
+_PORT_LINE = re.compile(r"^(\d+)/(tcp|udp)\s+open\s+(\S+)\s*(.*)") #compile regex once in obj (p,prot,name,version,
+
+
+def parse_nmap(stdout: str) -> list[tuple[int, Literal["tcp", "udp"], str, str]]:
+    results = []
+    # compare the output with the regex and skip if output does not match | group(0)=whole line, group(1)=port...)
+    for line in stdout.splitlines():
+        match = _PORT_LINE.match(line.strip())
+        if match:
+            port = int(match.group(1))
+            protocol = match.group(2)
+            name = match.group(3)
+            version = match.group(4).strip()
+            results.append((port, protocol, name, version))
+    return results
+
+
+def run(discovery_result: NetworkDiscoveryResultMap) -> NetworkDiscoveryResultMap:
+    for iface_name, result in discovery_result.results.items():
+        for ip in result.target_ips:
+            # nmap port scan on this host
+            proc = subprocess.run(
+                ["nmap", "-sV", "--open", str(ip)],
+                capture_output=True, text=True, check=True
+            )
+            # nmap parse output and append to Network discovery data structure
+            ports = parse_nmap(proc.stdout)
+            for port, protocol, name, version in ports:
+                service = NetworkService(
+                    endpoints=[NetworkServiceEndpoint(ip=ip, port=port, protocol=protocol)],
+                    state="open",
+                    name=name,
+                    version=version or None,
+                )
+                result.network_services.append(service)
+    return discovery_result
