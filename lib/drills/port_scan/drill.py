@@ -38,6 +38,7 @@ def run(discovery_result: NetworkDiscoveryResultMap) -> NetworkDiscoveryResultMa
     """
     for iface_name, result in discovery_result.results.items():
         for ip in result.target_ips:
+            logger.debug("Scanning ports on %s (%s)", ip, iface_name)
             # nmap port scan on this host
             proc = subprocess.run(
                 ["nmap", "-sV", "--open", str(ip)],
@@ -45,6 +46,7 @@ def run(discovery_result: NetworkDiscoveryResultMap) -> NetworkDiscoveryResultMa
             )
             # nmap parse output and append to Network discovery data structure
             ports = parse_nmap(proc.stdout)
+            logger.debug("Found %d open ports on %s", len(ports), ip)
             for port, protocol, name, version in ports:
                 service = NetworkService(
                     endpoints=[NetworkServiceEndpoint(ip=ip, port=port, protocol=protocol)],

@@ -1,0 +1,16 @@
+drills:
+  dhcp_request:
+    name: DHCP request
+    author: gausf1@bls.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+    dependencies:
+      system:
+        - isc-dhcp-client
+      python: [ ]
+
+    interface:
+        arguments:
+          interface:
+            type: str
+        return_type: None

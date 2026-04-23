@@ -69,7 +69,9 @@ def discover_hosts(network_interface: EthernetConfiguration) -> NetworkDiscovery
             ]
         )
         hosts.append(host)
+        logger.debug("Discovered host: %s (%s) on %s", arp_scan_result.ip, arp_scan_result.mac, network_interface.name)
 
+    logger.debug("Found %d hosts on %s", len(hosts), network_interface.name)
     return NetworkDiscoveryResult(
         network_interface=network_interface,
         network_services=hosts

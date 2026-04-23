@@ -17,16 +17,19 @@ def run(interface: str) -> None:
     # SNMP Ports/Interfaces auf switch und router
 
     interfaces = DrillManager.execute(
-        "get_network_interfaces" )
+        "get_network_interfaces")
     interface_name = interfaces[0].name,
 
+    DrillManager.execute("dhcp_request",
+                         interface=interface_name
+                         )
     network_discovery_result_map: NetworkDiscoveryResultMap = DrillManager.execute(
         "discover_hosts",
-        interface=interface_name,
+        interface=interface_name
     )
     DrillManager.execute(
         "port_scan",
-        discovery_result=network_discovery_result_map,
+        discovery_result=network_discovery_result_map
     )
     print(network_discovery_result_map.display())
     print(network_discovery_result_map.as_table())
