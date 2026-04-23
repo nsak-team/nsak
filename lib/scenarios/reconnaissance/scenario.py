@@ -7,13 +7,22 @@ from nsak.core.network import NetworkDiscoveryResultMap
 
 def run(interface: str) -> None:
     """
-    Scenario, which runs MITM attack, based on arp spoofing.
+    Scenario, which runs Reconnaissance attack.
 
     :return: None
     """
+    # discover subnets
+    # ip address assignment dhcp
+    # ip address assignment static
+    # SNMP Ports/Interfaces auf switch und router
+
+    interfaces = DrillManager.execute(
+        "get_network_interfaces" )
+    interface_name = interfaces[0].name,
+
     network_discovery_result_map: NetworkDiscoveryResultMap = DrillManager.execute(
         "discover_hosts",
-        interface=interface,
+        interface=interface_name,
     )
     DrillManager.execute(
         "port_scan",

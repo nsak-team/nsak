@@ -12,6 +12,11 @@ _PORT_LINE = re.compile(r"^(\d+)/(tcp|udp)\s+open\s+(\S+)\s*(.*)") #compile rege
 
 
 def parse_nmap(stdout: str) -> list[tuple[int, Literal["tcp", "udp"], str, str]]:
+    """Extract open ports from nmap stdout as (port, protocol, name, version) tuples.
+
+    :param stdout: Raw nmap output text.
+    :return: List of (port, protocol, service name, version) tuples for open ports.
+    """
     results = []
     # compare the output with the regex and skip if output does not match | group(0)=whole line, group(1)=port...)
     for line in stdout.splitlines():
@@ -26,6 +31,11 @@ def parse_nmap(stdout: str) -> list[tuple[int, Literal["tcp", "udp"], str, str]]
 
 
 def run(discovery_result: NetworkDiscoveryResultMap) -> NetworkDiscoveryResultMap:
+    """Run nmap service scan on all target IPs and append open ports to the discovery result.
+
+    :param discovery_result: Existing host discovery result containing target IPs per interface.
+    :return: The same result map, with open port/service information.
+    """
     for iface_name, result in discovery_result.results.items():
         for ip in result.target_ips:
             # nmap port scan on this host
