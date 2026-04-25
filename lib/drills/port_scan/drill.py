@@ -37,19 +37,23 @@ def run(discovery_result: NetworkDiscoveryResultMap) -> NetworkDiscoveryResultMa
     :return: The same result map, with open port/service information.
     """
     for iface_name, result in discovery_result.results.items():
+        mac_by_ip = {
+            endpoint.ip: endpoint.mac
+            for service in result.network_services
+            for endpoint in service.endpoints
+            if endpoint.ip is not None and endpoint.mac
+        }
         for ip in result.target_ips:
             logger.debug("Scanning ports on %s (%s)", ip, iface_name)
-            # nmap port scan on this host
             proc = subprocess.run(
                 ["nmap", "-sV", "--open", str(ip)],
                 capture_output=True, text=True, check=True
             )
-            # nmap parse output and append to Network discovery data structure
             ports = parse_nmap(proc.stdout)
             logger.debug("Found %d open ports on %s", len(ports), ip)
             for port, protocol, name, version in ports:
                 service = NetworkService(
-                    endpoints=[NetworkServiceEndpoint(ip=ip, port=port, protocol=protocol)],
+                    endpoints=[NetworkServiceEndpoint(ip=ip, mac=mac_by_ip.get(ip), port=port, protocol=protocol)],
                     state="open",
                     name=name,
                     version=version or None,
