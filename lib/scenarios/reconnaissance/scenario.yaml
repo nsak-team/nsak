@@ -21,4 +21,8 @@ scenarios:
       arguments:
         interface:
           type: str
+          default: null
+        subnet:
+          type: str
+          default: null
       return_type: None
