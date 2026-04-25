@@ -1,3 +1,4 @@
+import dataclasses
 from pathlib import Path
 from typing import Any
 
@@ -46,7 +47,7 @@ class DrillLoader(ResourceLoader[Drill]):
                 arguments={
                     name: DrillArgument(
                         type=argument.get("type"),
-                        default=argument.get("default") or None,
+                        default=argument.get("default", dataclasses.MISSING),
                     )
                     for name, argument in arguments.items()
                 },

@@ -1,3 +1,5 @@
+import dataclasses
+
 from nsak.core import ScenarioLoader
 from nsak.core.scenario.scenario import ScenarioArgument, ScenarioInterface
 
@@ -13,7 +15,7 @@ def test_scenario_loader_interface() -> None:
         arguments={
             "interface": ScenarioArgument(
                 type="str",
-                default=None,
+                default=dataclasses.MISSING,
             ),
         },
         return_type="None",
