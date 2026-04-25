@@ -7,10 +7,14 @@ drills:
     dependencies:
       system:
         - arp-scan
+        - nmap
       python: [ ]
 
     interface:
       arguments:
         interface:
           type: str
+        subnet:
+          type: str
+          default: null
       return_type: NetworkDiscoveryResultMap
