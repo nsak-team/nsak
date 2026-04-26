@@ -10,29 +10,30 @@ from nsak.core.network import NetworkDiscoveryResultMap
 def run(interface: str | None = None, subnet: str | None = None) -> None:
     """
     Scenario, which runs Reconnaissance attack.
-
+    1. If no interface is specified, scan all active physical interfaces
+    2. If no interface is specified, scan all active physical interfaces
+    3. Discover network on ifc and subnet
     :return: None
     """
     if interface is None:
         discovered = DrillManager.execute("discover_network_interfaces")
-        interface_name = discovered[0].name
+        interfaces_to_scan = [iface.name for iface in discovered]
     else:
-        interface_name = interface
+        interfaces_to_scan = [interface]
 
-    if get_if_addr(interface_name) in ("0.0.0.0", ""):
-        DrillManager.execute("dhcp_request", interface=interface_name)
+    all_results = {}
+    for iface_name in interfaces_to_scan:
+        if get_if_addr(iface_name) in ("0.0.0.0", ""):
+            DrillManager.execute("dhcp_request", interface=iface_name)
 
-    network_discovery_result_map: NetworkDiscoveryResultMap = DrillManager.execute(
-        "discover_hosts",
-        interface=interface_name,
-        subnet=subnet,
-    )
+        result: NetworkDiscoveryResultMap = DrillManager.execute(
+            "discover_hosts",
+            interface=iface_name,
+            subnet=subnet,
+        )
+        all_results.update(result.results)
+
+    network_discovery_result_map = NetworkDiscoveryResultMap(results=all_results)
     DrillManager.execute("port_scan", discovery_result=network_discovery_result_map)
     print(network_discovery_result_map.display())
     print(network_discovery_result_map.as_table())
-
-    # for iface, result in network_discovery_result_map.results.items():
-    #     print(f"[{iface}]")
-    #     for svc in result.network_services:
-    #         for ep in svc.endpoints:
-    #             print(f"  {ep.ip}  {ep.mac}  {ep.extra_info}")
