@@ -10,6 +10,7 @@ from pathlib import Path, PosixPath
 from typing import Any
 
 import yaml
+from logging_loki.handlers import LokiHandler
 from yaml import SafeDumper, ScalarNode
 
 from nsak.core.settings import CONFIG_FILE, RUN_PATH
@@ -157,6 +158,35 @@ class ConfigurationManager:
     """
 
     @classmethod
+    def _setup_logging(cls, config: Configuration) -> None:
+        """
+        Setup logging.
+        """
+        log_file = _get_log_file(config.container)
+        handlers: list[logging.Handler] = [
+            logging.StreamHandler(),
+            logging.FileHandler(log_file),
+        ]
+
+        if config.loki is not None:
+            handlers.append(
+                LokiHandler(
+                    url=config.loki.url,
+                    tags={
+                        "job": "nsak",
+                        "run_id": config.container.id,
+                        "run_name": config.container.name,
+                    },
+                    auth=(config.loki.username, config.loki.password),
+                )
+            )
+
+        logging.basicConfig(
+            level=logging.DEBUG if config.debug else logging.INFO,
+            handlers=handlers,
+        )
+
+    @classmethod
     def load(cls) -> Configuration:
         """
         Load the configuration from CONFIG_FILE.
@@ -171,14 +201,8 @@ class ConfigurationManager:
             config = Configuration()
             cls.save(config)
 
-        log_file = _get_log_file(config.container)
-        logging.basicConfig(
-            level=logging.DEBUG if config.debug else logging.INFO,
-            handlers=[
-                logging.StreamHandler(),
-                logging.FileHandler(log_file),
-            ],
-        )
+        cls._setup_logging(config)
+
         return config
 
     @classmethod

@@ -1,0 +1,41 @@
+# ~/loki/alloy-local-config.yaml
+discovery.docker "flog_scrape" {
+    host             = "unix:///var/run/docker.sock"
+    refresh_interval = "5s"
+}
+
+discovery.relabel "flog_scrape" {
+    targets = []
+
+    rule {
+        source_labels = ["__meta_docker_container_name"]
+        regex         = "/(.*)"
+        target_label  = "container"
+    }
+
+    rule {
+        target_label = "job"
+        replacement  = "container_logs"
+    }
+}
+
+loki.source.docker "flog_scrape" {
+    host             = "unix:///var/run/docker.sock"
+    targets          = discovery.docker.flog_scrape.targets
+    forward_to       = [loki.write.default.receiver]
+    relabel_rules    = discovery.relabel.flog_scrape.rules
+    refresh_interval = "5s"
+}
+
+loki.write "default" {
+    endpoint {
+        url       = "http://write:3100/loki/api/v1/push"
+        tenant_id = "tenant1"
+
+        basic_auth {
+            username = "nsak"
+            password = "fec515d7-07bb-4a0a-b089-a0588465ccaf"
+        }
+    }
+    external_labels = {}
+}
