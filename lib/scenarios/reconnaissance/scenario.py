@@ -7,6 +7,18 @@ from nsak.core import DrillManager
 from nsak.core.network import NetworkDiscoveryResultMap
 
 
+def _print_enumeration_findings(findings: dict[str, list[str]]) -> None:
+    if not findings:
+        print("\n### Service Enumeration: no findings ###\n")
+        return
+    print("\n### Service Enumeration Findings: ###\n")
+    for endpoint, lines in findings.items():
+        print(f"  {endpoint}:")
+        for line in lines:
+            print(f"    {line}")
+    print("\n### -------------------------------- ###\n")
+
+
 def run(interface: str | None = None, subnet: str | None = None) -> None:
     """
     Scenario, which runs Reconnaissance attack.
@@ -37,3 +49,8 @@ def run(interface: str | None = None, subnet: str | None = None) -> None:
     DrillManager.execute("port_scan", discovery_result=network_discovery_result_map)
     print(network_discovery_result_map.display())
     print(network_discovery_result_map.as_table())
+
+    findings: dict[str, list[str]] = DrillManager.execute(
+        "enumerate_services", discovery_result=network_discovery_result_map
+    )
+    _print_enumeration_findings(findings)
