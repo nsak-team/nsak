@@ -1,3 +1,22 @@
 % Time form: Past tense
 
 \chapter{Evaluation}\label{ch:evaluation}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|p{6cm}|p{6cm}|}
+		\hline
+		\textbf{Aspekt} & \textbf{Traditional Recon} & \textbf{AI Recon} \\
+		\hline
+		Datei & lib/scenarios/reconnaissance/scenario.py & lib/scenarios/ai\_reconnaissance/scenario.py \\
+		\hline
+		Rückgabe & NetworkDiscoveryResultMap (strukturiert) & None (only LangChain-Stream) \\
+		\hline
+		Tools & arp-scan, nmap (Drills) & LangChain tool\_calls (cli, host\_configuration) \\
+		\hline
+		Async & sync & async \\
+		\hline
+	\end{tabular}
+	\caption{Vergleich zwischen Traditional Recon und AI Recon}
+	\label{tab:recon_comparison}
+\end{table}
