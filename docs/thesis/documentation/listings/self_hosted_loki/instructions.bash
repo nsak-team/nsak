@@ -9,12 +9,8 @@ wget https://raw.githubusercontent.com/grafana/loki/v3.7.0/examples/getting-star
 # Adjustments needed for rootles podman
 systemctl --user enable --now podman.socket
 
+# Adjust the alloy service described in the loki `compose.yaml`
 vim loki/docker-compose.yaml
-
-# alloy:
-#   volumes:
-#     - ./alloy-local-config.yaml:/etc/alloy/config.alloy:ro
-#     - /run/user/1000/podman/podman.sock:/var/run/docker.sock  # map podman sock to docker path
 
 # Add grafana.hiube.ch CNAME entry to ai.hiube.ch
 # Add grafana.hiube.ch to linuxserver.io swag config for letsencrypt

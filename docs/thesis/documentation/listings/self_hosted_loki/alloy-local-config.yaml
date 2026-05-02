@@ -37,5 +37,6 @@ loki.write "default" {
             password = "fec515d7-07bb-4a0a-b089-a0588465ccaf"
         }
     }
+
     external_labels = {}
 }

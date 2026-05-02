@@ -90,7 +90,7 @@ services:
       - GF_SERVER_ROOT_URL=https://grafana.hiube.ch
       - GF_SERVER_SERVE_FROM_SUB_PATH=false
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ENABLED=false
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     depends_on:
       - swag
@@ -121,6 +121,8 @@ services:
       retries: 5
     networks:
       - loki
+    volumes:
+      - grafana-data:/var/lib/grafana
 
   backend:
     image: grafana/loki:latest
@@ -140,3 +142,6 @@ services:
       retries: 5
     networks:
       - loki
+
+volumes:
+  grafana-data:
