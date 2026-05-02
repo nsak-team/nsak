@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import uuid
 from pathlib import Path
 
 
@@ -42,4 +43,8 @@ class ContainerInfo:
             except OSError:
                 pass
 
-        return ContainerInfo()
+        # Assuming we are not running in a container, we just set a random UUID as an identifier and "host".
+        return ContainerInfo(
+            id=str(uuid.uuid4()),
+            name="host",
+        )

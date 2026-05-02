@@ -1,10 +1,10 @@
-\subsection{Sprint 3: 19.03 \textendash 01.04.2026}\label{subsec:sprint-3}
+\subsection{Sprint 3: 26.03 \textendash 09.04.2026}\label{subsec:sprint-3}
 
 \subsubsection{Sprint Planning 3: 26.03.2026}\label{subsubsec:sprint-planning-3}
 
 Because we got some important input regarding variant decision for \gls{AI}-integration, framework comparison, and configuration management~\ref{tab:meeting-notes-checkpoint-3} which led to additional work.
 As consequence of this, we decided to shorten the third sprint to one week, which is reflected in the following table~\ref{tab:sprint-planning-3} and postponed the sprint planning from the 19.03 to the 26.03.
-To account for the delayed start in the overall planning we adjusted t as shown in the ~\ref{fig:roadmap-sprint-planning-3}.
+To account for the delayed start in the overall planning we adjusted the roadmap as shown in the screenshot below~\ref{fig:roadmap-sprint-planning-3}.
 
 \begin{table}[H]
     \centering
@@ -12,8 +12,8 @@ To account for the delayed start in the overall planning we adjusted t as shown 
 		\toprule
         \textbf{Week} & \textbf{Responsible} & \textbf{Task} \\
         \midrule
-        Week 1 & Frank & Reproducible Test Environment implementation \\
-        Week 1 & Lukas & \gls{NSAK} Scenario: \gls{AI} Scenarios (first part) \\
+        Week 1 \& 2 & Frank & Reproducible Test Environment implementation \\
+        Week 1 \& 2 & Lukas & \gls{NSAK} Scenario: \gls{AI} Scenarios (first part): \gls{AI}-Agent implementation \\
         \bottomrule
     \end{tabularx}
     \caption{Sprint Planning 3}
@@ -27,9 +27,42 @@ To account for the delayed start in the overall planning we adjusted t as shown 
     \label{fig:roadmap-sprint-planning-3}
 \end{figure}
 
-\subsubsection{Sprint Review 3: 02.04.2026}\label{subsubsec:sprint-review-3}
+\subsubsection{Sprint Review 3: 09.04.2026}\label{subsubsec:sprint-review-3}
 
-\subsubsection{Sprint Retro 3: 02.04.2026}\label{subsubsec:sprint-retro-3}
+The completion of the following two milestones in this sprint are marking a very important point in our bachelor thesis,
+as we are now able to run the \gls{AI} based reconnaissance scenario against the reproducible test environment.
+This enables us to reproducibly test and analyze the actual capabilities of the \gls{AI}-agent in a realistic scenario.
+Further we can now demonstrate the full interplay of the technologies to the projects stakeholders and possibly other interested persons.
+
+\paragraph{Milestone Review: Reproducible Test Environment}\label{par:milestone-review-reproducible-test-environment}
+
+The success criteria of the Reproducible Test Environment~\ref{subsubsec:milestone-test-environment} milestone are completed as illustrated in~\ref{fig:milestone-reproducible-test-environment]}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{../assets/screenshots/project_management/sprint_3/milestone_reproducible_test_environment}
+    \caption{Milestone Description: Reproducible Test Environment}
+    \label{fig:milestone-reproducible-test-environment]}
+\end{figure}
+
+\paragraph{Milestone Review: Implement AI Scenarios (first part): \gls{AI}-Agent implementation}\label{par:milestone-review-implement-ai-scenarios-first-part}
+
+As shown in~\ref{fig:milestone-review-implement-ai-scenarios]}, all \enquote{must} goals of the milestone Implement \gls{AI} Scenarios~\ref{subsubsec:milestone-ai-scenarios} where completed.
+But there is still some work todo, to document the implementation and the learnings we made during the development.
+Further we could improve the implementation in several aspects such as tool-calling and external logging, where we can better analyze the \gls{AI}-agents behavior.
+Because this was expected, we planned two sprints for the realization of the \gls{AI} Scenarios.
+
+But there are several improvements to be made regarding tool-calling and .
+Further the \gls{AI}-Agent implementation is not documented yet, but this
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{../assets/screenshots/project_management/sprint_3/milestone_ai_scenarios}
+    \caption{Milestone Description and Charts: Research AI-Integration}
+    \label{fig:milestone-review-implement-ai-scenarios]}
+\end{figure}
+
+\subsubsection{Sprint Retro 3: 09.04.2026}\label{subsubsec:sprint-retro-3}
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{../assets/screenshots/project_management/sprint_3/retro-sprint3}
@@ -37,5 +70,7 @@ To account for the delayed start in the overall planning we adjusted t as shown 
 	\label{fig:retro-sprint3}
 \end{figure}
 
-The Key Take Away of ~\ref{fig:retro-sprint3} are to estimate the milestones more realistically. We spend a lot of time with documentation which hinders the development. The upside of our continuous approach is a natural growing thesis which helps in the long run.
+The Key Take Away of ~\ref{fig:retro-sprint3} are to estimate the milestones more realistically.
+We spend a lot of time with documentation which hinders the development.
+The upside of our continuous approach is a natural growing thesis which helps in the long run.
 Overall, we are quite happy with the outcome of sprint 3.
