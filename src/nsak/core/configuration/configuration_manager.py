@@ -178,6 +178,7 @@ class ConfigurationManager:
                         "run_name": config.container.name,
                     },
                     auth=(config.loki.username, config.loki.password),
+                    version="1",
                 )
             )
 
