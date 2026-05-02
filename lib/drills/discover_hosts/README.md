@@ -4,19 +4,19 @@ Discovers active hosts on a network and returns their IP and MAC addresses.
 
 Operates in two modes depending on whether the optional `subnet` argument is provided:
 
-| Mode | Tool | Use case |
-|------|------|----------|
-| Local (default) | `arp-scan --localnet` | Hosts on the same Layer 2 segment as `interface` |
-| Remote subnet | `nmap -sn <subnet>` | Hosts in an arbitrary subnet, across routers (Layer 3) |
+| Mode            | Tool                  | Use case                                               |
+|-----------------|-----------------------|--------------------------------------------------------|
+| Local (default) | `arp-scan --localnet` | Hosts on the same Layer 2 segment as `interface`       |
+| Remote subnet   | `nmap -sn <subnet>`   | Hosts in an arbitrary subnet, across routers (Layer 3) |
 
 MAC addresses are only available for hosts on the same Layer 2 segment. Remote hosts discovered via nmap will have an empty `mac` field.
 
 ## Arguments
 
-| Argument | Type | Default | Description |
-|----------|------|---------|-------------|
-| `interface` | `str` | — | Network interface to use (e.g. `eth0`) |
-| `subnet` | `str` | `null` | Subnet to scan in CIDR notation (e.g. `10.0.2.0/24`). If omitted, scans the local segment. |
+| Argument    | Type  | Default | Description                                                                                |
+|-------------|-------|---------|--------------------------------------------------------------------------------------------|
+| `interface` | `str` | —       | Network interface to use (e.g. `eth0`)                                                     |
+| `subnet`    | `str` | `null`  | Subnet to scan in CIDR notation (e.g. `10.0.2.0/24`). If omitted, scans the local segment. |
 
 ## Return type
 
