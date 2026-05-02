@@ -6,6 +6,7 @@ import logging
 from nsak.core.configuration.ai_configuration import AiConfiguration
 from nsak.core.configuration.container_info import ContainerInfo
 from nsak.core.configuration.email_configuration import EmailConfiguration
+from nsak.core.configuration.loki_configuration import LokiConfiguration
 from nsak.core.device import Device
 
 logger = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ class Configuration:
         default=None,
     )
     ai: AiConfiguration | None = dataclasses.field(default=None)
+    loki: LokiConfiguration | None = dataclasses.field(default=None)
 
     def save(self) -> None:
         """

@@ -44,3 +44,6 @@ __pycache__/
 
 # ContainerLab generated files
 **/clab-*/
+
+# Custom
+test_log.py
