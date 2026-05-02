@@ -1,10 +1,40 @@
 \newpage
 \section{AI \textendash Scenarios}\label{sec:ai-scenarios-implementation}
 
+This section describes the design and implementation of the milestone \gls{AI} Scenarios~\ref{subsubsec:milestone-ai-scenarios},
+which is based on the user story map workshop \gls{AI} Purple Team~\ref{subsec:nsak-scenario-ai-purple-team}.
+In the workshop we defined the features which such a scenario may provide and categorized them in \enquote{Must}, \enquote{Could} and \enquote{Should}.
+Because of time constraints, we set the focused only on the user stories categorized as \enquote{Must}.
+The main goal is to implement an \gls{AI} reconnaissance scenario, which is described in the~\ref{subsec:scenario-ai-reconnaissance}.
+But on the way it made sense to also create an intermediary scenario which can run custom prompts~\ref{subsec:scenario-ai-agent}.
+Further, we already explored the \gls{AI} based intrusion detection scenario~\ref{subsec:scenario-ai-intrusion-detection} which should be seen as proof of concept, because the corresponding milestone and goals are categorized as \enquote{Should}.
 
-
-\subsection{AI Agent}\label{subsec:ai-scenarios-implementation-ai-agent}
+\subsection{\gls{AI} Agent}\label{subsec:ai-scenarios-implementation-ai-agent}
 LangChain/LangGraph
+
+https://www.langchain.com/
+\href{https://docs.langchain.com/}{LangChain}
+
+The project team choose LangChain without comparing with alternative solutions for the following reasons:
+\begin{itemize}
+    \item Free and OpenSource
+    \item Python package
+    \item Suggested by various sources / good reputation
+    \item Extensive documentation and community
+\end{itemize}
+
+\subsection{LangChain Concepts}\label{subsec:ai-scenarios-langchain-concepts}
+
+LangChain provides a framework for developing applications powered by large language models (\gls{LLM}s) and agent-based systems.
+It enables developers to combine modular components and external integrations, simplifying \gls{AI} application design while maintaining flexibility as underlying technologies evolve~\cite{langchain_repo}.
+
+\href{https://www.webfuse.com/langchain-cheat-sheet}{LangChain Cheat Sheet}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent}
+    \label{lst:langchain-agent}
+\end{listing}
 
 \subsubsection{Tool Calling Concepts}\label{subsubsec:ai-agent-tool-calling-concepts}
 
@@ -26,7 +56,7 @@ Luckily, \enquote{qwen2.5:7b-coder} has such variant called \enquote{qwen2.5:7b-
 \subsubsection{LangChain Tool: Host Configuration}\label{subsubsec:langchain-tool-host-configuration}
 
 \begin{listing}[H]
-    \inputminted{python}{../../../src/nsak/core/ai/tools/host_configuration.py}
+    \inputminted[firstline=9, lastline=51]{python}{../../../src/nsak/core/ai/tools/host_configuration.py}
     \caption{LangChain Tool: Host Configuration}
     \label{lst:langchain-tool-host-configuraiton}
 \end{listing}
@@ -34,7 +64,7 @@ Luckily, \enquote{qwen2.5:7b-coder} has such variant called \enquote{qwen2.5:7b-
 \subsubsection{LangChain Tool: CLI Tool}\label{subsubsec:langchain-tool-cli-tool}
 
 \begin{listing}[H]
-    \inputminted{python}{../../../src/nsak/core/ai/tools/cli_tool.py}
+    \inputminted[firstline=10, lastline=70]{python}{../../../src/nsak/core/ai/tools/cli_tool.py}
     \caption{LangChain Tool: CLI Tool}
     \label{lst:langchain-tool-cli-tool}
 \end{listing}
@@ -42,25 +72,60 @@ Luckily, \enquote{qwen2.5:7b-coder} has such variant called \enquote{qwen2.5:7b-
 \subsection{Human Interaction Hook}\label{subsec:ai-scenarios-implementation-human-interaction-hook-via-cli}
 
 \subsubsection{LangChain Tool: Human Interaction Hook}\label{subsubsec:langchain-tool-human-interaction-hook}
-Even tough LangChain has its own concept, called \href{https://docs.langchain.com/oss/python/langchain/human-in-the-loop}{Human-in-the-loop}, to achieve the same goal,
-for now a simple pyton based tool was implemented as show in~\ref{lst:langchain-tool-human-interaction-hook}.
+Even tough LangChain has its own concept, called \href{https://docs.langchain.com/oss/python/langchain/human-in-the-loop}{Human-in-the-loop},
+for now a simple pyton based tool was implemented as show in~\ref{lst:langchain-tool-human-interaction-hook}, to achieve the same goal.
 
 \begin{listing}[H]
-    \inputminted{python}{../../../src/nsak/core/ai/tools/human_interaction_hook.py}
+    \inputminted[firstline=4, lastline=19]{python}{../../../src/nsak/core/ai/tools/human_interaction_hook.py}
     \caption{LangChain Tool: Human Interaction Hook}
     \label{lst:langchain-tool-human-interaction-hook}
 \end{listing}
 
-\subsection{Local Logging}\label{subsec:ai-scenarios-implementation-local-logging}
-Python logger
+\subsection{Logging}\label{subsec:ai-scenarios-implementation-logging}
+
+\begin{listing}[H]
+    \inputminted[firstline=4, lastline=19]{python}{../../../src/nsak/core/ai/tools/human_interaction_hook.py}
+    \caption{Python Logger}
+    \label{lst:python-logger}
+\end{listing}
+
+\subsubsection{Remote Logging System: Grafana / Loki}\label{subsubsec:ai-scenarios-implementation-remote-logging-system}
+
+Uses the package \href{https://pypi.org/project/python-logging-loki/}{python-logging-loki}.
+We went for this instead of collecting the logs from stdout, because we can provide more metadata in form of \enquote{tags}.
+
+\ref{subsec:grafana-loki-logging-system}
+
+\begin{listing}[H]
+    \inputminted[firstline=6, lastline=14]{python}{../../../src/nsak/core/configuration/loki_configuration.py}
+    \caption{Python Logger}
+    \label{lst:logging-loki-configuration}
+\end{listing}
 
 \subsection{E-Mail Alerting}\label{subsec:ai-scenarios-implementation-e-mail-alerting}
 
+The python standard library already includes packages for creating and sending E-Mails via \gls{SMTP}.
+The \enquote{EmailBackend} implemented to the \gls{NSAK} framework is an opinionated wrapper around those packages
+and leverages the previously introduced~\ref{sec:configuration-management-implementation} to set up necessary configuration.
+If no \gls{SMTP} configuration is provided as specified in~\ref{lst:email-altering-configuration},
+the system will write the E-Mails as logs instead.
+
+\begin{listing}[H]
+    \inputminted[firstline=15, lastline=27]{python}{../../../src/nsak/core/configuration/email_configuration.py}
+    \caption{E-Mail Alerting Configuration}
+    \label{lst:email-altering-configuration}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=28, lastline=40]{python}{../../../src/nsak/core/email/email_backend.py}
+    \caption{E-Mail Alerting Implementation}
+    \label{lst:email-altering-implementation}
+\end{listing}
 
 \subsubsection{LangChain Tool: E-Mail Alerting}\label{subsubsec:langchain-tool-e-mail-alerting}
 
 \begin{listing}[H]
-    \inputminted{python}{../../../src/nsak/core/ai/tools/send_email.py}
+    \inputminted[firstline=6, lastline=26]{python}{../../../src/nsak/core/ai/tools/send_email.py}
     \caption{LangChain Tool: E-Mail Alerting}
     \label{lst:langchain-tool-email-alerting}
 \end{listing}
@@ -96,3 +161,11 @@ Automatic host discovery based on a specific initial prompt.
 
 \subsection{Scenario: AI Intrusion Detection}\label{subsec:scenario-ai-intrusion-detection}
 Automatic intrusion detection based on a specific initial prompt.
+
+\subsection{LangChain Agent Chat UI}\label{subsec:langchain-agent-chat-ui}
+
+We did not implement LangChain Agent Chat UI, because we made some implicit architecture decisions which prevents us from easy integration.
+If we decide to implement it regardless we need to redesign and refactor the \gls{AI} Agent implementation.
+
+https://docs.langchain.com/oss/python/langchain/ui
+https://www.youtube.com/watch?v=lInrwVnZ83o
