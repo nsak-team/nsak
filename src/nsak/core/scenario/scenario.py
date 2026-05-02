@@ -18,7 +18,7 @@ class ScenarioArgument:
     """
 
     type: str
-    default: Any
+    default: Any = dataclasses.MISSING
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True, eq=True)

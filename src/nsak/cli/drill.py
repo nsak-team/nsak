@@ -1,3 +1,4 @@
+import dataclasses
 from typing import Any
 
 import click
@@ -69,10 +70,11 @@ def create_drill_command(drill: Drill) -> click.Command:
             click.echo(e)
 
     for name, argument in drill.interface.arguments.items():
-        kwargs = dict(
-            default=argument.default,
-            prompt=name,
-        )
+        kwargs: dict[str, Any] = {}
+        if argument.default is dataclasses.MISSING:
+            kwargs["prompt"] = name
+        else:
+            kwargs["default"] = argument.default
         if name == "interface":
             try:
                 choices = list(config.device.target_ethernets.keys())

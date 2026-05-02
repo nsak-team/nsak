@@ -1,20 +1,16 @@
 drills:
-  discover_hosts:
-    name: Discover Hosts
-    author: vonal3@bfh.ch
+  port_scan:
+    name: Port-Scan
+    author: gausf1@bfh.ch
     repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
     dependencies:
       system:
-        - arp-scan
         - nmap
       python: [ ]
 
     interface:
       arguments:
-        interface:
-          type: str
-        subnet:
-          type: str
-          default: null
+        discovery_result:
+          type: NetworkDiscoveryResultMap
       return_type: NetworkDiscoveryResultMap

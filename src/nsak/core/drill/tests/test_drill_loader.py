@@ -1,3 +1,5 @@
+import dataclasses
+
 from nsak.core import DrillLoader
 from nsak.core.drill.drill import DrillArgument, DrillInterface
 
@@ -13,7 +15,7 @@ def test_drill_loader_interface() -> None:
         arguments={
             "network_discovery_result_map": DrillArgument(
                 type="NetworkDiscoveryResultMap",
-                default=None,
+                default=dataclasses.MISSING,
             ),
         },
         return_type="list[subprocess.Popen]",

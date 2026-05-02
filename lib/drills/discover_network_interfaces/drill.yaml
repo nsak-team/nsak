@@ -1,0 +1,13 @@
+drills:
+  discover_network_interfaces:
+    name: Discover Network interfaces
+    author: gausf1@bls.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+    dependencies:
+      system:
+      python: [ ]
+
+    interface:
+        arguments: {}
+        return_type: list[NetworkInterface]

@@ -1,4 +1,5 @@
 import asyncio
+import dataclasses
 import importlib.util
 import inspect
 import logging
@@ -40,13 +41,15 @@ class DrillManager(ResourceManager[Drill]):
         """
         arguments = {}
         for name, argument in drill.interface.arguments.items():
-            if argument.default is None and (
+            if argument.default is dataclasses.MISSING and (
                 name not in kwargs or kwargs[name] is None
             ):
                 message = f"Required argument {name} is missing."
                 raise DrillArgumentParsingError(message)
-            value = kwargs.get(name) or argument.default
-            if type(value).__name__ not in argument.type:
+            value = (
+                kwargs.get(name) if kwargs.get(name) is not None else argument.default
+            )
+            if value is not None and type(value).__name__ not in argument.type:
                 message = f"Invalid type {type(value)} for argument {name}, expected {argument.type}."
                 raise DrillArgumentParsingError(message)
             arguments[name] = value
@@ -83,10 +86,10 @@ class DrillManager(ResourceManager[Drill]):
             info = "EXEC %s SCENARIO: %s"
             logger.info(info)
             if inspect.iscoroutinefunction(entrypoint):
-                logger.debug(message, "ASYNC", drill.name)
+                logger.debug(info, "ASYNC", drill.name)
                 return asyncio.run(entrypoint(**kwargs))
             elif inspect.isfunction(entrypoint):
-                logger.debug(message, "SYNC", drill.name)
+                logger.debug(info, "SYNC", drill.name)
                 return entrypoint(**kwargs)
 
             error = f"Scenario '{drill.name}.run' is not a function or coroutine."

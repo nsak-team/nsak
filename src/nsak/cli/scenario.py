@@ -1,3 +1,4 @@
+import dataclasses
 from collections.abc import Callable
 from pydoc import locate
 from typing import Any
@@ -89,7 +90,11 @@ def create_scenario_command(
             click.echo(e)
 
     for name, argument in scenario.interface.arguments.items():
-        kwargs = dict(default=argument.default, prompt=name, type=locate(argument.type))
+        kwargs: dict[str, Any] = {"type": locate(argument.type)}
+        if argument.default is dataclasses.MISSING:
+            kwargs["prompt"] = name
+        else:
+            kwargs["default"] = argument.default
         if name == "interface":
             try:
                 choices = list(config.device.target_ethernets.keys())

@@ -1,3 +1,4 @@
+import dataclasses
 from pathlib import Path
 from typing import Any
 
@@ -49,7 +50,7 @@ class ScenarioLoader(ResourceLoader[Scenario]):
                 arguments={
                     name: ScenarioArgument(
                         type=argument.get("type"),
-                        default=argument.get("default", None),
+                        default=argument.get("default", dataclasses.MISSING),
                     )
                     for name, argument in arguments.items()
                 },

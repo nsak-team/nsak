@@ -10,6 +10,7 @@ from nsak.core.network.configuration import EthernetConfiguration
 
 logger = logging.getLogger(__name__)
 
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class ARPScanResult:
     ip: IPAddress
@@ -36,19 +37,50 @@ def parse_arp_scan_result(arp_scan_result_output: str) -> list[ARPScanResult]:
         except ValueError:
             ip = IPv6Address(raw_ip)
         vendor = parts[2] if len(parts) == 3 else ""
-        arp_scan_result = ARPScanResult(ip=ip, mac=mac, vendor=vendor)
-        entries.append(arp_scan_result)
+        entries.append(ARPScanResult(ip=ip, mac=mac, vendor=vendor))
 
     return entries
 
 
-def discover_hosts(network_interface: EthernetConfiguration) -> NetworkDiscoveryResult:
+def parse_nmap_result(nmap_output: str) -> list[ARPScanResult]:
     """
-    Uses arp-scan to discover hosts on the provided network interfaces.
+    Parses the output of `nmap -sn` into a list of ARPScanResults.
 
-    :param network_interface:
-    :return:
+    Uses a stateful approach since IP and MAC appear on separate lines per host.
+    Hosts without a MAC address (e.g. remote subnets) are included with an empty mac field.
     """
+    results = []
+    current_ip = None
+    current_mac = ""
+    current_vendor = ""
+
+    for line in nmap_output.splitlines():
+        if line.startswith("Nmap scan report for "):
+            if current_ip is not None:
+                results.append(ARPScanResult(ip=current_ip, mac=current_mac, vendor=current_vendor))
+            rest = line.removeprefix("Nmap scan report for ")
+            raw_ip = rest.split("(")[1].rstrip(")") if "(" in rest else rest.strip()
+            try:
+                current_ip = IPv4Address(raw_ip)
+            except ValueError:
+                try:
+                    current_ip = IPv6Address(raw_ip)
+                except ValueError:
+                    current_ip = None
+            current_mac = ""
+            current_vendor = ""
+        elif line.startswith("MAC Address:") and current_ip is not None:
+            parts = line.split(None, 3)
+            current_mac = parts[2] if len(parts) > 2 else ""
+            current_vendor = parts[3].strip("()") if len(parts) > 3 else ""
+
+    if current_ip is not None:
+        results.append(ARPScanResult(ip=current_ip, mac=current_mac, vendor=current_vendor))
+
+    return results
+
+
+def discover_hosts(network_interface: EthernetConfiguration) -> NetworkDiscoveryResult:
     hosts: list[NetworkService] = []
     # --localnet: Generates addresses from the interface configuration
     # -x: Only prints results to the output (no headers, etc.)
@@ -58,39 +90,74 @@ def discover_hosts(network_interface: EthernetConfiguration) -> NetworkDiscovery
         "--localnet", "-x",
     ], capture_output=True, text=True, check=True)
 
-    for arp_scan_result in parse_arp_scan_result(completed_process.stdout):
+    for result in parse_arp_scan_result(completed_process.stdout):
         host = NetworkService(
             endpoints=[
                 NetworkServiceEndpoint(
-                    ip=arp_scan_result.ip,
-                    mac=arp_scan_result.mac,
-                    extra_info=arp_scan_result.vendor,
+                    ip=result.ip,
+                    mac=result.mac,
+                    extra_info=result.vendor,
                 )
             ]
         )
         hosts.append(host)
+        logger.debug("Discovered host: %s (%s) on %s", result.ip, result.mac, network_interface.name)
 
+    logger.debug("Found %d hosts on %s", len(hosts), network_interface.name)
     return NetworkDiscoveryResult(
         network_interface=network_interface,
-        network_services=hosts
+        network_services=hosts,
     )
 
 
-def run(interface: str) -> NetworkDiscoveryResultMap:
+def discover_hosts_in_subnet(network_interface: EthernetConfiguration, subnet: str) -> NetworkDiscoveryResult:
     """
-    Drill used for discovering subnets, hosts and services for a given interface.
+    Uses `nmap -sn` to discover hosts in an arbitrary subnet, including remote ones.
 
-    :param interface:
-    :return:
+    Unlike discover_hosts(), this works across routers (Layer 3).
+    MAC addresses are only available if the target subnet is on the same Layer 2 segment.
+    The network_interface is used as the egress interface reference for the result.
+    """
+    hosts: list[NetworkService] = []
+    completed_process = subprocess.run(
+        ["nmap", "-sn", subnet],
+        capture_output=True, text=True, check=True,
+    )
+
+    for result in parse_nmap_result(completed_process.stdout):
+        host = NetworkService(
+            endpoints=[
+                NetworkServiceEndpoint(
+                    ip=result.ip,
+                    mac=result.mac,
+                    extra_info=result.vendor,
+                )
+            ]
+        )
+        hosts.append(host)
+        logger.debug("Discovered host: %s (%s) in subnet %s", result.ip, result.mac, subnet)
+
+    logger.debug("Found %d hosts in subnet %s", len(hosts), subnet)
+    return NetworkDiscoveryResult(
+        network_interface=network_interface,
+        network_services=hosts,
+    )
+
+
+def run(interface: str, subnet: str | None = None) -> NetworkDiscoveryResultMap:
+    """
+    Discovers hosts on the given interface.
+
+    If subnet is None, uses arp-scan to find hosts on the local network segment.
+    If subnet is provided (e.g. "10.0.2.0/24"), uses nmap -sn to scan that subnet instead.
     """
     results = dict()
     ethernet = config.device.get_ethernet(interface)
     try:
-        results[ethernet.name] = discover_hosts(ethernet)
+        if subnet is not None:
+            results[ethernet.name] = discover_hosts_in_subnet(ethernet, subnet)
+        else:
+            results[ethernet.name] = discover_hosts(ethernet)
     except subprocess.CalledProcessError:
         logger.exception(f"Error while discovering hosts for interface: {ethernet.name}.")
-
-    # @TODO: It makes sense to create an own datastructure for host discovery results,
-    # as it greatly diverges from the service discovery results and
-    # forces a lot of fields to be optional with default None.
     return NetworkDiscoveryResultMap(results=results)

@@ -1,4 +1,5 @@
 import asyncio
+import dataclasses
 import importlib.util
 import inspect
 import logging
@@ -108,13 +109,15 @@ class ScenarioManager(ResourceManager[Scenario]):
         """
         arguments = {}
         for name, argument in scenario.interface.arguments.items():
-            if argument.default is None and (
+            if argument.default is dataclasses.MISSING and (
                 name not in kwargs or kwargs[name] is None
             ):
                 message = f"Required argument {name} is missing."
                 raise ScenarioArgumentParsingError(message)
-            value = kwargs.get(name) or argument.default
-            if type(value).__name__ not in argument.type:
+            value = (
+                kwargs.get(name) if kwargs.get(name) is not None else argument.default
+            )
+            if value is not None and type(value).__name__ not in argument.type:
                 message = f"Invalid type {type(value)} for argument {name}, expected {argument.type}."
                 raise ScenarioArgumentParsingError(message)
             arguments[name] = value
