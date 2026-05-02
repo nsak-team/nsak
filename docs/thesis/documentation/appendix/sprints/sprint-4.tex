@@ -1,7 +1,30 @@
-\subsection{Sprint 4: 02.04 \textendash 15.04.2026}\label{subsec:sprint-4}
+\subsection{Sprint 4: 10.04 \textendash 02.05.2026}\label{subsec:sprint-4}
 
-\todo{Canceled for two sprints with a three-week time span: sprint 3 and 5.}
+\subsubsection{Sprint Planning 4: 09.04.2026}\label{subsubsec:sprint-planning-4}
 
-\subsubsection{Sprint Planning 4: 02.04.2026}\label{subsubsec:sprint-planning-4}
-\subsubsection{Sprint Review 4: 16.04.2026}\label{subsubsec:sprint-review-4}
-\subsubsection{Sprint Retro 4: 16.04.2026}\label{subsubsec:sprint-retro-4}
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{l l X}
+		\toprule
+        \textbf{Week} & \textbf{Responsible} & \textbf{Task} \\
+        \midrule
+        Week 1 & Frank \& Lukas & Bring together and test reproducible test environment and \gls{AI} Reconnaissance \\
+        Week 2 \& 3 & Frank & Network Discovery - Red Team  \\
+        Week 2 & Lukas & \gls{NSAK} Scenario: \gls{AI} Scenarios (second part): Improve tool calling and documentation \\
+        Week 3 & Lukas & External Logging with Grafana / Loki \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Sprint Planning 3}
+    \label{tab:sprint-planning-4}
+\end{table}
+
+In the fifth checkpoint meeting~\ref{subsec:checkpoint-meeting-5} which as in this sprint,
+we received the feedback that we should improve the logging for the \gls{AI}-agent and especially which tools it is calling.
+We decided to set up a self-hosted logging system with Grafana and Loki, where we can collect all logs of the runs and
+create custom queries to make it really easy to analyze the behavior of the \gls{AI}-agent.
+
+\subsubsection{Sprint Review 4: 02.05.2026}\label{subsubsec:sprint-review-4}
+
+
+
+\subsubsection{Sprint Retro 4: 02.05.2026}\label{subsubsec:sprint-retro-4}
