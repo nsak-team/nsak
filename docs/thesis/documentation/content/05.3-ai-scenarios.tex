@@ -10,25 +10,79 @@ But on the way it made sense to also create an intermediary scenario which can r
 Further, we already explored the \gls{AI} based intrusion detection scenario~\ref{subsec:scenario-ai-intrusion-detection} which should be seen as proof of concept, because the corresponding milestone and goals are categorized as \enquote{Should}.
 
 \subsection{\gls{AI} Agent}\label{subsec:ai-scenarios-implementation-ai-agent}
-LangChain/LangGraph
 
-https://www.langchain.com/
-\href{https://docs.langchain.com/}{LangChain}
+An \gls{AI} agent is an autonomous system that combines a large language model (\gls{LLM}) with a set of tools it can invoke to accomplish a goal.
+Rather than just generating text, the agent follows a reasoning loop: it plans which tool to call, executes it,
+observes the result, and continues until the task is complete~\cite{the-rise-of-agentic-ai}.
 
-The project team choose LangChain without comparing with alternative solutions for the following reasons:
+The project team chose \href{https://www.langchain.com/}{LangChain} as the agentic framework without comparing it with alternative solutions, for the following reasons:
+
 \begin{itemize}
-    \item Free and OpenSource
-    \item Python package
-    \item Suggested by various sources / good reputation
-    \item Extensive documentation and community
+    \item Free and open-source
+    \item Python package with native integration into the project's toolchain
+    \item Suggested by various sources and has a good reputation in the community
+    \item Extensive documentation and active community support
 \end{itemize}
+
+For the integration into the \gls{NSAK} framework we decided to implement an \mintinline{python}{AiAgent} class as the central abstraction,
+which wraps a \mintinline{python}{BaseChatModel} together with a set of LangChain tools and delegates the reasoning loop to LangChain's built-in \mintinline{python}{create_agent()}.
+
+\subsubsection{AI Configuration}\label{subsubsec:ai-configuration}
+
+Before any \gls{AI} scenario can run, the runtime configuration must contain an \mintinline{python}{AiConfiguration} entry specifying which model and backend to use.
+Listing~\ref{lst:ai-configuration} shows the dataclass, which holds two fields: \mintinline{python}{model} and \mintinline{python}{base_url}.
+For authentication, the basic auth can be provided in the \mintinline{python}{base_url} field otherwise a provider specific environment variable like \enquote{ANTHROPIC\_AUTH\_TOKEN} must be used.
+
+\todo{Fix authentication in the framework: It should have its own provider-agnostic config field}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/configuration/ai_configuration.py}
+    \caption{AI Configuration Dataclass}
+    \label{lst:ai-configuration}
+\end{listing}
+
+The \mintinline{python}{model} field also encodes the model provider and follows the format \mintinline{bash}{<provider>:<model-tag>}, for example:
+
+\begin{itemize}
+    \item \mintinline{bash}{ollama:qwen2.5:7b-instruct} - a local \href{https://ollama.com}{Ollama} instance
+    \item \mintinline{bash}{anthropic:claude-opus-4-5} - \gls{Anthropic}\'s \gls{API}
+    \item \mintinline{bash}{openai:gpt-4o} - \gls{OpenAI}\'s \gls{API}
+\end{itemize}
+
+Where currently only \enquote{ollama}, \enquote{anthropic} and \enquote{openai} are supported.
+
+The corresponding \gls{CLI} commands to configure the \gls{AI} backend are:
+
+\begin{itemize}
+    \item \mintinline{bash}{nsak config set ai\.model "ollama:qwen2.5:7b-instruct"}
+    \item \mintinline{bash}{nsak config set ai\.base\_url "http://localhost:11434"}
+\end{itemize}
+
+\subsubsection{Provider Abstraction}\label{subsubsec:ai-provider-abstraction}
+
+The \mintinline{python}{AiAgent.create_model()} method parses the provider prefix and dispatches to the appropriate LangChain chat model class via \mintinline{python}{PROVIDER_MAP}, as shown in listing~\ref{lst:ai-provider-map}.
+This means any supported provider can be swapped out by changing a single configuration value, without touching scenario code.
+All providers receive \mintinline{python}{temperature=0} to make agent behaviour as deterministic as possible.
+
+\begin{listing}[H]
+    \inputminted[firstline=27, lastline=51]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{AI Provider Map and MCP Client Initialisation}
+    \label{lst:ai-provider-map}
+\end{listing}
 
 \subsection{LangChain Concepts}\label{subsec:ai-scenarios-langchain-concepts}
 
 LangChain provides a framework for developing applications powered by large language models (\gls{LLM}s) and agent-based systems.
 It enables developers to combine modular components and external integrations, simplifying \gls{AI} application design while maintaining flexibility as underlying technologies evolve~\cite{langchain_repo}.
 
-\href{https://www.webfuse.com/langchain-cheat-sheet}{LangChain Cheat Sheet}
+The primary LangChain concepts used in the \gls{NSAK} framework are:
+
+\begin{itemize}
+    \item \mintinline{python}{BaseChatModel} - provider-agnostic interface for the underlying \gls{LLM}.
+    \item \mintinline{python}{BaseTool} - interface for callable tools that the agent can invoke.
+    \item \mintinline{python}{create_agent()} - builds a LangGraph-based ReAct agent graph that wires the model and tools together.
+    \item \mintinline{python}{messages} - a list of conversation messages (user, \gls{AI}, tool) maintained across the agent's reasoning loop.
+\end{itemize}
 
 \begin{listing}[H]
     \inputminted{python}{../../../src/nsak/core/ai/ai_agent.py}
@@ -36,24 +90,73 @@ It enables developers to combine modular components and external integrations, s
     \label{lst:langchain-agent}
 \end{listing}
 
+The \mintinline{python}{AiAgent.__init__()} method calls \mintinline{python}{create_model()} to instantiate the provider-specific chat model
+and then passes it to \mintinline{python}{create_agent()} together with the tool list and a fixed system prompt that establishes the cybersecurity simulation context.
+The \mintinline{python}{run()} method invokes the agent once and streams all resulting messages (user, \gls{AI}, tool calls, tool results) as formatted strings.
+The \mintinline{python}{run_interactive()} method extends this into an interactive loop,
+where after each agent response the operator is prompted for the next instruction,
+and the full conversation history is retained in the \mintinline{python}{messages} list until the operator types an empty line or \mintinline{bash}{exit}.
+
 \subsubsection{Tool Calling Concepts}\label{subsubsec:ai-agent-tool-calling-concepts}
 
+Tool calling is the mechanism by which the \gls{LLM} declares that it wants to invoke an external function.
+The framework intercepts the model's output, parses the tool call, executes the corresponding Python function, \gls{MCP}, or Skill,
+and appends the result to the message history before asking the model to continue.
+This loop repeats until the model produces a final text response with no tool calls.
+
+In \gls{NSAK}, tools can be provided through several complementary mechanisms:
+
 \begin{itemize}
-    \item \gls{MCP}
-    \item Skills
-    \item \gls{CLI} Access
-    \item LangChain Tools
+    \item \textbf{LangChain Tools} - native Python functions decorated with \mintinline{python}{@tool},
+    which LangChain automatically wraps with type-safe JSON schemas for the model.
+    This is the primary mechanism used for \gls{NSAK}-specific tools (host configuration, \gls{CLI} access, e-mail, human interaction hook).
+    Further, all \gls{NSAK} drills are wrapped as LangChain tools via \mintinline{python}{generate_drill_tools()},
+    giving the agent type-safe access to all drill capabilities.
+    \item \textbf{\gls{MCP}} - the Model Context Protocol allows external tool servers to expose additional capabilities;
+    used here for the draw.io integration (see~\ref{subsubsec:ai-agent-mcp-integration}).
+    \item \textbf{\gls{CLI} Access} - the \mintinline{python}{cli_tool} gives the agent direct shell access,
+    allowing it to run any installed binary (nmap, tshark, etc.).
 \end{itemize}
 
 \subsubsection{Tool Calling Models}\label{subsubsec:ai-agent-tool-calling-models}
-Considering it's limited size of 7 billion parameters, we were quite happy with our first test model \enquote{qwen2.5:7b-coder}.
+
+Considering its limited size of 7 billion parameters, we were quite happy with our first test model \enquote{qwen2.5:7b-coder}.
 But as it turns out, not all models are capable of calling tools.
-Often, multiple variants of the same model are available, and they don't only for differ in size,
+Often, multiple variants of the same model are available, and they don't only differ in size,
 but also for different strengths or capabilities such as tool calling.
 The tool calling variants are often have the suffix \enquote{instruct}.
 Luckily, \enquote{qwen2.5:7b-coder} has such variant called \enquote{qwen2.5:7b-instruct}.
 
+The \mintinline{python}{create_ai_agent()} factory function shown in listing~\ref{lst:create-ai-agent} is the central assembly point used by all three \gls{AI} scenarios.
+It reads the \mintinline{python}{ai} configuration block, assembles the tool list (always including \mintinline{python}{cli_tool}, \mintinline{python}{host_configuration}, and \mintinline{python}{send_email}), optionally adds the human interaction hook or drill tools, loads \gls{MCP} tools with graceful fallback, and returns a configured \mintinline{python}{AiAgent} instance.
+
+\begin{listing}[H]
+    \inputminted[firstline=173, lastline=206]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{create\_ai\_agent() Factory Function}
+    \label{lst:create-ai-agent}
+\end{listing}
+
+The \mintinline{python}{enable_drill_tools} flag, when set to \mintinline{python}{True}, calls \mintinline{python}{generate_drill_tools()}, which dynamically wraps every \gls{NSAK} drill as a type-safe LangChain tool.
+This gives the agent access to structured capabilities such as \mintinline{bash}{discover_hosts} and \mintinline{bash}{port_scan} without requiring \gls{CLI} invocation.
+
+\subsubsection{MCP Integration}\label{subsubsec:ai-agent-mcp-integration}
+
+The \gls{MCP}~\cite{anthropic-mcp} is an open protocol that standardises how \gls{AI} models connect to external tool servers.
+Rather than implementing tool calling ad-hoc, \gls{MCP} servers expose a well-defined interface that any compatible \gls{LLM} framework can consume~\cite{mcp-landscape}.
+LangChain Agents must be invoked in an event loop to properly support \gls{MCP}, this forced us to refactor the implementation \enquote{ai\_agent.py} to be async.
+Further we need to add support for async drills and scenarios, as otherwise we could not run the \gls{AI} agent inn those contexts.
+
+\gls{NSAK} integrates an external draw.io \gls{MCP} server to allow the \gls{AI} agent to create and manipulate diagrams during a scenario run.
+The client is initialised at module level (listing~\ref{lst:ai-provider-map}, lines 41--51 using \mintinline{python}{MultiServerMCPClient} from \mintinline{bash}{langchain-mcp-adapters}, pointing to \mintinline{bash}{https://drawio.hiube.ch/mcp} with Basic authentication.
+
+\gls{MCP} tools are loaded asynchronously inside \mintinline{python}{create_ai_agent()} and appended to the tool list.
+If the server is unavailable, the exception is caught and logged as a warning so the scenarios can still run without diagram support.
+
 \subsubsection{LangChain Tool: Host Configuration}\label{subsubsec:langchain-tool-host-configuration}
+
+The \mintinline{python}{host_configuration} tool shown in listing~\ref{lst:langchain-tool-host-configuraiton} gives the agent a structured view of the host's current configuration.
+It returns a dictionary containing the loaded device configuration with interface names, \gls{IP} addresses, and the \mintinline{python}{is_target} / \mintinline{python}{is_management} flags loaded from the device \gls{YAML}.
+This bootstraps the agent's situational awareness without requiring it to run \mintinline{bash}{ip addr} or parse raw network output - the agent knows from the start which interfaces are part of the attack surface and which are for management traffic.
 
 \begin{listing}[H]
     \inputminted[firstline=9, lastline=51]{python}{../../../src/nsak/core/ai/tools/host_configuration.py}
@@ -62,6 +165,11 @@ Luckily, \enquote{qwen2.5:7b-coder} has such variant called \enquote{qwen2.5:7b-
 \end{listing}
 
 \subsubsection{LangChain Tool: CLI Tool}\label{subsubsec:langchain-tool-cli-tool}
+
+The \mintinline{python}{cli_tool} shown in listing~\ref{lst:langchain-tool-cli-tool} allows the \gls{AI} agent to execute arbitrary shell commands with a configurable timeout (default 120 s).
+It returns a tuple of \mintinline{python}{(exit_code, stdout, stderr)}, giving the agent full feedback to diagnose failures and adapt its next action.
+The scope is intentionally broad: the agent can invoke nmap, tshark, apt, or any other binary available in the execution environment.
+Besides the execution of drills, this flexibility is what makes the \gls{AI} scenarios powerful, but it is also why the kill switch described in~\ref{subsec:ai-scenarios-implementation-cli-kill-switch} is a necessary safety measure.
 
 \begin{listing}[H]
     \inputminted[firstline=10, lastline=70]{python}{../../../src/nsak/core/ai/tools/cli_tool.py}
@@ -73,7 +181,9 @@ Luckily, \enquote{qwen2.5:7b-coder} has such variant called \enquote{qwen2.5:7b-
 
 \subsubsection{LangChain Tool: Human Interaction Hook}\label{subsubsec:langchain-tool-human-interaction-hook}
 Even tough LangChain has its own concept, called \href{https://docs.langchain.com/oss/python/langchain/human-in-the-loop}{Human-in-the-loop},
-for now a simple pyton based tool was implemented as show in~\ref{lst:langchain-tool-human-interaction-hook}, to achieve the same goal.
+for now a simple python based tool was implemented as shown in~\ref{lst:langchain-tool-human-interaction-hook}, to achieve the same goal.
+When enabled via the \mintinline{python}{interactive} flag in \mintinline{python}{create_ai_agent()}, the agent can pause its execution
+and ask the operator a question, then incorporate the answer into its next reasoning step.
 
 \begin{listing}[H]
     \inputminted[firstline=4, lastline=19]{python}{../../../src/nsak/core/ai/tools/human_interaction_hook.py}
@@ -83,11 +193,7 @@ for now a simple pyton based tool was implemented as show in~\ref{lst:langchain-
 
 \subsection{Logging}\label{subsec:ai-scenarios-implementation-logging}
 
-\begin{listing}[H]
-    \inputminted[firstline=4, lastline=19]{python}{../../../src/nsak/core/ai/tools/human_interaction_hook.py}
-    \caption{Python Logger}
-    \label{lst:python-logger}
-\end{listing}
+
 
 \subsubsection{Remote Logging System: Grafana / Loki}\label{subsubsec:ai-scenarios-implementation-remote-logging-system}
 
@@ -98,9 +204,11 @@ We went for this instead of collecting the logs from stdout, because we can prov
 
 \begin{listing}[H]
     \inputminted[firstline=6, lastline=14]{python}{../../../src/nsak/core/configuration/loki_configuration.py}
-    \caption{Python Logger}
+    \caption{Loki Logging Configuration}
     \label{lst:logging-loki-configuration}
 \end{listing}
+
+\todo{Add a figure }
 
 \subsection{E-Mail Alerting}\label{subsec:ai-scenarios-implementation-e-mail-alerting}
 
@@ -109,6 +217,8 @@ The \enquote{EmailBackend} implemented to the \gls{NSAK} framework is an opinion
 and leverages the previously introduced~\ref{sec:configuration-management-implementation} to set up necessary configuration.
 If no \gls{SMTP} configuration is provided as specified in~\ref{lst:email-altering-configuration},
 the system will write the E-Mails as logs instead.
+The working tool can be seen in actions in the test run of the \gls{AI} Reconnaissance scenario~\ref{subsubsec:scenario-ai-reconnaissance-test-run},
+where the operator instructs the agent to send the results via E-Mail.
 
 \begin{listing}[H]
     \inputminted[firstline=15, lastline=27]{python}{../../../src/nsak/core/configuration/email_configuration.py}
@@ -124,6 +234,11 @@ the system will write the E-Mails as logs instead.
 
 \subsubsection{LangChain Tool: E-Mail Alerting}\label{subsubsec:langchain-tool-e-mail-alerting}
 
+The \mintinline{python}{send_email} tool shown in listing~\ref{lst:langchain-tool-email-alerting} exposes the \mintinline{python}{EmailBackend} to the \gls{AI} agent.
+During a scenario run the agent can autonomously send alert e-mails to operators - for example, when the \gls{AI} intrusion detection scenario identifies a suspicious host.
+Subject lines are automatically prefixed with \mintinline{text}{[NSAK]} so that operators can filter them in their inbox.
+Optional \mintinline{python}{cc_recipients} and \mintinline{python}{attachments} parameters allow the agent to include additional stakeholders or attach captured evidence files.
+
 \begin{listing}[H]
     \inputminted[firstline=6, lastline=26]{python}{../../../src/nsak/core/ai/tools/send_email.py}
     \caption{LangChain Tool: E-Mail Alerting}
@@ -132,14 +247,14 @@ the system will write the E-Mails as logs instead.
 
 \subsection{CLI Kill Switch}\label{subsec:ai-scenarios-implementation-cli-kill-switch}
 It's possible that an \gls{AI}-Agent starts doing unexpected, unwanted or even destructive actions.
-This was also identified as a possible risk in our~\ref{subsec:risk_assessment} and we
+This was also identified as a possible risk in the risk assessment~\ref{subsec:risk_assessment}.
 This kind of misbehavior, combined with elevated permissions and tool calling capabilities via direct \gls{CLI} access,
-could lead to wide range of issues:
+could lead to a wide range of issues:
 
 \begin{itemize}
     \item The \gls{AI}-Agent is stuck in a loop while using most system resources.
     \item The \gls{AI}-Agent misconfigures the system, rendering it inaccessible or even unusable.
-    \item The \gls{AI}-Agent burns to many credits because of a bug, inefficient request or huge task.
+    \item The \gls{AI}-Agent burns too many \gls{API} credits because of a bug, an inefficient request, or a huge task.
     \item The \gls{AI}-Agent starts an attack against a production network.
 \end{itemize}
 
@@ -147,25 +262,95 @@ For these reasons we want to be able to kill a specific or all scenarios as fast
 As a first measure, the project team decided to add this functionality as simple \gls{CLI} commands:
 
 \begin{itemize}
-    \item \mintinline{bash}{nsak scenario kill <scenario-id>}: Kill specific scenario
-    \item \mintinline{bash}{nsak scenario killswitch}: Kill all scenarios
+    \item \mintinline{bash}{nsak scenario kill <scenario-id>}: Kill a specific scenario (sends \mintinline{bash}{SIGTERM} to the container)
+    \item \mintinline{bash}{nsak scenario killswitch}: Kill all running scenarios
     \item \mintinline{bash}{nsak killswitch}: Alias for \mintinline{bash}{nsak scenario killswitch}
 \end{itemize}
 
-
 \subsection{Scenario: AI Agent}\label{subsec:scenario-ai-agent}
-Initial and agnostic \gls{AI}-based scenario, which just starts an \gls{AI AGENT} with a custom prompt.
+
+The \gls{AI} Agent scenario is the most generic of the three: it accepts a free-form \mintinline{python}{prompt} argument and runs the \gls{AI} agent in an interactive loop, maintaining the full conversation history across turns.
+This makes it the primary entry point for ad-hoc \gls{AI}-assisted tasks where no dedicated scenario exists yet.
+The operator can guide the agent step by step, observe its reasoning, and issue follow-up instructions until they type an empty line or \mintinline{bash}{exit}.
+Listing~\ref{lst:scenario-ai-agent-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-agent-yaml} shows its \gls{YAML} interface declaration.
+
+\begin{listing}[H]
+    \inputminted{python}{../../../lib/scenarios/ai_agent/scenario.py}
+    \caption{Scenario: AI Agent - scenario.py}
+    \label{lst:scenario-ai-agent-py}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{yaml}{../../../lib/scenarios/ai_agent/scenario.yaml}
+    \caption{Scenario: AI Agent - scenario.yaml}
+    \label{lst:scenario-ai-agent-yaml}
+\end{listing}
+
+\subsubsection{Scenario: AI Agent - Test Run}\label{subsubsec:scenario-ai-agent-test-run}
+
+\mintinline{bash}{nsak scenario execute ai_agent --prompt "Scan the target network and report all findings" --interactive True}
+
+\todo{Describe and add a reference to the result of the first testrun}
+
 
 \subsection{Scenario: AI Reconnaissance}\label{subsec:scenario-ai-reconnaissance}
-Automatic host discovery based on a specific initial prompt.
+
+The \gls{AI} Reconnaissance scenario automates host and service discovery on a specified network interface.
+It encodes a structured five-step plan directly into the initial prompt: the agent is instructed to call \mintinline{python}{host_configuration} to determine the \gls{IP} addresses and subnets on the interface, then use the \mintinline{python}{cli} tool to invoke nmap for host scanning, then again for service enumeration, and finally to report all findings including vulnerability indicators.
+If the \mintinline{python}{interactive} flag is set, the last step invites the operator to issue follow-up instructions via the \mintinline{python}{human_interaction_hook}.
+
+This prompt-driven approach means the scenario does not contain any network scanning logic itself - the agent decides which nmap flags to use, how to interpret results, and what to scan next.
+Listing~\ref{lst:scenario-ai-recon-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-recon-yaml} shows its \gls{YAML} interface declaration.
+
+\begin{listing}[H]
+    \inputminted{python}{../../../lib/scenarios/ai_reconnaissance/scenario.py}
+    \caption{Scenario: AI Reconnaissance - scenario.py}
+    \label{lst:scenario-ai-recon-py}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{yaml}{../../../lib/scenarios/ai_reconnaissance/scenario.yaml}
+    \caption{Scenario: AI Reconnaissance - scenario.yaml}
+    \label{lst:scenario-ai-recon-yaml}
+\end{listing}
+
+\subsubsection{Scenario: AI Reconnaissance - Test Run}\label{subsubsec:scenario-ai-reconnaissance-test-run}
+
+\mintinline{bash}{nsak scenario execute ai_reconnaissance --interface eth0}
+
+\todo{Describe and add a reference to the result of the first testrun}
 
 \subsection{Scenario: AI Intrusion Detection}\label{subsec:scenario-ai-intrusion-detection}
-Automatic intrusion detection based on a specific initial prompt.
+
+The \gls{AI} Intrusion Detection scenario is a proof of concept that should be seen as a \enquote{Should} feature.
+It demonstrates a two-phase approach: first it performs host discovery using \mintinline{python}{DrillManager.execute("discover_hosts")}, then it captures live network traffic using \mintinline{bash}{tshark} (a system dependency declared in the scenario \gls{YAML}).
+Up to 200 packets are captured over a 60-second window and extracted as \gls{CSV} fields (frame number, source and destination \gls{MAC}, source and destination \gls{IP}, \gls{TCP}/\gls{UDP} destination port, protocol stack, and frame length).
+
+Both the host discovery table and the packet \gls{CSV} are injected into a structured \mintinline{python}{PROMPT_TEMPLATE} that instructs the \gls{AI} to identify at most five suspicious events, each with source/destination \gls{IP} and \gls{MAC}, protocol, and the reason for suspicion, and to identify any malicious hosts.
+By constraining the number of events the prompt keeps the agent's output concise and actionable.
+Listing~\ref{lst:scenario-ai-ids-py} shows the full scenario entrypoint and listing~\ref{lst:scenario-ai-ids-yaml} shows its \gls{YAML} interface declaration.
+
+\begin{listing}[H]
+    \inputminted{python}{../../../lib/scenarios/ai_intrusion_detection/scenario.py}
+    \caption{Scenario: AI Intrusion Detection - scenario.py}
+    \label{lst:scenario-ai-ids-py}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{yaml}{../../../lib/scenarios/ai_intrusion_detection/scenario.yaml}
+    \caption{Scenario: AI Intrusion Detection - scenario.yaml}
+    \label{lst:scenario-ai-ids-yaml}
+\end{listing}
+
+\subsubsection{Scenario: AI Intrusion Detection - Test Run}\label{subsubsec:scenario-ai-intrusion-detection-test-run}
+
+\mintinline{bash}{nsak scenario execute ai_intrusion_detection --interface eth0}
+
+\todo{Describe and add a reference to the result of the first testrun}
 
 \subsection{LangChain Agent Chat UI}\label{subsec:langchain-agent-chat-ui}
 
-We did not implement LangChain Agent Chat UI, because we made some implicit architecture decisions which prevents us from easy integration.
-If we decide to implement it regardless we need to redesign and refactor the \gls{AI} Agent implementation.
+We did not add the~\href{https://docs.langchain.com/oss/python/langchain/ui}{LangChain Agent Chat UI} because we made some implicit architecture decisions which prevent easy integration.
 
-https://docs.langchain.com/oss/python/langchain/ui
-https://www.youtube.com/watch?v=lInrwVnZ83o
+If we decide to implement it regardless, we would need to redesign and refactor the \gls{AI} Agent implementation, for example by switching to a callback-based output model.
+A useful reference for such a migration is available at \href{https://www.youtube.com/watch?v=lInrwVnZ83o}{this LangChain UI tutorial}.
