@@ -106,6 +106,10 @@ def _interactive_section(key: str) -> None:
         current = ConfigurationManager.get_value(key) or {}
     except KeyError:
         current = {}
+
+    if dataclasses.is_dataclass(current):
+        current = dataclasses.asdict(current)  # type: ignore
+
     current_raw = current if isinstance(current, dict) else {}
 
     updates: dict[str, Any] = {}

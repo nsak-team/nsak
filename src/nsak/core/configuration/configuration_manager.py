@@ -157,6 +157,19 @@ class ConfigurationManager:
     Manager for all runtime configuration operations.
     """
 
+    _loki_handler: LokiHandler | None = None
+
+    @classmethod
+    def update_loki_handler(cls, config: Configuration) -> None:
+        """
+        Update the LokiHandler with the currently running scenario.
+        """
+        if cls._loki_handler is None:
+            return None
+
+        cls._loki_handler.emitter.tags["nsak_run_scenario"] = config.running_scenario
+        return None
+
     @classmethod
     def _setup_logging(cls, config: Configuration) -> None:
         """
@@ -169,18 +182,22 @@ class ConfigurationManager:
         ]
 
         if config.loki is not None:
-            handlers.append(
-                LokiHandler(
-                    url=config.loki.url,
-                    tags={
-                        "job": "nsak",
-                        "run_id": config.container.id,
-                        "run_name": config.container.name,
-                    },
-                    auth=(config.loki.username, config.loki.password),
-                    version="1",
-                )
+            cls._loki_handler = LokiHandler(
+                url=config.loki.url,
+                tags={
+                    "job": "nsak",
+                    "nsak_run_id": config.container.id,
+                    "nsak_run_name": config.container.name,
+                    "nsak_run_scenario": config.running_scenario,
+                    "nsak_run_datetime": config.datetime,
+                },
+                auth=(config.loki.username, config.loki.password),
+                version="1",
             )
+            if cls._loki_handler is None:
+                message = "_loki_handler is undefined!"
+                raise ValueError(message)
+            handlers.append(cls._loki_handler)
 
         logging.basicConfig(
             level=logging.DEBUG if config.debug else logging.INFO,

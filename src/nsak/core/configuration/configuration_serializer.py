@@ -158,7 +158,6 @@ def dataclass_deserializer(_type: type, data: dict[str, Any]) -> dict[str, Any]:
             continue
 
         result[field.name] = deserialize_value(inner_type, value)
-
     return result
 
 
@@ -233,6 +232,9 @@ def _get_serializer_map() -> dict[type, Callable[[Any], Any]]:
             # ContainerInfo is runtime-only and never persisted
             ContainerInfo: lambda _: None,
         }
+    if _SERIALIZER_MAP is None:
+        message = "_SERIALIZER_MAP is undefined!"
+        raise ValueError(message)
     return _SERIALIZER_MAP
 
 

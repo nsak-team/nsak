@@ -9,5 +9,7 @@ class AiConfiguration:
     Configuration for the AI agent backend.
     """
 
+    provider: str
     model: str
     base_url: str
+    api_key: str | None = dataclasses.field(default=None)

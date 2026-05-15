@@ -13,6 +13,7 @@ from typing import Any, List
 import yaml
 
 from nsak.core import settings
+from nsak.core.configuration import config
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
@@ -326,13 +327,18 @@ class ScenarioManager(ResourceManager[Scenario]):
             message = f"Scenario '{scenario.name}' has no 'run' function or coroutine."
             raise Scenario.InvalidResourceError(message)
 
+        config.set_running_scenario(scenario.name)
         message = "EXEC %s SCENARIO: %s"
-        if inspect.iscoroutinefunction(run_fn):
-            logger.warning(message, "ASYNC", scenario.name)
-            return asyncio.run(run_fn(**arguments))
-        elif inspect.isfunction(run_fn):
-            logger.warning(message, "SYNC", scenario.name)
-            return run_fn(**arguments)
 
-        message = f"Scenario '{scenario.name}.run' is not a function or coroutine."
-        raise Scenario.InvalidResourceError(message)
+        if inspect.iscoroutinefunction(run_fn):
+            logger.info(message, "ASYNC", scenario.name)
+            result = asyncio.run(run_fn(**arguments))
+        elif inspect.isfunction(run_fn):
+            logger.info(message, "SYNC", scenario.name)
+            result = run_fn(**arguments)
+        else:
+            message = f"Scenario '{scenario.name}.run' is not a function or coroutine."
+            raise Scenario.InvalidResourceError(message)
+
+        config.reset_running_scenario()
+        return result

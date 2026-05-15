@@ -27,13 +27,17 @@ The project team chose \href{https://www.langchain.com/}{LangChain} as the agent
 For the integration into the \gls{NSAK} framework we decided to implement an \mintinline{python}{AiAgent} class as the central abstraction,
 which wraps a \mintinline{python}{BaseChatModel} together with a set of LangChain tools and delegates the reasoning loop to LangChain's built-in \mintinline{python}{create_agent()}.
 
+\todo{Describe the three different abstraction levels: DeepAgent, LangChain and LangGraph (maybe include cheatsheet with proper citation)}
+
+
+
 \subsubsection{AI Configuration}\label{subsubsec:ai-configuration}
 
-Before any \gls{AI} scenario can run, the runtime configuration must contain an \mintinline{python}{AiConfiguration} entry specifying which model and backend to use.
+Before any \gls{AI} based scenario can run, the \mintinline{python}{AiConfiguration} entry must be set in the runtime configuration,
+containing the model, provider and credentials.
 Listing~\ref{lst:ai-configuration} shows the dataclass, which holds two fields: \mintinline{python}{model} and \mintinline{python}{base_url}.
-For authentication, the basic auth can be provided in the \mintinline{python}{base_url} field otherwise a provider specific environment variable like \enquote{ANTHROPIC\_AUTH\_TOKEN} must be used.
-
-\todo{Fix authentication in the framework: It should have its own provider-agnostic config field}
+For authentication, the basic auth can be provided in the \mintinline{python}{base_url} field,
+otherwise the \mintinline{python}{api_key} must be set.
 
 \begin{listing}[H]
     \inputminted{python}{../../../src/nsak/core/configuration/ai_configuration.py}
@@ -41,28 +45,24 @@ For authentication, the basic auth can be provided in the \mintinline{python}{ba
     \label{lst:ai-configuration}
 \end{listing}
 
-The \mintinline{python}{model} field also encodes the model provider and follows the format \mintinline{bash}{<provider>:<model-tag>}, for example:
+With the \gls{CLI} command \mintinline{bash}{nsak config set ai} the configuration can be set interactively,
+alternatively the values can be set individually like in the following example:
 
 \begin{itemize}
-    \item \mintinline{bash}{ollama:qwen2.5:7b-instruct} - a local \href{https://ollama.com}{Ollama} instance
-    \item \mintinline{bash}{anthropic:claude-opus-4-5} - \gls{Anthropic}\'s \gls{API}
-    \item \mintinline{bash}{openai:gpt-4o} - \gls{OpenAI}\'s \gls{API}
-\end{itemize}
-
-Where currently only \enquote{ollama}, \enquote{anthropic} and \enquote{openai} are supported.
-
-The corresponding \gls{CLI} commands to configure the \gls{AI} backend are:
-
-\begin{itemize}
-    \item \mintinline{bash}{nsak config set ai\.model "ollama:qwen2.5:7b-instruct"}
-    \item \mintinline{bash}{nsak config set ai\.base\_url "http://localhost:11434"}
+    \item \mintinline{bash}{nsak config set ai\.provider "ollama"}
+    \item \mintinline{bash}{nsak config set ai\.model "qwen2.5:7b-instruct"}
+    \item \mintinline{bash}{nsak config set ai\.base\_url "http://user:pass@localhost:11434"}
+    \item \mintinline{bash}{nsak config set ai\.api\_key "secret"}
 \end{itemize}
 
 \subsubsection{Provider Abstraction}\label{subsubsec:ai-provider-abstraction}
 
-The \mintinline{python}{AiAgent.create_model()} method parses the provider prefix and dispatches to the appropriate LangChain chat model class via \mintinline{python}{PROVIDER_MAP}, as shown in listing~\ref{lst:ai-provider-map}.
+The \mintinline{python}{AiAgent.create_model()} method parses the provider prefix and dispatches to the appropriate LangChain chat model class via \mintinline{python}{PROVIDER_MAP},
+as shown in listing~\ref{lst:ai-provider-map}.
 This means any supported provider can be swapped out by changing a single configuration value, without touching scenario code.
-All providers receive \mintinline{python}{temperature=0} to make agent behaviour as deterministic as possible.
+Most providers allow to set the \enquote{temperature} of a model,
+where lower values produce more deterministic responses, while higher values increase creativity and diversity~\cite{anthropic_model_temperature}.
+For our intents and purposes always set \mintinline{python}{temperature=0}, as we want to make agent behavior as deterministic as possible.
 
 \begin{listing}[H]
     \inputminted[firstline=27, lastline=51]{python}{../../../src/nsak/core/ai/ai_agent.py}
@@ -117,6 +117,8 @@ In \gls{NSAK}, tools can be provided through several complementary mechanisms:
     \item \textbf{\gls{CLI} Access} - the \mintinline{python}{cli_tool} gives the agent direct shell access,
     allowing it to run any installed binary (nmap, tshark, etc.).
 \end{itemize}
+
+\todo{Explain the issue with limited context windows and high token usage of certain MCP tools, such as drawio mcp}
 
 \subsubsection{Tool Calling Models}\label{subsubsec:ai-agent-tool-calling-models}
 
@@ -193,12 +195,21 @@ and ask the operator a question, then incorporate the answer into its next reaso
 
 \subsection{Logging}\label{subsec:ai-scenarios-implementation-logging}
 
+\todo{Explain the general python logging setup and implementation of NSAK}
 
+\subsubsection{LangChain Agent Logs}\label{subsubsec:ai-scenarios-implementation-langchain-agent-logs}
+
+\todo{Explain that the LangChain agent already provides extensive logging, where we found that the log levels are sometimes questionable (e.g. WARNING for AI responses and tool alls).}
 
 \subsubsection{Remote Logging System: Grafana / Loki}\label{subsubsec:ai-scenarios-implementation-remote-logging-system}
 
 Uses the package \href{https://pypi.org/project/python-logging-loki/}{python-logging-loki}.
-We went for this instead of collecting the logs from stdout, because we can provide more metadata in form of \enquote{tags}.
+We went for this method over more conventional approaches, because we can provide more metadata in form of \enquote{tags}.
+
+instead of collecting the logs from stdout
+Filters:
+Regex: \mintinline{regex}{\[(AI)|(Prompt)|(Tool)\]}
+\todo{Complete this section}
 
 \ref{subsec:grafana-loki-logging-system}
 
@@ -235,9 +246,14 @@ where the operator instructs the agent to send the results via E-Mail.
 \subsubsection{LangChain Tool: E-Mail Alerting}\label{subsubsec:langchain-tool-e-mail-alerting}
 
 The \mintinline{python}{send_email} tool shown in listing~\ref{lst:langchain-tool-email-alerting} exposes the \mintinline{python}{EmailBackend} to the \gls{AI} agent.
-During a scenario run the agent can autonomously send alert e-mails to operators - for example, when the \gls{AI} intrusion detection scenario identifies a suspicious host.
-Subject lines are automatically prefixed with \mintinline{text}{[NSAK]} so that operators can filter them in their inbox.
-Optional \mintinline{python}{cc_recipients} and \mintinline{python}{attachments} parameters allow the agent to include additional stakeholders or attach captured evidence files.
+During a scenario run the agent can autonomously send e-mails to operators - for example,
+when the \gls{AI} intrusion detection scenario identifies a suspicious host or the operator instructed the \gls{AI} reconnaissance scenario to send a report.
+The recipient of the mail is defined via the configuration management and cannot be changed by the agent, so that the operator always knows which mails where sent and who received them.
+Optional \mintinline{python}{cc_recipients} and \mintinline{python}{attachments} parameters allow the agent to inform additional stakeholders or attach diagrams and reports.
+Each email comes with some predefined
+For better \gls{traceability} a template is defined, which is filled with meta information including the current scenario and a unique ID,
+which can be used to associate the mail in grafana.
+Further, the subject line is always prefixed with \mintinline{text}{[NSAK]}, so that operators can filter them in their inbox.
 
 \begin{listing}[H]
     \inputminted[firstline=6, lastline=26]{python}{../../../src/nsak/core/ai/tools/send_email.py}
@@ -290,7 +306,7 @@ Listing~\ref{lst:scenario-ai-agent-py} shows the scenario entrypoint and listing
 
 \mintinline{bash}{nsak scenario execute ai_agent --prompt "Scan the target network and report all findings" --interactive True}
 
-\todo{Describe and add a reference to the result of the first testrun}
+\todo{Describe and add a reference to the result of the test runs and the limited tool calling capabilities of smaller models}
 
 
 \subsection{Scenario: AI Reconnaissance}\label{subsec:scenario-ai-reconnaissance}
@@ -322,8 +338,9 @@ Listing~\ref{lst:scenario-ai-recon-py} shows the scenario entrypoint and listing
 
 \subsection{Scenario: AI Intrusion Detection}\label{subsec:scenario-ai-intrusion-detection}
 
-The \gls{AI} Intrusion Detection scenario is a proof of concept that should be seen as a \enquote{Should} feature.
-It demonstrates a two-phase approach: first it performs host discovery using \mintinline{python}{DrillManager.execute("discover_hosts")}, then it captures live network traffic using \mintinline{bash}{tshark} (a system dependency declared in the scenario \gls{YAML}).
+The \gls{AI} Intrusion Detection scenario is a proof of concept, as it was specified as \enquote{Should} goal.
+It demonstrates a two-phase approach: first it performs host discovery using \mintinline{python}{DrillManager.execute("discover_hosts")},
+then it captures live network traffic using \mintinline{bash}{tshark} (a system dependency declared in the scenario \gls{YAML}).
 Up to 200 packets are captured over a 60-second window and extracted as \gls{CSV} fields (frame number, source and destination \gls{MAC}, source and destination \gls{IP}, \gls{TCP}/\gls{UDP} destination port, protocol stack, and frame length).
 
 Both the host discovery table and the packet \gls{CSV} are injected into a structured \mintinline{python}{PROMPT_TEMPLATE} that instructs the \gls{AI} to identify at most five suspicious events, each with source/destination \gls{IP} and \gls{MAC}, protocol, and the reason for suspicion, and to identify any malicious hosts.
@@ -354,3 +371,5 @@ We did not add the~\href{https://docs.langchain.com/oss/python/langchain/ui}{Lan
 
 If we decide to implement it regardless, we would need to redesign and refactor the \gls{AI} Agent implementation, for example by switching to a callback-based output model.
 A useful reference for such a migration is available at \href{https://www.youtube.com/watch?v=lInrwVnZ83o}{this LangChain UI tutorial}.
+
+\todo{Move this to the LangChain part}
