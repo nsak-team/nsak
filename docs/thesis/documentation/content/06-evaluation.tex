@@ -3,64 +3,108 @@
 \chapter{Evaluation}\label{ch:evaluation}
 
 \begin{table}[h]
-	\centering
-	\begin{tabular}{|l|p{6cm}|p{6cm}|}
-		\hline
-		\textbf{Aspect} & \textbf{Traditional Recon} & \textbf{AI Recon} \\
-		\hline
-		File & lib/scenarios/reconnaissance/scenario.py & lib/scenarios/ai\_reconnaissance/scenario.py \\
-		\hline
-		Return value & NetworkDiscoveryResultMap (structured) & None (LangChain stream only) \\
-		\hline
-		Tools & arp-scan, nmap (Drills) & LangChain tool\_calls (cli, host\_configuration) \\
-		\hline
-		Async & sync & async \\
-		\hline
-		Determinism & deterministic (fixed drill order in code) & non-deterministic (LLM selects tools autonomously) \\
-		\hline
-		Error handling & explicit in code (e.g.\ DHCP fallback, interface discovery) & implicit at model level (may skip steps or hallucinate) \\
-		\hline
-	\end{tabular}
-	\caption{Comparison between Traditional Recon and AI Recon}
-	\label{tab:recon_comparison}
+    \centering
+    \begin{tabular}{|l|p{6cm}|p{6cm}|}
+        \hline
+        \textbf{Aspect} & \textbf{Traditional Recon}                                  & \textbf{AI Recon}                                       \\
+        \hline
+        File            & lib/scenarios/reconnaissance/scenario.py                    & lib/scenarios/ai\_reconnaissance/scenario.py            \\
+        \hline
+        Return value    & NetworkDiscoveryResultMap (structured)                      & None (LangChain stream only)                            \\
+        \hline
+        Tools           & arp-scan, nmap (Drills)                                     & LangChain tool\_calls (cli, host\_configuration)        \\
+        \hline
+        Async           & sync                                                        & async                                                   \\
+        \hline
+        Determinism     & deterministic (fixed drill order in code)                   & non-deterministic (LLM selects tools autonomously)      \\
+        \hline
+        Error handling  & explicit in code (e.g.\ DHCP fallback, interface discovery) & implicit at model level (may skip steps or hallucinate) \\
+        \hline
+    \end{tabular}
+    \caption{Comparison between Traditional Recon and AI Recon}
+    \label{tab:recon_comparison}
 \end{table}
 
 \textbf{Limitation:} Traditional Recon returns a structured \texttt{NetworkDiscoveryResultMap}, whereas AI Recon returns \texttt{None} (log stream only).
 A direct comparison of results therefore requires either parsing the AI output or documenting this asymmetry as a limitation.
 
-\section*{Qualitative Criteria}
+% ─────────────────────────────────────────────────────────────────────────────
+
+
+\section{Evaluation Setup}\label{sec:evaluation-setup}
+
+\subsection{Criteria}\label{subsec:criteria}
+
+\textbf{Qualitative criteria:}
 
 \begin{itemize}
-	\item \textbf{Speed:} Time from scenario start to complete output of all discovered hosts and services
-	\item \textbf{Correctness:} Share of correctly identified hosts and services compared to the ground truth
-	\item \textbf{Initial knowledge (pre-conditions):} Which assumptions does the scenario require (interface, subnet)?
-	\item \textbf{Creativity:} Does AI Recon identify relationships or suggest follow-up steps not covered by Traditional Recon?
-	\item \textbf{Token usage:} Number of tokens consumed per run (AI Recon only)
-	\item \textbf{Hallucination:} Hosts or services in the output that do not exist in the environment
-	\item \textbf{Task completion:} Do both scenarios complete the task fully?
+    \item \textbf{Correctness and Task completion/completeness:} Are the scenarios completed fully and are the results correct?
+    \item \textbf{Creativity: AI-specific} Does AI Recon identify relationships or suggest follow-up steps not covered by Traditional Recon?
+    \item \textbf{Consistency network discovery results:} How much does the output vary across $n = 10$ runs with an identical prompt, per model and environment?
 \end{itemize}
 
-\section*{Quantitative Criteria}
+\textbf{Quantitative criteria:}
 
 \begin{itemize}
-	\item \textbf{Consistency:} How much does the output vary across $n = 10$ runs with an identical prompt, per model and environment?
-	\item \textbf{Prompt sensitivity:} How does the model respond to minimally altered prompts (e.g.\ a different interface name)?
+    \item \textbf{Speed:} Time from scenario start to complete output of all discovered hosts and services
+    \item \textbf{Token usage: AI-specific} Number of tokens consumed per run (AI Recon only)
 \end{itemize}
 
+\todo{We try to fix most of the parameters which influence the success criteria therefore we use a fixed engineered prompt for all models and environments}
 With 3 models $\times$ 3 environments $\times$ $n = 10$ runs, this yields 90 measurements for AI Recon.
 
-\section*{Environments for Data Collection}
+\subsection{Environments}\label{subsec:environments}
 
 \begin{enumerate}
-	\item Virtual environment (containerlab)
-	\item Physical environment
-	\item BFH lab
+    \item Virtual environment (containerlab)
+    \item Physical environment
+    \item BFH lab
 \end{enumerate}
 
-\section*{Models Under Comparison}
+\subsection{Models}\label{subsec:models}
 
 \begin{enumerate}
-	\item Self-hosted local LLM (Ollama)
-	\item BFH LLM
-	\item Frontier model (Anthropic Claude)
+    \item Self-hosted local LLM (Ollama)
+    \item BFH LLM
+    \item Frontier model (Anthropic Claude)
 \end{enumerate}
+
+
+\section{Todos}
+\begin{enumerate}
+    \item section for test runs evaluation and implementation
+    \item human interaction loop and dynamic mcp
+    \item test harness for automated runs
+    \item unified result data structure with evaluation criteria, avg speed, tokenusage, summary
+    \item graphical presentation of result tabel
+    \item Evaluation Mail Wenger und Urs
+\end{enumerate}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\todo{common thread to highlight the advantages how agentic ai is able to go beyond the classical reconnaissance scenario
+with an human interaction loop}
+
+\section{Virtual Environment (Containerlab)}\label{sec:eval-containerlab}
+
+\paragraph{reference reconnaissance scenario}
+% Findings: Traditional Recon + all 3 models compared via table/chart.
+% Raw data and full outputs: see Appendix~\ref{app:containerlab-raw}
+
+% ─────────────────────────────────────────────────────────────────────────────
+
+
+\section{Physical Environment}\label{sec:eval-physical}
+% Findings: Traditional Recon + all 3 models compared via table/chart.
+% Raw data and full outputs: see Appendix~\ref{app:physical-raw}
+
+% ─────────────────────────────────────────────────────────────────────────────
+
+
+\section{BFH Lab}\label{sec:eval-bfh-lab}
+% Findings: Traditional Recon + all 3 models compared via table/chart.
+% Raw data and full outputs: see Appendix~\ref{app:bfhlab-raw}
+
+% ─────────────────────────────────────────────────────────────────────────────
+
+
+\section{Cross-Environment Summary}\label{sec:eval-summary}
