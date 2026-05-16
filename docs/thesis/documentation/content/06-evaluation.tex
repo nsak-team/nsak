@@ -6,17 +6,61 @@
 	\centering
 	\begin{tabular}{|l|p{6cm}|p{6cm}|}
 		\hline
-		\textbf{Aspekt} & \textbf{Traditional Recon} & \textbf{AI Recon} \\
+		\textbf{Aspect} & \textbf{Traditional Recon} & \textbf{AI Recon} \\
 		\hline
-		Datei & lib/scenarios/reconnaissance/scenario.py & lib/scenarios/ai\_reconnaissance/scenario.py \\
+		File & lib/scenarios/reconnaissance/scenario.py & lib/scenarios/ai\_reconnaissance/scenario.py \\
 		\hline
-		Rückgabe & NetworkDiscoveryResultMap (strukturiert) & None (only LangChain-Stream) \\
+		Return value & NetworkDiscoveryResultMap (structured) & None (LangChain stream only) \\
 		\hline
 		Tools & arp-scan, nmap (Drills) & LangChain tool\_calls (cli, host\_configuration) \\
 		\hline
 		Async & sync & async \\
 		\hline
+		Determinism & deterministic (fixed drill order in code) & non-deterministic (LLM selects tools autonomously) \\
+		\hline
+		Error handling & explicit in code (e.g.\ DHCP fallback, interface discovery) & implicit at model level (may skip steps or hallucinate) \\
+		\hline
 	\end{tabular}
-	\caption{Vergleich zwischen Traditional Recon und AI Recon}
+	\caption{Comparison between Traditional Recon and AI Recon}
 	\label{tab:recon_comparison}
 \end{table}
+
+\textbf{Limitation:} Traditional Recon returns a structured \texttt{NetworkDiscoveryResultMap}, whereas AI Recon returns \texttt{None} (log stream only).
+A direct comparison of results therefore requires either parsing the AI output or documenting this asymmetry as a limitation.
+
+\section*{Qualitative Criteria}
+
+\begin{itemize}
+	\item \textbf{Speed:} Time from scenario start to complete output of all discovered hosts and services
+	\item \textbf{Correctness:} Share of correctly identified hosts and services compared to the ground truth
+	\item \textbf{Initial knowledge (pre-conditions):} Which assumptions does the scenario require (interface, subnet)?
+	\item \textbf{Creativity:} Does AI Recon identify relationships or suggest follow-up steps not covered by Traditional Recon?
+	\item \textbf{Token usage:} Number of tokens consumed per run (AI Recon only)
+	\item \textbf{Hallucination:} Hosts or services in the output that do not exist in the environment
+	\item \textbf{Task completion:} Do both scenarios complete the task fully?
+\end{itemize}
+
+\section*{Quantitative Criteria}
+
+\begin{itemize}
+	\item \textbf{Consistency:} How much does the output vary across $n = 10$ runs with an identical prompt, per model and environment?
+	\item \textbf{Prompt sensitivity:} How does the model respond to minimally altered prompts (e.g.\ a different interface name)?
+\end{itemize}
+
+With 3 models $\times$ 3 environments $\times$ $n = 10$ runs, this yields 90 measurements for AI Recon.
+
+\section*{Environments for Data Collection}
+
+\begin{enumerate}
+	\item Virtual environment (containerlab)
+	\item Physical environment
+	\item BFH lab
+\end{enumerate}
+
+\section*{Models Under Comparison}
+
+\begin{enumerate}
+	\item Self-hosted local LLM (Ollama)
+	\item BFH LLM
+	\item Frontier model (Anthropic Claude)
+\end{enumerate}
