@@ -186,7 +186,8 @@ class ConfigurationManager:
                 url=config.loki.url,
                 tags={
                     "job": "nsak",
-                    "nsak_run_id": config.container.id,
+                    "nsak_container_id": config.container.id,
+                    "nsak_run_uuid": config.run_uuid,
                     "nsak_run_name": config.container.name,
                     "nsak_run_scenario": config.running_scenario,
                     "nsak_run_datetime": config.datetime,

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import logging
+import uuid
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -32,6 +33,8 @@ class Configuration:
     container: ContainerInfo = dataclasses.field(
         default_factory=ContainerInfo.load,
     )
+    run_uuid: str = str(dataclasses.field(default_factory=uuid.uuid4))
+
     email: EmailConfiguration | None = dataclasses.field(
         default=None,
     )

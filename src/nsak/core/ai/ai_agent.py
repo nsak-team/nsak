@@ -4,19 +4,21 @@ from pprint import pformat
 from typing import Any, AsyncGenerator, Callable, Sequence
 
 from langchain.agents import create_agent
-from langchain.agents.middleware import AgentMiddleware
+from langchain.agents.middleware import AgentMiddleware, HumanInTheLoopMiddleware
 from langchain_anthropic.chat_models import ChatAnthropic
 from langchain_core.language_models import BaseChatModel
+from langchain_core.messages import AIMessage
 from langchain_core.tools import BaseTool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_ollama.chat_models import ChatOllama
 from langchain_openai.chat_models import ChatOpenAI
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.types import Command
 
 from nsak.core.ai.tools import (
     cli_tool,
     generate_drill_tools,
     host_configuration,
-    human_interaction_hook,
     send_email,
 )
 from nsak.core.configuration import Configuration, config
@@ -30,7 +32,7 @@ def create_chat_ollama(
     """
     Create ChatOllama instance.
     """
-    if api_key is None:
+    if api_key is not None:
         kwargs.update({"Authorization": f"Bearer {api_key}"})
 
     return ChatOllama(model=model, base_url=base_url, **kwargs)
@@ -86,10 +88,10 @@ class AiAgent:
         self.agent = create_agent(
             self.model,
             tools=tools,
-            middleware=middleware or [],
             system_prompt=self.system_prompt,
             debug=debug,
-            # checkpointer=InMemorySaver(),
+            checkpointer=InMemorySaver(),
+            middleware=middleware or [],
         )
 
     @staticmethod
@@ -142,45 +144,51 @@ class AiAgent:
         """
         result = await self.ainvoke(prompt)
         for message in result.get("messages", []):
-            role = type(message).__name__.replace("Message", "")
+            if not isinstance(message, AIMessage):
+                continue
+            content = (
+                message.content
+                if isinstance(message.content, str)
+                else pformat(message.content)
+            )
+            if content:
+                yield f"[AI]\n{content}\n"
 
-            if isinstance(message.content, str):
-                content = message.content
-            else:
-                content = pformat(message.content)
-
-            yield f"[{role}]\n{content}\n"
-
-    async def run_interactive(
-        self,
-        prompt: str,
-    ) -> AsyncGenerator[str, None]:
+    async def run_interactive(self, prompt: str) -> AsyncGenerator[str, None]:
         """
-        Run the agent in a continuous interactive loop, maintaining conversation history.
+        Run the agent in a continuous interactive loop, yielding streamed response tokens.
 
-        After each agent response the human operator is prompted for the next instruction.
-        The loop ends when the operator enters an empty line or the 'exit' string.
+        After each agent response the operator is prompted for the next instruction.
+        The loop ends when the operator enters an empty line or 'exit'.
 
-        :param prompt: The initial prompt to start the session.
+        Interrupt handling:
+        - human_interaction_hook: operator is asked to provide a free-text response
+        - send_email: operator is asked to approve or reject the pending email
+
+        After resolving an interrupt the agent stream resumes automatically.
         """
-        message = f"ai_agent:[Prompt] {prompt}"
-        logger.info(message)
+        logger.info("ai_agent:[Prompt] %s", prompt)
         stop_command = "exit"
-        messages: list[Any] = [{"role": "user", "content": prompt}]
+        agent_config = {"configurable": {"thread_id": str(config.run_uuid)}}
 
         while True:
-            prev_count = len(messages)
-            result = await self.agent.ainvoke({"messages": messages})
-            messages = result.get("messages", messages)
+            interrupted = False
+            interrupt_type = None
+            async for text, is_interrupt, i_type, _ in self._stream_chunks(
+                {"messages": [{"role": "user", "content": prompt}]}, agent_config
+            ):
+                if is_interrupt:
+                    interrupted = True
+                    interrupt_type = i_type
+                yield text
 
-            for message in messages[prev_count:]:
-                role = type(message).__name__.replace("Message", "")
-                if isinstance(message.content, str):
-                    content = message.content
-                else:
-                    content = pformat(message.content)
-                if content:
-                    yield f"[{role}]\n{content}\n"
+            if interrupted:
+                resume_command = self._handle_interrupt(interrupt_type)
+                if resume_command is not None:
+                    async for text, _, _, _ in self._stream_chunks(
+                        resume_command, agent_config
+                    ):
+                        yield text
 
             next_instruction = input(
                 f"\n[Next instruction (empty or '{stop_command}' to stop)]\n> "
@@ -188,9 +196,68 @@ class AiAgent:
             if not next_instruction or next_instruction.lower() == stop_command.lower():
                 break
 
-            message = f"ai_agent:[Prompt] {next_instruction}"
-            logger.info(message)
-            messages.append({"role": "user", "content": next_instruction})
+            logger.info("ai_agent:[Prompt] %s", next_instruction)
+            # Langgraph stores the msg content over thread_id,
+            # messages.append({"role": "user", "content": next_instruction})
+            prompt = next_instruction
+
+    @staticmethod
+    def _handle_interrupt(interrupt_type: str | None) -> Command | None:
+        """Return a resume Command for the given interrupt type, or None to skip."""
+        match interrupt_type:
+            case "human_interaction_hook":
+                response = input("\nYour response: ").strip()
+                if response:
+                    return Command(
+                        resume={"decisions": [{"type": "respond", "message": response}]}
+                    )
+            case "send_email":
+                decision = input(
+                    "\nApprove or reject email? [approve/reject]: "
+                ).strip()
+                if decision in ("approve", "reject"):
+                    return Command(resume={"decisions": [{"type": decision}]})
+        return None
+
+    async def _stream_chunks(
+        self, input_data: dict[str, Any] | Command, agent_config: dict[str, Any]
+    ) -> AsyncGenerator[tuple[str, bool, str | None, list[str] | None], None]:
+        """
+        Yield (text, is_interrupt, interrupt_type, allowed_decisions) from the agent stream.
+
+        LangGraph produces two event types via stream_mode=["updates", "messages"]:
+        - "messages": a single LLM token — yielded with is_interrupt=False
+        - "updates" with "__interrupt__": middleware halted a tool call — yielded with
+          is_interrupt=True, interrupt_type set to the tool name, allowed_decisions populated
+        """
+        async for chunk in self.agent.astream(
+            input_data,
+            config=agent_config,
+            stream_mode=["updates", "messages"],
+            version="v2",
+        ):
+            if chunk["type"] == "messages":
+                token, _ = chunk["data"]
+                if token.content:
+                    yield token.content, False, None, None
+            elif chunk["type"] == "updates" and "__interrupt__" in chunk["data"]:
+                interrupt_data = chunk["data"]["__interrupt__"]
+                value = interrupt_data[0].value
+                action_name = value["action_requests"][0]["name"]
+                allowed = value["review_configs"][0]["allowed_decisions"]
+
+                logger.info(
+                    "\n%s\n Tool: %s\n   Args: %s\n   Allowed: %s\n%s",
+                    "=" * 50,
+                    action_name,
+                    value["action_requests"][0]["args"],
+                    allowed,
+                    "=" * 50,
+                )
+
+                yield f"\nInterrupt: {action_name}", True, action_name, allowed
+
+        yield "\n", False, None, None
 
 
 async def get_mcp_tools(config: Configuration) -> list[BaseTool]:
@@ -232,6 +299,10 @@ async def create_ai_agent(
     if config.ai is None:
         message = "The AI is not configured. Run:`nsak config set ai` for the interactive setup."
         raise RuntimeError(message)
+    provider = config.ai.provider
+    if provider is None:
+        message = "AI provider not set. Run: nsak config set ai.provider <ollama|openai|anthropic|openwebui>"
+        raise RuntimeError(message)
 
     tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] = [
         cli_tool,
@@ -248,18 +319,20 @@ async def create_ai_agent(
 
     if interactive:
         # We use langchains build in `HumanInTheLoopMiddleware` middleware together with our `human_interaction_hook`
-        tools.append(human_interaction_hook)
-        # middleware.append(HumanInTheLoopMiddleware(
-        #     interrupt_on={
-        #         "cli_tool": True,
-        #         "human_interaction_hook": {"allowed_decisions": ["respond"]},
-        #         "send_email": {"allowed_decisions": ["approve", "reject"]},
-        #     },
-        #     description_prefix="Tool execution pending approval",
-        # ))
+        # tools.append(human_interaction_hook)
+        middleware.append(
+            HumanInTheLoopMiddleware(
+                interrupt_on={
+                    "cli_tool": True,
+                    "human_interaction_hook": {"allowed_decisions": ["respond"]},
+                    "send_email": {"allowed_decisions": ["approve", "reject"]},
+                },
+                description_prefix="Tool execution pending approval",
+            )
+        )
 
     return AiAgent(
-        config.ai.provider,
+        provider,
         config.ai.model,
         config.ai.base_url,
         config.ai.api_key,
