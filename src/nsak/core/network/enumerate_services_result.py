@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from tabulate import TableFormat, tabulate
 
-from nsak.core.scenario import ScenarioResult
+from nsak.core.scenario.scenario_result import ScenarioResult
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -21,19 +21,18 @@ class EnumerateServicesResult(ScenarioResult):
         headers = [
             "IP",
             "Port",
-            "Finding",
+            "Findings",
         ]
         rows = []
 
         for key, findings in self.results.items():
-            for finding in findings:
-                ip, port = key.split(":", 1)
-                row = [
-                    ip,
-                    port,
-                    finding,
-                ]
-                rows.append(row)
+            ip, port = key.split(":", 1)
+            row = [
+                ip,
+                port,
+                "\n".join(findings),
+            ]
+            rows.append(row)
 
         if not rows:
             return "No results for enumerate services."

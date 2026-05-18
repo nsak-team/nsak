@@ -198,7 +198,8 @@ class ScenarioManager(ResourceManager[Scenario]):
         args.append(f"nsak/scenario/{scenario.path.name}")
         args.append(scenario.path.name)
         for key, value in kwargs.items():
-            args.extend([f"--{key}", str(value)])
+            if value is not None:
+                args.extend([f"--{key}", str(value)])
 
         return args
 
