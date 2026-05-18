@@ -25,3 +25,4 @@ async def run(prompt: str, interactive: bool = True) -> None:
     response_parts: list[str] = []
     async for chunk in result:
         response_parts.append(chunk)
+        logger.info(chunk)

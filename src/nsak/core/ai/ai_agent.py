@@ -180,13 +180,21 @@ class AiAgent:
         while True:
             interrupted = False
             interrupt_value = None
+            ai_started = False
+            tokens = []
             async for text, is_interrupt, i_value, _ in self._stream_chunks(
                 {"messages": [{"role": "user", "content": prompt}]}, agent_config
             ):
                 if is_interrupt:
                     interrupted = True
                     interrupt_value = i_value
-                yield text
+                else:
+                    if not ai_started:
+                        tokens.append(
+                            "[ Ai !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ]"
+                        )
+                        ai_started = True
+                tokens.append(text)
 
             if interrupted:
                 resume_command = self._handle_interrupt(interrupt_value)
@@ -194,7 +202,8 @@ class AiAgent:
                     async for text, _, _, _ in self._stream_chunks(
                         resume_command, agent_config
                     ):
-                        yield text
+                        tokens.append(text)
+            yield "".join(tokens)
             next_instruction = input(
                 f"\n[Next instruction (empty or '{stop_command}' to stop)]\n> "
             ).strip()
@@ -350,6 +359,14 @@ async def create_ai_agent(
         always.append("human_interaction_hook")
 
     class DebugToolSelectorMiddleware(LLMToolSelectorMiddleware):  # type: ignore[misc]
+        async def awrap_model_call(self, request: Any, handler: Any) -> Any:  # noqa: ANN401
+            logger.info(
+                "All registered tools (%d): %s",
+                len(request.tools),
+                [t.name for t in request.tools if hasattr(t, "name")],
+            )
+            return await super().awrap_model_call(request, handler)
+
         def _process_selection_response(
             self,
             response: dict[str, Any],
@@ -393,5 +410,5 @@ async def create_ai_agent(
         config.ai.api_key,
         tools=[*tools, *dynamic_tools],
         middleware=middleware,
-        debug=False,
+        debug=True,
     )

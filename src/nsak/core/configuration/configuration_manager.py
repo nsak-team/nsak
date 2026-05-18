@@ -204,7 +204,6 @@ class ConfigurationManager:
             level=logging.DEBUG if config.debug else logging.INFO,
             handlers=handlers,
         )
-        logging.getLogger("urllib3").setLevel(logging.WARNING)
 
     @classmethod
     def load(cls) -> Configuration:
