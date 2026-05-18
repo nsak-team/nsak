@@ -189,7 +189,7 @@ class ConfigurationManager:
                     "nsak_run_id": config.container.id,
                     "nsak_run_name": config.container.name,
                     "nsak_run_scenario": config.running_scenario,
-                    "nsak_run_datetime": config.datetime,
+                    "nsak_run_datetime": config.timestamp.isoformat(),
                 },
                 auth=(config.loki.username, config.loki.password),
                 version="1",

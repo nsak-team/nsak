@@ -30,7 +30,7 @@ def create_chat_ollama(
     """
     Create ChatOllama instance.
     """
-    if api_key is None:
+    if api_key is not None:
         kwargs.update({"Authorization": f"Bearer {api_key}"})
 
     return ChatOllama(model=model, base_url=base_url, **kwargs)

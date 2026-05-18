@@ -44,5 +44,4 @@ RUN uv sync && \
     uv build && \
     uv tool install dist/nsak-0.1.0-py3-none-any.whl
 
-# drawio-mcp-server
 ENTRYPOINT ["nsak", "scenario", "execute"]

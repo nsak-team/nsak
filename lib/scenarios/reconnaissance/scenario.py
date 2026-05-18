@@ -1,25 +1,62 @@
 """
 Scenario entrypoint for Reconnaissance .
 """
+import logging
+from dataclasses import dataclass
+
 from scapy.arch import get_if_addr
 
 from nsak.core import DrillManager
 from nsak.core.network import NetworkDiscoveryResultMap
+from nsak.core.network.enumerate_services_result import EnumerateServicesResult
+from nsak.core.scenario import ScenarioResult
+
+logger = logging.getLogger(__name__)
 
 
-def _print_enumeration_findings(findings: dict[str, list[str]]) -> None:
-    if not findings:
-        print("\n### Service Enumeration: no findings ###\n")
-        return
-    print("\n### Service Enumeration Findings: ###\n")
-    for endpoint, lines in findings.items():
-        print(f"  {endpoint}:")
-        for line in lines:
-            print(f"    {line}")
-    print("\n### -------------------------------- ###\n")
+@dataclass(frozen=True, kw_only=True)
+class ReconnaissanceScenarioResult(ScenarioResult):
+    """
+    Represents the results of the test scenario.
+    """
+    network_discovery_result_map: NetworkDiscoveryResultMap
+    enumerate_services_result: EnumerateServicesResult
+
+    def display(self) -> str:
+        """
+        Display the result of the test scenario.
+        """
+        lines = [
+            "### Reconnaissance Scenario Result ###",
+            "",
+            self.network_discovery_result_map.display(),
+            "",
+            self.enumerate_services_result.display(),
+            "",
+        ]
+
+        return "\n".join(lines)
+
+    def as_markdown(self) -> str:
+        """
+        Return the result of the test scenario as Markdown.
+        """
+        lines = [
+            "# Test Scenario Result",
+            "",
+            "## Network Discovery Result Map",
+            "",
+            self.network_discovery_result_map.as_markdown(),
+            "",
+            "## Enumerate Services Result",
+            "",
+            self.enumerate_services_result.as_markdown(),
+        ]
+
+        return "\n".join(lines)
 
 
-def run(interface: str | None = None, subnet: str | None = None) -> None:
+def run(interface: str | None = None, subnet: str | None = None) -> ReconnaissanceScenarioResult:
     """
     Scenario, which runs Reconnaissance attack.
     1. If no interface is specified, scan all active physical interfaces
@@ -38,19 +75,22 @@ def run(interface: str | None = None, subnet: str | None = None) -> None:
         if get_if_addr(iface_name) in ("0.0.0.0", ""):
             DrillManager.execute("dhcp_request", interface=iface_name)
 
-        result: NetworkDiscoveryResultMap = DrillManager.execute(
+        network_discovery_result_map: NetworkDiscoveryResultMap = DrillManager.execute(
             "discover_hosts",
             interface=iface_name,
             subnet=subnet,
         )
-        all_results.update(result.results)
+        all_results.update(network_discovery_result_map.results)
 
     network_discovery_result_map = NetworkDiscoveryResultMap(results=all_results)
     DrillManager.execute("port_scan", discovery_result=network_discovery_result_map)
-    print(network_discovery_result_map.display())
-    print(network_discovery_result_map.as_table())
-
-    findings: dict[str, list[str]] = DrillManager.execute(
+    enumerate_services_result: EnumerateServicesResult = DrillManager.execute(
         "enumerate_services", discovery_result=network_discovery_result_map
     )
-    _print_enumeration_findings(findings)
+
+    result = ReconnaissanceScenarioResult(
+        network_discovery_result_map=network_discovery_result_map,
+        enumerate_services_result=enumerate_services_result
+    )
+    logger.info(result.display())
+    return result

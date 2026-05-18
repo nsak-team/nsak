@@ -1,9 +1,10 @@
 import dataclasses
 
-from tabulate import tabulate
+from tabulate import TableFormat, tabulate
 
 from nsak.core.network.network_service import NetworkService
 from nsak.core.network.types import IPAddress
+from nsak.core.scenario import ScenarioResult
 
 from .configuration import EthernetConfiguration
 
@@ -21,8 +22,6 @@ class NetworkDiscoveryResult:
     def ips(self) -> list[IPAddress]:
         """
         Return all IP addresses of the network interface and all network services.
-
-        :return:
         """
         return [
             endpoint.ip
@@ -35,16 +34,14 @@ class NetworkDiscoveryResult:
     def target_ips(self) -> list[IPAddress]:
         """
         Return all IP addresses that are not part of the network interface's IP address range.
-
-        :return:
         """
         return [ip for ip in self.ips if ip not in self.network_interface.ips]
 
     def display(self) -> str:
         """
+        Return a human-readable representation of a network discovery result.
 
-
-        :return:
+        Recursively resolves all display methods of the services and wraps them with a start and an end.
         """
         lines = [f"# Services on iface {self.network_interface.name}:"]
 
@@ -57,7 +54,7 @@ class NetworkDiscoveryResult:
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
-class NetworkDiscoveryResultMap:
+class NetworkDiscoveryResultMap(ScenarioResult):
     """
     Represents the results of a network discovery.
     """
@@ -66,8 +63,9 @@ class NetworkDiscoveryResultMap:
 
     def display(self) -> str:
         """
+        Return a human-readable representation of a network discovery result map.
 
-        :return:
+        Recursively resolves all display methods of the results and wraps them with a start and an end.
         """
         lines = ["", "### Network Discovery Results: ###", ""]
 
@@ -79,12 +77,11 @@ class NetworkDiscoveryResultMap:
         lines.extend(["", "### -------------------------- ###", ""])
         return "\n".join(lines)
 
-    def as_table(self) -> str:
+    def as_table(self, table_format: str | TableFormat = "pipe") -> str:
         """
         Return a human- and AI-readable table of all discovered network services.
 
         Each row represents one endpoint with its associated service metadata.
-        :return:
         """
         headers = [
             "Interface",
@@ -119,4 +116,10 @@ class NetworkDiscoveryResultMap:
         if not rows:
             return "No network services discovered."
 
-        return tabulate(rows, headers=headers, tablefmt="github")
+        return tabulate(rows, headers=headers, tablefmt=table_format)
+
+    def as_markdown(self) -> str:
+        """
+        Return the network discovery result as Markdown.
+        """
+        return self.as_table()

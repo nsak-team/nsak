@@ -64,6 +64,7 @@ def get_library_paths() -> set[Path]:
 
 BASE_PATH = get_base_path()
 RUN_PATH = get_run_path()
+BENCHMARK_PATH = RUN_PATH.joinpath("benchmarks")
 LIBRARY_PATHS = get_library_paths()
 CONFIG_FILE = (RUN_PATH / "config.yaml").absolute()
 DOCKER_CONTEXT = BASE_PATH

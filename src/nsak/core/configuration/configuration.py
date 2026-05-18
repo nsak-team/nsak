@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import dataclasses
 import logging
+import uuid
+from dataclasses import dataclass, field
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -14,10 +15,15 @@ from nsak.core.device import Device
 
 logger = logging.getLogger(__name__)
 
-default_timezone = ZoneInfo("Europe/Zurich")
+
+def get_default_timezone() -> ZoneInfo:
+    """
+    Return the default timezone.
+    """
+    return ZoneInfo("Europe/Zurich")
 
 
-@dataclasses.dataclass(kw_only=True)
+@dataclass(kw_only=True)
 class Configuration:
     """
     Class for loading and saving the configuration.
@@ -25,24 +31,30 @@ class Configuration:
 
     from ..device.device_manager import DeviceManager
 
-    debug: bool = dataclasses.field(default=True)
-    device: Device = dataclasses.field(
+    debug: bool = field(default=True)
+    device: Device = field(
         default_factory=DeviceManager.get_default,
     )
-    container: ContainerInfo = dataclasses.field(
+    container: ContainerInfo = field(
         default_factory=ContainerInfo.load,
     )
-    email: EmailConfiguration | None = dataclasses.field(
+    run_uuid: uuid.UUID = field(default_factory=uuid.uuid4)
+    email: EmailConfiguration | None = field(
         default=None,
     )
-    ai: AiConfiguration | None = dataclasses.field(default=None)
-    loki: LokiConfiguration | None = dataclasses.field(default=None)
-    drawio_mcp: DrawioMCPConfiguration | None = dataclasses.field(default=None)
+    ai: AiConfiguration | None = field(default=None)
+    loki: LokiConfiguration | None = field(default=None)
+    drawio_mcp: DrawioMCPConfiguration | None = field(default=None)
 
-    datetime: str = dataclasses.field(
-        default_factory=lambda: datetime.now(tz=default_timezone).isoformat()
-    )
-    running_scenario: str | None = dataclasses.field(default=None)
+    timezone: ZoneInfo = field(default_factory=get_default_timezone)
+    timestamp: datetime = field(init=False)
+    running_scenario: str | None = field(default=None)
+
+    def __post_init__(self) -> None:
+        """
+        Initialize fields, which have dependencies to other fields.
+        """
+        self.timestamp = self.now()
 
     def set_running_scenario(self, scenario: str) -> None:
         """
@@ -62,6 +74,15 @@ class Configuration:
         self.running_scenario = None
         ConfigurationManager.update_loki_handler(self)
 
+    def reset_run_uuid(self) -> uuid.UUID:
+        """
+        Set a new run uuid and return it.
+
+        Used when multiple runs are executed in the same cli command.
+        """
+        self.run_uuid = uuid.uuid4()
+        return self.run_uuid
+
     def save(self) -> None:
         """
         Shorthand proxy for ConfigManager save.
@@ -69,3 +90,9 @@ class Configuration:
         from .configuration_manager import ConfigurationManager
 
         ConfigurationManager.save(self)
+
+    def now(self) -> datetime:
+        """
+        Returns the current timestamp in the configured timezone.
+        """
+        return datetime.now(tz=self.timezone)
