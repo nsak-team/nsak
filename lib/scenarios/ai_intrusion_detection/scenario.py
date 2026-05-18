@@ -79,13 +79,7 @@ async def run(interface: str, interactive: bool = False) -> None:
     }
 
     ai_agent = await create_ai_agent(interactive)
-    result = ai_agent.run_interactive(prompt)
+    result = ai_agent.run(prompt)
 
-    response_parts: list[str] = []
-    async for chunk in result:
-        print(chunk, end="", flush=True)
-        response_parts.append(chunk)
-
-    full_response = "".join(response_parts)
-    if full_response.strip():
-        logger.info("AI response:\n%s", full_response)
+    async for line in result:
+        logger.warning(line)

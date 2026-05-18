@@ -20,7 +20,8 @@ async def run(prompt: str, interactive: bool = True) -> None:
     logger.info("Starting scenario: AI Agent")
 
     ai_agent = await create_ai_agent(interactive)
-    result = ai_agent.run_interactive(prompt)
+    result = ai_agent.run(prompt, interactive=interactive)
 
-    async for line in result:
-        logger.warning(line)
+    response_parts: list[str] = []
+    async for chunk in result:
+        response_parts.append(chunk)

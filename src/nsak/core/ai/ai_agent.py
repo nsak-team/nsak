@@ -4,7 +4,10 @@ from pprint import pformat
 from typing import Any, AsyncGenerator, Callable, Sequence
 
 from langchain.agents import create_agent
-from langchain.agents.middleware import AgentMiddleware, HumanInTheLoopMiddleware
+from langchain.agents.middleware import (
+    AgentMiddleware,
+    HumanInTheLoopMiddleware,
+)
 from langchain_anthropic.chat_models import ChatAnthropic
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage
@@ -19,6 +22,7 @@ from nsak.core.ai.tools import (
     cli_tool,
     generate_drill_tools,
     host_configuration,
+    human_interaction_hook,
     send_email,
 )
 from nsak.core.configuration import Configuration, config
@@ -55,6 +59,8 @@ PROVIDER_MAP: dict[
         **kwargs,
     ),
 }
+
+type StreamChunk = tuple[str, bool, dict[str, Any] | None, list[str] | None]
 
 
 class AiAgent:
@@ -138,23 +144,29 @@ class AiAgent:
         """
         return asyncio.run(self.ainvoke(prompt, role))
 
-    async def run(self, prompt: str) -> AsyncGenerator[str, None]:
+    async def run(
+        self, prompt: str, interactive: bool = False
+    ) -> AsyncGenerator[str, None]:
         """
         Run the AI-agent with the given prompt.
         """
-        result = await self.ainvoke(prompt)
-        for message in result.get("messages", []):
-            if not isinstance(message, AIMessage):
-                continue
-            content = (
-                message.content
-                if isinstance(message.content, str)
-                else pformat(message.content)
-            )
-            if content:
-                yield f"[AI]\n{content}\n"
+        if interactive:
+            async for chunk in self._run_interactive(prompt):
+                yield chunk
+        else:
+            result = await self.ainvoke(prompt)
+            for message in result.get("messages", []):
+                if not isinstance(message, AIMessage):
+                    continue
+                content = (
+                    message.content
+                    if isinstance(message.content, str)
+                    else pformat(message.content)
+                )
+                if content:
+                    yield f"[AI]\n{content}\n"
 
-    async def run_interactive(self, prompt: str) -> AsyncGenerator[str, None]:
+    async def _run_interactive(self, prompt: str) -> AsyncGenerator[str, None]:
         """
         Run the agent in a continuous interactive loop, yielding streamed response tokens.
 
@@ -173,23 +185,22 @@ class AiAgent:
 
         while True:
             interrupted = False
-            interrupt_type = None
-            async for text, is_interrupt, i_type, _ in self._stream_chunks(
+            interrupt_value = None
+            async for text, is_interrupt, i_value, _ in self._stream_chunks(
                 {"messages": [{"role": "user", "content": prompt}]}, agent_config
             ):
                 if is_interrupt:
                     interrupted = True
-                    interrupt_type = i_type
+                    interrupt_value = i_value
                 yield text
 
             if interrupted:
-                resume_command = self._handle_interrupt(interrupt_type)
+                resume_command = self._handle_interrupt(interrupt_value)
                 if resume_command is not None:
                     async for text, _, _, _ in self._stream_chunks(
                         resume_command, agent_config
                     ):
                         yield text
-
             next_instruction = input(
                 f"\n[Next instruction (empty or '{stop_command}' to stop)]\n> "
             ).strip()
@@ -201,34 +212,16 @@ class AiAgent:
             # messages.append({"role": "user", "content": next_instruction})
             prompt = next_instruction
 
-    @staticmethod
-    def _handle_interrupt(interrupt_type: str | None) -> Command | None:
-        """Return a resume Command for the given interrupt type, or None to skip."""
-        match interrupt_type:
-            case "human_interaction_hook":
-                response = input("\nYour response: ").strip()
-                if response:
-                    return Command(
-                        resume={"decisions": [{"type": "respond", "message": response}]}
-                    )
-            case "send_email":
-                decision = input(
-                    "\nApprove or reject email? [approve/reject]: "
-                ).strip()
-                if decision in ("approve", "reject"):
-                    return Command(resume={"decisions": [{"type": decision}]})
-        return None
-
     async def _stream_chunks(
         self, input_data: dict[str, Any] | Command, agent_config: dict[str, Any]
-    ) -> AsyncGenerator[tuple[str, bool, str | None, list[str] | None], None]:
+    ) -> AsyncGenerator[StreamChunk, None]:
         """
-        Yield (text, is_interrupt, interrupt_type, allowed_decisions) from the agent stream.
+        Yield (text, is_interrupt, interrupt_value, allowed_decisions) from the agent stream.
 
         LangGraph produces two event types via stream_mode=["updates", "messages"]:
         - "messages": a single LLM token — yielded with is_interrupt=False
         - "updates" with "__interrupt__": middleware halted a tool call — yielded with
-          is_interrupt=True, interrupt_type set to the tool name, allowed_decisions populated
+          is_interrupt=True, interrupt_value returns a complete value-Dict to work with multiple tool calls
         """
         async for chunk in self.agent.astream(
             input_data,
@@ -255,9 +248,50 @@ class AiAgent:
                     "=" * 50,
                 )
 
-                yield f"\nInterrupt: {action_name}", True, action_name, allowed
+                yield f"\nInterrupt: {action_name}", True, value, allowed
 
         yield "\n", False, None, None
+
+    @staticmethod
+    def _decide_for_tool(tool_name: str, allowed: list[str]) -> dict[str, Any] | None:
+        match tool_name:
+            case "human_interaction_hook":
+                response = input("\nYour response: ").strip()
+                if not response:
+                    return None
+                return {"type": "respond", "message": response}
+            case "send_email":
+                choice = input("\nApprove or reject email? [approve/reject]: ").strip()
+                if choice not in ("approve", "reject"):
+                    return None
+                return {"type": choice}
+            case _:
+                proceed = (
+                    input(f"\nProceed with '{tool_name}'? [y/n]: ").strip().lower()
+                )
+                if proceed != "y":
+                    return None
+                return {"type": allowed[0] if allowed else "proceed"}
+
+    def _handle_interrupt(
+        self, interrupt_value: dict[str, Any] | None
+    ) -> Command | None:
+        """Return a resume Command for the given interrupt type, or None to skip."""
+        if interrupt_value is None:
+            return None
+
+        action_requests: list[dict[str, Any]] = interrupt_value["action_requests"]
+        review_configs: list[dict[str, Any]] = interrupt_value["review_configs"]
+        decisions: list[dict[str, Any]] = []
+
+        for req, conf in zip(action_requests, review_configs, strict=False):
+            tool_name: str = req["name"]
+            allowed: list[str] = conf.get("allowed_decisions", [])
+            decision = self._decide_for_tool(tool_name, allowed)
+            if decision is None:
+                return None
+            decisions.append(decision)
+        return Command(resume={"decisions": decisions}) if decisions else None
 
 
 async def get_mcp_tools(config: Configuration) -> list[BaseTool]:
@@ -319,7 +353,7 @@ async def create_ai_agent(
 
     if interactive:
         # We use langchains build in `HumanInTheLoopMiddleware` middleware together with our `human_interaction_hook`
-        # tools.append(human_interaction_hook)
+        tools.append(human_interaction_hook)
         middleware.append(
             HumanInTheLoopMiddleware(
                 interrupt_on={
@@ -339,5 +373,5 @@ async def create_ai_agent(
         tools,
         dynamic_tools,
         middleware,
-        debug=True,
+        debug=False,
     )
