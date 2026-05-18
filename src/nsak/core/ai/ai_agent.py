@@ -7,6 +7,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import (
     AgentMiddleware,
     HumanInTheLoopMiddleware,
+    LLMToolSelectorMiddleware,
 )
 from langchain_anthropic.chat_models import ChatAnthropic
 from langchain_core.language_models import BaseChatModel
@@ -70,8 +71,6 @@ class AiAgent:
 
     system_prompt = "You are in a cybersecurity simulation and act as the purple team."
 
-    dynamic_tools: Sequence[BaseTool | Callable[..., Any] | dict[str, Any]] = []
-
     def __init__(
         self,
         provider: str,
@@ -79,17 +78,12 @@ class AiAgent:
         base_url: str,
         api_key: str | None,
         tools: Sequence[BaseTool | Callable[..., Any] | dict[str, Any]] | None = None,
-        dynamic_tools: Sequence[BaseTool | Callable[..., Any] | dict[str, Any]]
-        | None = None,
         middleware: Sequence[AgentMiddleware] | None = None,
         debug: bool = False,
     ) -> None:
         """
         Initializes the AiAgent and the connection to its backend model.
         """
-        if dynamic_tools:
-            self.dynamic_tools = dynamic_tools
-
         self.model = AiAgent.create_model(provider, model, base_url, api_key)
         self.agent = create_agent(
             self.model,
@@ -351,6 +345,33 @@ async def create_ai_agent(
 
     middleware: list[AgentMiddleware] = []
 
+    always = ["cli_tool", "send_email", "host_configuration"]
+    if interactive:
+        always.append("human_interaction_hook")
+
+    class DebugToolSelectorMiddleware(LLMToolSelectorMiddleware):  # type: ignore[misc]
+        def _process_selection_response(
+            self,
+            response: dict[str, Any],
+            available_tools: list[Any],
+            valid_tool_names: list[str],
+            request: Any,  # noqa: ANN401
+        ) -> Any:  # noqa: ANN401
+            result = super()._process_selection_response(
+                response, available_tools, valid_tool_names, request
+            )
+            selected = [t.name for t in result.tools if hasattr(t, "name")]
+            logger.info("Tools after selection (%d): %s", len(selected), selected)
+            return result
+
+    middleware.append(
+        DebugToolSelectorMiddleware(
+            max_tools=5,
+            always_include=always,
+            system_prompt="Your goal is to select the most relevant tools. Log your selection reasoning.",
+        )
+    )
+
     if interactive:
         # We use langchains build in `HumanInTheLoopMiddleware` middleware together with our `human_interaction_hook`
         tools.append(human_interaction_hook)
@@ -370,8 +391,7 @@ async def create_ai_agent(
         config.ai.model,
         config.ai.base_url,
         config.ai.api_key,
-        tools,
-        dynamic_tools,
-        middleware,
+        tools=[*tools, *dynamic_tools],
+        middleware=middleware,
         debug=False,
     )
