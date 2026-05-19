@@ -29,8 +29,7 @@ class AIScenarioResult(ScenarioResult, ABC):
 
     provider: str
     model: str
-    tools_available: list[str]
-    tools_called: list[str]
+    tools_called: dict[str, int]
 
     prompt_tokens: int
     completion_tokens: int
