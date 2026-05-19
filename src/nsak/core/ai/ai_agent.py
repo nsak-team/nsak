@@ -7,7 +7,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import (
     AgentMiddleware,
     HumanInTheLoopMiddleware,
-    LLMToolSelectorMiddleware,
+    wrap_tool_call,
 )
 from langchain_anthropic.chat_models import ChatAnthropic
 from langchain_core.language_models import BaseChatModel
@@ -19,16 +19,29 @@ from langchain_openai.chat_models import ChatOpenAI
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
 
+from nsak.core.ai.progressive_disclosure import make_progressive_disclosure
 from nsak.core.ai.tools import (
     cli_tool,
     generate_drill_tools,
     host_configuration,
     human_interaction_hook,
+    make_search_tools,
     send_email,
 )
 from nsak.core.configuration import Configuration, config
 
 logger = logging.getLogger(__name__)
+
+system_prompt = (
+    "You are in a cybersecurity simulation and act as the purple team.\n\n"
+    "Before performing any task, use search_tools to discover relevant tools:\n"
+    "  - search_tools('reconnaissance') for network scanning and host discovery\n"
+    "  - search_tools('diagram') or search_tools('drawio') for creating network diagrams\n"
+    "  - search_tools('email') for sending reports\n\n"
+    "After completing reconnaissance, present a structured Markdown report of all findings "
+    "(subnets, hosts, services, vulnerabilities), then use human_interaction_hook to offer "
+    "the operator follow-up actions."
+)
 
 
 def create_chat_ollama(
@@ -69,8 +82,6 @@ class AiAgent:
     Abstraction for an AiAgent.
     """
 
-    system_prompt = "You are in a cybersecurity simulation and act as the purple team."
-
     def __init__(
         self,
         provider: str,
@@ -88,7 +99,6 @@ class AiAgent:
         self.agent = create_agent(
             self.model,
             tools=tools,
-            system_prompt=self.system_prompt,
             debug=debug,
             checkpointer=InMemorySaver(),
             middleware=middleware or [],
@@ -190,9 +200,7 @@ class AiAgent:
                     interrupt_value = i_value
                 else:
                     if not ai_started:
-                        tokens.append(
-                            "[ Ai !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ]"
-                        )
+                        tokens.append("[ Ai ]")
                         ai_started = True
                 tokens.append(text)
 
@@ -327,6 +335,23 @@ async def get_mcp_tools(config: Configuration) -> list[BaseTool]:
     return mcp_tools
 
 
+@wrap_tool_call  # type: ignore[misc]
+async def log_tool_calls(request: Any, handler: Any) -> Any:  # noqa: ANN401
+    """
+    Log the called tools.
+    """
+    logger.info(
+        "Tool call → %s | args: %s",
+        request.tool_call["name"],
+        request.tool_call["args"],
+    )
+    result = await handler(request)
+    logger.info(
+        "Tool result ← %s | %s", request.tool_call["name"], str(result["content"])[:300]
+    )
+    return result
+
+
 async def create_ai_agent(
     interactive: bool = False,
 ) -> AiAgent:
@@ -341,57 +366,30 @@ async def create_ai_agent(
         message = "AI provider not set. Run: nsak config set ai.provider <ollama|openai|anthropic|openwebui>"
         raise RuntimeError(message)
 
-    tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] = [
+    selected_tools: list[BaseTool] = [
         cli_tool,
         host_configuration,
         send_email,
-    ]
-
-    dynamic_tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] = [
         *generate_drill_tools(),
         *await get_mcp_tools(config),
     ]
 
-    middleware: list[AgentMiddleware] = []
+    search_tool = make_search_tools(selected_tools)
 
-    always = ["cli_tool", "send_email", "host_configuration"]
+    core_tools: set[str] = {"search_tools", "host_configuration"}
     if interactive:
-        always.append("human_interaction_hook")
+        core_tools.add("human_interaction_hook")
+    # registered Progressive disclosure as middleware -> awrap model get called with every LLM call
+    # filtered request.tools -> handler(request) LLM only receives filtered tools
+    middleware: list[AgentMiddleware] = [
+        make_progressive_disclosure(selected_tools, core_tools),
+        log_tool_calls,
+    ]
 
-    class DebugToolSelectorMiddleware(LLMToolSelectorMiddleware):  # type: ignore[misc]
-        async def awrap_model_call(self, request: Any, handler: Any) -> Any:  # noqa: ANN401
-            logger.info(
-                "All registered tools (%d): %s",
-                len(request.tools),
-                [t.name for t in request.tools if hasattr(t, "name")],
-            )
-            return await super().awrap_model_call(request, handler)
-
-        def _process_selection_response(
-            self,
-            response: dict[str, Any],
-            available_tools: list[Any],
-            valid_tool_names: list[str],
-            request: Any,  # noqa: ANN401
-        ) -> Any:  # noqa: ANN401
-            result = super()._process_selection_response(
-                response, available_tools, valid_tool_names, request
-            )
-            selected = [t.name for t in result.tools if hasattr(t, "name")]
-            logger.info("Tools after selection (%d): %s", len(selected), selected)
-            return result
-
-    middleware.append(
-        DebugToolSelectorMiddleware(
-            max_tools=5,
-            always_include=always,
-            system_prompt="Your goal is to select the most relevant tools. Log your selection reasoning.",
-        )
-    )
+    all_tools: list[BaseTool] = [search_tool, *selected_tools]
 
     if interactive:
-        # We use langchains build in `HumanInTheLoopMiddleware` middleware together with our `human_interaction_hook`
-        tools.append(human_interaction_hook)
+        all_tools.append(human_interaction_hook)
         middleware.append(
             HumanInTheLoopMiddleware(
                 interrupt_on={
@@ -408,7 +406,7 @@ async def create_ai_agent(
         config.ai.model,
         config.ai.base_url,
         config.ai.api_key,
-        tools=[*tools, *dynamic_tools],
+        tools=all_tools,
         middleware=middleware,
         debug=True,
     )
