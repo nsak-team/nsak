@@ -75,7 +75,7 @@ async def network_discovery(
     result = await agent.ainvoke(prompt)
     response = result.get("messages", [])[-1].content
 
-    return response, agent.usage
+    return response, agent
 
 
 async def enumerate_services(
@@ -95,7 +95,7 @@ async def enumerate_services(
     result = await agent.ainvoke(prompt)
     response = result.get("messages", [])[-1].content
 
-    return response, agent.usage
+    return response, agent
 
 async def assessment(
     network_discovery_result_map: str,
@@ -118,7 +118,7 @@ async def assessment(
     result = await agent.ainvoke(prompt)
     response = result.get("messages", [])[-1].content
 
-    return response, agent.usage
+    return response, agent
 
 
 async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScenarioResult | None:
