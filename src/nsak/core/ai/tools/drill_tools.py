@@ -1,17 +1,20 @@
-from langchain_core.tools import Tool, tool
+from langchain_core.tools import BaseTool, StructuredTool
 
 from ...drill.drill_manager import DrillManager
 
 
-def generate_drill_tools() -> list[Tool]:
+def generate_drill_tools() -> list[BaseTool]:
     """
     Register all NSAK drills as langchain tools for AI usage.
     """
-    tools: list[Tool] = []
+    tools: list[BaseTool] = []
     drills = DrillManager.list()
 
     for drill in drills:
         entrypoint = DrillManager.get_drill_entrypoint(drill)
-        tool(entrypoint, description=entrypoint.__doc__)
+        tool = StructuredTool.from_function(
+            entrypoint, name=drill.name, description=entrypoint.__doc__
+        )
+        tools.append(tool)
 
     return tools

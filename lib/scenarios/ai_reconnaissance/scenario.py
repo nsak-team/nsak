@@ -4,7 +4,7 @@ Scenario entrypoint for AI based network reconnaissance.
 import logging
 
 from nsak.core import create_ai_agent, config
-from nsak.core.ai.ai_agent import UsageCallback
+from nsak.core.ai.ai_agent import AiAgent
 from nsak.core.network.reconnaissance_scenario_result import AIReconnaissanceScenarioResult
 
 logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ Steps:
 async def network_discovery(
     interface: str,
     interactive: bool = False,
-) -> tuple[str, UsageCallback]:
+) -> tuple[str, AiAgent]:
     """
     Run an agent which returns a NetworkDiscoveryResultMap.
     """
@@ -81,7 +81,7 @@ async def network_discovery(
 async def enumerate_services(
     network_discovery_result_map: str,
     interactive: bool = False,
-) -> tuple[str, UsageCallback]:
+) -> tuple[str, AiAgent]:
     """
     Run an agent which returns a EnumerateServicesResult.
     """
@@ -101,7 +101,7 @@ async def assessment(
     network_discovery_result_map: str,
     enumerate_services_result: str,
     interactive: bool = False,
-) -> tuple[str, UsageCallback]:
+) -> tuple[str, AiAgent]:
     """
     Run an agent which returns a EnumerateServicesResult.
     """
@@ -133,21 +133,21 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
     if config.ai is None:
         raise ValueError("config.ai must be configured!")
 
-    network_discovery_result_map, network_discovery_usage = await network_discovery(interface, interactive)
+    network_discovery_result_map, network_discovery_agent = await network_discovery(interface, interactive)
 
-    enumerate_services_result, enumerate_services_usage = await enumerate_services(network_discovery_result_map, interactive)
+    enumerate_services_result, enumerate_services_agent = await enumerate_services(network_discovery_result_map, interactive)
 
-    assessment_result, assessment_usage = await assessment(network_discovery_result_map, enumerate_services_result, interactive)
+    assessment_result, assessment_agent = await assessment(network_discovery_result_map, enumerate_services_result, interactive)
 
     prompt_tokens = 0
     completion_tokens = 0
     tools_called: dict[str, list[str]] = {}
 
-    for usage in [network_discovery_usage, enumerate_services_usage, assessment_usage]:
-        usage: UsageCallback
-        prompt_tokens += usage.prompt_tokens
-        completion_tokens += usage.completion_tokens
-        for tool, calls in usage.tools_called.items():
+    for agent in [network_discovery_agent, enumerate_services_agent, assessment_agent]:
+        agent: AiAgent
+        prompt_tokens += agent.usage.prompt_tokens
+        completion_tokens += agent.usage.completion_tokens
+        for tool, calls in agent.track_tool_call_middleware.tools_called.items():
             tools_called.setdefault(tool, [])
             tools_called[tool] += calls
 

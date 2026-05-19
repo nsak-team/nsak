@@ -1,19 +1,21 @@
 import asyncio
 import logging
 from pprint import pformat
-from typing import Any, AsyncGenerator, Callable, Iterable, Sequence
-from uuid import UUID
+from typing import Any, AsyncGenerator, Awaitable, Callable, Iterable, Sequence
 
 from langchain.agents import create_agent
 from langchain.agents.middleware import AgentMiddleware
 from langchain_anthropic.chat_models import ChatAnthropic
 from langchain_core.callbacks import AsyncCallbackHandler
 from langchain_core.language_models import BaseChatModel
+from langchain_core.messages import ToolMessage
 from langchain_core.outputs import LLMResult
 from langchain_core.tools import BaseTool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_ollama.chat_models import ChatOllama
 from langchain_openai.chat_models import ChatOpenAI
+from langgraph.prebuilt.tool_node import ToolCallRequest
+from langgraph.types import Command
 
 from nsak.core.ai.tools import (
     cli_tool,
@@ -27,44 +29,64 @@ from nsak.core.configuration import Configuration, config
 logger = logging.getLogger(__name__)
 
 
+class TrackToolCallMiddleware(AgentMiddleware):  # type: ignore
+    """
+    Tool tracking middleware.
+    """
+
+    def __init__(self, tools_available: Iterable[str]) -> None:
+        """
+        Init tool tracking middleware.
+        """
+        self.tools_called: dict[str, list[str]] = {
+            tool: [] for tool in set(tools_available)
+        }
+
+    async def awrap_tool_call(
+        self,
+        request: ToolCallRequest,
+        handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command[Any]]],
+    ) -> ToolMessage | Command[Any]:
+        """
+        Track async tool calls.
+        """
+        tool_name = request.tool_call["name"]
+        tool_args = request.tool_call["args"]
+
+        self.tools_called.setdefault(tool_name, [])
+        self.tools_called[tool_name].append(str(tool_args))
+
+        return await handler(request)
+
+    def wrap_tool_call(
+        self,
+        request: ToolCallRequest,
+        handler: Callable[[ToolCallRequest], ToolMessage | Command[Any]],
+    ) -> ToolMessage | Command[Any]:
+        """
+        Track sync tool calls.
+        """
+        tool_name = request.tool_call["name"]
+        tool_args = request.tool_call["args"]
+
+        self.tools_called.setdefault(tool_name, [])
+        self.tools_called[tool_name].append(str(tool_args))
+
+        return handler(request)
+
+
 class UsageCallback(AsyncCallbackHandler):  # type: ignore
     """
     Track token usage and tool calls.
     """
 
-    def __init__(self, tools_available: Iterable[str]) -> None:
+    def __init__(self) -> None:
         """
         Init token usage.
         """
         self.prompt_tokens = 0
         self.completion_tokens = 0
         self.total_tokens = 0
-        self.tools_called: dict[str, list[str]] = {
-            tool: [] for tool in set(tools_available)
-        }
-
-    async def on_tool_start(
-        self,
-        serialized: dict[str, Any],
-        input_str: str,
-        *,
-        run_id: UUID,
-        parent_run_id: UUID | None = None,
-        tags: list[str] | None = None,
-        metadata: dict[str, Any] | None = None,
-        inputs: dict[str, Any] | None = None,
-        **kwargs: Any,  # noqa: ANN401
-    ) -> None:
-        """
-        Capture tool calls.
-        """
-        tool_name = serialized.get("name", "unknown")
-
-        # Use the explicitly passed 'inputs' dictionary if available
-        tool_input = (inputs or {}).get("query") or input_str
-
-        self.tools_called.setdefault(tool_name, [])
-        self.tools_called[tool_name].append(str(tool_input))
 
     async def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:  # noqa: ANN401
         """
@@ -159,10 +181,21 @@ class AiAgent:
         """
         Initializes the AiAgent and the connection to its backend model.
         """
-        self.usage = UsageCallback(tools_available=[tool.name for tool in tools])  # type: ignore
+        self.usage = UsageCallback()
 
         if system_prompt is not None:
             self.system_prompt = system_prompt
+
+        if tools is None:
+            tools = []
+
+        self.track_tool_call_middleware = TrackToolCallMiddleware(
+            tools_available=[tool.name for tool in tools]  # type: ignore
+        )
+
+        middlewares: list[AgentMiddleware] = [self.track_tool_call_middleware]
+        if middleware is not None:
+            middlewares.extend(list(middleware))
 
         self.model = AiAgent.create_model(
             provider, model, base_url, api_key, callbacks=[self.usage]
@@ -170,10 +203,9 @@ class AiAgent:
         self.agent = create_agent(
             self.model,
             tools=tools,
-            middleware=middleware or [],
+            middleware=middlewares,
             system_prompt=self.system_prompt,
             debug=debug,
-            # checkpointer=InMemorySaver(),
             response_format=response_format,
         )
 
@@ -349,7 +381,7 @@ async def create_ai_agent(
         config.ai.api_key,
         tools,
         middleware,
-        debug=True,
+        debug=False,
         system_prompt=system_prompt,
         response_format=response_format,
     )
