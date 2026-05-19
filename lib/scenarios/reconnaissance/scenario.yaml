@@ -26,4 +26,4 @@ scenarios:
         subnet:
           type: str
           default: null
-      return_type: None
+      return_type: ReconnaissanceScenarioResult

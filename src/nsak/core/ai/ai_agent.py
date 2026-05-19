@@ -30,7 +30,7 @@ def create_chat_ollama(
     """
     Create ChatOllama instance.
     """
-    if api_key is None:
+    if api_key is not None:
         kwargs.update({"Authorization": f"Bearer {api_key}"})
 
     return ChatOllama(model=model, base_url=base_url, **kwargs)
@@ -75,6 +75,7 @@ class AiAgent:
         | None = None,
         middleware: Sequence[AgentMiddleware] | None = None,
         debug: bool = False,
+        response_format: object = None,
     ) -> None:
         """
         Initializes the AiAgent and the connection to its backend model.
@@ -90,6 +91,7 @@ class AiAgent:
             system_prompt=self.system_prompt,
             debug=debug,
             # checkpointer=InMemorySaver(),
+            response_format=response_format,
         )
 
     @staticmethod
@@ -224,7 +226,7 @@ async def get_mcp_tools(config: Configuration) -> list[BaseTool]:
 
 
 async def create_ai_agent(
-    interactive: bool = False,
+    interactive: bool = False, response_format: object = None
 ) -> AiAgent:
     """
     Creates an AI-agent from the runtime configuration.
@@ -267,4 +269,5 @@ async def create_ai_agent(
         dynamic_tools,
         middleware,
         debug=True,
+        response_format=response_format,
     )

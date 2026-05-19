@@ -44,9 +44,7 @@ class NetworkService:
 
     def display(self) -> str:
         """
-
-
-        :return:
+        Return a human-readable representation of a network service.
         """
         lines = [self.name or "Unknown service"]
 

@@ -43,7 +43,7 @@ def send_email(
     content = template % {
         "scenario": config.running_scenario,
         "run_id": config.container.id,
-        "datetime": config.datetime,
+        "timestamp": config.timestamp.isoformat(),
         "grafana_link": grafana_link,
         "message": message,
     }

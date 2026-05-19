@@ -1,4 +1,4 @@
-import dataclasses
+from dataclasses import MISSING, dataclass
 from pathlib import Path
 from typing import Any
 
@@ -11,17 +11,17 @@ from nsak.core.resource import (
 )
 
 
-@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+@dataclass(frozen=True, kw_only=True, eq=True)
 class ScenarioArgument:
     """
     Represents a specific scenario argument.
     """
 
     type: str
-    default: Any = dataclasses.MISSING
+    default: Any = MISSING
 
 
-@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+@dataclass(frozen=True, kw_only=True, eq=True)
 class ScenarioInterface:
     """
     Represents a scenarios arguments and return value types.
@@ -31,7 +31,7 @@ class ScenarioInterface:
     return_type: str
 
 
-@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+@dataclass(frozen=True, kw_only=True, eq=True)
 class ScenarioDependencies:
     """
     Represents the scenarios drill, system and python dependencies.
@@ -41,7 +41,7 @@ class ScenarioDependencies:
     python: set[str]
 
 
-@dataclasses.dataclass(frozen=True, kw_only=True, eq=True)
+@dataclass(frozen=True, kw_only=True, eq=True)
 class Scenario(Resource):
     """
     Represents a scenario.

@@ -21,4 +21,4 @@ scenarios:
         interactive:
           type: bool
           default: False
-      return_type: None
+      return_type: ReconnaissanceScenarioResult

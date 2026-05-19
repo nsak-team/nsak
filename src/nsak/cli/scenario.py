@@ -1,35 +1,14 @@
-import dataclasses
-from collections.abc import Callable
-from pydoc import locate
-from typing import Any
-
 import click
-from click import shell_completion  # type: ignore [attr-defined]
 
-from nsak.core import Scenario, ScenarioManager, config
+from nsak.core import ScenarioManager
 from nsak.core.scenario.scenario_manager import (
-    ScenarioArgumentParsingError,
     ScenarioLifecycleError,
 )
 
-from .utils import resource_list_table
+from .utils import complete_scenario_name, resource_list_table
+from .utils.create_scenario_command import create_scenario_command
 
 scenario_group = click.Group("scenario")
-
-
-def complete_scenario_name(
-    ctx: click.Context, param: click.Parameter, incomplete: str
-) -> list[str]:
-    """
-    Autocomplete for scenario name in arguments.
-    """
-    scenarios = ScenarioManager.list()
-    scenario_names = {scenario.path.name for scenario in scenarios}
-    return [
-        scenario_name
-        for scenario_name in scenario_names
-        if scenario_name.startswith(incomplete)
-    ]
 
 
 @scenario_group.command("list")
@@ -69,46 +48,6 @@ def execute() -> None:
     Execute subcommand group.
     """
     pass
-
-
-def create_scenario_command(
-    scenario: Scenario, method: Callable[..., Any]
-) -> click.Command:
-    """
-    Create a specific Scenario execute command.
-    """
-
-    @click.command(
-        name=scenario.id,
-        help=scenario.description,
-        short_help=scenario.description,
-    )
-    def cmd(*args: Any, **kwargs: Any) -> None:  # noqa: ANN401
-        try:
-            method(scenario, *args, **kwargs)
-        except ScenarioArgumentParsingError as e:
-            click.echo(e)
-
-    for name, argument in scenario.interface.arguments.items():
-        kwargs: dict[str, Any] = {"type": locate(argument.type)}
-        if argument.default is dataclasses.MISSING:
-            kwargs["prompt"] = name
-        else:
-            kwargs["default"] = argument.default
-        if name == "interface":
-            try:
-                choices = list(config.device.target_ethernets.keys())
-                kwargs["shell_complete"] = lambda ctx, param, incomplete: [
-                    shell_completion.CompletionItem(c)
-                    for c in choices  # noqa: B023
-                    if c.startswith(incomplete)
-                ]
-            except (AttributeError, TypeError) as e:
-                click.echo(e)
-                pass
-
-        cmd = click.option(f"--{name}", **kwargs)(cmd)
-    return cmd
 
 
 @scenario_group.command("stop")

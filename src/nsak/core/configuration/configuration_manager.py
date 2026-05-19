@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import logging
+import uuid
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
@@ -43,6 +44,7 @@ yaml.add_representer(EmailEncryptionType, represent_as_string, Dumper=SafeDumper
 yaml.add_representer(IPv6Interface, represent_as_string, Dumper=SafeDumper)
 yaml.add_representer(IPv4Interface, represent_as_string, Dumper=SafeDumper)
 yaml.add_representer(PosixPath, represent_as_string, Dumper=SafeDumper)
+yaml.add_representer(uuid.UUID, represent_as_string, Dumper=SafeDumper)
 
 
 @dataclass(frozen=True)
@@ -186,10 +188,11 @@ class ConfigurationManager:
                 url=config.loki.url,
                 tags={
                     "job": "nsak",
-                    "nsak_run_id": config.container.id,
+                    "nsak_container_id": config.container.id,
+                    "nsak_run_uuid": str(config.run_uuid),
                     "nsak_run_name": config.container.name,
                     "nsak_run_scenario": config.running_scenario,
-                    "nsak_run_datetime": config.datetime,
+                    "nsak_run_datetime": config.timestamp.isoformat(),
                 },
                 auth=(config.loki.username, config.loki.password),
                 version="1",
@@ -197,6 +200,21 @@ class ConfigurationManager:
             if cls._loki_handler is None:
                 message = "_loki_handler is undefined!"
                 raise ValueError(message)
+
+            class NoLokiFilter(logging.Filter):
+                """
+                Filter out loki specific error for avoiding recursion.
+                """
+
+                def filter(self, record: logging.LogRecord) -> bool:
+                    """
+                    Drop log records originating from the Loki emitter's HTTP calls.
+                    """
+                    if config.loki is None:
+                        return True
+                    return config.loki.url not in (record.getMessage())
+
+            cls._loki_handler.addFilter(NoLokiFilter())
             handlers.append(cls._loki_handler)
 
         logging.basicConfig(
@@ -210,7 +228,7 @@ class ConfigurationManager:
         Load the configuration from CONFIG_FILE.
 
         Falls back to a default Configuration() when the file is absent or cannot be deserialized.
-        Also initialises logging.
+        Also initializes logging.
         """
         try:
             data = _load_raw()

@@ -1,0 +1,25 @@
+\newpage
+\section{Benchmark Suite}\label{sec:benchmark-suite}
+
+As described in the evaluation criteria~\ref{subsec:criteria} there will be at least 120 evaluation runs,
+which will be a lot of data to analyze and assess.
+For this reason, we decided to implement a benchmarking suite, consisting of a benchmark harness that executes benchmark runs and summarizes their results into a report.
+The idea is to fully automate the aggregation of the \textbf{quantitative criteria} (duration, token usage) and
+to prepare the reports needed for the \textbf{qualitative criteria} (correctness, creativity, consistency) as good as possible.
+The key concepts for this implementation are described the table below~\ref{tab:benchmark-suite-concepts}:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ll}
+        \hline
+        \textbf{Term} & \textbf{Concept} \\
+        \hline
+        \mintedinline{python}{BenchmarkManager} & The automation harness \\
+        \mintedinline{python}{BenchmarkRun} & Represents a single execution \\
+        \mintedinline{python}{BenchmarkResult} & The result data type of a single execution \\
+        \mintedinline{python}{BenchmarkReport} & The collected output aggregating all results \\
+        \hline
+    \end{tabular}
+    \caption{Benchmark Suite Concepts}
+    \label{tab:benchmark-suite-concepts}
+\end{table}

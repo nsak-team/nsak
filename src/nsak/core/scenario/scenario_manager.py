@@ -13,7 +13,6 @@ from typing import Any, List
 import yaml
 
 from nsak.core import settings
-from nsak.core.configuration import config
 from nsak.core.drill import Drill, DrillLoader
 from nsak.core.resource import ResourceManager
 from nsak.core.scenario import Scenario, ScenarioDependencies, ScenarioLoader
@@ -155,9 +154,9 @@ class ScenarioManager(ResourceManager[Scenario]):
         )
 
     @classmethod
-    def run(cls, scenario: Scenario, **kwargs: Any) -> int:  # noqa: ANN401
+    def build_run_args(cls, scenario: Scenario, **kwargs: Any) -> list[str]:  # noqa: ANN401
         """
-        Run a scenario image.
+        Build run scenario args.
         """
         # @TODO: This is potentially insecure and we should replace it with a library:
         # - https://pypi.org/project/docker/
@@ -199,9 +198,18 @@ class ScenarioManager(ResourceManager[Scenario]):
         args.append(f"nsak/scenario/{scenario.path.name}")
         args.append(scenario.path.name)
         for key, value in kwargs.items():
-            args.extend([f"--{key}", str(value)])
-        completed_process = subprocess.run(args)  # noqa: S603
+            if value is not None:
+                args.extend([f"--{key}", str(value)])
 
+        return args
+
+    @classmethod
+    def run(cls, scenario: Scenario, **kwargs: Any) -> int:  # noqa: ANN401
+        """
+        Run a scenario image.
+        """
+        args = cls.build_run_args(scenario, **kwargs)
+        completed_process = subprocess.run(args)  # noqa: S603
         return completed_process.returncode
 
     @classmethod
@@ -302,6 +310,8 @@ class ScenarioManager(ResourceManager[Scenario]):
         """
         Load the scenarios entrypoint and execute it.
         """
+        from nsak.core.configuration import config
+
         if isinstance(scenario, str):
             scenario = cls.get(scenario)
 
@@ -341,4 +351,7 @@ class ScenarioManager(ResourceManager[Scenario]):
             raise Scenario.InvalidResourceError(message)
 
         config.reset_running_scenario()
+        # In the future the scenarios should always return a subclass of `ScenarioResult`,
+        # afterward the typehint of this method could be changed accordingly.
+        # This is already realized for `ai_reconnaissance` and `reconnaissance`.
         return result

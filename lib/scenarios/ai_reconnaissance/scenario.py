@@ -4,10 +4,12 @@ Scenario entrypoint for AI based network reconnaissance.
 import logging
 
 from nsak.core import create_ai_agent
+from nsak.core.network.reconnaissance_scenario_result import ReconnaissanceScenarioResult
 
 logger = logging.getLogger(__name__)
 
-async def run(interface: str, interactive: bool = False) -> None:
+
+async def run(interface: str, interactive: bool = False) -> ReconnaissanceScenarioResult:
     """
     Scenario, which conducts AI-based network reconnaissance.
 
@@ -30,9 +32,11 @@ Steps:
     """
 
     # Run agent
-    ai_agent = await create_ai_agent(interactive)
-    result = ai_agent.run(prompt)
+    ai_agent = await create_ai_agent(interactive, ReconnaissanceScenarioResult)
+    result: ReconnaissanceScenarioResult = ai_agent.run(prompt)
 
     # Logging
     async for line in result:
         logger.warning(line)
+
+    return result

@@ -28,11 +28,12 @@ def unwrap_optional(tp: Any) -> tuple[Any, bool]:  # noqa: ANN401
         non_none = [a for a in args if a is not type(None)]
         if len(non_none) == 1:
             return non_none[0], type(None) in args
-    # Python 3.10+ bare union (X | None)
+
     if isinstance(tp, builtin_types.UnionType):
         non_none = [a for a in tp.__args__ if a is not type(None)]
         if len(non_none) == 1:
             return non_none[0], type(None) in tp.__args__
+
     return tp, False
 
 
@@ -139,7 +140,9 @@ def dataclass_deserializer(_type: type, data: dict[str, Any]) -> dict[str, Any]:
     for field in fields(_type):
         raw_type = hints.get(field.name, field.type)
         inner_type, is_opt = unwrap_optional(raw_type)
-        is_required = field.default is MISSING and field.default_factory is MISSING
+        is_required = (
+            field.default is MISSING and field.default_factory is MISSING and field.init
+        )
 
         if field.name not in data:
             if is_required and not is_opt:
