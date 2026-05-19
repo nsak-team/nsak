@@ -3,7 +3,7 @@ import re
 import subprocess
 
 from nsak.core.network import NetworkDiscoveryResultMap
-from nsak.core.network.enumerate_services_result import EnumerateServicesResult
+from nsak.core.network.enumerate_services_result import EnumerateServicesResult, EnumerateServicesResultEntry
 
 logger = logging.getLogger(__name__)
 
@@ -44,13 +44,13 @@ def _parse_nse_output(stdout: str) -> list[str]:
 
 
 def run(discovery_result: NetworkDiscoveryResultMap) -> EnumerateServicesResult:
-    """R
-    un service-specific nmap NSE scripts on all discovered services.
+    """
+    Run service-specific nmap NSE scripts on all discovered services.
 
     :param discovery_result: Port-scan result from the port_scan drill.
     :return: Mapping of "ip:port" to a list of finding strings.
     """
-    results: dict[str, list[str]] = {}
+    results: list[EnumerateServicesResultEntry] = []
 
     for iface_name, result in discovery_result.results.items():
         for service in result.network_services:
@@ -75,7 +75,8 @@ def run(discovery_result: NetworkDiscoveryResultMap) -> EnumerateServicesResult:
 
                 findings = _parse_nse_output(proc.stdout)
                 if findings:
-                    results.setdefault(key, []).extend(findings)
+                    entry = EnumerateServicesResultEntry(ip=endpoint.ip, port=endpoint.port, findings=findings)
+                    results.append(entry)
                     logger.debug("Found %d findings on %s", len(findings), key)
 
     return EnumerateServicesResult(results=results)
