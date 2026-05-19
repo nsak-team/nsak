@@ -46,16 +46,16 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
         ]
 
         if isinstance(self.scenario_result, AIScenarioResult):
+            tools_called = [
+                f"{tool}: {count}"
+                for tool, count in self.scenario_result.tools_called.items()
+            ]
             rows.extend(
                 [
                     ["", ""],
                     ["AI Provider", self.scenario_result.provider],
                     ["AI Model", self.scenario_result.model],
-                    [
-                        "Tools available",
-                        ", ".join(self.scenario_result.tools_available),
-                    ],
-                    ["Tools called:", ", ".join(self.scenario_result.tools_called)],
+                    ["Tools called:", "\n".join(tools_called)],
                     ["Prompt tokens:", str(self.scenario_result.prompt_tokens)],
                     ["Completion tokens", str(self.scenario_result.completion_tokens)],
                     ["Total tokens", str(self.scenario_result.total_tokens)],

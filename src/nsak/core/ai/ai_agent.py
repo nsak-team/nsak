@@ -1,12 +1,14 @@
 import asyncio
 import logging
 from pprint import pformat
-from typing import Any, AsyncGenerator, Callable, Sequence
+from typing import Any, AsyncGenerator, Callable, Iterable, Sequence
 
 from langchain.agents import create_agent
 from langchain.agents.middleware import AgentMiddleware
 from langchain_anthropic.chat_models import ChatAnthropic
+from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.language_models import BaseChatModel
+from langchain_core.outputs import LLMResult
 from langchain_core.tools import BaseTool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_ollama.chat_models import ChatOllama
@@ -22,6 +24,44 @@ from nsak.core.ai.tools import (
 from nsak.core.configuration import Configuration, config
 
 logger = logging.getLogger(__name__)
+
+
+class UsageCallback(BaseCallbackHandler):  # type: ignore
+    """
+    Track token usage.
+    """
+
+    def __init__(self, tools_available: Iterable[str]) -> None:
+        """
+        Init token usage.
+        """
+        self.prompt_tokens = 0
+        self.completion_tokens = 0
+        self.total_tokens = 0
+        self.tools_called: dict[str, int] = {tool: 0 for tool in set(tools_available)}
+
+    def on_tool_start(
+        self,
+        serialized: dict[str, Any],
+        input_str: str,
+        **kwargs: Any,  # noqa: ANN401
+    ) -> None:
+        """
+        Count tools called.
+        """
+        tool_name = serialized.get("name", "unknown")
+        self.tools_called[tool_name] += 1
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:  # noqa: ANN401
+        """
+        Capture the token usage.
+        """
+        if response.llm_output is None:
+            return
+        usage = response.llm_output.get("token_usage", {})
+        self.prompt_tokens += usage.get("prompt_tokens", 0)
+        self.completion_tokens += usage.get("completion_tokens", 0)
+        self.total_tokens += usage.get("total_tokens", 0)
 
 
 def create_chat_ollama(
@@ -75,15 +115,24 @@ class AiAgent:
         | None = None,
         middleware: Sequence[AgentMiddleware] | None = None,
         debug: bool = False,
-        response_format: object = None,
+        system_prompt: str | None = None,
+        response_format: Any = None,  # noqa: ANN401
     ) -> None:
         """
         Initializes the AiAgent and the connection to its backend model.
         """
+        all_tools = [*list(tools or []), *list(self.dynamic_tools or [])]
+        self.usage = UsageCallback(tools_available=[tool.name for tool in all_tools])  # type: ignore
+
         if dynamic_tools:
             self.dynamic_tools = dynamic_tools
 
-        self.model = AiAgent.create_model(provider, model, base_url, api_key)
+        if system_prompt:
+            self.system_prompt = system_prompt
+
+        self.model = AiAgent.create_model(
+            provider, model, base_url, api_key, callbacks=[self.usage]
+        )
         self.agent = create_agent(
             self.model,
             tools=tools,
@@ -96,14 +145,18 @@ class AiAgent:
 
     @staticmethod
     def create_model(
-        provider: str, model: str, base_url: str, api_key: str | None = None
+        provider: str,
+        model: str,
+        base_url: str,
+        api_key: str | None = None,
+        **kwargs: Any,  # noqa: ANN401
     ) -> BaseChatModel:
         """
         Create a provider specific ChatModel from a model string.
         """
         # Temperature means something like "creativity" and usually leads to less predictable and consistent results.
         # In the context of our bachelor thesis we want the agent to behave as consistent as possible.
-        kwargs = {"temperature": 0}
+        kwargs.update({"temperature": 0})
 
         create_model = PROVIDER_MAP.get(provider)
 
@@ -125,16 +178,12 @@ class AiAgent:
         :return:
         """
         return await self.agent.ainvoke(
-            {"messages": [{"role": role, "content": prompt}]}
+            {"messages": [{"role": role, "content": prompt}]}, reasoning=True
         )
 
     def invoke(self, prompt: str, role: str = "user") -> dict[str, Any] | Any:  # noqa: ANN401
         """
         Invoke a prompt.
-
-        :param role:
-        :param prompt:
-        :return:
         """
         return asyncio.run(self.ainvoke(prompt, role))
 
@@ -226,7 +275,10 @@ async def get_mcp_tools(config: Configuration) -> list[BaseTool]:
 
 
 async def create_ai_agent(
-    interactive: bool = False, response_format: object = None
+    interactive: bool = False,
+    tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] | None = None,
+    system_prompt: str | None = None,
+    response_format: Any = None,  # noqa: ANN401
 ) -> AiAgent:
     """
     Creates an AI-agent from the runtime configuration.
@@ -235,11 +287,12 @@ async def create_ai_agent(
         message = "The AI is not configured. Run:`nsak config set ai` for the interactive setup."
         raise RuntimeError(message)
 
-    tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] = [
-        cli_tool,
-        host_configuration,
-        send_email,
-    ]
+    if tools is None:
+        tools = [
+            cli_tool,
+            host_configuration,
+            send_email,
+        ]
 
     dynamic_tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] = [
         *generate_drill_tools(),
@@ -269,5 +322,6 @@ async def create_ai_agent(
         dynamic_tools,
         middleware,
         debug=True,
+        system_prompt=system_prompt,
         response_format=response_format,
     )

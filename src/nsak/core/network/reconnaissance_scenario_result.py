@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from nsak.core.scenario import AIScenarioResult
 from nsak.core.scenario.scenario_result import ScenarioResult
 
 from .enumerate_services_result import EnumerateServicesResult
@@ -9,7 +10,7 @@ from .network_discovery_result import NetworkDiscoveryResultMap
 @dataclass(frozen=True, kw_only=True)
 class ReconnaissanceScenarioResult(ScenarioResult):
     """
-    Represents the results of the test scenario.
+    Represents the results of the reconnaissance scenario.
     """
 
     network_discovery_result_map: NetworkDiscoveryResultMap
@@ -17,7 +18,7 @@ class ReconnaissanceScenarioResult(ScenarioResult):
 
     def display(self) -> str:
         """
-        Display the result of the test scenario.
+        Display the result of the reconnaissance scenario.
         """
         lines = [
             "### Reconnaissance Scenario Result ###",
@@ -47,3 +48,10 @@ class ReconnaissanceScenarioResult(ScenarioResult):
         ]
 
         return "\n".join(lines)
+
+
+@dataclass(frozen=True, kw_only=True)
+class AIReconnaissanceScenarioResult(ReconnaissanceScenarioResult, AIScenarioResult):
+    """
+    Represents the results of the AI reconnaissance scenario.
+    """
