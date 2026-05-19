@@ -145,6 +145,8 @@ class BenchmarkSummary:
                 "[%(link)s](%(link)s)" % {"link": relative_file_path},
             ]
             if isinstance(result.scenario_result, AIScenarioResult):
+                row.append(result.scenario_result.prompt_tokens)
+                row.append(result.scenario_result.completion_tokens)
                 row.append(result.scenario_result.total_tokens)
             rows.append(row)
 

@@ -1,7 +1,7 @@
 scenarios:
   ai_reconnaissance:
-    id: ai_reconnaissance
-    name: AI Reconnaissance
+    id: ai_reconnaissance_structured_output
+    name: AI Reconnaissance Structured Output
     author: vonal3@bfh.ch
     repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
 
@@ -21,4 +21,4 @@ scenarios:
         interactive:
           type: bool
           default: False
-      return_type: AIReconnaissanceScenarioResult
+      return_type: AIReconnaissanceStructuredOutputScenarioResult

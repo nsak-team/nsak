@@ -46,10 +46,14 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
         ]
 
         if isinstance(self.scenario_result, AIScenarioResult):
-            tools_called = [
-                f"{tool}: {count}"
-                for tool, count in self.scenario_result.tools_called.items()
-            ]
+            tools_called = []
+            for tool, calls in self.scenario_result.tools_called.items():
+                tools_called.append(f"{tool}: {len(calls)}")
+                for call in calls:
+                    tools_called.append(f"- {call}")
+                tools_called.append("")
+            tools_called.append("")
+
             rows.extend(
                 [
                     ["", ""],

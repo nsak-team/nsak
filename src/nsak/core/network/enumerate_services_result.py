@@ -1,8 +1,22 @@
+import logging
 from dataclasses import dataclass
 
 from tabulate import TableFormat, tabulate
 
 from nsak.core.scenario.scenario_result import ScenarioResult
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass(frozen=True, kw_only=True)
+class EnumerateServicesResultEntry:
+    """
+    Represents the entry of the enumerate services result.
+    """
+
+    ip: str
+    port: str
+    findings: list[str]
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -12,7 +26,7 @@ class EnumerateServicesResult(ScenarioResult):
     """
 
     # Service name ->
-    results: dict[str, list[str]]
+    results: list[EnumerateServicesResultEntry]
 
     def as_table(self, table_format: str | TableFormat = "pipe") -> str:
         """
@@ -25,12 +39,11 @@ class EnumerateServicesResult(ScenarioResult):
         ]
         rows = []
 
-        for key, findings in self.results.items():
-            ip, port = key.split(":", 1)
+        for entry in self.results:
             row = [
-                ip,
-                port,
-                "\n".join(findings),
+                entry.ip,
+                entry.port,
+                "\n".join(entry.findings),
             ]
             rows.append(row)
 

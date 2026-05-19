@@ -1,18 +1,21 @@
 import asyncio
 import logging
 from pprint import pformat
-from typing import Any, AsyncGenerator, Callable, Iterable, Sequence
+from typing import Any, AsyncGenerator, Awaitable, Callable, Iterable, Sequence
 
 from langchain.agents import create_agent
 from langchain.agents.middleware import AgentMiddleware
 from langchain_anthropic.chat_models import ChatAnthropic
-from langchain_core.callbacks import BaseCallbackHandler
+from langchain_core.callbacks import AsyncCallbackHandler
 from langchain_core.language_models import BaseChatModel
+from langchain_core.messages import ToolMessage
 from langchain_core.outputs import LLMResult
 from langchain_core.tools import BaseTool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_ollama.chat_models import ChatOllama
 from langchain_openai.chat_models import ChatOpenAI
+from langgraph.prebuilt.tool_node import ToolCallRequest
+from langgraph.types import Command
 
 from nsak.core.ai.tools import (
     cli_tool,
@@ -26,42 +29,97 @@ from nsak.core.configuration import Configuration, config
 logger = logging.getLogger(__name__)
 
 
-class UsageCallback(BaseCallbackHandler):  # type: ignore
+class TrackToolCallMiddleware(AgentMiddleware):  # type: ignore
     """
-    Track token usage.
+    Tool tracking middleware.
     """
 
     def __init__(self, tools_available: Iterable[str]) -> None:
+        """
+        Init tool tracking middleware.
+        """
+        self.tools_called: dict[str, list[str]] = {
+            tool: [] for tool in set(tools_available)
+        }
+
+    async def awrap_tool_call(
+        self,
+        request: ToolCallRequest,
+        handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command[Any]]],
+    ) -> ToolMessage | Command[Any]:
+        """
+        Track async tool calls.
+        """
+        tool_name = request.tool_call["name"]
+        tool_args = request.tool_call["args"]
+
+        self.tools_called.setdefault(tool_name, [])
+        self.tools_called[tool_name].append(str(tool_args))
+
+        return await handler(request)
+
+    def wrap_tool_call(
+        self,
+        request: ToolCallRequest,
+        handler: Callable[[ToolCallRequest], ToolMessage | Command[Any]],
+    ) -> ToolMessage | Command[Any]:
+        """
+        Track sync tool calls.
+        """
+        tool_name = request.tool_call["name"]
+        tool_args = request.tool_call["args"]
+
+        self.tools_called.setdefault(tool_name, [])
+        self.tools_called[tool_name].append(str(tool_args))
+
+        return handler(request)
+
+
+class UsageCallback(AsyncCallbackHandler):  # type: ignore
+    """
+    Track token usage and tool calls.
+    """
+
+    def __init__(self) -> None:
         """
         Init token usage.
         """
         self.prompt_tokens = 0
         self.completion_tokens = 0
         self.total_tokens = 0
-        self.tools_called: dict[str, int] = {tool: 0 for tool in set(tools_available)}
 
-    def on_tool_start(
-        self,
-        serialized: dict[str, Any],
-        input_str: str,
-        **kwargs: Any,  # noqa: ANN401
-    ) -> None:
-        """
-        Count tools called.
-        """
-        tool_name = serialized.get("name", "unknown")
-        self.tools_called[tool_name] += 1
-
-    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:  # noqa: ANN401
+    async def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:  # noqa: ANN401
         """
         Capture the token usage.
         """
         if response.llm_output is None:
+            # Fallback: sum usage from generations (present when streaming)
+            for generations in response.generations:
+                for gen in generations:
+                    if not hasattr(gen, "message"):
+                        continue
+                    _usage = getattr(gen.message, "usage_metadata", None)
+                    if _usage is None:
+                        logger.warning("No usage metadata in on_llm_end!")
+                        return
+                    self.prompt_tokens += _usage.get("input_tokens", 0)
+                    self.completion_tokens += _usage.get("output_tokens", 0)
+                    self.total_tokens += _usage.get("total_tokens", 0)
             return
-        usage = response.llm_output.get("token_usage", {})
-        self.prompt_tokens += usage.get("prompt_tokens", 0)
-        self.completion_tokens += usage.get("completion_tokens", 0)
-        self.total_tokens += usage.get("total_tokens", 0)
+
+        usage: dict[str, int] = (
+            response.llm_output.get("token_usage")
+            or response.llm_output.get("usage")
+            or {}
+        )
+        if usage is None:
+            logger.warning("No token usage in on_llm_end!")
+            return
+        prompt = usage.get("prompt_tokens") or usage.get("input_tokens", 0)
+        completion = usage.get("completion_tokens") or usage.get("output_tokens", 0)
+        self.prompt_tokens += prompt
+        self.completion_tokens += completion
+        self.total_tokens += usage.get("total_tokens") or (prompt + completion)
 
 
 def create_chat_ollama(
@@ -100,9 +158,13 @@ class AiAgent:
     Abstraction for an AiAgent.
     """
 
-    system_prompt = "You are in a cybersecurity simulation and act as the purple team."
+    system_prompt: str = """
+    You are in a cybersecurity simulation and act as the purple team.
 
-    dynamic_tools: Sequence[BaseTool | Callable[..., Any] | dict[str, Any]] = []
+    Tool calling rules:
+    - Working directory: %(working_directory)s
+    - Only send emails if requested
+    """ % {"working_directory": str(config.work_path.absolute())}
 
     def __init__(
         self,
@@ -111,8 +173,6 @@ class AiAgent:
         base_url: str,
         api_key: str | None,
         tools: Sequence[BaseTool | Callable[..., Any] | dict[str, Any]] | None = None,
-        dynamic_tools: Sequence[BaseTool | Callable[..., Any] | dict[str, Any]]
-        | None = None,
         middleware: Sequence[AgentMiddleware] | None = None,
         debug: bool = False,
         system_prompt: str | None = None,
@@ -121,14 +181,21 @@ class AiAgent:
         """
         Initializes the AiAgent and the connection to its backend model.
         """
-        all_tools = [*list(tools or []), *list(self.dynamic_tools or [])]
-        self.usage = UsageCallback(tools_available=[tool.name for tool in all_tools])  # type: ignore
+        self.usage = UsageCallback()
 
-        if dynamic_tools:
-            self.dynamic_tools = dynamic_tools
-
-        if system_prompt:
+        if system_prompt is not None:
             self.system_prompt = system_prompt
+
+        if tools is None:
+            tools = []
+
+        self.track_tool_call_middleware = TrackToolCallMiddleware(
+            tools_available=[tool.name for tool in tools]  # type: ignore
+        )
+
+        middlewares: list[AgentMiddleware] = [self.track_tool_call_middleware]
+        if middleware is not None:
+            middlewares.extend(list(middleware))
 
         self.model = AiAgent.create_model(
             provider, model, base_url, api_key, callbacks=[self.usage]
@@ -136,10 +203,9 @@ class AiAgent:
         self.agent = create_agent(
             self.model,
             tools=tools,
-            middleware=middleware or [],
+            middleware=middlewares,
             system_prompt=self.system_prompt,
             debug=debug,
-            # checkpointer=InMemorySaver(),
             response_format=response_format,
         )
 
@@ -279,6 +345,7 @@ async def create_ai_agent(
     tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] | None = None,
     system_prompt: str | None = None,
     response_format: Any = None,  # noqa: ANN401
+    load_additional_tools: bool = False,
 ) -> AiAgent:
     """
     Creates an AI-agent from the runtime configuration.
@@ -294,24 +361,18 @@ async def create_ai_agent(
             send_email,
         ]
 
-    dynamic_tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] = [
-        *generate_drill_tools(),
-        *await get_mcp_tools(config),
-    ]
+        if load_additional_tools:
+            tools.extend(
+                [
+                    *generate_drill_tools(),
+                    *await get_mcp_tools(config),
+                ]
+            )
 
     middleware: list[AgentMiddleware] = []
 
     if interactive:
-        # We use langchains build in `HumanInTheLoopMiddleware` middleware together with our `human_interaction_hook`
         tools.append(human_interaction_hook)
-        # middleware.append(HumanInTheLoopMiddleware(
-        #     interrupt_on={
-        #         "cli_tool": True,
-        #         "human_interaction_hook": {"allowed_decisions": ["respond"]},
-        #         "send_email": {"allowed_decisions": ["approve", "reject"]},
-        #     },
-        #     description_prefix="Tool execution pending approval",
-        # ))
 
     return AiAgent(
         config.ai.provider,
@@ -319,9 +380,8 @@ async def create_ai_agent(
         config.ai.base_url,
         config.ai.api_key,
         tools,
-        dynamic_tools,
         middleware,
-        debug=True,
+        debug=False,
         system_prompt=system_prompt,
         response_format=response_format,
     )
