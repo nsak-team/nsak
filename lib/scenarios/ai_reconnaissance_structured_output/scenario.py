@@ -1,54 +1,112 @@
 """
-Scenario entrypoint for AI based network reconnaissance with structured output.
-
-This currently works only with frontier models.
+Scenario entrypoint for AI based network reconnaissance.
 """
 import logging
 
-from nsak.core import create_ai_agent, config, AiAgent
-from nsak.core.network.reconnaissance_scenario_result import AIReconnaissanceStructuredOutputScenarioResult, AIReconnaissanceStructuredOutputResult
+from nsak.core import create_ai_agent, config
+from nsak.core.ai.ai_agent import AiAgent
+from nsak.core.network import EnumerateServicesResult, NetworkDiscoveryResultMap
+from nsak.core.network.reconnaissance_scenario_result import AIReconnaissanceStructuredOutputScenarioResult
 
 logger = logging.getLogger(__name__)
 
-reconnaissance_prompt_template = """
+network_discovery_prompt_template = """
+Run nmap to discover all interfaces on the given interface: %(interface)s
+
 Steps:
-1. Discover all subnets, hosts and services on the following interface: %(interface)s
-2. Enumerate all services based on the result of the network discovery result with service-specific nmap NSE scripts
-3. Write a markdown formated assessment of your findings
-4. Return the result as structured output based on the ReconnaissanceScenarioResult datastructure
+1. Discover all subnets, hosts and services
+2. Return the result as structured output: NetworkDiscoveryResultMap
 """
 
-async def run_reconnaissance_agent(
-    interface: str,
-    interactive: bool = False,
-) -> tuple[AIReconnaissanceStructuredOutputResult, AiAgent]:
+enumerate_services_prompt_template = """
+Network discovery result:
+%(network_discovery_result)s
+
+Run service-specific nmap NSE scripts on all discovered services.
+
+Steps:
+1. Enumerate all services based on the result of the network discovery result
+2. Return the result as structured output: EnumerateServicesResult
+"""
+
+assessment_prompt_template = """
+Network discovery result:
+%(network_discovery_result)s
+
+Enumerate services result:
+%(enumerate_services_result)s
+
+Steps:
+1. Create an assessment based on the discovery and enumerate services result
+2. Return the result as markdown
+"""
+
+async def network_discovery(
+        interface: str,
+        interactive: bool = False,
+) -> tuple[NetworkDiscoveryResultMap, AiAgent]:
     """
     Run an agent which returns a NetworkDiscoveryResultMap.
     """
-    prompt = reconnaissance_prompt_template % {"interface": interface}
+    prompt = network_discovery_prompt_template % {"interface": interface}
 
     if interactive:
-        prompt += "\n5. Use the `human_interaction_hook` tool to allow the operator to execute followup steps."
+        prompt += "\n3. Use the `human_interaction_hook` tool to allow the operator to execute followup steps."
 
-    agent = await create_ai_agent(
-        interactive,
-        response_format=AIReconnaissanceStructuredOutputResult,
-        # load_additional_tools=True,
-    )
+    agent = await create_ai_agent(interactive, response_format=NetworkDiscoveryResultMap)
     result = await agent.ainvoke(prompt)
+    structured_output = result.get("structured_response")
 
-    structured_response = result.get("structured_response")
-
-    if not structured_response:
-        logger.error("Final messages:", result.get("messages", [])[-1].content)
-        raise Exception("Agent for network_discovery failed!", result)
-
-    return structured_response, agent
+    return structured_output, agent
 
 
-async def run(interface: str, interactive: bool = False) -> AIReconnaissanceStructuredOutputScenarioResult:
+async def enumerate_services(
+        network_discovery_result_map: str,
+        interactive: bool = False,
+) -> tuple[EnumerateServicesResult, AiAgent]:
+    """
+    Run an agent which returns a EnumerateServicesResult.
+    """
+    prompt = enumerate_services_prompt_template % {"network_discovery_result": network_discovery_result_map}
+
+    if interactive:
+        prompt += "\n3. Use the `human_interaction_hook` tool to allow the operator to execute followup steps."
+
+    agent = await create_ai_agent(interactive, response_format=EnumerateServicesResult)
+    result = await agent.ainvoke(prompt)
+    structured_output = result.get("structured_response")
+
+    return structured_output, agent
+
+async def assessment(
+        network_discovery_result_map: str,
+        enumerate_services_result: str,
+        interactive: bool = False,
+) -> tuple[str, AiAgent]:
+    """
+    Run an agent which returns a EnumerateServicesResult.
+    """
+    prompt = assessment_prompt_template % {
+        "network_discovery_result": network_discovery_result_map,
+        "enumerate_services_result": enumerate_services_result,
+    }
+
+    if interactive:
+        prompt += "\n3. Use the `human_interaction_hook` tool to allow the operator to execute followup steps."
+
+    agent = await create_ai_agent(interactive)
+
+    result = await agent.ainvoke(prompt)
+    response = result.get("messages", [])[-1].content
+
+    return response, agent
+
+
+async def run(interface: str, interactive: bool = False) -> AIReconnaissanceStructuredOutputScenarioResult | None:
     """
     Scenario, which conducts AI-based network reconnaissance.
+
+    :return: None
     """
 
     logger.info("Starting scenario: AI Reconnaissance")
@@ -56,17 +114,33 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceStru
     if config.ai is None:
         raise ValueError("config.ai must be configured!")
 
-    result, agent = await run_reconnaissance_agent(interface, interactive)
+    network_discovery_result_map, network_discovery_agent = await network_discovery(interface, interactive)
+
+    enumerate_services_result, enumerate_services_agent = await enumerate_services(network_discovery_result_map.as_table(), interactive)
+
+    assessment_result, assessment_agent = await assessment(network_discovery_result_map.as_table(), enumerate_services_result.as_table(), interactive)
+
+    prompt_tokens = 0
+    completion_tokens = 0
+    tools_called: dict[str, list[str]] = {}
+
+    for agent in [network_discovery_agent, enumerate_services_agent, assessment_agent]:
+        agent: AiAgent
+        prompt_tokens += agent.usage.prompt_tokens
+        completion_tokens += agent.usage.completion_tokens
+        for tool, calls in agent.track_tool_call_middleware.tools_called.items():
+            tools_called.setdefault(tool, [])
+            tools_called[tool] += calls
 
     ai_reconnaissance_scenario_result = AIReconnaissanceStructuredOutputScenarioResult(
-        network_discovery_result_map=result.network_discovery_result_map,
-        enumerate_services_result=result.enumerate_services_result,
-        ai_assessment=result.ai_assessment,
+        network_discovery_result_map=network_discovery_result_map,
+        enumerate_services_result=enumerate_services_result,
+        ai_assessment=assessment_result,
         provider=config.ai.provider,
         model=config.ai.model,
-        prompt_tokens=agent.usage.prompt_tokens,
-        completion_tokens=agent.usage.completion_tokens,
-        tools_called=agent.track_tool_call_middleware.tools_called,
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
+        tools_called=tools_called,
     )
 
     return ai_reconnaissance_scenario_result

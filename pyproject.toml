@@ -21,6 +21,7 @@ dependencies = [
     "mypy-extensions>=1.0.0",
     "python-logging-loki>=0.3.1",
     "matplotlib>=3.10.9",
+    "pydantic>=2.12.5",
 ]
 
 [dependency-groups]

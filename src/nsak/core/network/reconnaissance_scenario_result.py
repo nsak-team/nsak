@@ -101,9 +101,7 @@ class AIReconnaissanceScenarioResult(AIScenarioResult):
 
 
 @dataclass(frozen=True, kw_only=True)
-class AIReconnaissanceStructuredOutputResult(
-    ReconnaissanceScenarioResult, AIScenarioResult
-):
+class AIReconnaissanceStructuredOutputResult(ReconnaissanceScenarioResult):
     """
     Represents the results of the AI reconnaissance scenario with structured output.
     """
