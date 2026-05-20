@@ -1,0 +1,24 @@
+{
+    "benchmark_uuid": "ceedeb7a-1499-4b3b-963b-c4d40563865f",
+    "setup": "containerlab",
+    "scenario": "AI Reconnaissance",
+    "timestamp": "2026-05-20T23:00:31.721935+02:00",
+    "model": "claude-opus-4-7",
+    "provider": "anthropic",
+    "durations": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "tokens": null,
+    "tool_calls": null,
+    "mean_tokens": null,
+    "mean_duration": 1
+}

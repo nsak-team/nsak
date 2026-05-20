@@ -1,0 +1,46 @@
+{
+    "benchmark_uuid": "7581d1d9-71a8-4ad9-9676-0895d6a0ee25",
+    "setup": "containerlab",
+    "scenario": "AI Reconnaissance",
+    "timestamp": "2026-05-20T17:31:37.798869+02:00",
+    "model": "qwen3:30b",
+    "provider": "ollama",
+    "durations": [
+        356,
+        597,
+        330,
+        337,
+        389,
+        791,
+        332,
+        359,
+        367,
+        357
+    ],
+    "tokens": [
+        28409,
+        18468,
+        25533,
+        26736,
+        29523,
+        37946,
+        26214,
+        29763,
+        28910,
+        29721
+    ],
+    "tool_calls": [
+        6,
+        4,
+        6,
+        8,
+        6,
+        6,
+        8,
+        8,
+        6,
+        10
+    ],
+    "mean_tokens": 28122,
+    "mean_duration": 422
+}

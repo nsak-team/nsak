@@ -1,0 +1,24 @@
+{
+    "benchmark_uuid": "70c13ee3-5e66-4d0f-9ec8-09b840db498b",
+    "setup": "containerlab",
+    "scenario": "Reconnaissance",
+    "timestamp": "2026-05-20T22:50:28.018421+02:00",
+    "model": "recon",
+    "provider": "recon",
+    "durations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+    ],
+    "tokens": null,
+    "tool_calls": null,
+    "mean_tokens": null,
+    "mean_duration": 28
+}

@@ -1,0 +1,13 @@
+{
+  "benchmark_uuid": "a19f3cef-7b84-404f-bb9b-fdc3788f4a81",
+  "setup": "containerlab",
+  "scenario": "AI Reconnaissance",
+  "timestamp": "2026-05-19T23:15:19.595265+02:00",
+  "model": "gpt-oss:120b",
+  "provider": "openwebui",
+  "durations": [244, 285, 262, 264, 421, 378, 409, 468, 620, 475],
+  "tokens": [15455, 15990, 23152, 22947, 31200, 16768, 15906, 23058, 16159, 24328],
+  "tool_calls": [3, 3, 6, 6, 7, 3, 3, 6, 3, 7],
+  "mean_tokens": 20496,
+  "mean_duration": 383
+}

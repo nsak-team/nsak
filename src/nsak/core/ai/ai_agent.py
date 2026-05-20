@@ -222,7 +222,7 @@ class AiAgent:
         """
         # Temperature means something like "creativity" and usually leads to less predictable and consistent results.
         # In the context of our bachelor thesis we want the agent to behave as consistent as possible.
-        kwargs.update({"temperature": 0})
+        # kwargs.update({"temperature": 0})
 
         create_model = PROVIDER_MAP.get(provider)
 
