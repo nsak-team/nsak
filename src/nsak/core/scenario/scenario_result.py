@@ -40,3 +40,10 @@ class AIScenarioResult(ScenarioResult, ABC):
         Returns the total number of tokens consumed.
         """
         return self.prompt_tokens + self.completion_tokens
+
+    @property
+    def total_tools_called(self) -> int:
+        """
+        Returns the total number of tools called.
+        """
+        return sum([len(calls) for tool, calls in self.tools_called.items()])

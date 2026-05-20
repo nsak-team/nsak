@@ -80,6 +80,7 @@ class BenchmarkRun:
             results=benchmark_results,
             **self._get_ai_metadata(),
             file_path=self._get_summary_file_path(),
+            json_file_path=self._get_json_file_path(),
         )
 
     def _setup_work_path(
@@ -110,6 +111,13 @@ class BenchmarkRun:
         Return the summary file path.
         """
         file_name = "summary.md"
+        return self.work_path.joinpath(file_name)
+
+    def _get_json_file_path(self) -> Path:
+        """
+        Return the summary file path.
+        """
+        file_name = "summary.json"
         return self.work_path.joinpath(file_name)
 
     @staticmethod
