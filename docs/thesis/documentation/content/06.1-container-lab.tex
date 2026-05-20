@@ -1,0 +1,176 @@
+% ─────────────────────────────────────────────────────────────────────────────
+% Environment: Containerlab (Virtual)
+% 3 models × 10 runs + 1 reference (traditional recon)
+% Evaluation criteria: see §\ref{subsec:criteria}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsection{Reference: Traditional Reconnaissance}\label{subsec:cl-recon}
+
+\todo{Run traditional recon 10× in containerlab, fill table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|r|r|r|}
+        \hline
+        \textbf{Run} & \textbf{Duration (s)} & \textbf{Hosts found} & \textbf{Services found} \\
+        \hline
+        1  & -- & -- & -- \\
+        2  & -- & -- & -- \\
+        3  & -- & -- & -- \\
+        4  & -- & -- & -- \\
+        5  & -- & -- & -- \\
+        6  & -- & -- & -- \\
+        7  & -- & -- & -- \\
+        8  & -- & -- & -- \\
+        9  & -- & -- & -- \\
+        10 & -- & -- & -- \\
+        \hline
+        \textbf{Avg} & \textbf{--} & \textbf{--} & \textbf{--} \\
+        \hline
+    \end{tabular}
+    \caption{Traditional Recon — Containerlab (10 runs)}
+    \label{tab:cl-recon-raw}
+\end{table}
+
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsection{Local LLM (Ollama)}\label{subsec:cl-local-llm}
+
+\todo{Run AI recon 10× with local model, fill table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|r|r|r|r|r|}
+        \hline
+        \textbf{Run} & \textbf{Duration (s)} & \textbf{Input tok.} & \textbf{Output tok.} & \textbf{Hosts} & \textbf{Services} \\
+        \hline
+        1  & -- & -- & -- & -- & -- \\
+        2  & -- & -- & -- & -- & -- \\
+        3  & -- & -- & -- & -- & -- \\
+        4  & -- & -- & -- & -- & -- \\
+        5  & -- & -- & -- & -- & -- \\
+        6  & -- & -- & -- & -- & -- \\
+        7  & -- & -- & -- & -- & -- \\
+        8  & -- & -- & -- & -- & -- \\
+        9  & -- & -- & -- & -- & -- \\
+        10 & -- & -- & -- & -- & -- \\
+        \hline
+        \textbf{Avg} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} \\
+        \hline
+    \end{tabular}
+    \caption{Local LLM — Containerlab (10 runs)}
+    \label{tab:cl-local-raw}
+\end{table}
+
+\paragraph{Qualitative Assessment}
+
+\begin{itemize}
+    \item \textbf{Correctness / Task Completion:} \todo{Did the model complete the full recon? Missed hosts or services?}
+    \item \textbf{Consistency:} \todo{How much did tool selection and output vary across 10 runs?}
+    \item \textbf{Creativity:} \todo{Did the model suggest follow-up steps beyond standard recon?}
+\end{itemize}
+
+
+\subsection{BFH Model (gpt-oss:120b)}\label{subsec:cl-bfh}
+
+\todo{Run AI recon 10× with BFH model, fill table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|r|r|r|r|r|}
+        \hline
+        \textbf{Run} & \textbf{Duration (s)} & \textbf{Input tok.} & \textbf{Output tok.} & \textbf{Hosts} & \textbf{Services} \\
+        \hline
+        1  & -- & -- & -- & -- & -- \\
+        2  & -- & -- & -- & -- & -- \\
+        3  & -- & -- & -- & -- & -- \\
+        4  & -- & -- & -- & -- & -- \\
+        5  & -- & -- & -- & -- & -- \\
+        6  & -- & -- & -- & -- & -- \\
+        7  & -- & -- & -- & -- & -- \\
+        8  & -- & -- & -- & -- & -- \\
+        9  & -- & -- & -- & -- & -- \\
+        10 & -- & -- & -- & -- & -- \\
+        \hline
+        \textbf{Avg} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} \\
+        \hline
+    \end{tabular}
+    \caption{BFH Model — Containerlab (10 runs)}
+    \label{tab:cl-bfh-raw}
+\end{table}
+
+\paragraph{Qualitative Assessment}
+
+\begin{itemize}
+    \item \textbf{Correctness / Task Completion:} \todo{}
+    \item \textbf{Consistency:} \todo{}
+    \item \textbf{Creativity:} \todo{}
+\end{itemize}
+
+
+\subsection{Frontier Model (Claude Opus)}\label{subsec:cl-frontier}
+
+\todo{Run AI recon 10× with Claude Opus, fill table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|r|r|r|r|r|}
+        \hline
+        \textbf{Run} & \textbf{Duration (s)} & \textbf{Input tok.} & \textbf{Output tok.} & \textbf{Hosts} & \textbf{Services} \\
+        \hline
+        1  & -- & -- & -- & -- & -- \\
+        2  & -- & -- & -- & -- & -- \\
+        3  & -- & -- & -- & -- & -- \\
+        4  & -- & -- & -- & -- & -- \\
+        5  & -- & -- & -- & -- & -- \\
+        6  & -- & -- & -- & -- & -- \\
+        7  & -- & -- & -- & -- & -- \\
+        8  & -- & -- & -- & -- & -- \\
+        9  & -- & -- & -- & -- & -- \\
+        10 & -- & -- & -- & -- & -- \\
+        \hline
+        \textbf{Avg} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} \\
+        \hline
+    \end{tabular}
+    \caption{Frontier Model (Claude Opus) — Containerlab (10 runs)}
+    \label{tab:cl-frontier-raw}
+\end{table}
+
+\paragraph{Qualitative Assessment}
+
+\begin{itemize}
+    \item \textbf{Correctness / Task Completion:} \todo{}
+    \item \textbf{Consistency:} \todo{}
+    \item \textbf{Creativity:} \todo{}
+\end{itemize}
+
+
+\subsection{Containerlab: Cross-Model Comparison}\label{subsec:cl-comparison}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|r|r|r|r|}
+        \hline
+        \textbf{Model} & \textbf{Avg Duration (s)} & \textbf{Avg Input tok.} & \textbf{Avg Output tok.} & \textbf{Avg Hosts} & \textbf{Avg Services} \\
+        \hline
+        Traditional Recon & -- & n/a       & n/a       & -- & -- \\
+        Local LLM         & -- & --        & --        & -- & -- \\
+        BFH Model         & -- & --        & --        & -- & -- \\
+        Frontier (Claude) & -- & --        & --        & -- & -- \\
+        \hline
+    \end{tabular}
+    \caption{Containerlab — Cross-model average results}
+    \label{tab:cl-comparison}
+\end{table}
+
+\paragraph{Discussion}
+
+\todo[inline]{Discuss the following points after runs are complete.}
+
+\begin{itemize}
+    \item Which model achieved the highest correctness? Did all models find the same hosts/services?
+    \item How large is the variance in duration and token usage across 10 runs (consistency)?
+    \item Does higher model capability (frontier) translate to better recon results or only to higher cost?
+    \item Where did AI Recon go beyond traditional recon (creativity / follow-up suggestions)?
+    \item What failure modes were observed (missed hosts, hallucinated services, wrong tool selection)?
+\end{itemize}
