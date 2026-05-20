@@ -196,7 +196,7 @@ class BenchmarkSummary:
             tool_calls: list[int] = []
             for result in self.ai_results:
                 tokens.append(result.scenario_result.total_tokens)
-                tokens.append(result.scenario_result.total_tools_called)
+                tool_calls.append(result.scenario_result.total_tools_called)
             data.update(
                 {
                     "tokens": tokens,
