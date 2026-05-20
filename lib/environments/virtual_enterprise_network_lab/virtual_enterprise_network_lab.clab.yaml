@@ -85,16 +85,6 @@ topology:
     #   172.16.1.10:80,443   dmz-server (HTTP/HTTPS)
     #   172.16.1.10:53       dmz-server (DNS — zone transfer enabled)
     # NOT reachable: anything in LAN (192.168.10.0/24)
-    external:
-      kind: linux
-      image: alpine:3.19
-      cmd: tail -f /dev/null  # keeps container alive without a daemon
-      cap-add:
-        - NET_ADMIN  # needed to configure interfaces and routes
-      exec:
-        - apk add --no-cache iproute2 curl bind-tools nmap netcat-openbsd openssl
-        - ip addr add 10.0.1.10/24 dev eth1
-        - ip route replace default via 10.0.1.254/24
 
     # ── Firewall (Alpine + nftables) ──────────────────────────────────────────────
     # Tri-homed router/firewall: eth1=WAN, eth2=DMZ, eth3=LAN.
@@ -334,11 +324,9 @@ topology:
   links:
     # WAN segment (WAN 10.0.1.0/24)
     - endpoints: [ "firewall:eth1", "wan-br:fw1" ]
-    - endpoints: [ "external:eth1" , "wan-br:ext" ]
     # DMZ segment (172.16.1.0/24)
     - endpoints: [ "firewall:eth2", "dmz-br:fw2" ]
     - endpoints: [ "dmz-server:eth1", "dmz-br:dmz-serv" ]
-    - endpoints: [ "nsak:eth2", "dmz-br:nsak-dmz" ]
     # LAN segment (192.168.10.0/24)
     - endpoints: [ "firewall:eth3", "lan-br:fw3" ]
     - endpoints: [ "ctrl-server:eth1", "lan-br:ctrl" ]

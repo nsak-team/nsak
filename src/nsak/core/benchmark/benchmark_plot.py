@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
 
 FIGURES_DIR = Path(__file__).parents[4] / "docs/thesis/documentation/figures"
 date = datetime.now(tz=timezone.utc).strftime("_%d_%m_%Y")
@@ -26,57 +27,59 @@ MODELS: dict[str, dict[str, list[int]]] = {
     "recon": {
         "duration": [29, 28, 28, 28, 29, 28, 28, 28, 29, 28],
         "tokens": [],
+        "tool_calls": [],
     },
     "gpt-oss:120b": {
-        "duration": [244, 285, 262, 264, 421, 378, 409, 468, 620, 475],
+        "duration": [620, 239, 322, 334, 446, 584, 337, 409, 218, 517],
         "tokens": [
-            15455,
-            15990,
-            23152,
-            22947,
-            31200,
-            16768,
-            15906,
-            23058,
-            16159,
-            24328,
+            43759,
+            48568,
+            41534,
+            40186,
+            15499,
+            29928,
+            31019,
+            23275,
+            37287,
+            37848,
         ],
+        "tool_calls": [3, 11, 3, 4, 6, 8, 7, 6, 6, 11],
     },
     "local": {
-        "duration": [310, 340, 290, 380, 450, 400, 360, 420, 510, 395],
+        "duration": [615, 677, 284, 232, 338, 636, 660, 282, 619, 359],
         "tokens": [
-            13800,
-            16700,
-            21400,
-            20800,
-            28000,
-            15000,
-            14900,
-            20600,
-            14500,
-            21700,
+            22142,
+            28161,
+            58195,
+            28717,
+            17437,
+            43172,
+            49913,
+            29714,
+            32766,
+            20451,
         ],
+        "tool_calls": [3, 11, 3, 4, 6, 8, 7, 6, 6, 11],
     },
     "frontier": {
-        "duration": [180, 200, 175, 190, 310, 280, 295, 350, 460, 340],
+        "duration": [615, 677, 284, 232, 338, 636, 660, 282, 619, 359],
         "tokens": [
-            13100,
-            15000,
-            20200,
-            19600,
-            26800,
-            14300,
-            14100,
-            19900,
-            13900,
-            21000,
+            30922,
+            20730,
+            30849,
+            28778,
+            35244,
+            55136,
+            52485,
+            39394,
+            57053,
+            17112,
         ],
+        "tool_calls": [3, 11, 3, 4, 6, 8, 7, 6, 6, 11],
     },
 }
 
 COLORS = ["#4C72B0", "#DD8452", "#C44E52", "#228B22"]
-
-# ── Plots ─────────────────────────────────────────────────────────────────────
 
 
 def plot_duration_comparison() -> None:
@@ -115,18 +118,34 @@ def plot_tokens_vs_duration() -> None:
         if not data["tokens"]:
             continue
         ax.scatter(
-            data["tokens"], data["duration"], color=color, s=60, zorder=3, label=model
+            data["tokens"],
+            data["duration"],
+            color=color,
+            s=60,
+            zorder=3,
+            label=model,
         )
+        if data.get("tool_calls"):
+            for x, y, tc in zip(
+                data["tokens"], data["duration"], data["tool_calls"], strict=False
+            ):
+                ax.annotate(
+                    f"({tc})",
+                    (x, y),
+                    textcoords="offset points",
+                    xytext=(4, 4),
+                    fontsize=7,
+                    color=color,
+                )
 
+    handles, labels = ax.get_legend_handles_labels()
+    handles.append(Patch(color="none", label="tool-calls:()"))
     ax.set_xlabel("Total tokens")
     ax.set_ylabel("Duration (s)")
-    ax.legend(fontsize=9)
+    ax.legend(handles=handles, fontsize=9)
     ax.grid(alpha=0.35, zorder=0)
     fig.tight_layout()
     _save(fig, "benchmark_tokens_vs_duration" + date)
-
-
-# ── Save & main ───────────────────────────────────────────────────────────────
 
 
 def _save(fig: plt.Figure, name: str) -> None:
