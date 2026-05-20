@@ -48,4 +48,4 @@ def host_configuration() -> dict[str, Any]:
     - Use `is_management=True` interfaces for device access or data extraction
     - `configuration` may be None if the device has not been configured yet
     """
-    return ConfigurationSerializer.serialize(config)
+    return ConfigurationSerializer.serialize(config.scrub())

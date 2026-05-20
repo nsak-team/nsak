@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import uuid
+from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -112,3 +113,16 @@ class Configuration:
         work_path.mkdir(mode=0o777, parents=True, exist_ok=True)
 
         return work_path
+
+    def scrub(self) -> Configuration:
+        """
+        Return a scrubbed copy of the config.
+        """
+        scrubbed = deepcopy(self)
+
+        scrubbed.ai = None
+        scrubbed.email = None
+        scrubbed.loki = None
+        scrubbed.drawio_mcp = None
+
+        return scrubbed
