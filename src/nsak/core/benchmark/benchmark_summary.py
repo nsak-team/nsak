@@ -10,6 +10,9 @@ from tabulate import TableFormat, tabulate
 
 from nsak.core.scenario import AIScenarioResult
 
+from ..scenario_results.reconnaissance_scenario_result import (
+    ReconnaissanceScenarioResult,
+)
 from .benchmark_result import BenchmarkResult
 
 
@@ -43,6 +46,56 @@ class BenchmarkSummary:
         """
         durations = [result.duration_seconds for result in self.results]
         return round(statistics.mean(durations))
+
+    @property
+    def reconnaissance_results(
+        self,
+    ) -> list[BenchmarkResult[ReconnaissanceScenarioResult]]:
+        """
+        Filter all results which have a scenario_result of type `ReconnaissanceScenarioResult`.
+        """
+        reconnaissance_results: list[BenchmarkResult[ReconnaissanceScenarioResult]] = []
+
+        for result in self.results:
+            if isinstance(result.scenario_result, ReconnaissanceScenarioResult):
+                reconnaissance_results.append(
+                    cast(BenchmarkResult[ReconnaissanceScenarioResult], result)
+                )
+
+        return reconnaissance_results
+
+    @property
+    def mean_hosts_discovered(self) -> int | None:
+        """
+        Returns the rounded mean number of discovered hosts.
+        """
+        hosts_discovered = [
+            result.total_hosts_discovered for result in self.reconnaissance_results
+        ]
+        entries: list[int] = [entry for entry in hosts_discovered if entry is not None]
+        return round(statistics.mean(entries))
+
+    @property
+    def mean_services_discovered(self) -> int | None:
+        """
+        Returns the rounded mean number of discovered services.
+        """
+        services_discovered = [
+            result.total_services_discovered for result in self.reconnaissance_results
+        ]
+        entries: list[int] = [
+            entry for entry in services_discovered if entry is not None
+        ]
+        return round(statistics.mean(entries))
+
+    @property
+    def mean_findings(self) -> int | None:
+        """
+        Returns the rounded mean number of findings.
+        """
+        findings = [result.total_findings for result in self.reconnaissance_results]
+        entries: list[int] = [entry for entry in findings if entry is not None]
+        return round(statistics.mean(entries))
 
     @property
     def ai_results(self) -> list[BenchmarkResult[AIScenarioResult]]:
@@ -106,6 +159,18 @@ class BenchmarkSummary:
             ["Timestamp", self.timestamp.isoformat()],
             ["Mean duration (s)", str(self.mean_duration_seconds)],
         ]
+
+        if self.reconnaissance_results:
+            rows.extend(
+                [
+                    ["Mean hosts discovered:", str(self.mean_hosts_discovered) or ""],
+                    [
+                        "Mean services discovered",
+                        str(self.mean_services_discovered) or "",
+                    ],
+                    ["Mean findings", str(self.mean_findings) or ""],
+                ]
+            )
 
         if self.ai_results:
             rows.extend(

@@ -25,7 +25,6 @@ class EnumerateServicesResult(ScenarioResult):
     Represents the results of the enumerate services drill.
     """
 
-    # Service name ->
     results: list[EnumerateServicesResultEntry]
 
     def as_table(self, table_format: str | TableFormat = "pipe") -> str:

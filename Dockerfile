@@ -38,7 +38,7 @@ ENV NSAK_LIBRARY_PATH="lib/"
 
 RUN apt-get install -y $SYSTEM_DEPENDENCIES
 
-RUN uv sync && \
+RUN uv sync --exact && \
     if [ -n "$PYTHON_DEPENDENCIES" ]; then uv add $PYTHON_DEPENDENCIES; fi && \
     uv pip install . && \
     uv build && \

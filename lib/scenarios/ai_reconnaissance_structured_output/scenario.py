@@ -6,7 +6,8 @@ This currently works only with frontier models.
 import logging
 
 from nsak.core import create_ai_agent, config, AiAgent
-from nsak.core.network.reconnaissance_scenario_result import AIReconnaissanceStructuredOutputScenarioResult, AIReconnaissanceStructuredOutputResult
+from nsak.core.scenario_results.ai_reconnaissance_scenario_result import AIReconnaissanceScenarioResult
+from nsak.core.scenario_results.reconnaissance_scenario_result import ReconnaissanceScenarioResult
 
 logger = logging.getLogger(__name__)
 
@@ -15,13 +16,13 @@ Steps:
 1. Discover all subnets, hosts and services on the following interface: %(interface)s
 2. Enumerate all services based on the result of the network discovery result with service-specific nmap NSE scripts
 3. Write a markdown formated assessment of your findings
-4. Return the result as structured output based on the ReconnaissanceScenarioResult datastructure
+4. Return the result as structured output: [ReconnaissanceScenarioResult, str]
 """
 
 async def run_reconnaissance_agent(
     interface: str,
     interactive: bool = False,
-) -> tuple[AIReconnaissanceStructuredOutputResult, AiAgent]:
+) -> tuple[tuple[ReconnaissanceScenarioResult, str], AiAgent]:
     """
     Run an agent which returns a NetworkDiscoveryResultMap.
     """
@@ -32,7 +33,7 @@ async def run_reconnaissance_agent(
 
     agent = await create_ai_agent(
         interactive,
-        response_format=AIReconnaissanceStructuredOutputResult,
+        response_format=[ReconnaissanceScenarioResult, str],
         # load_additional_tools=True,
     )
     result = await agent.ainvoke(prompt)
@@ -46,7 +47,7 @@ async def run_reconnaissance_agent(
     return structured_response, agent
 
 
-async def run(interface: str, interactive: bool = False) -> AIReconnaissanceStructuredOutputScenarioResult:
+async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScenarioResult:
     """
     Scenario, which conducts AI-based network reconnaissance.
     """
@@ -57,11 +58,12 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceStru
         raise ValueError("config.ai must be configured!")
 
     result, agent = await run_reconnaissance_agent(interface, interactive)
+    scenario_result, ai_assessment = result
 
-    ai_reconnaissance_scenario_result = AIReconnaissanceStructuredOutputScenarioResult(
-        network_discovery_result_map=result.network_discovery_result_map,
-        enumerate_services_result=result.enumerate_services_result,
-        ai_assessment=result.ai_assessment,
+    ai_reconnaissance_scenario_result = AIReconnaissanceScenarioResult(
+        network_discovery_table=scenario_result.network_discovery_table,
+        enumerate_services_result=scenario_result.enumerate_services_result,
+        ai_assessment=ai_assessment,
         provider=config.ai.provider,
         model=config.ai.model,
         prompt_tokens=agent.usage.prompt_tokens,

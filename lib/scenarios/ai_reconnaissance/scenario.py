@@ -5,7 +5,9 @@ import logging
 
 from nsak.core import create_ai_agent, config
 from nsak.core.ai.ai_agent import AiAgent
-from nsak.core.network.reconnaissance_scenario_result import AIReconnaissanceScenarioResult
+from nsak.core.network import EnumerateServicesResult
+from nsak.core.scenario_results.ai_reconnaissance_scenario_result import AIReconnaissanceScenarioResult
+from nsak.core.scenario_results.network_discovery_result import NetworkDiscoveryTable
 
 logger = logging.getLogger(__name__)
 
@@ -14,14 +16,7 @@ Run nmap to discover all interfaces on the given interface: %(interface)s
 
 Steps:
 1. Discover all subnets, hosts and services
-2. Return the result as markdown based on the following example template:
-
-| Interface   | MAC               | IP           |   Port | Protocol   | State   | Service            | Product                              | Version                 |
-|:------------|:------------------|:-------------|-------:|:-----------|:--------|:-------------------|:-------------------------------------|:------------------------|
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     53 | tcp        | open    | domain             | NLnet Labs NSD                       |                         |
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     80 | tcp        | open    | http               | FRITZ!Box http config                |                         |
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |    443 | tcp        | open    | ssl/http           | FRITZ!Box http config                |                         |
-
+2. Return the result as structured output: NetworkDiscoveryTable
 """
 
 enumerate_services_prompt_template = """
@@ -32,19 +27,7 @@ Run service-specific nmap NSE scripts on all discovered services.
 
 Steps:
 1. Enumerate all services based on the result of the network discovery result
-2. Return the result as markdown based on the following example template:
-
-| IP           |   Port | Findings                                                     |
-|:-------------|-------:|:-------------------------------------------------------------|
-| 10.10.10.1   |     53 | dns-brute:                                                   |
-|              |        | DNS Brute-force hostnames:                                   |
-|              |        | dns.fritz.box - 1.0.0.1                                      |
-|              |        | dns.fritz.box - 1.1.1.1                                      |
-| 10.10.10.1   |     80 | http-title: FRITZ!Box                                        |
-|              |        | http-headers:                                                |
-|              |        | Connection: close                                            |
-|              |        | Content-Length: 2148                                         |
-
+2. Return the result as structured output: EnumerateServicesResult
 """
 
 assessment_prompt_template = """
@@ -62,7 +45,7 @@ Steps:
 async def network_discovery(
     interface: str,
     interactive: bool = False,
-) -> tuple[str, AiAgent]:
+) -> tuple[NetworkDiscoveryTable, AiAgent]:
     """
     Run an agent which returns a NetworkDiscoveryResultMap.
     """
@@ -81,7 +64,7 @@ async def network_discovery(
 async def enumerate_services(
     network_discovery_result_map: str,
     interactive: bool = False,
-) -> tuple[str, AiAgent]:
+) -> tuple[EnumerateServicesResult, AiAgent]:
     """
     Run an agent which returns a EnumerateServicesResult.
     """
@@ -93,9 +76,9 @@ async def enumerate_services(
     agent = await create_ai_agent(interactive)
 
     result = await agent.ainvoke(prompt)
-    response = result.get("messages", [])[-1].content
+    structured_response = result.get("structured_response")
 
-    return response, agent
+    return structured_response, agent
 
 async def assessment(
     network_discovery_result_map: str,
@@ -116,9 +99,9 @@ async def assessment(
     agent = await create_ai_agent(interactive)
 
     result = await agent.ainvoke(prompt)
-    response = result.get("messages", [])[-1].content
+    structured_response = result.get("structured_response")
 
-    return response, agent
+    return structured_response, agent
 
 
 async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScenarioResult | None:
@@ -133,11 +116,11 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
     if config.ai is None:
         raise ValueError("config.ai must be configured!")
 
-    network_discovery_result_map, network_discovery_agent = await network_discovery(interface, interactive)
+    network_discovery_table, network_discovery_agent = await network_discovery(interface, interactive)
 
-    enumerate_services_result, enumerate_services_agent = await enumerate_services(network_discovery_result_map, interactive)
+    enumerate_services_result, enumerate_services_agent = await enumerate_services(network_discovery_table.as_table(), interactive)
 
-    assessment_result, assessment_agent = await assessment(network_discovery_result_map, enumerate_services_result, interactive)
+    assessment_result, assessment_agent = await assessment(network_discovery_table.as_table(), enumerate_services_result.as_table(), interactive)
 
     prompt_tokens = 0
     completion_tokens = 0
@@ -152,7 +135,7 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
             tools_called[tool] += calls
 
     ai_reconnaissance_scenario_result = AIReconnaissanceScenarioResult(
-        network_discovery_result_map=network_discovery_result_map,
+        network_discovery_table=network_discovery_table,
         enumerate_services_result=enumerate_services_result,
         ai_assessment=assessment_result,
         provider=config.ai.provider,

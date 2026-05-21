@@ -6,6 +6,9 @@ from pathlib import Path
 from tabulate import TableFormat, tabulate
 
 from nsak.core.scenario import AIScenarioResult, ScenarioResult
+from nsak.core.scenario_results.reconnaissance_scenario_result import (
+    ReconnaissanceScenarioResult,
+)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -31,6 +34,44 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
     # The file path where the benchmark result is stored as Markdown, including the scenario result or exception.
     file_path: Path
 
+    @property
+    def total_services_discovered(self) -> int | None:
+        """
+        Returns the discovered services.
+        """
+        if not isinstance(self.scenario_result, ReconnaissanceScenarioResult):
+            return None
+
+        services = [
+            row.service for row in self.scenario_result.network_discovery_table.rows
+        ]
+        return len(services)
+
+    @property
+    def total_hosts_discovered(self) -> int | None:
+        """
+        Returns the discovered hosts.
+        """
+        if not isinstance(self.scenario_result, ReconnaissanceScenarioResult):
+            return None
+
+        unique_hosts = set(
+            [row.ip for row in self.scenario_result.network_discovery_table.rows]
+        )
+        return len(unique_hosts)
+
+    @property
+    def total_findings(self) -> int | None:
+        """
+        Returns the findings.
+        """
+        if not isinstance(self.scenario_result, ReconnaissanceScenarioResult):
+            return None
+
+        results = self.scenario_result.enumerate_services_result.results
+        findings = set(finding for result in results for finding in result.findings)
+        return len(findings)
+
     def metadata_as_table(self, table_format: str | TableFormat = "pipe") -> str:
         """
         Return the benchmark metadata as a table.
@@ -44,6 +85,16 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
             ["Timestamp", self.timestamp.isoformat()],
             ["Duration (s)", str(self.duration_seconds)],
         ]
+
+        if isinstance(self.scenario_result, ReconnaissanceScenarioResult):
+            rows.extend(
+                [
+                    ["Hosts Discovered", str(self.total_hosts_discovered or "")],
+                    # A service is a unique host - port combination
+                    ["Services Discovered", str(self.total_services_discovered or "")],
+                    ["Findings", str(self.total_findings or "")],
+                ]
+            )
 
         if isinstance(self.scenario_result, AIScenarioResult):
             tools_called = []

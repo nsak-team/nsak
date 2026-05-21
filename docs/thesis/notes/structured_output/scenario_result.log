@@ -1,0 +1,17 @@
+┌──(root㉿nsak)-[/nsak]
+└─# cat run/benchmarks/lukas-containerlab/ai_reconnaissance_structured_output/2026-05-21-01\:14\:44/result_1.md
+# Benchmark Result 1 from Run 3a507284-08bf-4662-ba30-8704fc9e19ca
+
+| Key            | Value                                |
+|:---------------|:-------------------------------------|
+| Benchmark UUID | 3a507284-08bf-4662-ba30-8704fc9e19ca |
+| Run index      | 1                                    |
+| Run UUID       | ee44fc48-73b6-4997-856b-ea593cd7f49b |
+| Scenario       | AI Reconnaissance Structured Output  |
+| Setup          | lukas-containerlab                   |
+| Timestamp      | 2026-05-21T01:14:44.751927+02:00     |
+| Duration (s)   | 0                                    |
+
+--------------------------------------
+
+Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'The compiled grammar is too large, which would cause performance issues. Simplify your tool schemas or reduce the number of strict tools.'}, 'request_id': 'req_011CbEfrAJgCo5vfmRbS3oAU'}
