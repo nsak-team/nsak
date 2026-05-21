@@ -10,11 +10,11 @@ Output: docs/thesis/documentation/figures/benchmark_*.pdf
 import argparse
 import json
 import logging
-import statistics
 from datetime import datetime, timezone
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.patches import Patch
 
 logging.getLogger("matplotlib").setLevel(logging.WARNING)
@@ -24,7 +24,9 @@ date = datetime.now(tz=timezone.utc).strftime("_%d_%m_%Y")
 loger = logging.getLogger(__name__)
 
 # Populated at runtime via load_json()
-# { model_name: { "durations": [...], "tokens": [...], "tool_calls": [...], "mean_duration": int, "mean_tokens": int } }
+# { model_name: { "durations": [...], "tokens": [...], "tool_calls": [...],
+#                 "mean_duration": int, "mean_tokens": int,
+#                 "mean_hosts": int, "mean_services": int, "mean_findings": int } }
 MODELS: dict[str, dict] = {}  # type: ignore
 
 COLORS = ["#4C72B0", "#DD8452", "#C44E52", "#228B22"]
@@ -44,6 +46,9 @@ def load_json(path: Path) -> None:
         "tool_calls": data["tool_calls"],
         "mean_duration": data["mean_duration"],
         "mean_tokens": data["mean_tokens"],
+        "mean_hosts": data.get("mean_hosts"),
+        "mean_services": data.get("mean_services"),
+        "mean_findings": data.get("mean_findings"),
     }
 
 
@@ -75,6 +80,44 @@ def plot_token_usage() -> None:
     _save(fig, "benchmark_token_usage" + date)
 
 
+def plot_services() -> None:
+    """Mean hosts, services, and findings per model as grouped bars."""
+    names = [m for m in MODELS if MODELS[m].get("mean_hosts") is not None]
+    if not names:
+        return
+
+    host_vals = [MODELS[m]["mean_hosts"] for m in names]
+    service_vals = [MODELS[m]["mean_services"] for m in names]
+    finding_vals = [MODELS[m]["mean_findings"] for m in names]
+
+    x = np.arange(len(names))
+    width = 0.25
+
+    fig, ax = plt.subplots(figsize=(max(5, len(names) * 2), 4))
+    bars1 = ax.bar(
+        x - width, host_vals, width, label="Avg. Hosts", color=COLORS[0], zorder=2
+    )
+    bars2 = ax.bar(
+        x, service_vals, width, label="Avg. Services", color=COLORS[1], zorder=2
+    )
+    bars3 = ax.bar(
+        x + width, finding_vals, width, label="Avg. Findings", color=COLORS[2], zorder=2
+    )
+
+    ax.bar_label(bars1, padding=3)
+    ax.bar_label(bars2, padding=3)
+    ax.bar_label(bars3, padding=3)
+
+    ax.set_ylabel("Count")
+    ax.set_xlabel("Model")
+    ax.set_xticks(x)
+    ax.set_xticklabels(names)
+    ax.legend(loc="upper left")
+    ax.grid(axis="y", zorder=0, alpha=0.35)
+    fig.tight_layout()
+    _save(fig, "benchmark_services" + date)
+
+
 def plot_tokens_vs_duration() -> None:
     """Scatter: total tokens vs. duration, one color per model."""
     fig, ax = plt.subplots(figsize=(7, 4))
@@ -82,8 +125,12 @@ def plot_tokens_vs_duration() -> None:
     for color, (model, data) in zip(COLORS, MODELS.items(), strict=False):
         if not data["tokens"]:
             continue
+        mean_tc = data["mean_tool_calls"] if data["tool_calls"] else None
+        label = (
+            f"{model} (avg. {mean_tc:.1f} tool calls)" if mean_tc is not None else model
+        )
         ax.scatter(
-            data["tokens"], data["durations"], color=color, s=60, zorder=3, label=model
+            data["tokens"], data["durations"], color=color, s=60, zorder=3, label=label
         )
         if data["tool_calls"]:
             for x, y, tc in zip(
@@ -98,11 +145,8 @@ def plot_tokens_vs_duration() -> None:
                     color=color,
                 )
 
-    all_tc = [tc for m in MODELS.values() if m["tool_calls"] for tc in m["tool_calls"]]
     handles, _ = ax.get_legend_handles_labels()
-    handles.append(
-        Patch(color="none", label=f"ø tool-calls: {statistics.mean(all_tc):.0f}")
-    )
+    handles.append(Patch(color="none", label="( ) = tool calls per run"))
     ax.set_xlabel("Total tokens")
     ax.set_ylabel("Duration (s)")
     ax.legend(handles=handles, fontsize=9)
@@ -129,6 +173,7 @@ def create_plots() -> None:
     plot_duration_comparison()
     plot_token_usage()
     plot_tokens_vs_duration()
+    plot_services()
     loger.info("Done.")
 
 

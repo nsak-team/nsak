@@ -1,0 +1,46 @@
+{
+    "benchmark_uuid": "195b23a9-7201-4f0b-8b99-e3190fecf641",
+    "setup": "containerlab",
+    "scenario": "AI Reconnaissance",
+    "timestamp": "2026-05-21T08:01:20.348940+02:00",
+    "model": "claude-opus-4-7",
+    "provider": "anthropic",
+    "durations": [
+        255,
+        459,
+        199,
+        222,
+        292,
+        221,
+        251,
+        207,
+        263,
+        252
+    ],
+    "tokens": [
+        106979,
+        85272,
+        60791,
+        70202,
+        104656,
+        101340,
+        76981,
+        61656,
+        80838,
+        84059
+    ],
+    "tool_calls": [
+        24,
+        26,
+        15,
+        14,
+        21,
+        21,
+        25,
+        15,
+        18,
+        21
+    ],
+    "mean_tokens": 83277,
+    "mean_duration": 262
+}

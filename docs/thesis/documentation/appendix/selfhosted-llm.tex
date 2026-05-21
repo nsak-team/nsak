@@ -30,10 +30,10 @@ The 8 GB \glsxtrshort{VRAM} of the RTX 3070 allows us to run models with up to 7
 
 \subsection{System Setup}\label{subsec:system_setup}
 
-The system setup described in~\ref{lst:llm-system-setup} will configure and expose the Ollama \gls{API} and OpenWeb UI via NGINX,
+The system setup described in~\ref{lst:self-hosted-base-setup-instructions} will configure and expose the Ollama \gls{API} and OpenWeb UI via NGINX,
 which provided a chat \gls{GUI} to interact with Ollama.
-In contrast to Ollama, which runs directly on the host, the other services are run in containers managed by rootles podman and defined the docker-compose.yml~\ref{lst:nginx-openwebui-docker-compose-yml}.
-The \gls{Nginx} default.conf~\ref{lst:nginx-default-conf} configures the web server to terminate the SSL connection and
+In contrast to Ollama, which runs directly on the host, the other services are run in containers managed by rootles podman and defined the docker-compose.yml~\ref{lst:nginx-and-lets-encrypt-compose-yml}.
+The \gls{Nginx} default.conf~\ref{lst:open-webui-nginx-conf} configures the web server to terminate the SSL connection and
 act as reverse proxy for the \enquote{Open WebUI} and the Ollama \gls{API} under the directory \mintinline{bash}{/llm/}.
 
 \paragraph{Services:}

@@ -3,174 +3,77 @@
 % 3 models × 10 runs + 1 reference (traditional recon)
 % Evaluation criteria: see §\ref{subsec:criteria}
 % ─────────────────────────────────────────────────────────────────────────────
+\section{Virtual Environment (Containerlab)}\label{sec:eval-containerlab}
 
-\subsection{Reference: Traditional Reconnaissance}\label{subsec:cl-recon}
+\paragraph{Overview}
 
-\todo{Run traditional recon 10× in containerlab, fill table}
-
-\begin{table}[h]
+\begin{table}[H]
+    \caption{Nonlinear Model Results}
     \centering
-    \begin{tabular}{|c|r|r|r|}
-        \hline
-        \textbf{Run} & \textbf{Duration (s)} & \textbf{Hosts found} & \textbf{Services found} \\
-        \hline
-        1  & -- & -- & -- \\
-        2  & -- & -- & -- \\
-        3  & -- & -- & -- \\
-        4  & -- & -- & -- \\
-        5  & -- & -- & -- \\
-        6  & -- & -- & -- \\
-        7  & -- & -- & -- \\
-        8  & -- & -- & -- \\
-        9  & -- & -- & -- \\
-        10 & -- & -- & -- \\
-        \hline
-        \textbf{Avg} & \textbf{--} & \textbf{--} & \textbf{--} \\
-        \hline
-    \end{tabular}
-    \caption{Traditional Recon — Containerlab (10 runs)}
-    \label{tab:cl-recon-raw}
+
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{c c c c c c c}
+            \hline\hline
+            Kind               & Avg Duration & Avg Tokens & Avg Tool Calls & Hosts & Findings & Services \\ [0.5ex]
+            \hline
+            Frontier (claude)  & 262 s        & 83,277     & 20             & 4     & 3        & 9        \\
+            BFH (gpt-oss:120b) & 383 s        & 20,496     & 5              & 3     & 4        & 9        \\
+            qwen:30b           & 422 s        & 28,122     & 7              & 3     & 4        & 8        \\
+            recon              & -            & -          & -              & 10    & 10       & 10       \\
+            \hline
+        \end{tabular}
+    }
+    \label{tab:overview-containerlab}
 \end{table}
 
-% ─────────────────────────────────────────────────────────────────────────────
+Table~\ref{tab:overview-containerlab} summarises the quantitative results of each model across ten runs
+in the virtual Containerlab environment, compared against the deterministic \texttt{recon} baseline.
+The frontier model (Claude Opus) completed reconnaissance fastest at an average of 262\,s per run
+while also issuing the most tool calls (avg.\ 20), reflecting a deeper, iterative enumeration strategy.
+Both the BFH model (\texttt{gpt-oss:120b}) and the local model (\texttt{qwen3:30b}) were slower
+and used far fewer tool calls (5 and 7 respectively), which is consistent with their shallower
+service enumeration depth visible in the lower host and findings counts.
+The reference \texttt{recon} scenario, which executes a fixed, deterministic script, serves as
+the theoretical upper bound with all 10 hosts, findings, and services identified.
 
-\subsection{Local LLM (Ollama)}\label{subsec:cl-local-llm}
 
-\todo{Run AI recon 10× with local model, fill table}
-
-\begin{table}[h]
+\begin{figure}[H]
     \centering
-    \begin{tabular}{|c|r|r|r|r|r|}
-        \hline
-        \textbf{Run} & \textbf{Duration (s)} & \textbf{Input tok.} & \textbf{Output tok.} & \textbf{Hosts} & \textbf{Services} \\
-        \hline
-        1  & -- & -- & -- & -- & -- \\
-        2  & -- & -- & -- & -- & -- \\
-        3  & -- & -- & -- & -- & -- \\
-        4  & -- & -- & -- & -- & -- \\
-        5  & -- & -- & -- & -- & -- \\
-        6  & -- & -- & -- & -- & -- \\
-        7  & -- & -- & -- & -- & -- \\
-        8  & -- & -- & -- & -- & -- \\
-        9  & -- & -- & -- & -- & -- \\
-        10 & -- & -- & -- & -- & -- \\
-        \hline
-        \textbf{Avg} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} \\
-        \hline
-    \end{tabular}
-    \caption{Local LLM — Containerlab (10 runs)}
-    \label{tab:cl-local-raw}
-\end{table}
+    \includegraphics[width=0.8\linewidth]{figures/benchmark_duration_comparison_21_05_2026}
+    \caption{Mean run duration per model (Containerlab, $n=10$ runs each).}
+    \label{fig:benchmark_duration_comparison_21_05_2026}
+\end{figure}
 
-\paragraph{Qualitative Assessment}
+Figure~\ref{fig:benchmark_duration_comparison_21_05_2026} visualizes the mean run duration per model.
+The frontier model is the fastest despite performing the most tool calls and consuming the most tokens.
+The local \texttt{qwen3:30b} model is the slowest on average (422\,s), closely followed of the \texttt{gpt.oss:120b}
 
-\begin{itemize}
-    \item \textbf{Correctness / Task Completion:} \todo{Did the model complete the full recon? Missed hosts or services?}
-    \item \textbf{Consistency:} \todo{How much did tool selection and output vary across 10 runs?}
-    \item \textbf{Creativity:} \todo{Did the model suggest follow-up steps beyond standard recon?}
-\end{itemize}
-
-
-\subsection{BFH Model (gpt-oss:120b)}\label{subsec:cl-bfh}
-
-\todo{Run AI recon 10× with BFH model, fill table}
-
-\begin{table}[h]
+\begin{figure}[H]
     \centering
-    \begin{tabular}{|c|r|r|r|r|r|}
-        \hline
-        \textbf{Run} & \textbf{Duration (s)} & \textbf{Input tok.} & \textbf{Output tok.} & \textbf{Hosts} & \textbf{Services} \\
-        \hline
-        1  & -- & -- & -- & -- & -- \\
-        2  & -- & -- & -- & -- & -- \\
-        3  & -- & -- & -- & -- & -- \\
-        4  & -- & -- & -- & -- & -- \\
-        5  & -- & -- & -- & -- & -- \\
-        6  & -- & -- & -- & -- & -- \\
-        7  & -- & -- & -- & -- & -- \\
-        8  & -- & -- & -- & -- & -- \\
-        9  & -- & -- & -- & -- & -- \\
-        10 & -- & -- & -- & -- & -- \\
-        \hline
-        \textbf{Avg} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} \\
-        \hline
-    \end{tabular}
-    \caption{BFH Model — Containerlab (10 runs)}
-    \label{tab:cl-bfh-raw}
-\end{table}
+    \includegraphics[width=0.8\linewidth]{figures/benchmark_token_usage_21_05_2026}
+    \caption{Mean total token usage per model (Containerlab, $n=10$ runs each).}
+    \label{fig:benchmark_token_usage_21_05_2026}
+\end{figure}
 
-\paragraph{Qualitative Assessment}
+Figure~\ref{fig:benchmark_token_usage_21_05_2026} shows mean token consumption.
+The frontier model consumes roughly four times as many tokens as the BFH model (83,277 vs.\ 20,496),
+which directly reflects the richer context it accumulates: longer tool outputs, repeated re-analysis
+of scan results, and verbose final assessments.
+Notably, \texttt{qwen3:30b} and the \texttt{gpt:oss:120b} have an almost equal token consumption.
 
-\begin{itemize}
-    \item \textbf{Correctness / Task Completion:} \todo{}
-    \item \textbf{Consistency:} \todo{}
-    \item \textbf{Creativity:} \todo{}
-\end{itemize}
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{figures/benchmark_tokens_vs_duration_21_05_2026}
+        \caption{Total tokens vs.\ run duration, annotated with tool-call count per run (Containerlab).}
+        \label{fig:benchmark_tokens_vs_duration_21_05_2026}
+\end{figure}
 
+Figure~\ref{fig:benchmark_tokens_vs_duration_21_05_2026} plots total token consumption against
+run duration for every individual run, with tool-call counts annotated per data point.
+The frontier model occupies the upper-right region (high tokens, moderate-to-high duration)
+with a wide spread, reflecting run-to-run variation in how deeply the model chose to enumerate
+individual services.
+The BFH and local models cluster in the lower-left (fewer tokens, shorter-to-mid duration),
+confirming their more uniform but shallower execution profiles.
 
-\subsection{Frontier Model (Claude Opus)}\label{subsec:cl-frontier}
-
-\todo{Run AI recon 10× with Claude Opus, fill table}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|r|r|r|r|r|}
-        \hline
-        \textbf{Run} & \textbf{Duration (s)} & \textbf{Input tok.} & \textbf{Output tok.} & \textbf{Hosts} & \textbf{Services} \\
-        \hline
-        1  & -- & -- & -- & -- & -- \\
-        2  & -- & -- & -- & -- & -- \\
-        3  & -- & -- & -- & -- & -- \\
-        4  & -- & -- & -- & -- & -- \\
-        5  & -- & -- & -- & -- & -- \\
-        6  & -- & -- & -- & -- & -- \\
-        7  & -- & -- & -- & -- & -- \\
-        8  & -- & -- & -- & -- & -- \\
-        9  & -- & -- & -- & -- & -- \\
-        10 & -- & -- & -- & -- & -- \\
-        \hline
-        \textbf{Avg} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} & \textbf{--} \\
-        \hline
-    \end{tabular}
-    \caption{Frontier Model (Claude Opus) — Containerlab (10 runs)}
-    \label{tab:cl-frontier-raw}
-\end{table}
-
-\paragraph{Qualitative Assessment}
-
-\begin{itemize}
-    \item \textbf{Correctness / Task Completion:} \todo{}
-    \item \textbf{Consistency:} \todo{}
-    \item \textbf{Creativity:} \todo{}
-\end{itemize}
-
-
-\subsection{Containerlab: Cross-Model Comparison}\label{subsec:cl-comparison}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|r|r|r|r|r|}
-        \hline
-        \textbf{Model} & \textbf{Avg Duration (s)} & \textbf{Avg Input tok.} & \textbf{Avg Output tok.} & \textbf{Avg Hosts} & \textbf{Avg Services} \\
-        \hline
-        Traditional Recon & -- & n/a       & n/a       & -- & -- \\
-        Local LLM         & -- & --        & --        & -- & -- \\
-        BFH Model         & -- & --        & --        & -- & -- \\
-        Frontier (Claude) & -- & --        & --        & -- & -- \\
-        \hline
-    \end{tabular}
-    \caption{Containerlab — Cross-model average results}
-    \label{tab:cl-comparison}
-\end{table}
-
-\paragraph{Discussion}
-
-\todo[inline]{Discuss the following points after runs are complete.}
-
-\begin{itemize}
-    \item Which model achieved the highest correctness? Did all models find the same hosts/services?
-    \item How large is the variance in duration and token usage across 10 runs (consistency)?
-    \item Does higher model capability (frontier) translate to better recon results or only to higher cost?
-    \item Where did AI Recon go beyond traditional recon (creativity / follow-up suggestions)?
-    \item What failure modes were observed (missed hosts, hallucinated services, wrong tool selection)?
-\end{itemize}
+\todo{figure of services and ports}
