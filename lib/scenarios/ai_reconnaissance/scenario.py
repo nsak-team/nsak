@@ -7,8 +7,6 @@ import json
 import logging
 from dataclasses import dataclass
 
-from langchain.agents.structured_output import ProviderStrategy, ToolStrategy
-
 from nsak.core import create_ai_agent, config, AiAgent
 from nsak.core.network import EnumerateServicesResult
 from nsak.core.network.enumerate_services_result import EnumerateServicesResultEntry
@@ -20,10 +18,32 @@ logger = logging.getLogger(__name__)
 
 reconnaissance_prompt_template = """
 Steps:
-1. Discover all subnets, hosts and services on the following interface: %(interface)s
+1. Discover all subnets, hosts and services with nmap on the following interface: %(interface)s
 2. Enumerate all services based on the result of the network discovery result with service-specific nmap NSE scripts
 3. Write a markdown formated assessment of your findings
 4. Return the result as structured output: [ReconnaissanceScenarioResult, str]
+
+NetworkDiscoveryTable Example:
+
+| Interface   | MAC               | IP           |   Port | Protocol   | State   | Service            | Product                              | Version                 |
+|:------------|:------------------|:-------------|-------:|:-----------|:--------|:-------------------|:-------------------------------------|:------------------------|
+| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     53 | tcp        | open    | domain             | NLnet Labs NSD                       |                         |
+| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     80 | tcp        | open    | http               | FRITZ!Box http config                |                         |
+| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |    443 | tcp        | open    | ssl/http           | FRITZ!Box http config                |                         |
+
+EnumerateServicesResult Example:
+
+| IP           |   Port | Findings                                                     |
+|:-------------|-------:|:-------------------------------------------------------------|
+| 10.10.10.1   |     53 | dns-brute:                                                   |
+|              |        | DNS Brute-force hostnames:                                   |
+|              |        | dns.fritz.box - 1.0.0.1                                      |
+|              |        | dns.fritz.box - 1.1.1.1                                      |
+| 10.10.10.1   |     80 | http-title: FRITZ!Box                                        |
+|              |        | http-headers:                                                |
+|              |        | Connection: close                                            |
+|              |        | Content-Length: 2148                                         |
+
 """
 
 @dataclass(frozen=True, kw_only=True)
@@ -36,9 +56,8 @@ class Result:
 
 async def run_reconnaissance_agent(
     interface: str,
-    strategy_type: type[ProviderStrategy] | type[ToolStrategy],
     interactive: bool = False,
-) -> tuple[Result | None, AiAgent]:
+) -> tuple[Result, AiAgent]:
     """
     Run an agent which returns a NetworkDiscoveryResultMap.
     """
@@ -49,7 +68,7 @@ async def run_reconnaissance_agent(
 
     agent = await create_ai_agent(
         interactive,
-        response_format=strategy_type(Result),
+        response_format=Result,
     )
     result = await agent.ainvoke(prompt)
 
@@ -72,8 +91,9 @@ async def run_reconnaissance_agent(
             )
             logger.info("Successfully parsed the last message with `json.loads`.")
         except Exception as e:
+            print(result.get("messages", []))
             logger.exception("Error while trying to parse the last message with `json.loads`.", exc_info=e)
-            structured_response = None
+            raise ValueError("Could get structured output from response!")
 
     return structured_response, agent
 
@@ -88,31 +108,10 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
     if config.ai is None:
         raise ValueError("config.ai must be configured!")
 
-    strategy_type = ProviderStrategy
-
     result, agent = await run_reconnaissance_agent(
         interface,
-        strategy_type,
         interactive
     )
-
-    if result is None:
-        logger.warning("ProviderStrategy was not successfully. Retry with ToolStrategy.")
-        strategy_type = ToolStrategy
-        result, agent = await run_reconnaissance_agent(
-            interface,
-            strategy_type,
-            interactive
-        )
-    if result is None:
-        logger.warning("ToolStrategy was also not successfully. Accept the empty result.")
-        result = Result(
-            result=ReconnaissanceScenarioResult(
-                network_discovery_table=NetworkDiscoveryTable(rows=[]),
-                enumerate_services_result=EnumerateServicesResult(results=[])
-            ),
-            assessment=""
-        )
 
     ai_reconnaissance_scenario_result = AIReconnaissanceScenarioResult(
         network_discovery_table=result.result.network_discovery_table,
@@ -120,7 +119,6 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
         ai_assessment=result.assessment,
         provider=config.ai.provider,
         model=config.ai.model,
-        result_strategy=strategy_type.__name__,
         prompt_tokens=agent.usage.prompt_tokens,
         completion_tokens=agent.usage.completion_tokens,
         tools_called=agent.track_tool_call_middleware.tools_called,
