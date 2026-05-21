@@ -7,6 +7,8 @@ import json
 import logging
 from dataclasses import dataclass
 
+from langchain.agents.structured_output import ToolStrategy
+
 from nsak.core import create_ai_agent, config, AiAgent
 from nsak.core.network import EnumerateServicesResult
 from nsak.core.network.enumerate_services_result import EnumerateServicesResultEntry

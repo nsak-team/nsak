@@ -5,6 +5,7 @@ from typing import Any, AsyncGenerator, Awaitable, Callable, Iterable, Sequence
 
 from langchain.agents import create_agent
 from langchain.agents.middleware import AgentMiddleware
+from langchain.agents.structured_output import ToolStrategy
 from langchain_anthropic.chat_models import ChatAnthropic
 from langchain_core.callbacks import AsyncCallbackHandler
 from langchain_core.language_models import BaseChatModel
@@ -197,8 +198,16 @@ class AiAgent:
         if middleware is not None:
             middlewares.extend(list(middleware))
 
+        if model == "gpt-oss:120b" and response_format is not None:
+            # Hack for gpt-oss:120b as langchain uses ProviderStrategy for this model, which fails.
+            response_format = ToolStrategy(response_format)
+
         self.model = AiAgent.create_model(
-            provider, model, base_url, api_key, callbacks=[self.usage]
+            provider,
+            model,
+            base_url,
+            api_key,
+            callbacks=[self.usage],
         )
         self.agent = create_agent(
             self.model,
@@ -220,6 +229,7 @@ class AiAgent:
         """
         Create a provider specific ChatModel from a model string.
         """
+        # Temperature is not supported by opus 4.7, so we removed it for convenience
         # Temperature means something like "creativity" and usually leads to less predictable and consistent results.
         # In the context of our bachelor thesis we want the agent to behave as consistent as possible.
         # kwargs.update({"temperature": 0})
