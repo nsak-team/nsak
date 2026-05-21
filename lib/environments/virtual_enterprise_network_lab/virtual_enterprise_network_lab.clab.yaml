@@ -316,7 +316,6 @@ topology:
       exec:
         - apt-get install -y isc-dhcp-client smbclient ldap-utils
         - ip addr add 192.168.10.200/24 dev eth1
-        - ip addr add 172.16.1.200/24   dev eth2
         - ip route replace default via 172.20.20.1 dev eth0
         - sh -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
       mgmt-ipv4: 172.20.20.10
