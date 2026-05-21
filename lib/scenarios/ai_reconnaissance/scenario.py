@@ -54,11 +54,14 @@ async def network_discovery(
     if interactive:
         prompt += "\n3. Use the `human_interaction_hook` tool to allow the operator to execute followup steps."
 
-    agent = await create_ai_agent(interactive)
+    agent = await create_ai_agent(
+        interactive,
+        response_format=NetworkDiscoveryTable,
+    )
     result = await agent.ainvoke(prompt)
-    response = result.get("messages", [])[-1].content
+    structured_response = result.get("structured_response")
 
-    return response, agent
+    return structured_response, agent
 
 
 async def enumerate_services(
@@ -73,7 +76,10 @@ async def enumerate_services(
     if interactive:
         prompt += "\n3. Use the `human_interaction_hook` tool to allow the operator to execute followup steps."
 
-    agent = await create_ai_agent(interactive)
+    agent = await create_ai_agent(
+        interactive,
+        response_format=EnumerateServicesResult
+    )
 
     result = await agent.ainvoke(prompt)
     structured_response = result.get("structured_response")
@@ -96,9 +102,13 @@ async def assessment(
     if interactive:
         prompt += "\n3. Use the `human_interaction_hook` tool to allow the operator to execute followup steps."
 
-    agent = await create_ai_agent(interactive)
+    agent = await create_ai_agent(
+        interactive,
+        response_format=str
+    )
 
     result = await agent.ainvoke(prompt)
+    # response = result.get("messages", [])[-1].content
     structured_response = result.get("structured_response")
 
     return structured_response, agent

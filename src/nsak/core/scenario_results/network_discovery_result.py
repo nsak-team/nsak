@@ -57,7 +57,7 @@ class NetworkDiscoveryTable(ScenarioResult):
                     row.state,
                     row.service,
                     row.product,
-                    row.version or "",
+                    row.version,
                 ]
             )
 

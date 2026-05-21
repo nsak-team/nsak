@@ -196,6 +196,9 @@ class BenchmarkSummary:
             "Timestamp",
             "Duration (s)",
             "Report path",
+            "Hosts Discovered",
+            "Services Discovered",
+            "Findings",
             "Prompt tokens",
             "Completion tokens",
             "Total tokens",
@@ -211,10 +214,22 @@ class BenchmarkSummary:
                 result.duration_seconds,
                 "[%(link)s](%(link)s)" % {"link": relative_file_path},
             ]
+            if isinstance(result.scenario_result, ReconnaissanceScenarioResult):
+                row.extend(
+                    [
+                        str(result.total_hosts_discovered),
+                        str(result.total_services_discovered),
+                        str(result.total_findings),
+                    ]
+                )
             if isinstance(result.scenario_result, AIScenarioResult):
-                row.append(result.scenario_result.prompt_tokens)
-                row.append(result.scenario_result.completion_tokens)
-                row.append(result.scenario_result.total_tokens)
+                row.extend(
+                    [
+                        result.scenario_result.prompt_tokens,
+                        result.scenario_result.completion_tokens,
+                        result.scenario_result.total_tokens,
+                    ]
+                )
             rows.append(row)
 
         if not rows:
@@ -250,6 +265,9 @@ class BenchmarkSummary:
             "model": self.model,
             "provider": self.provider,
             "durations": [result.duration_seconds for result in self.results],
+            "mean_hosts_discovered": self.mean_hosts_discovered,
+            "mean_services_discovered": self.mean_services_discovered,
+            "mean_findings": self.mean_findings,
             "tokens": None,
             "tool_calls": None,
             "mean_tokens": None,

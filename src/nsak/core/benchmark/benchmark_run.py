@@ -1,3 +1,4 @@
+import logging
 import time
 from copy import copy
 from pathlib import Path
@@ -8,6 +9,8 @@ from nsak.core.benchmark.benchmark_result import BenchmarkResult
 from nsak.core.benchmark.benchmark_summary import BenchmarkSummary
 from nsak.core.scenario import ScenarioResult
 from nsak.core.settings import BENCHMARK_PATH
+
+logger = logging.getLogger(__name__)
 
 
 class BenchmarkRun:
@@ -54,6 +57,7 @@ class BenchmarkRun:
                 )
                 scenario_result = cast(ScenarioResult, scenario_result)
             except Exception as e:
+                logger.error("Scenario failed during benchmark run!", exc_info=e)
                 scenario_result = e
             duration_end = time.perf_counter()
             duration: int = int(duration_end - duration_start)
