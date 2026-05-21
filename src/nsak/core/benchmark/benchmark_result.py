@@ -112,6 +112,7 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
                     ["Prompt tokens:", str(self.scenario_result.prompt_tokens)],
                     ["Completion tokens", str(self.scenario_result.completion_tokens)],
                     ["Total tokens", str(self.scenario_result.total_tokens)],
+                    ["Result Strategy", str(self.scenario_result.result_strategy)],
                     ["Tools called:", "\n".join(tools_called)],
                 ]
             )

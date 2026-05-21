@@ -345,7 +345,8 @@ async def create_ai_agent(
     tools: list[BaseTool | Callable[..., Any] | dict[str, Any]] | None = None,
     system_prompt: str | None = None,
     response_format: Any = None,  # noqa: ANN401
-    load_additional_tools: bool = False,
+    load_drill_tools: bool = False,
+    load_mcp_tools: bool = False,
 ) -> AiAgent:
     """
     Creates an AI-agent from the runtime configuration.
@@ -361,13 +362,11 @@ async def create_ai_agent(
             send_email,
         ]
 
-        if load_additional_tools:
-            tools.extend(
-                [
-                    *generate_drill_tools(),
-                    *await get_mcp_tools(config),
-                ]
-            )
+        if load_drill_tools:
+            tools.extend([*generate_drill_tools()])
+
+        if load_mcp_tools:
+            tools.extend([*await get_mcp_tools(config)])
 
     middleware: list[AgentMiddleware] = []
 

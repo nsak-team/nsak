@@ -3,11 +3,17 @@ Scenario entrypoint for AI based network reconnaissance with structured output.
 
 This currently works only with frontier models.
 """
+import json
 import logging
 from dataclasses import dataclass
 
+from langchain.agents.structured_output import ProviderStrategy, ToolStrategy
+
 from nsak.core import create_ai_agent, config, AiAgent
+from nsak.core.network import EnumerateServicesResult
+from nsak.core.network.enumerate_services_result import EnumerateServicesResultEntry
 from nsak.core.scenario_results.ai_reconnaissance_scenario_result import AIReconnaissanceScenarioResult
+from nsak.core.scenario_results.network_discovery_result import NetworkDiscoveryTable, NetworkDiscoveryRow
 from nsak.core.scenario_results.reconnaissance_scenario_result import ReconnaissanceScenarioResult
 
 logger = logging.getLogger(__name__)
@@ -30,8 +36,9 @@ class Result:
 
 async def run_reconnaissance_agent(
     interface: str,
+    strategy_type: type[ProviderStrategy] | type[ToolStrategy],
     interactive: bool = False,
-) -> tuple[Result, AiAgent]:
+) -> tuple[Result | None, AiAgent]:
     """
     Run an agent which returns a NetworkDiscoveryResultMap.
     """
@@ -42,16 +49,31 @@ async def run_reconnaissance_agent(
 
     agent = await create_ai_agent(
         interactive,
-        response_format=Result,
-        # load_additional_tools=True,
+        response_format=strategy_type(Result),
     )
     result = await agent.ainvoke(prompt)
 
     structured_response = result.get("structured_response")
 
-    if not structured_response:
-        logger.error("Final messages:", result.get("messages", [])[-1].content)
-        raise Exception("Agent for network_discovery failed!", result)
+    if structured_response is None:
+        response = result.get("messages", [])[-1].content
+        logger.warning("The value `result.structured_response` in `run_reconnaissance_agent` was None. Last message was %s (%s)." % (response, type(response)))
+        logger.info("Try parsing the last response with `json.loads`.")
+        try:
+            data = json.loads(response)
+            rows = [NetworkDiscoveryRow(**row) for row in data["result"]["network_discovery_table"]["rows"]]
+            results = [EnumerateServicesResultEntry(**result) for result in data["result"]["enumerate_services_result"]["results"]]
+            structured_response = Result(
+                result=ReconnaissanceScenarioResult(
+                    network_discovery_table=NetworkDiscoveryTable(rows=rows),
+                    enumerate_services_result=EnumerateServicesResult(results=results)
+                ),
+                assessment=data["assessment"]
+            )
+            logger.info("Successfully parsed the last message with `json.loads`.")
+        except Exception as e:
+            logger.exception("Error while trying to parse the last message with `json.loads`.", exc_info=e)
+            structured_response = None
 
     return structured_response, agent
 
@@ -66,7 +88,31 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
     if config.ai is None:
         raise ValueError("config.ai must be configured!")
 
-    result, agent = await run_reconnaissance_agent(interface, interactive)
+    strategy_type = ProviderStrategy
+
+    result, agent = await run_reconnaissance_agent(
+        interface,
+        strategy_type,
+        interactive
+    )
+
+    if result is None:
+        logger.warning("ProviderStrategy was not successfully. Retry with ToolStrategy.")
+        strategy_type = ToolStrategy
+        result, agent = await run_reconnaissance_agent(
+            interface,
+            strategy_type,
+            interactive
+        )
+    if result is None:
+        logger.warning("ToolStrategy was also not successfully. Accept the empty result.")
+        result = Result(
+            result=ReconnaissanceScenarioResult(
+                network_discovery_table=NetworkDiscoveryTable(rows=[]),
+                enumerate_services_result=EnumerateServicesResult(results=[])
+            ),
+            assessment=""
+        )
 
     ai_reconnaissance_scenario_result = AIReconnaissanceScenarioResult(
         network_discovery_table=result.result.network_discovery_table,
@@ -74,6 +120,7 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
         ai_assessment=result.assessment,
         provider=config.ai.provider,
         model=config.ai.model,
+        result_strategy=strategy_type.__name__,
         prompt_tokens=agent.usage.prompt_tokens,
         completion_tokens=agent.usage.completion_tokens,
         tools_called=agent.track_tool_call_middleware.tools_called,

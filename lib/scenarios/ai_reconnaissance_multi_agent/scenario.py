@@ -1,13 +1,17 @@
 """
 Scenario entrypoint for AI based network reconnaissance.
 """
+import json
 import logging
+
+from langchain.agents.structured_output import ProviderStrategy, ToolStrategy
 
 from nsak.core import create_ai_agent, config
 from nsak.core.ai.ai_agent import AiAgent
 from nsak.core.network import EnumerateServicesResult
+from nsak.core.network.enumerate_services_result import EnumerateServicesResultEntry
 from nsak.core.scenario_results.ai_reconnaissance_scenario_result import AIReconnaissanceScenarioResult
-from nsak.core.scenario_results.network_discovery_result import NetworkDiscoveryTable
+from nsak.core.scenario_results.network_discovery_result import NetworkDiscoveryTable, NetworkDiscoveryRow
 
 logger = logging.getLogger(__name__)
 
@@ -17,35 +21,54 @@ Run nmap to discover all interfaces on the given interface: %(interface)s
 Steps:
 1. Discover all subnets, hosts and services
 2. Return the result as structured output: NetworkDiscoveryTable
+
+| Interface   | MAC               | IP           |   Port | Protocol   | State   | Service            | Product                              | Version                 |
+|:------------|:------------------|:-------------|-------:|:-----------|:--------|:-------------------|:-------------------------------------|:------------------------|
+| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     53 | tcp        | open    | domain             | NLnet Labs NSD                       |                         |
+| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     80 | tcp        | open    | http               | FRITZ!Box http config                |                         |
+| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |    443 | tcp        | open    | ssl/http           | FRITZ!Box http config                |                         |
+
 """
 
 enumerate_services_prompt_template = """
-Network discovery result:
-%(network_discovery_result)s
-
 Run service-specific nmap NSE scripts on all discovered services.
 
 Steps:
 1. Enumerate all services based on the result of the network discovery result
 2. Return the result as structured output: EnumerateServicesResult
+
+| IP           |   Port | Findings                                                     |
+|:-------------|-------:|:-------------------------------------------------------------|
+| 10.10.10.1   |     53 | dns-brute:                                                   |
+|              |        | DNS Brute-force hostnames:                                   |
+|              |        | dns.fritz.box - 1.0.0.1                                      |
+|              |        | dns.fritz.box - 1.1.1.1                                      |
+| 10.10.10.1   |     80 | http-title: FRITZ!Box                                        |
+|              |        | http-headers:                                                |
+|              |        | Connection: close                                            |
+|              |        | Content-Length: 2148                                         |
+
+Network discovery result:
+%(network_discovery_result)s
 """
 
 assessment_prompt_template = """
+Steps:
+1. Create an assessment based on the discovery and enumerate services result
+2. Return the result as markdown
+
 Network discovery result:
 %(network_discovery_result)s
 
 Enumerate services result:
 %(enumerate_services_result)s
-
-Steps:
-1. Create an assessment based on the discovery and enumerate services result
-2. Return the result as markdown
 """
 
 async def network_discovery(
     interface: str,
+    strategy_type: type[ProviderStrategy] | type[ToolStrategy],
     interactive: bool = False,
-) -> tuple[NetworkDiscoveryTable, AiAgent]:
+) -> tuple[NetworkDiscoveryTable | None, AiAgent]:
     """
     Run an agent which returns a NetworkDiscoveryResultMap.
     """
@@ -56,22 +79,32 @@ async def network_discovery(
 
     agent = await create_ai_agent(
         interactive,
-        response_format=NetworkDiscoveryTable,
+        response_format=strategy_type(NetworkDiscoveryTable),
     )
     result = await agent.ainvoke(prompt)
     structured_response = result.get("structured_response")
 
     if structured_response is None:
-        logger.warning("The value `result.structured_response` in `network_discovery` was None.")
-        structured_response = NetworkDiscoveryTable(rows=[])
+        response = result.get("messages", [])[-1].content
+        logger.warning("The value `result.structured_response` in `network_discovery` was None. Last message was %s (%s)." % (response, type(response)))
+        logger.info("Try parsing the last response with `json.loads`.")
+        try:
+            data = json.loads(response)
+            rows = [NetworkDiscoveryRow(**row) for row in data.get("rows")]
+            structured_response = NetworkDiscoveryTable(rows=rows)
+            logger.info("Successfully parsed the last message with `json.loads`.")
+        except Exception as e:
+            logger.exception("Error while trying to parse the last message with `json.loads`.", exc_info=e)
+            structured_response = None
 
     return structured_response, agent
 
 
 async def enumerate_services(
     network_discovery_result: str,
+    strategy_type: type[ProviderStrategy] | type[ToolStrategy],
     interactive: bool = False,
-) -> tuple[EnumerateServicesResult, AiAgent]:
+) -> tuple[EnumerateServicesResult | None, AiAgent]:
     """
     Run an agent which returns a EnumerateServicesResult.
     """
@@ -82,15 +115,24 @@ async def enumerate_services(
 
     agent = await create_ai_agent(
         interactive,
-        response_format=EnumerateServicesResult
+        response_format=strategy_type(EnumerateServicesResult)
     )
 
     result = await agent.ainvoke(prompt)
     structured_response = result.get("structured_response")
 
     if structured_response is None:
-        logger.warning("The value `result.structured_response` in `enumerate_services` was None.")
-        structured_response = EnumerateServicesResult(results=[])
+        response = result.get("messages", [])[-1].content
+        logger.warning("The value `result.structured_response` in `enumerate_services` was None. Last message was %s (%s)." % (response, type(response)))
+        logger.info("Try parsing the last response with `json.loads`.")
+        try:
+            data = json.loads(response)
+            results = [EnumerateServicesResultEntry(**result) for result in data["results"]]
+            structured_response = EnumerateServicesResult(results=results)
+            logger.info("Successfully parsed the last message with `json.loads`.")
+        except Exception as e:
+            logger.exception("Error while trying to parse the last message with `json.loads`.", exc_info=e)
+            structured_response = None
 
     return structured_response, agent
 
@@ -123,8 +165,6 @@ async def assessment(
 async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScenarioResult:
     """
     Scenario, which conducts AI-based network reconnaissance.
-
-    :return: None
     """
 
     logger.info("Starting scenario: AI Reconnaissance")
@@ -132,15 +172,34 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
     if config.ai is None:
         raise ValueError("config.ai must be configured!")
 
+    strategy_type = ProviderStrategy
+
     network_discovery_table, network_discovery_agent = await network_discovery(
         interface,
+        strategy_type,
         interactive
     )
 
+    if network_discovery_table is None:
+        logger.warning("ProviderStrategy was not successfully. Retry with ToolStrategy.")
+        strategy_type = ToolStrategy
+        network_discovery_table, network_discovery_agent = await network_discovery(
+            interface,
+            strategy_type,
+            interactive
+        )
+    if network_discovery_table is None:
+        logger.warning("ToolStrategy was also not successfully. Accept the empty result.")
+        network_discovery_table = NetworkDiscoveryTable(rows=[])
+
     enumerate_services_result, enumerate_services_agent = await enumerate_services(
         network_discovery_table.as_table(),
+        strategy_type,
         interactive
     )
+    if enumerate_services_result is None:
+        logger.warning("%s was also not successfully. Accept the empty result." % strategy_type.__name__)
+        enumerate_services_result = EnumerateServicesResult(results=[])
 
     assessment_result, assessment_agent = await assessment(
         network_discovery_table.as_table(),
@@ -168,6 +227,7 @@ async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScen
         model=config.ai.model,
         prompt_tokens=prompt_tokens,
         completion_tokens=completion_tokens,
+        result_strategy=strategy_type.__name__,
         tools_called=tools_called,
     )
 

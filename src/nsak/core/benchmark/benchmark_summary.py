@@ -123,6 +123,18 @@ class BenchmarkSummary:
         return ai_results
 
     @property
+    def result_strategies(self) -> set[str]:
+        """
+        Returns the result strategies used with the AI.
+        """
+        if not self.ai_results:
+            return set()
+
+        return set(
+            [result.scenario_result.result_strategy for result in self.ai_results]
+        )
+
+    @property
     def mean_prompt_tokens(self) -> int | None:
         """
         Returns the rounded mean number of prompt tokens consumed.
@@ -190,6 +202,7 @@ class BenchmarkSummary:
                     ["", ""],
                     ["AI Provider", self.provider or ""],
                     ["AI Model", self.model or ""],
+                    ["Result strategies:", ", ".join(self.result_strategies)],
                     ["Mean prompt tokens:", str(self.mean_prompt_tokens) or ""],
                     ["Mean completion tokens", str(self.mean_completion_tokens) or ""],
                     ["Mean total tokens", str(self.mean_total_tokens) or ""],
@@ -214,6 +227,7 @@ class BenchmarkSummary:
             "Prompt tokens",
             "Completion tokens",
             "Total tokens",
+            "Result Strategy",
         ]
         rows = []
 
@@ -240,6 +254,7 @@ class BenchmarkSummary:
                         result.scenario_result.prompt_tokens,
                         result.scenario_result.completion_tokens,
                         result.scenario_result.total_tokens,
+                        result.scenario_result.result_strategy,
                     ]
                 )
             rows.append(row)
