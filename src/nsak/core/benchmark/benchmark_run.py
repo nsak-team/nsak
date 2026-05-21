@@ -57,7 +57,7 @@ class BenchmarkRun:
                 )
                 scenario_result = cast(ScenarioResult, scenario_result)
             except Exception as e:
-                logger.error("Scenario failed during benchmark run!", exc_info=e)
+                logger.exception("Scenario failed during benchmark run!", exc_info=e)
                 scenario_result = e
             duration_end = time.perf_counter()
             duration: int = int(duration_end - duration_start)

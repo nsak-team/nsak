@@ -75,7 +75,11 @@ def run(discovery_result: NetworkDiscoveryResultMap) -> EnumerateServicesResult:
 
                 findings = _parse_nse_output(proc.stdout)
                 if findings:
-                    entry = EnumerateServicesResultEntry(ip=endpoint.ip, port=endpoint.port, findings=findings)
+                    entry = EnumerateServicesResultEntry(
+                        ip=endpoint.ip,
+                        port=endpoint.port,
+                        findings="\n".join(findings)
+                    )
                     results.append(entry)
                     logger.debug("Found %d findings on %s", len(findings), key)
 

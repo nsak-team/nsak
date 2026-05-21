@@ -1,1 +1,1 @@
-# AI Reconnaissance
+# AI Reconnaissance with structured output

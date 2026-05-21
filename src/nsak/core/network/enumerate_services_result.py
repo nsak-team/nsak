@@ -16,7 +16,7 @@ class EnumerateServicesResultEntry:
 
     ip: str
     port: str
-    findings: list[str]
+    findings: str
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -42,7 +42,7 @@ class EnumerateServicesResult(ScenarioResult):
             row = [
                 entry.ip,
                 entry.port,
-                "\n".join(entry.findings),
+                entry.findings,
             ]
             rows.append(row)
 

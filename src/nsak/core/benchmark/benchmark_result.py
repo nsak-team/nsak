@@ -69,8 +69,7 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
             return None
 
         results = self.scenario_result.enumerate_services_result.results
-        findings = set(finding for result in results for finding in result.findings)
-        return len(findings)
+        return len(results)
 
     def metadata_as_table(self, table_format: str | TableFormat = "pipe") -> str:
         """

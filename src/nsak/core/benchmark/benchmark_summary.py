@@ -73,6 +73,10 @@ class BenchmarkSummary:
             result.total_hosts_discovered for result in self.reconnaissance_results
         ]
         entries: list[int] = [entry for entry in hosts_discovered if entry is not None]
+
+        if not entries:
+            return None
+
         return round(statistics.mean(entries))
 
     @property
@@ -86,6 +90,10 @@ class BenchmarkSummary:
         entries: list[int] = [
             entry for entry in services_discovered if entry is not None
         ]
+
+        if not entries:
+            return None
+
         return round(statistics.mean(entries))
 
     @property
@@ -95,6 +103,10 @@ class BenchmarkSummary:
         """
         findings = [result.total_findings for result in self.reconnaissance_results]
         entries: list[int] = [entry for entry in findings if entry is not None]
+
+        if not entries:
+            return None
+
         return round(statistics.mean(entries))
 
     @property
