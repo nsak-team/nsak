@@ -164,7 +164,7 @@ async def assessment(
     return response, agent
 
 
-async def run(interface: str, interactive: bool = False, unstructured: bool = False) -> AIReconnaissanceScenarioResult:
+async def run(interface: str, interactive: bool = False) -> AIReconnaissanceScenarioResult:
     """
     Scenario, which conducts AI-based network reconnaissance.
     """
