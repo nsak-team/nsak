@@ -102,7 +102,7 @@ class BenchmarkSummary:
         """
         Number off runs which did not succeed.
         """
-        return self.run_count - self.error_count
+        return int(self.run_count - self.error_count)
 
     @property
     def mean_duration_seconds(self) -> int:
