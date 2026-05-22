@@ -310,11 +310,14 @@ class BenchmarkSummary:
         """
         Return the benchmark summary as a dictionary, e.g. for exporting to JSON.
         """
-        data = {
+        data: dict[str, str | int | list[int] | None] = {
             "benchmark_uuid": str(self.benchmark_uuid),
             "setup": self.setup,
             "scenario": self.scenario,
             "timestamp": self.timestamp.isoformat(),
+            "run_count": self.run_count,
+            "success_count": self.success_count,
+            "error_count": self.error_count,
             "model": self.model,
             "provider": self.provider,
             "durations": [result.duration_seconds for result in self.results],
