@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, cast
 
 from nsak.core import Scenario, ScenarioManager, config
+from nsak.core.benchmark.benchmark_error import BenchmarkError
 from nsak.core.benchmark.benchmark_result import BenchmarkResult
 from nsak.core.benchmark.benchmark_summary import BenchmarkSummary
 from nsak.core.scenario import ScenarioResult
@@ -57,8 +58,9 @@ class BenchmarkRun:
                 )
                 scenario_result = cast(ScenarioResult, scenario_result)
             except Exception as e:
-                logger.exception("Scenario failed during benchmark run!", exc_info=e)
-                scenario_result = e
+                logger.exception("Scenario failed during benchmark run!")
+                scenario_result = BenchmarkError(e)
+
             duration_end = time.perf_counter()
             duration: int = int(duration_end - duration_start)
 
@@ -97,7 +99,7 @@ class BenchmarkRun:
         directories = [
             self.setup_name,
             self.scenario.path.name,
-            f"{self.benchmark_timestamp.strftime('%Y-%m-%d-%H:%M:%S')}",
+            f"{self.benchmark_timestamp.strftime('%Y-%m-%d-%H-%M-%S')}",
         ]
         work_path: Path = BENCHMARK_PATH.joinpath(*directories)
         work_path.mkdir(mode=0o777, parents=True, exist_ok=True)

@@ -13,6 +13,7 @@ from nsak.core.scenario import AIScenarioResult
 from ..scenario_results.reconnaissance_scenario_result import (
     ReconnaissanceScenarioResult,
 )
+from .benchmark_error import BenchmarkError
 from .benchmark_result import BenchmarkResult
 
 
@@ -40,12 +41,30 @@ class BenchmarkSummary:
     json_file_path: Path
 
     @property
-    def mean_duration_seconds(self) -> int:
+    def error_results(self) -> list[BenchmarkResult[BenchmarkError]]:
         """
-        Returns the rounded mean duration of the runs.
+        Filter all results which did not succeed.
         """
-        durations = [result.duration_seconds for result in self.results]
-        return round(statistics.mean(durations))
+        error_results: list[BenchmarkResult[BenchmarkError]] = []
+
+        for result in self.results:
+            if isinstance(result.scenario_result, BenchmarkError):
+                error_results.append(cast(BenchmarkResult[BenchmarkError], result))
+
+        return error_results
+
+    @property
+    def ai_results(self) -> list[BenchmarkResult[AIScenarioResult]]:
+        """
+        Filter all results which have a scenario_result of type `AIScenarioResult`.
+        """
+        ai_results: list[BenchmarkResult[AIScenarioResult]] = []
+
+        for result in self.results:
+            if isinstance(result.scenario_result, AIScenarioResult):
+                ai_results.append(cast(BenchmarkResult[AIScenarioResult], result))
+
+        return ai_results
 
     @property
     def reconnaissance_results(
@@ -63,6 +82,35 @@ class BenchmarkSummary:
                 )
 
         return reconnaissance_results
+
+    @property
+    def run_count(self) -> int:
+        """
+        Number off runs.
+        """
+        return len(self.results)
+
+    @property
+    def error_count(self) -> int:
+        """
+        Number off runs which did not succeed.
+        """
+        return len(self.error_results)
+
+    @property
+    def success_count(self) -> int:
+        """
+        Number off runs which did not succeed.
+        """
+        return self.run_count - self.error_count
+
+    @property
+    def mean_duration_seconds(self) -> int:
+        """
+        Returns the rounded mean duration of the runs.
+        """
+        durations = [result.duration_seconds for result in self.results]
+        return round(statistics.mean(durations))
 
     @property
     def mean_hosts_discovered(self) -> int | None:
@@ -108,19 +156,6 @@ class BenchmarkSummary:
             return None
 
         return round(statistics.mean(entries))
-
-    @property
-    def ai_results(self) -> list[BenchmarkResult[AIScenarioResult]]:
-        """
-        Filter all results which have a scenario_result of type `AIScenarioResult`.
-        """
-        ai_results: list[BenchmarkResult[AIScenarioResult]] = []
-
-        for result in self.results:
-            if isinstance(result.scenario_result, AIScenarioResult):
-                ai_results.append(cast(BenchmarkResult[AIScenarioResult], result))
-
-        return ai_results
 
     @property
     def mean_prompt_tokens(self) -> int | None:
@@ -169,6 +204,9 @@ class BenchmarkSummary:
             ["Scenario", self.scenario],
             ["Setup", self.setup],
             ["Timestamp", self.timestamp.isoformat()],
+            ["Run count", str(self.run_count)],
+            ["Success count", str(self.success_count)],
+            ["Error count", str(self.error_count)],
             ["Mean duration (s)", str(self.mean_duration_seconds)],
         ]
 
@@ -206,6 +244,7 @@ class BenchmarkSummary:
             "Run Index",
             "Run UUID",
             "Timestamp",
+            "Success",
             "Duration (s)",
             "Report path",
             "Hosts Discovered",
@@ -224,6 +263,7 @@ class BenchmarkSummary:
                 result.index,
                 result.run_uuid,
                 result.timestamp,
+                result.is_successful_display,
                 result.duration_seconds,
                 "[%(link)s](%(link)s)" % {"link": relative_file_path},
             ]
@@ -268,7 +308,7 @@ class BenchmarkSummary:
 
     def as_dict(self) -> dict[str, str | int | list[int] | None]:
         """
-        Return the benchmark summary as a dictionary, e.g. for exporting to json.
+        Return the benchmark summary as a dictionary, e.g. for exporting to JSON.
         """
         data = {
             "benchmark_uuid": str(self.benchmark_uuid),

@@ -2,9 +2,11 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+from typing import Literal
 
 from tabulate import TableFormat, tabulate
 
+from nsak.core.benchmark.benchmark_error import BenchmarkError
 from nsak.core.scenario import AIScenarioResult, ScenarioResult
 from nsak.core.scenario_results.reconnaissance_scenario_result import (
     ReconnaissanceScenarioResult,
@@ -12,7 +14,7 @@ from nsak.core.scenario_results.reconnaissance_scenario_result import (
 
 
 @dataclass(frozen=True, kw_only=True)
-class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
+class BenchmarkResult[ScenarioResultType = ScenarioResult | BenchmarkError]:
     """
     The result of a single benchmark run.
     """
@@ -71,6 +73,23 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
         results = self.scenario_result.enumerate_services_result.results
         return len(results)
 
+    @property
+    def is_successful(self) -> bool:
+        """
+        Returns false if the run failed, otherwise true.
+        """
+        return not isinstance(self.scenario_result, BenchmarkError)
+
+    @property
+    def is_successful_display(self) -> Literal["Yes"] | Literal["No"]:
+        """
+        Returns "No" if the run failed, otherwise "Yes".
+        """
+        if self.is_successful:
+            return "Yes"
+        else:
+            return "No"
+
     def metadata_as_table(self, table_format: str | TableFormat = "pipe") -> str:
         """
         Return the benchmark metadata as a table.
@@ -82,6 +101,7 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | Exception]:
             ["Scenario", self.scenario],
             ["Setup", self.setup],
             ["Timestamp", self.timestamp.isoformat()],
+            ["Success", self.is_successful_display],
             ["Duration (s)", str(self.duration_seconds)],
         ]
 
