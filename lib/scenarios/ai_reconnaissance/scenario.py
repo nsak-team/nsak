@@ -70,7 +70,6 @@ async def run_reconnaissance_agent(
             )
             logger.info("Successfully parsed the last message with `json.loads`.")
         except Exception as e:
-            print(result.get("messages", []))
             logger.exception("Error while trying to parse the last message with `json.loads`.", exc_info=e)
             raise ValueError("Could get structured output from response!")
 
