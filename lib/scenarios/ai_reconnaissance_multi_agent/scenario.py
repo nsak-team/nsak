@@ -19,8 +19,9 @@ network_discovery_prompt_template = """
 Run nmap to discover all interfaces on the given interface: %(interface)s
 
 Steps:
-1. Discover all subnets, hosts and services
-2. Return the result as structured output: NetworkDiscoveryTable
+1. Retrieve the network configuration with the `host_configuration` tool.
+2. Discover all subnets, hosts and services
+3. Return the result as structured output: NetworkDiscoveryTable
 
 """
 

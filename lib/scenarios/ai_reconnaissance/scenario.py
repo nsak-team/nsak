@@ -18,10 +18,11 @@ logger = logging.getLogger(__name__)
 
 reconnaissance_prompt_template = """
 Steps:
-1. Discover all subnets, hosts and services with nmap on the following interface: %(interface)s
-2. Enumerate all services based on the result of the network discovery result with service-specific nmap NSE scripts
-3. Write a markdown formated assessment of your findings
-4. Return the result as structured output: [ReconnaissanceScenarioResult, str]
+1. Retrieve the network configuration with the `host_configuration` tool.
+2. Discover all subnets, hosts and services with nmap on the following interface: %(interface)s
+3. Enumerate all services based on the result of the network discovery result with service-specific nmap NSE scripts
+4. Write a markdown formated assessment of your findings
+5. Return the result as structured output: Result
 
 """
 
