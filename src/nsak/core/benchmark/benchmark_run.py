@@ -4,6 +4,8 @@ from copy import copy
 from pathlib import Path
 from typing import Any, cast
 
+from ollama import ResponseError
+
 from nsak.core import Scenario, ScenarioManager, config
 from nsak.core.benchmark.benchmark_error import BenchmarkError
 from nsak.core.benchmark.benchmark_result import BenchmarkResult
@@ -61,6 +63,12 @@ class BenchmarkRun:
                 )
                 scenario_result = cast(ScenarioResult, scenario_result)
                 is_successful = scenario_result.is_successful
+            except ResponseError:
+                logger.exception(
+                    "Response error! The API is probably temporary unavailable."
+                )
+                input("Press Enter to continue, or ctrl+c for aborting.")
+                continue
             except Exception as e:
                 logger.exception("Scenario failed during benchmark run!")
                 scenario_result = BenchmarkError(e)
