@@ -1,0 +1,52 @@
+{
+    "benchmark_uuid": "a02cdcfa-3dc0-4811-9398-5206a48646e4",
+    "setup": "evaluation-containerlab-local",
+    "scenario": "AI Reconnaissance Multi Agent",
+    "timestamp": "2026-05-22T18:58:10.401680+02:00",
+    "run_count": 10,
+    "success_count": 10,
+    "error_count": 0,
+    "model": "qwen3:30b",
+    "provider": "ollama",
+    "durations": [
+        93,
+        94,
+        507,
+        102,
+        113,
+        90,
+        93,
+        108,
+        101,
+        514
+    ],
+    "mean_hosts_discovered": 1,
+    "mean_services_discovered": 2,
+    "mean_findings": 1,
+    "tokens": [
+        19237,
+        19201,
+        49764,
+        19982,
+        22930,
+        18733,
+        17482,
+        21015,
+        20134,
+        50579
+    ],
+    "tool_calls": [
+        3,
+        3,
+        8,
+        3,
+        4,
+        3,
+        2,
+        3,
+        3,
+        10
+    ],
+    "mean_tokens": 25906,
+    "mean_duration": 182
+}
