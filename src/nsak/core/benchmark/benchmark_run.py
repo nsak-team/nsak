@@ -89,6 +89,9 @@ class BenchmarkRun:
 
             index += 1
 
+            if index == run_count and successful_runs == 0:
+                break
+
         return BenchmarkSummary(
             benchmark_uuid=self.benchmark_uuid,
             timestamp=self.benchmark_timestamp,
