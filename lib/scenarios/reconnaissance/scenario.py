@@ -8,7 +8,7 @@ from scapy.arch import get_if_addr
 from nsak.core import DrillManager
 from nsak.core.network import NetworkDiscoveryResultMap
 from nsak.core.network.enumerate_services_result import EnumerateServicesResult
-from nsak.core.network.reconnaissance_scenario_result import ReconnaissanceScenarioResult
+from nsak.core.scenario_results.reconnaissance_scenario_result import ReconnaissanceScenarioResult
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +46,7 @@ def run(interface: str | None = None, subnet: str | None = None) -> Reconnaissan
     )
 
     result = ReconnaissanceScenarioResult(
-        network_discovery_result_map=network_discovery_result_map,
+        network_discovery_table=network_discovery_result_map.to_network_discovery_table(),
         enumerate_services_result=enumerate_services_result
     )
     logger.info(result.display())

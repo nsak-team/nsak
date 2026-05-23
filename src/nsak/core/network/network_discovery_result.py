@@ -5,6 +5,10 @@ from tabulate import TableFormat, tabulate
 from nsak.core.network.network_service import NetworkService
 from nsak.core.network.types import IPAddress
 from nsak.core.scenario import ScenarioResult
+from nsak.core.scenario_results.network_discovery_result import (
+    NetworkDiscoveryRow,
+    NetworkDiscoveryTable,
+)
 
 from .configuration import EthernetConfiguration
 
@@ -61,6 +65,13 @@ class NetworkDiscoveryResultMap(ScenarioResult):
 
     results: dict[str, NetworkDiscoveryResult]
 
+    @property
+    def is_successful(self) -> bool:
+        """
+        Returns true if there are results.
+        """
+        return bool(self.results)
+
     def display(self) -> str:
         """
         Return a human-readable representation of a network discovery result map.
@@ -76,6 +87,30 @@ class NetworkDiscoveryResultMap(ScenarioResult):
 
         lines.extend(["", "### -------------------------- ###", ""])
         return "\n".join(lines)
+
+    @property
+    def rows(self) -> list[list[str]]:
+        """
+        Return the results as rows.
+        """
+        rows = []
+        for iface_name, result in self.results.items():
+            for service in result.network_services:
+                for endpoint in service.endpoints:
+                    rows.append(
+                        [
+                            iface_name,
+                            endpoint.mac or "",
+                            str(endpoint.ip) if endpoint.ip is not None else "",
+                            str(endpoint.port) if endpoint.port is not None else "",
+                            endpoint.protocol or "",
+                            service.state or "",
+                            service.name or "",
+                            service.product or "",
+                            service.version or "",
+                        ]
+                    )
+        return rows
 
     def as_table(self, table_format: str | TableFormat = "pipe") -> str:
         """
@@ -94,32 +129,35 @@ class NetworkDiscoveryResultMap(ScenarioResult):
             "Product",
             "Version",
         ]
-        rows = []
 
-        for iface_name, result in self.results.items():
-            for service in result.network_services:
-                for endpoint in service.endpoints:
-                    rows.append(
-                        [
-                            iface_name,
-                            endpoint.mac or "",
-                            str(endpoint.ip) if endpoint.ip is not None else "",
-                            str(endpoint.port) if endpoint.port is not None else "",
-                            endpoint.protocol or "",
-                            service.state or "",
-                            service.name or "",
-                            service.product or "",
-                            service.version or "",
-                        ]
-                    )
-
-        if not rows:
+        if not self.rows:
             return "No network services discovered."
 
-        return tabulate(rows, headers=headers, tablefmt=table_format)
+        return tabulate(self.rows, headers=headers, tablefmt=table_format)
 
     def as_markdown(self) -> str:
         """
         Return the network discovery result as Markdown.
         """
         return self.as_table()
+
+    def to_network_discovery_table(self) -> NetworkDiscoveryTable:
+        """
+        Converts the result map to a table.
+        """
+        return NetworkDiscoveryTable(
+            rows=[
+                NetworkDiscoveryRow(
+                    interface=row[0],
+                    mac=row[1],
+                    ip=row[2],
+                    port=row[3],
+                    protocol=row[4],
+                    state=row[5],
+                    service=row[6],
+                    product=row[7],
+                    version=row[8],
+                )
+                for row in self.rows
+            ]
+        )
