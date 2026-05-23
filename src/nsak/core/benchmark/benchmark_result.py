@@ -78,7 +78,13 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | BenchmarkError]:
         """
         Returns false if the run failed, otherwise true.
         """
-        return not isinstance(self.scenario_result, BenchmarkError)
+        if isinstance(self.scenario_result, BenchmarkError):
+            return False
+
+        if isinstance(self.scenario_result, ScenarioResult):
+            return bool(self.scenario_result.is_successful)
+
+        return False
 
     @property
     def is_successful_display(self) -> Literal["Yes"] | Literal["No"]:
@@ -120,7 +126,7 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | BenchmarkError]:
             for tool, calls in self.scenario_result.tools_called.items():
                 tools_called.append(f"{tool}: {len(calls)}")
                 for call in calls:
-                    tools_called.append(f"- {call}")
+                    tools_called.append(f"{call}")
                 tools_called.append("")
             tools_called.append("")
 
@@ -132,6 +138,14 @@ class BenchmarkResult[ScenarioResultType = ScenarioResult | BenchmarkError]:
                     ["Prompt tokens:", str(self.scenario_result.prompt_tokens)],
                     ["Completion tokens", str(self.scenario_result.completion_tokens)],
                     ["Total tokens", str(self.scenario_result.total_tokens)],
+                    [
+                        "Unique tools called:",
+                        str(self.scenario_result.unique_tools_called),
+                    ],
+                    [
+                        "Total tools called:",
+                        str(self.scenario_result.total_tools_called),
+                    ],
                     ["Tools called:", "\n".join(tools_called)],
                 ]
             )

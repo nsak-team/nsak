@@ -14,6 +14,16 @@ class ReconnaissanceScenarioResult(ScenarioResult):
     network_discovery_table: NetworkDiscoveryTable
     enumerate_services_result: EnumerateServicesResult
 
+    @property
+    def is_successful(self) -> bool:
+        """
+        Returns true if there are actual results.
+        """
+        return (
+            self.network_discovery_table.is_successful
+            and self.enumerate_services_result.is_successful
+        )
+
     def display(self) -> str:
         """
         Display the result of the reconnaissance scenario.

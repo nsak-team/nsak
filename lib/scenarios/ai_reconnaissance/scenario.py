@@ -7,8 +7,6 @@ import json
 import logging
 from dataclasses import dataclass
 
-from langchain.agents.structured_output import ToolStrategy
-
 from nsak.core import create_ai_agent, config, AiAgent
 from nsak.core.network import EnumerateServicesResult
 from nsak.core.network.enumerate_services_result import EnumerateServicesResultEntry
@@ -24,27 +22,6 @@ Steps:
 2. Enumerate all services based on the result of the network discovery result with service-specific nmap NSE scripts
 3. Write a markdown formated assessment of your findings
 4. Return the result as structured output: [ReconnaissanceScenarioResult, str]
-
-NetworkDiscoveryTable Example:
-
-| Interface   | MAC               | IP           |   Port | Protocol   | State   | Service            | Product                              | Version                 |
-|:------------|:------------------|:-------------|-------:|:-----------|:--------|:-------------------|:-------------------------------------|:------------------------|
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     53 | tcp        | open    | domain             | NLnet Labs NSD                       |                         |
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     80 | tcp        | open    | http               | FRITZ!Box http config                |                         |
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |    443 | tcp        | open    | ssl/http           | FRITZ!Box http config                |                         |
-
-EnumerateServicesResult Example:
-
-| IP           |   Port | Findings                                                     |
-|:-------------|-------:|:-------------------------------------------------------------|
-| 10.10.10.1   |     53 | dns-brute:                                                   |
-|              |        | DNS Brute-force hostnames:                                   |
-|              |        | dns.fritz.box - 1.0.0.1                                      |
-|              |        | dns.fritz.box - 1.1.1.1                                      |
-| 10.10.10.1   |     80 | http-title: FRITZ!Box                                        |
-|              |        | http-headers:                                                |
-|              |        | Connection: close                                            |
-|              |        | Content-Length: 2148                                         |
 
 """
 

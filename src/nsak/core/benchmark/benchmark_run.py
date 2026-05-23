@@ -45,9 +45,12 @@ class BenchmarkRun:
         """
         Execute a benchmark run.
         """
-        benchmark_results: list[BenchmarkResult] = []
+        successful_results: list[BenchmarkResult[ScenarioResult]] = []
+        error_results: list[BenchmarkResult] = []
+        index = 1
+        successful_runs = 0
 
-        for index in range(1, run_count + 1):
+        while successful_runs < run_count:
             # Reset the run_uuid so each run can be identified
             run_uuid = config.reset_run_uuid()
 
@@ -57,9 +60,11 @@ class BenchmarkRun:
                     self.scenario, **self.scenario_kwargs
                 )
                 scenario_result = cast(ScenarioResult, scenario_result)
+                is_successful = scenario_result.is_successful
             except Exception as e:
                 logger.exception("Scenario failed during benchmark run!")
                 scenario_result = BenchmarkError(e)
+                is_successful = False
 
             duration_end = time.perf_counter()
             duration: int = int(duration_end - duration_start)
@@ -76,14 +81,22 @@ class BenchmarkRun:
                 file_path=self._get_result_file_path(index),
             )
 
-            benchmark_results.append(benchmark_result)
+            if is_successful:
+                successful_results.append(benchmark_result)
+                successful_runs += 1
+            else:
+                error_results.append(benchmark_result)
+
+            index += 1
 
         return BenchmarkSummary(
             benchmark_uuid=self.benchmark_uuid,
             timestamp=self.benchmark_timestamp,
             scenario=self.scenario.name,
             setup=self.setup_name,
-            results=benchmark_results,
+            target_run_count=run_count,
+            successful_results=successful_results,
+            error_results=error_results,
             **self._get_ai_metadata(),
             file_path=self._get_summary_file_path(),
             json_file_path=self._get_json_file_path(),

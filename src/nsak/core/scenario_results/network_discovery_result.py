@@ -30,6 +30,13 @@ class NetworkDiscoveryTable(ScenarioResult):
 
     rows: list[NetworkDiscoveryRow]
 
+    @property
+    def is_successful(self) -> bool:
+        """
+        Return true if there are rows.
+        """
+        return bool(self.rows)
+
     def as_table(self, table_format: str | TableFormat = "pipe") -> str:
         """
         Return a human- and AI-readable table of all discovered services.

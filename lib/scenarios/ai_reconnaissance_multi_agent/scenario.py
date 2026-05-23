@@ -22,14 +22,6 @@ Steps:
 1. Discover all subnets, hosts and services
 2. Return the result as structured output: NetworkDiscoveryTable
 
-NetworkDiscoveryTable Example:
-
-| Interface   | MAC               | IP           |   Port | Protocol   | State   | Service            | Product                              | Version                 |
-|:------------|:------------------|:-------------|-------:|:-----------|:--------|:-------------------|:-------------------------------------|:------------------------|
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     53 | tcp        | open    | domain             | NLnet Labs NSD                       |                         |
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |     80 | tcp        | open    | http               | FRITZ!Box http config                |                         |
-| wlan0       | 80:23:95:01:fc:83 | 10.10.10.1   |    443 | tcp        | open    | ssl/http           | FRITZ!Box http config                |                         |
-
 """
 
 enumerate_services_prompt_template = """
@@ -38,19 +30,6 @@ Run service-specific nmap NSE scripts on all discovered services.
 Steps:
 1. Enumerate all services based on the result of the network discovery result
 2. Return the result as structured output: EnumerateServicesResult
-
-EnumerateServicesResult Example:
-
-| IP           |   Port | Findings                                                     |
-|:-------------|-------:|:-------------------------------------------------------------|
-| 10.10.10.1   |     53 | dns-brute:                                                   |
-|              |        | DNS Brute-force hostnames:                                   |
-|              |        | dns.fritz.box - 1.0.0.1                                      |
-|              |        | dns.fritz.box - 1.1.1.1                                      |
-| 10.10.10.1   |     80 | http-title: FRITZ!Box                                        |
-|              |        | http-headers:                                                |
-|              |        | Connection: close                                            |
-|              |        | Content-Length: 2148                                         |
 
 Network discovery result:
 %(network_discovery_result)s

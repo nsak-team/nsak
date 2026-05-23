@@ -8,6 +8,13 @@ class ScenarioResult(ABC):
     Base class representing the result of a scenario.
     """
 
+    @property
+    @abstractmethod
+    def is_successful(self) -> bool:
+        """
+        Returns true if the result is considered successful.
+        """
+
     @abstractmethod
     def display(self) -> str:
         """
@@ -47,3 +54,16 @@ class AIScenarioResult(ScenarioResult, ABC):
         Returns the total number of tools called.
         """
         return sum([len(calls) for tool, calls in self.tools_called.items()])
+
+    @property
+    def unique_tools_called(self) -> int:
+        """
+        Returns the number of unique tools called.
+        """
+        unique_tools_called = 0
+
+        for _, calls in self.tools_called.items():
+            if len(calls) > 0:
+                unique_tools_called += 1
+
+        return unique_tools_called

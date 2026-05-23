@@ -27,6 +27,13 @@ class EnumerateServicesResult(ScenarioResult):
 
     results: list[EnumerateServicesResultEntry]
 
+    @property
+    def is_successful(self) -> bool:
+        """
+        Return true if there are rows.
+        """
+        return bool(self.results)
+
     def as_table(self, table_format: str | TableFormat = "pipe") -> str:
         """
         Return a human- and AI-readable table of all enumerated services.

@@ -8,12 +8,11 @@ from typing import cast
 
 from tabulate import TableFormat, tabulate
 
-from nsak.core.scenario import AIScenarioResult
+from nsak.core.scenario import AIScenarioResult, ScenarioResult
 
 from ..scenario_results.reconnaissance_scenario_result import (
     ReconnaissanceScenarioResult,
 )
-from .benchmark_error import BenchmarkError
 from .benchmark_result import BenchmarkResult
 
 
@@ -28,30 +27,20 @@ class BenchmarkSummary:
     scenario: str
     setup: str
     timestamp: datetime
+    # The amount of successfully runs
+    target_run_count: int
 
     # AI specific metadata
     model: str | None = field(default=None)
     provider: str | None = field(default=None)
 
     # Individual results of each benchmark run
-    results: list[BenchmarkResult]
+    successful_results: list[BenchmarkResult[ScenarioResult]]
+    error_results: list[BenchmarkResult]
 
     # The file path where the benchmark summary is stored as Markdown, including the scenario result or exception.
     file_path: Path
     json_file_path: Path
-
-    @property
-    def error_results(self) -> list[BenchmarkResult[BenchmarkError]]:
-        """
-        Filter all results which did not succeed.
-        """
-        error_results: list[BenchmarkResult[BenchmarkError]] = []
-
-        for result in self.results:
-            if isinstance(result.scenario_result, BenchmarkError):
-                error_results.append(cast(BenchmarkResult[BenchmarkError], result))
-
-        return error_results
 
     @property
     def ai_results(self) -> list[BenchmarkResult[AIScenarioResult]]:
@@ -60,7 +49,7 @@ class BenchmarkSummary:
         """
         ai_results: list[BenchmarkResult[AIScenarioResult]] = []
 
-        for result in self.results:
+        for result in self.successful_results:
             if isinstance(result.scenario_result, AIScenarioResult):
                 ai_results.append(cast(BenchmarkResult[AIScenarioResult], result))
 
@@ -75,7 +64,7 @@ class BenchmarkSummary:
         """
         reconnaissance_results: list[BenchmarkResult[ReconnaissanceScenarioResult]] = []
 
-        for result in self.results:
+        for result in self.successful_results:
             if isinstance(result.scenario_result, ReconnaissanceScenarioResult):
                 reconnaissance_results.append(
                     cast(BenchmarkResult[ReconnaissanceScenarioResult], result)
@@ -86,9 +75,9 @@ class BenchmarkSummary:
     @property
     def run_count(self) -> int:
         """
-        Number off runs.
+        Number off total runs, including failures.
         """
-        return len(self.results)
+        return len(self.successful_results) + len(self.error_results)
 
     @property
     def error_count(self) -> int:
@@ -102,14 +91,14 @@ class BenchmarkSummary:
         """
         Number off runs which did not succeed.
         """
-        return int(self.run_count - self.error_count)
+        return len(self.successful_results)
 
     @property
     def mean_duration_seconds(self) -> int:
         """
-        Returns the rounded mean duration of the runs.
+        Returns the rounded mean duration of the successful runs.
         """
-        durations = [result.duration_seconds for result in self.results]
+        durations = [result.duration_seconds for result in self.successful_results]
         return round(statistics.mean(durations))
 
     @property
@@ -204,6 +193,7 @@ class BenchmarkSummary:
             ["Scenario", self.scenario],
             ["Setup", self.setup],
             ["Timestamp", self.timestamp.isoformat()],
+            ["Target run count", str(self.target_run_count)],
             ["Run count", str(self.run_count)],
             ["Success count", str(self.success_count)],
             ["Error count", str(self.error_count)],
@@ -236,7 +226,9 @@ class BenchmarkSummary:
 
         return tabulate(rows, headers=["Key", "Value"], tablefmt=table_format)
 
-    def as_table(self, table_format: str | TableFormat = "pipe") -> str:
+    def as_table(
+        self, results: list[BenchmarkResult], table_format: str | TableFormat = "pipe"
+    ) -> str:
         """
         Return a human- and AI-readable table of all results included in the summary.
         """
@@ -257,7 +249,7 @@ class BenchmarkSummary:
         ]
         rows = []
 
-        for result in self.results:
+        for result in results:
             relative_file_path = result.file_path.relative_to(self.file_path.parent)
             row = [
                 result.index,
@@ -301,7 +293,16 @@ class BenchmarkSummary:
             "",
             "--------------------------------------",
             "",
-            self.as_table(),
+            "# Successful Results",
+            "",
+            self.as_table(self.successful_results),  # type: ignore
+            "",
+            "--------------------------------------",
+            "",
+            "# Error Results",
+            "",
+            self.as_table(self.error_results),
+            "",
         ]
 
         return "\n".join(lines)
@@ -315,12 +316,15 @@ class BenchmarkSummary:
             "setup": self.setup,
             "scenario": self.scenario,
             "timestamp": self.timestamp.isoformat(),
+            "target_run_count": self.target_run_count,
             "run_count": self.run_count,
             "success_count": self.success_count,
             "error_count": self.error_count,
             "model": self.model,
             "provider": self.provider,
-            "durations": [result.duration_seconds for result in self.results],
+            "durations": [
+                result.duration_seconds for result in self.successful_results
+            ],
             "mean_hosts_discovered": self.mean_hosts_discovered,
             "mean_services_discovered": self.mean_services_discovered,
             "mean_findings": self.mean_findings,
