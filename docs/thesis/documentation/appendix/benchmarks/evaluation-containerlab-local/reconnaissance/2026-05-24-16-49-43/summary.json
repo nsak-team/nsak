@@ -1,0 +1,31 @@
+{
+    "benchmark_uuid": "84dc61b7-fcb6-4970-b809-47197188c721",
+    "setup": "evaluation-containerlab-local",
+    "scenario": "Reconnaissance",
+    "timestamp": "2026-05-24T16:49:43.423489+02:00",
+    "target_run_count": 10,
+    "run_count": 10,
+    "success_count": 10,
+    "error_count": 0,
+    "model": "qwen3:30b",
+    "provider": "ollama",
+    "durations": [
+        31,
+        31,
+        28,
+        28,
+        28,
+        28,
+        29,
+        28,
+        28,
+        29
+    ],
+    "mean_hosts_discovered": 5,
+    "mean_services_discovered": 13,
+    "mean_findings": 8,
+    "tokens": null,
+    "tool_calls": null,
+    "mean_tokens": null,
+    "mean_duration": 29
+}
