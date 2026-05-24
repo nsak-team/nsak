@@ -1,0 +1,53 @@
+{
+    "benchmark_uuid": "d868fe68-12b0-40b5-9879-e7fee0f0b851",
+    "setup": "evaluation-containerlab-frontier",
+    "scenario": "AI Reconnaissance Multi Agent",
+    "timestamp": "2026-05-24T17:31:13.379076+02:00",
+    "target_run_count": 10,
+    "run_count": 10,
+    "success_count": 10,
+    "error_count": 0,
+    "model": "claude-opus-4-7",
+    "provider": "anthropic",
+    "durations": [
+        141,
+        165,
+        156,
+        147,
+        145,
+        147,
+        160,
+        162,
+        139,
+        141
+    ],
+    "mean_hosts_discovered": 5,
+    "mean_services_discovered": 9,
+    "mean_findings": 8,
+    "tokens": [
+        54620,
+        61388,
+        61319,
+        60315,
+        60394,
+        60912,
+        61668,
+        61130,
+        58142,
+        59988
+    ],
+    "tool_calls": [
+        10,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+    ],
+    "mean_tokens": 59988,
+    "mean_duration": 150
+}
