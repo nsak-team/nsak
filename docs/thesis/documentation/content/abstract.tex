@@ -27,3 +27,12 @@ while none of the \gls{AI} agents match the full coverage of the deterministic b
 These findings suggest that \gls{AI}-driven reconnaissance is a viable complement to scripted
 scenarios, with frontier models adding qualitative analytical depth that smaller models currently
 cannot replicate.
+
+
+As adversaries grow, security teams increasingly rely on red and blue team exercises to identify vulnerabilities before adversaries do.
+Manually engineered scenarios offer flexibility and reproducibility but need a high level of cyber security skills and lack adaptability.
+In contrast, Large Language Model can reason over tool output and dynamically adjust their behavior. ----HITL
+This thesis investigates whether agentic AI can effectively automate and enhance network security scenarios within the NSAK framework, a modular Python-based cybersecurity orchestration platform develop in the predecessor project.
+To clarify this question, the framework is extended with an agentic drill integration built on LangChain. The Agent is provided with a set of tools cli-tool, host-configuration, and the ability to run full purple team reconnaissance autonomously.
+A deterministic reference scenario - chaining attack drills like host-discovery, port-scanning, and service enumeration, serves as the reproducible baseline.
+Three Models - frontier model ( Claude Opus 4.7), an institutional hosted open weight model with (gpt-oss:120b), and a locally-run open-source-model (qwen3:30b) via Ollama) are benchmarked across ten runs in three environments ( containerlab, physical lab and bfh-cyber lab
