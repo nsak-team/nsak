@@ -1,38 +1,20 @@
 % Time form: Present Tense
 
-As network environments grow in complexity, security teams increasingly rely on red and blue team
-exercises to identify weaknesses before adversaries do.
-Manually engineered scenarios offer reproducibility but lack adaptability;
-large language model~(LLM) agents, by contrast, can reason over tool output and dynamically adjust
-their reconnaissance strategy.
-This thesis investigates whether agentic \gls{AI} can effectively automate and enhance network
-security scenarios within the \gls{NSAK} framework, a modular Python-based cybersecurity
-orchestration platform developed in the predecessor project.
-To answer this question, the \gls{NSAK} framework is extended with an \gls{AI} agent integration
-built on LangChain, providing agents with a set of network tools (\texttt{cli\_tool},
-\texttt{host\_configuration}, \texttt{send\_email}) and the ability to run full purple-team
-reconnaissance autonomously.
-A deterministic reference scenario — chaining host discovery, port scanning, and service
-enumeration — serves as the reproducible baseline.
-Three models are benchmarked across ten runs each in a reproducible virtual Containerlab
-environment: a frontier model (Claude Opus), an institutionally hosted open-weight model
-(\texttt{gpt-oss:120b}), and a locally-run open-source model (\texttt{qwen3:30b} via Ollama).
-The results show that all three models reliably identify core services through standard
-\texttt{nmap} sweeps, but diverge sharply in depth: only the frontier model consistently
-extracts exploitable intelligence — cleartext \gls{LDAP} credentials, anonymous \gls{SMB} share
-contents, and printer job metadata — and produces structured purple-team assessments with
-attack-path analysis.
-Smaller models terminate enumeration prematurely and default to generic hardening recommendations,
-while none of the \gls{AI} agents match the full coverage of the deterministic baseline.
-These findings suggest that \gls{AI}-driven reconnaissance is a viable complement to scripted
-scenarios, with frontier models adding qualitative analytical depth that smaller models currently
-cannot replicate.
+% Context
+As adversaries grow in number, security teams increasingly rely on \textbf{red and blue team exercises} to identify vulnerabilities before they can be exploited.
+Manually engineered scenarios offer flexibility and reproducibility, but require a high level of cybersecurity expertise and lack adaptability to changing conditions.
+\textbf{Large Language Models}, by contrast, can reason over tool output and dynamically adjust their behavior.
 
+% Research question
+This thesis investigates whether \textbf{agentic AI} can effectively automate and enhance network security scenarios within the \textbf{NSAK} framework — a modular Python-based cybersecurity orchestration platform developed in a predecessor project.
 
-As adversaries grow, security teams increasingly rely on red and blue team exercises to identify vulnerabilities before adversaries do.
-Manually engineered scenarios offer flexibility and reproducibility but need a high level of cyber security skills and lack adaptability.
-In contrast, Large Language Model can reason over tool output and dynamically adjust their behavior. ----HITL
-This thesis investigates whether agentic AI can effectively automate and enhance network security scenarios within the NSAK framework, a modular Python-based cybersecurity orchestration platform develop in the predecessor project.
-To clarify this question, the framework is extended with an agentic drill integration built on LangChain. The Agent is provided with a set of tools cli-tool, host-configuration, and the ability to run full purple team reconnaissance autonomously.
-A deterministic reference scenario - chaining attack drills like host-discovery, port-scanning, and service enumeration, serves as the reproducible baseline.
-Three Models - frontier model ( Claude Opus 4.7), an institutional hosted open weight model with (gpt-oss:120b), and a locally-run open-source-model (qwen3:30b) via Ollama) are benchmarked across ten runs in three environments ( containerlab, physical lab and bfh-cyber lab
+% Approach
+To address this question, the framework is extended with an agentic drill integration built on \texttt{LangChain}.
+The agent is equipped with tools for CLI interaction, host configuration, and autonomous \textbf{purple team reconnaissance}.
+A deterministic reference scenario — chaining the drills \texttt{host-discovery}, \texttt{port-scanning}, and \texttt{service-enumeration} — serves as the reproducible baseline.
+
+% Evaluation
+Three models are benchmarked across 10 runs in three environments (\emph{containerlab}, \emph{physical lab}, and \emph{BFH Cyber Lab}):
+a frontier model (\texttt{Claude Opus 4.7}), an institutionally hosted open-weight model (\texttt{gpt-oss:120b}), and a locally-run open-source model (\texttt{qwen3:30b} via Ollama).
+
+\todo{results / conclusion sentence}
