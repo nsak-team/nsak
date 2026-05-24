@@ -37,7 +37,7 @@ class DeviceLoader(ResourceLoader[Device]):
                 ethernets[interface.name] = {
                     "addresses": {
                         ip: {
-                            "is_target": True,
+                            "is_target": "lo" != interface.name,
                             "is_management": False,
                         }
                         for ips in interface.ips.values()

@@ -1,9 +1,9 @@
+from dataclasses import asdict
 from typing import Any
 
 from langchain.tools import tool
 
 from nsak.core.configuration import config
-from nsak.core.configuration.configuration_serializer import ConfigurationSerializer
 
 
 @tool  # type: ignore[misc]
@@ -48,4 +48,4 @@ def host_configuration() -> dict[str, Any]:
     - Use `is_management=True` interfaces for device access or data extraction
     - `configuration` may be None if the device has not been configured yet
     """
-    return ConfigurationSerializer.serialize(config.scrub())
+    return asdict(config.scrub())

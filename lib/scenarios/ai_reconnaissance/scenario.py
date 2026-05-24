@@ -22,12 +22,12 @@ Steps:
 2. Discover all subnets, hosts and services with nmap on the following interface: %(interface)s
 3. Enumerate all services based on the result of the network discovery result with service-specific nmap NSE scripts
 4. Write a markdown formated assessment of your findings
-5. Return the result as structured output: Result
+5. Return the result as structured output: AIReconnaissanceAssessmentResult
 
 """
 
 @dataclass(frozen=True, kw_only=True)
-class Result:
+class AIReconnaissanceAssessmentResult:
     """
     Adhoc result type.
     """
@@ -37,7 +37,7 @@ class Result:
 async def run_reconnaissance_agent(
     interface: str,
     interactive: bool = False,
-) -> tuple[Result, AiAgent]:
+) -> tuple[AIReconnaissanceAssessmentResult, AiAgent]:
     """
     Run an agent which returns a NetworkDiscoveryResultMap.
     """
@@ -48,7 +48,7 @@ async def run_reconnaissance_agent(
 
     agent = await create_ai_agent(
         interactive,
-        response_format=Result,
+        response_format=AIReconnaissanceAssessmentResult,
     )
     result = await agent.ainvoke(prompt)
 
@@ -62,7 +62,7 @@ async def run_reconnaissance_agent(
             data = json.loads(response)
             rows = [NetworkDiscoveryRow(**row) for row in data["result"]["network_discovery_table"]["rows"]]
             results = [EnumerateServicesResultEntry(**result) for result in data["result"]["enumerate_services_result"]["results"]]
-            structured_response = Result(
+            structured_response = AIReconnaissanceAssessmentResult(
                 result=ReconnaissanceScenarioResult(
                     network_discovery_table=NetworkDiscoveryTable(rows=rows),
                     enumerate_services_result=EnumerateServicesResult(results=results)
