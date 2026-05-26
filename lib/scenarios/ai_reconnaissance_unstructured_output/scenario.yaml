@@ -1,0 +1,24 @@
+scenarios:
+  ai_reconnaissance:
+    id: ai_reconnaissance_unstructured_output
+    name: AI Reconnaissance Unstructured Output
+    author: vonal3@bfh.ch
+    repository: https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer
+
+    drills:
+
+    environments:
+      - simple_tcp_client_server
+
+    dependencies:
+      system:
+      python:
+
+    interface:
+      arguments:
+        interface:
+          type: str
+        interactive:
+          type: bool
+          default: False
+      return_type: str

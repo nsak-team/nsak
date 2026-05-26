@@ -145,7 +145,7 @@ topology:
     # DNS (BIND9):
     #   53/udp+tcp  queries and zone transfer
     #   AXFR intentionally open (misconfiguration) — reveals all internal IPs
-    #   Recon: dig @172.16.1.10 lab.local AXFR  → full zone dump
+    #   Recon: dig @172.16.1.10 vlab.local AXFR  → full zone dump
     dmz-server:
       kind: linux
       image: alpine:3.19
