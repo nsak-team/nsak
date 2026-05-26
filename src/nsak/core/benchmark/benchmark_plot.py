@@ -10,12 +10,14 @@ Output: docs/thesis/documentation/figures/benchmark_*.pdf
 import argparse
 import json
 import logging
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Patch
+from matplotlib.ticker import FuncFormatter, LogLocator, NullFormatter, ScalarFormatter
 
 logging.getLogger("matplotlib").setLevel(logging.WARNING)
 
@@ -23,13 +25,10 @@ FIGURES_DIR = Path(__file__).parents[4] / "docs/thesis/documentation/figures"
 date = datetime.now(tz=timezone.utc).strftime("_%d_%m_%Y")
 loger = logging.getLogger(__name__)
 
-# Populated at runtime via load_json()
-# { model_name: { "durations": [...], "tokens": [...], "tool_calls": [...],
-#                 "mean_duration": int, "mean_tokens": int,
-#                 "mean_hosts": int, "mean_services": int, "mean_findings": int } }
 MODELS: dict[str, dict] = {}  # type: ignore
 
-COLORS = ["#4C72B0", "#DD8452", "#C44E52", "#228B22"]
+COLORS = ["#C3ACCE", "#89909F", "#538083", "#C76E00"]
+COLORS_FINDING = ["#5AB1BB", "#A5C882", "#F7DD72", "#4E6766"]
 
 
 # ── Loader ────────────────────────────────────────────────────────────────────
@@ -46,8 +45,9 @@ def load_json(path: Path) -> None:
         "tool_calls": data["tool_calls"],
         "mean_duration": data["mean_duration"],
         "mean_tokens": data["mean_tokens"],
-        "mean_hosts": data.get("mean_hosts"),
-        "mean_services": data.get("mean_services"),
+        "mean_tool_calls": data.get("mean_tool_calls"),
+        "mean_hosts_discovered": data.get("mean_hosts_discovered"),
+        "mean_services_discovered": data.get("mean_services_discovered"),
         "mean_findings": data.get("mean_findings"),
     }
 
@@ -57,8 +57,9 @@ def plot_duration_comparison() -> None:
     names = list(MODELS.keys())
     means = [MODELS[m]["mean_duration"] for m in names]
 
-    fig, ax = plt.subplots(figsize=(max(5, len(names)), 4))
+    fig, ax = plt.subplots(figsize=(max(5, math.floor(len(names) * 1.5)), 4))
     ax.bar(names, means, color=COLORS[: len(names)], zorder=2)
+    ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Mean Duration (s)")
     ax.set_xlabel("Model")
     ax.grid(axis="y", zorder=0, alpha=0.35)
@@ -73,6 +74,7 @@ def plot_token_usage() -> None:
 
     fig, ax = plt.subplots(figsize=(max(5, len(names)), 4))
     ax.bar(names, means, color=COLORS[: len(names)], zorder=2)
+    ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Mean Total Tokens")
     ax.set_xlabel("Model")
     ax.grid(axis="y", zorder=0, alpha=0.35)
@@ -82,32 +84,44 @@ def plot_token_usage() -> None:
 
 def plot_services() -> None:
     """Mean hosts, services, and findings per model as grouped bars."""
-    names = [m for m in MODELS if MODELS[m].get("mean_hosts") is not None]
+    names = [m for m in MODELS if MODELS[m].get("mean_hosts_discovered") is not None]
     if not names:
         return
 
-    host_vals = [MODELS[m]["mean_hosts"] for m in names]
-    service_vals = [MODELS[m]["mean_services"] for m in names]
+    host_vals = [MODELS[m]["mean_hosts_discovered"] for m in names]
+    service_vals = [MODELS[m]["mean_services_discovered"] for m in names]
     finding_vals = [MODELS[m]["mean_findings"] for m in names]
 
     x = np.arange(len(names))
     width = 0.25
 
-    fig, ax = plt.subplots(figsize=(max(5, len(names) * 2), 4))
+    fig, ax = plt.subplots(figsize=(max(5, math.floor(len(names) * 1.5)), 4))
     bars1 = ax.bar(
-        x - width, host_vals, width, label="Avg. Hosts", color=COLORS[0], zorder=2
+        x - width,
+        host_vals,
+        width,
+        label="Avg. Hosts",
+        color=COLORS_FINDING[0],
+        zorder=2,
     )
     bars2 = ax.bar(
-        x, service_vals, width, label="Avg. Services", color=COLORS[1], zorder=2
+        x, service_vals, width, label="Avg. Services", color=COLORS_FINDING[1], zorder=2
     )
     bars3 = ax.bar(
-        x + width, finding_vals, width, label="Avg. Findings", color=COLORS[2], zorder=2
+        x + width,
+        finding_vals,
+        width,
+        label="Avg. Findings",
+        color=COLORS_FINDING[2],
+        zorder=2,
     )
 
     ax.bar_label(bars1, padding=3)
     ax.bar_label(bars2, padding=3)
     ax.bar_label(bars3, padding=3)
 
+    ax.yaxis.set_major_formatter(ScalarFormatter())
+    ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Count")
     ax.set_xlabel("Model")
     ax.set_xticks(x)
@@ -121,35 +135,61 @@ def plot_services() -> None:
 def plot_tokens_vs_duration() -> None:
     """Scatter: total tokens vs. duration, one color per model."""
     fig, ax = plt.subplots(figsize=(7, 4))
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    _k_fmt = FuncFormatter(
+        lambda v, _: f"{int(v / 1000)}k" if v >= 5000 else str(int(v))
+    )
+    ax.xaxis.set_major_locator(LogLocator(base=10, subs=[1, 2, 3, 4, 5, 6, 7]))
+    ax.xaxis.set_minor_locator(LogLocator(base=10, subs=[]))
+    ax.xaxis.set_major_formatter(_k_fmt)
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    _plain_fmt = FuncFormatter(lambda v, _: str(int(v)))
+    ax.yaxis.set_major_locator(LogLocator(base=10, subs=[1, 2, 3]))
+    ax.yaxis.set_minor_locator(LogLocator(base=10, subs=[]))
+    ax.yaxis.set_major_formatter(_plain_fmt)
+    ax.yaxis.set_minor_formatter(NullFormatter())
 
     for color, (model, data) in zip(COLORS, MODELS.items(), strict=False):
-        if not data["tokens"]:
-            continue
         mean_tc = data["mean_tool_calls"] if data["tool_calls"] else None
         label = (
             f"{model} (avg. {mean_tc:.1f} tool calls)" if mean_tc is not None else model
         )
-        ax.scatter(
-            data["tokens"], data["durations"], color=color, s=60, zorder=3, label=label
-        )
-        if data["tool_calls"]:
-            for x, y, tc in zip(
-                data["tokens"], data["durations"], data["tool_calls"], strict=False
-            ):
-                ax.annotate(
-                    f"({tc})",
-                    (x, y),
-                    textcoords="offset points",
-                    xytext=(4, 4),
-                    fontsize=7,
-                    color=color,
-                )
+        if data["tokens"]:
+            ax.scatter(
+                data["tokens"],
+                data["durations"],
+                color=color,
+                s=60,
+                zorder=3,
+                label=label,
+            )
+            if data["tool_calls"]:
+                for x, y, tc in zip(
+                    data["tokens"], data["durations"], data["tool_calls"], strict=False
+                ):
+                    ax.annotate(
+                        f"({tc})",
+                        (x, y),
+                        textcoords="offset points",
+                        xytext=(4, 4),
+                        fontsize=7,
+                        color=color,
+                    )
+        if data["mean_duration"] is not None:
+            ax.axhline(
+                data["mean_duration"],
+                color=color,
+                linestyle="--",
+                linewidth=1.2,
+                label=label if not data["tokens"] else None,
+            )
 
     handles, _ = ax.get_legend_handles_labels()
     handles.append(Patch(color="none", label="( ) = tool calls per run"))
     ax.set_xlabel("Total tokens")
     ax.set_ylabel("Duration (s)")
-    ax.legend(handles=handles, fontsize=9)
+    ax.legend(handles=handles, fontsize=9, loc="lower right")
     ax.grid(alpha=0.35, zorder=0)
     fig.tight_layout()
     _save(fig, "benchmark_tokens_vs_duration" + date)

@@ -1,6 +1,6 @@
 % ─────────────────────────────────────────────────────────────────────────────
 % Environment: Containerlab (Virtual)
-% 3 models × 10 runs + 1 reference (traditional recon)
+% 3 models × 10 runs + 1 reference (static scenario)
 % Evaluation criteria: see §\ref{subsec:criteria}
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Virtual Environment (Containerlab)}\label{sec:eval-containerlab}
@@ -8,72 +8,178 @@
 \paragraph{Overview}
 
 \begin{table}[H]
-    \caption{Nonlinear Model Results}
+    \caption{Benchmark Results --- Containerlab, Single-Agent ($n = 10$ runs each)}
     \centering
 
     \resizebox{\textwidth}{!}{
-        \begin{tabular}{c c c c c c c}
+        \begin{tabular}{l c c c c c}
             \hline\hline
-            Kind               & Avg Duration & Avg Tokens & Avg Tool Calls & Hosts & Findings & Services \\ [0.5ex]
+            Model              & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings \\ [0.5ex]
             \hline
-            Frontier (claude)  & 262 s        & 83,277     & 20             & 4     & 3        & 9        \\
-            BFH (gpt-oss:120b) & 383 s        & 20,496     & 5              & 3     & 4        & 9        \\
-            qwen:30b           & 422 s        & 28,122     & 7              & 3     & 4        & 8        \\
-            recon              & -            & -          & -              & 10    & 10       & 10       \\
+            claude-opus-4-7    & 122 s          & 52,888       & 5           & 9              & 8              \\
+            qwen3:30b          & 362 s          & 86,446       & 4           & 7              & 5              \\
+            gpt-oss:120b (BFH) & 963 s          & 62,475       & 5           & 6              & 4              \\
+            Static Scenario    & 29 s           & ---          & 5           & 13             & 8              \\
             \hline
         \end{tabular}
     }
-    \label{tab:overview-containerlab}
+    \label{tab:overview-containerlab-single}
 \end{table}
 
-Table~\ref{tab:overview-containerlab} summarises the quantitative results of each model across ten runs
-in the virtual Containerlab environment, compared against the deterministic \texttt{recon} baseline.
-The frontier model (Claude Opus) completed reconnaissance fastest at an average of 262\,s per run
-while also issuing the most tool calls (avg.\ 20), reflecting a deeper, iterative enumeration strategy.
-Both the BFH model (\texttt{gpt-oss:120b}) and the local model (\texttt{qwen3:30b}) were slower
-and used far fewer tool calls (5 and 7 respectively), which is consistent with their shallower
-service enumeration depth visible in the lower host and findings counts.
-The reference \texttt{recon} scenario, which executes a fixed, deterministic script, serves as
-the theoretical upper bound with all 10 hosts, findings, and services identified.
-
-
-\begin{figure}[H]
+\begin{table}[H]
+    \caption{Benchmark Results --- Containerlab, Multi-Agent ($n = 10$ runs each)}
     \centering
-    \includegraphics[width=0.8\linewidth]{figures/benchmark_duration_comparison_21_05_2026}
-    \caption{Mean run duration per model (Containerlab, $n=10$ runs each).}
-    \label{fig:benchmark_duration_comparison_21_05_2026}
-\end{figure}
 
-Figure~\ref{fig:benchmark_duration_comparison_21_05_2026} visualizes the mean run duration per model.
-The frontier model is the fastest despite performing the most tool calls and consuming the most tokens.
-The local \texttt{qwen3:30b} model is the slowest on average (422\,s), closely followed of the \texttt{gpt.oss:120b}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l c c c c c}
+            \hline\hline
+            Model              & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings \\ [0.5ex]
+            \hline
+            claude-opus-4-7    & 150 s          & 59,988       & 5           & 9              & 8              \\
+            qwen3:30b          & 252 s          & 27,789       & 4           & 8              & 5              \\
+            gpt-oss:120b (BFH) & 847 s          & 46,736       & 5           & 7              & 5              \\
+            Static Scenario    & 29 s           & ---          & 5           & 13             & 8              \\
+            \hline
+        \end{tabular}
+    }
+    \label{tab:overview-containerlab-multi}
+\end{table}
+
+Tables~\ref{tab:overview-containerlab-single} and~\ref{tab:overview-containerlab-multi} summarise
+the quantitative results across ten runs per model in the virtual \gls{Containerlab} environment,
+for the single-agent and multi-agent configurations respectively.
+The frontier model \texttt{claude-opus-4-7} achieves the shortest mean duration in single-agent mode
+(122\,s) and only slightly longer in multi-agent mode (150\,s), while consistently attaining the
+highest discovery quality, matching the Static Scenario baseline on findings (8 out of 8) and
+recovering the most services (9) in both configurations.
+The open-weight local model \texttt{qwen3:30b} benefits significantly from the multi-agent setup:
+duration drops from 362\,s to 252\,s and token consumption falls from 86,446 to 27,789, while
+service coverage improves from 7 to 8.
+The BFH-hosted model \texttt{gpt-oss:120b} improves from 963\,s to 847\,s in multi-agent mode,
+though it remains the slowest model across both configurations.
+The \emph{Static Scenario} executes a fixed, deterministic reconnaissance script in 29\,s and serves
+as the reference baseline: it discovers all 5 reachable hosts and finds 13 services (through exhaustive
+port scanning) and 8 findings, setting the benchmark and reference for the reconnaissance scenarios
+in this environment.
+
+\subsection{Quantitative Criteria}\label{subsed:quantitative-criteria-containerlab}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/benchmark_token_usage_21_05_2026}
-    \caption{Mean total token usage per model (Containerlab, $n=10$ runs each).}
-    \label{fig:benchmark_token_usage_21_05_2026}
-\end{figure}
-
-Figure~\ref{fig:benchmark_token_usage_21_05_2026} shows mean token consumption.
-The frontier model consumes roughly four times as many tokens as the BFH model (83,277 vs.\ 20,496),
-which directly reflects the richer context it accumulates: longer tool outputs, repeated re-analysis
-of scan results, and verbose final assessments.
-Notably, \texttt{qwen3:30b} and the \texttt{gpt:oss:120b} have an almost equal token consumption.
-
-\begin{figure}[H]
+    \begin{subfigure}{0.5\linewidth}
         \centering
-        \includegraphics[width=1\linewidth]{figures/benchmark_tokens_vs_duration_21_05_2026}
-        \caption{Total tokens vs.\ run duration, annotated with tool-call count per run (Containerlab).}
-        \label{fig:benchmark_tokens_vs_duration_21_05_2026}
+        \includesvg[width=1\linewidth]{figures/benchmark_duration_comparison_25_05_2026.svg}
+        \caption{Single-agent.}
+        \label{fig:benchmark_duration_containerlab_single}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includesvg[width=1\linewidth]{figures/benchmark_duration_comparison_26_05_2026.svg}
+        \caption{Multi-agent.}
+        \label{fig:benchmark_duration_containerlab_multi}
+    \end{subfigure}
+    \caption{Mean run duration per model (Containerlab, $n=10$ runs each).}
+    \label{fig:benchmark_duration_containerlab}
 \end{figure}
 
-Figure~\ref{fig:benchmark_tokens_vs_duration_21_05_2026} plots total token consumption against
-run duration for every individual run, with tool-call counts annotated per data point.
-The frontier model occupies the upper-right region (high tokens, moderate-to-high duration)
-with a wide spread, reflecting run-to-run variation in how deeply the model chose to enumerate
-individual services.
-The BFH and local models cluster in the lower-left (fewer tokens, shorter-to-mid duration),
-confirming their more uniform but shallower execution profiles.
+Figure~\ref{fig:benchmark_duration_containerlab} visualises the mean run duration per model for
+both configurations side by side.
+In single-agent mode, \texttt{claude-opus-4-7} completes in 122\,s, while \texttt{qwen3:30b}
+takes 362\,s and \texttt{gpt-oss:120b} 963\,s.
+The multi-agent configuration reduces duration for all open-weight models:
+\texttt{qwen3:30b} drops to 252\,s and \texttt{gpt-oss:120b} to 847\,s, while
+\texttt{claude-opus-4-7} remains stable at 150\,s.
+The Static Scenario at 29\,s reflects only the fixed execution time of the deterministic script
+with no inference overhead.
 
-\todo{figure of services and ports}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includesvg[width=1\linewidth]{figures/benchmark_token_usage_25_05_2026.svg}
+        \caption{Single-agent.}
+        \label{fig:benchmark_tokens_containerlab_single}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includesvg[width=1\linewidth]{figures/benchmark_token_usage_26_05_2026.svg}
+        \caption{Multi-agent.}
+        \label{fig:benchmark_tokens_containerlab_multi}
+    \end{subfigure}
+    \caption{Mean total token usage per model (Containerlab, $n=10$ runs each).}
+    \label{fig:benchmark_tokens_containerlab}
+\end{figure}
+
+Figure~\ref{fig:benchmark_tokens_containerlab} shows mean token consumption per model.
+The most striking difference between configurations is \texttt{qwen3:30b}: in single-agent mode it
+consumes the most tokens of any \acrshort{AI} model (86,446), whereas in multi-agent mode its
+consumption falls to 27,789 --- the lowest of all three models.
+This indicates that distributing the task across specialised sub-agents allows each agent to operate
+on a much smaller context.
+\texttt{claude-opus-4-7} uses 52,888 tokens in single-agent and 59,988 in multi-agent mode;
+\texttt{gpt-oss:120b} drops from 62,475 to 46,736.
+Token count alone is not a reliable proxy for result quality: \texttt{claude-opus-4-7} achieves the
+best outcomes while consuming a moderate number of tokens in both configurations.
+
+
+\begin{figure}[H]
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includesvg[width=1\linewidth]{figures/benchmark_tokens_vs_duration_25_05_2026.svg}
+        \caption{Single-agent.}
+        \label{fig:benchmark_scatter_containerlab_single}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includesvg[width=1\linewidth]{figures/benchmark_tokens_vs_duration_26_05_2026.svg}
+        \caption{Multi-agent.}
+        \label{fig:benchmark_scatter_containerlab_multi}
+    \end{subfigure}
+    \caption{Total tokens vs.\ run duration per individual run (Containerlab, $n=10$ per model).}
+    \label{fig:benchmark_scatter_containerlab}
+\end{figure}
+
+Figure~\ref{fig:benchmark_scatter_containerlab} plots total token consumption against run duration
+for every individual run.
+In single-agent mode, \texttt{qwen3:30b} scatters to the upper-right (high tokens, mid-to-high
+duration), while in multi-agent mode its cluster shifts to the lower-left (few tokens, lower
+duration), reflecting the benefit of task decomposition.
+\texttt{claude-opus-4-7} remains consistently in the low-duration region across both configurations.
+\texttt{gpt-oss:120b} occupies the far-right in both plots, confirming its consistently high
+duration regardless of configuration.
+The horizontal dashed line for the Static Scenario reflects its fixed 29\,s execution with no
+token consumption.
+The spread within each model's cluster reveals run-to-run variability in how deeply the
+\acrshort{AI} agents chose to enumerate hosts and services before concluding.
+
+
+\begin{figure}[H]
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includesvg[width=1\linewidth]{figures/benchmark_services_25_05_2026.svg}
+        \caption{Single-agent.}
+        \label{fig:benchmark_services_containerlab_single}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includesvg[width=1\linewidth]{figures/benchmark_services_26_05_2026.svg}
+        \caption{Multi-agent.}
+        \label{fig:benchmark_services_containerlab_multi}
+    \end{subfigure}
+    \caption{Average hosts, services, and findings discovered per model (Containerlab, $n=10$ runs each).}
+    \label{fig:benchmark_services_containerlab}
+\end{figure}
+
+Figure~\ref{fig:benchmark_services_containerlab} compares discovery breadth across models and
+configurations.
+\texttt{claude-opus-4-7} consistently discovers all 5 reachable hosts, 9 services, and the maximum
+of 8 findings in both configurations, matching the deterministic baseline on findings.
+\texttt{qwen3:30b} improves from 7 to 8 services in multi-agent mode, suggesting that sub-agent
+specialisation compensates for weaker individual reasoning depth.
+\texttt{gpt-oss:120b} similarly improves from 6 to 7 services and from 4 to 5 findings between
+configurations.
+The Static Scenario's 13 services exceed all \acrshort{AI} models because the script issues
+exhaustive port sweeps unconditionally, while \acrshort{AI} agents terminate scanning early once
+they judge the network to be sufficiently enumerated.
+
+
+\subsection{Qualitativ Criteria}\label{subsec:qualitativ-criteria-containerlab}
