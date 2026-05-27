@@ -1,0 +1,52 @@
+% ─────────────────────────────────────────────────────────────────────────────
+% Environment: Containerlab (Virtual)
+% 3 models × 10 runs + 1 reference (traditional recon)
+% Evaluation criteria: see §\ref{subsec:criteria}
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Cyberlab bfh}\label{sec:eval-cyberlab}
+
+\paragraph{Overview}
+
+\begin{table}[H]
+    \caption{Nonlinear Model Results}
+    \centering
+
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{c c c c c c c}
+            \hline\hline
+            Kind               & Avg Duration & Avg Tokens & Avg Tool Calls & Hosts & Findings & Services \\ [0.5ex]
+            \hline
+            Frontier (claude)  & 262 s        & 83,277     & 20             & 4     & 3        & 9        \\
+            BFH (gpt-oss:120b) & 383 s        & 20,496     & 5              & 3     & 4        & 9        \\
+            qwen:30b           & 422 s        & 28,122     & 7              & 3     & 4        & 8        \\
+            recon              & -            & -          & -              & 10    & 10       & 10       \\
+            \hline
+        \end{tabular}
+    }
+    \label{tab:overview-cyberlab}
+\end{table}
+The static scenario got executed and returns a result in reasonable time.
+The Agents with structured output - does have findings and writes the findings in different text files ( ports, services, smb ...) also
+creates an assessement md n where recommendation are presented to secure the network.
+
+The BFH lab
+The static scenario gots executed and returns a result in reasonable time.
+
+\subsection{Qualitative Criteria}\label{subsec:qualitativ-criteria-cyberlab}
+
+The evaluation criteria and scoring scale are defined in Table~\ref{tab:qualitative-scale}.
+
+\begin{table}[h]
+\centering
+\caption{Qualitative Evaluation -- Cyberlab BFH}
+\label{tab:qualitative-results-cyberlab-bfh}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Model} & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes} \\
+\midrule
+gpt-oss:120b  & & & \\
+claude-sonnet & & & \\
+\bottomrule
+\end{tabular}
+\end{table}
