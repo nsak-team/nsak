@@ -1,20 +1,20 @@
 % Time form: Present Tense
 
-% Context
-As adversaries grow in number, security teams increasingly rely on \textbf{red and blue team exercises} to identify vulnerabilities before they can be exploited.
-Manually engineered scenarios offer flexibility and reproducibility, but require a high level of cybersecurity expertise and lack adaptability to changing conditions.
-\textbf{Large Language Models}, by contrast, can reason over tool output and dynamically adjust their behavior.
+Red and blue team exercises are established cybersecurity practices,
+yet they remain largely inaccessible to small- and medium-sized organizations due to the expertise and recurring effort these practices demand.
+We present an approach that combines \glspl{LLM} with existing network security tools to reduce knowledge barriers and time investment.
+Concretely, we integrated an \gls{AI} agent with tool calling capabilities into the \gls{NSAK} framework
+\textthreequartersemdash~a network security test automation framework established in our preceding work \textthreautomationequartersemdash~
+and developed an agentic network reconnaissance scenario.
+We evaluated its effectiveness across models of varying size,
+benchmarking it against a scripted scenario in a reproducible network environment.
+The results show that even smaller models are capable of autonomously conducting standard red team activities.
+However, the failure rate remains considerable, though most failures are detectable, enabling retry logic.
+Furthermore, the \gls{AI}-driven approach demonstrates a clear advantage beyond the limitations of scripted counterparts:
+assessing results and generating reports with prioritized findings and steps to verify and address identified vulnerabilities.
+This work highlights the emerging capabilities of \glspl{LLM},
+making cybersecurity use cases more accessible and cost-effective.
 
-% Research question
-This thesis investigates whether \textbf{agentic AI} can effectively automate and enhance network security scenarios within the \textbf{NSAK} framework — a modular Python-based cybersecurity orchestration platform developed in a predecessor project.
 
-% Approach
-To address this question, the framework is extended with an agentic drill integration built on \texttt{LangChain}.
-The agent is equipped with tools for CLI interaction, host configuration, and autonomous \textbf{purple team reconnaissance}.
-A deterministic reference scenario — chaining the drills \texttt{host-discovery}, \texttt{port-scanning}, and \texttt{service-enumeration} — serves as the reproducible baseline.
-
-% Evaluation
-Three models are benchmarked across 10 runs in three environments (\emph{containerlab}, \emph{physical lab}, and \emph{BFH Cyber Lab}):
-a frontier model (\texttt{Claude Opus 4.7}), an institutionally hosted open-weight model (\texttt{gpt-oss:120b}), and a locally-run open-source model (\texttt{qwen3:30b} via Ollama).
-
-\todo{results / conclusion sentence}
+\textbf{Index Terms: }
+Red and blue team exercises, Network Security Automation Framework, Automated Reconnaissance, Large Language Models, \gls{AI}-Driven Cybersecurity

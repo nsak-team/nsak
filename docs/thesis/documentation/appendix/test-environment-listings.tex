@@ -26,7 +26,8 @@ Listing \ref{lst:firewall} shows the nf-tabels rules set for segmentation of wan
 	\label{lst:dmz-server}
 \end{listing}
 
-Listing~\ref{lst:dmz-server} shows a web server and DNS server node in the Containerlab YAML configuration. This node is located in the demilitarized zone (DMZ) of the network.
+Listing~\ref{lst:dmz-server} shows a web server and DNS server node in the Containerlab \gls{YAML} configuration.
+This node is located in the demilitarized zone (DMZ) of the network.
 
 \begin{listing}[H]
 	\inputminted[
@@ -43,10 +44,10 @@ The LAN segment consists of four nodes, as shown in the following code snippets.
 
 \begin{listing}[H]
 	\inputminted[
-	linenos=false,
-	fontsize=\tiny,
-	firstline=207,
-	lastline=270
+		linenos=false,
+		fontsize=\tiny,
+		firstline=207,
+		lastline=270
 	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
 	\caption{Work-Stations Bob and Alice}
 	\label{lst:workstations}
@@ -86,7 +87,7 @@ Listing~\ref{lst:links} shows the connection between endpoints over the defined 
 	\caption{Introduced Vulnerabilities in the Virtual Enterprise Network}
 	\label{lst:flaws-and-vulnerabilities}
 	\begin{minted}[
-		fontsize=\scriptsize,
+		fontsize=\tiny,
 		breaklines,
 		breakanywhere,
 		linenos,
