@@ -12,25 +12,82 @@
     \centering
 
     \resizebox{\textwidth}{!}{
-        \begin{tabular}{c c c c c c c}
+        \begin{tabular}{c c c c}
             \hline\hline
-            Kind               & Avg Duration & Avg Tokens & Avg Tool Calls & Hosts & Findings & Services \\ [0.5ex]
+            Kind               & Avg Duration & Avg Tokens  \\ [0.5ex]
             \hline
-            Frontier (claude)  & 262 s        & 83,277     & 20             & 4     & 3        & 9        \\
-            BFH (gpt-oss:120b) & 383 s        & 20,496     & 5              & 3     & 4        & 9        \\
-            qwen:30b           & 422 s        & 28,122     & 7              & 3     & 4        & 8        \\
-            recon              & -            & -          & -              & 10    & 10       & 10       \\
+            Multi Agent  & 318 s        & 81453             \\
+            Unstructured Output & 739 s        & 222094          \\
             \hline
         \end{tabular}
     }
     \label{tab:overview-cyberlab}
 \end{table}
-The static scenario got executed and returns a result in reasonable time.
-The Agents with structured output - does have findings and writes the findings in different text files ( ports, services, smb ...) also
-creates an assessement md n where recommendation are presented to secure the network.
+The
 
-The BFH lab
-The static scenario gots executed and returns a result in reasonable time.
+\subsection{Quantitative Criteria}\label{subsec:quantitative-criteria-cyberlab}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_duration_comparison_27_05_2026.svg}
+    \caption{Mean run duration per model (Cyberlab BFH).}
+    \label{fig:benchmark_duration_cyberlab}
+\end{figure}
+
+Figure~\ref{fig:benchmark_duration_cyberlab} shows the mean run duration per configuration.
+The multi-agent setup completes in 318\,s on average, while the unstructured output scenario
+requires 739\,s — more than twice as long.
+The extended duration of the unstructured variant stems from its tendency to produce lengthy
+free-form responses before each tool invocation, increasing overall wall-clock time without
+a proportional gain in coverage.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_token_usage_27_05_2026.svg}
+    \caption{Mean total token usage per model (Cyberlab BFH).}
+    \label{fig:benchmark_tokens_cyberlab}
+\end{figure}
+
+Figure~\ref{fig:benchmark_tokens_cyberlab} visualises mean token consumption.
+The unstructured output scenario consumes 222,094 tokens on average, nearly three times the
+81,453 tokens used by the multi-agent configuration.
+This difference reflects the verbosity of unstructured reasoning traces compared to the
+focused, schema-constrained outputs of the multi-agent setup, where each sub-agent exchanges
+only the information necessary for its specialised task.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_tokens_vs_duration_27_05_2026.svg}
+    \caption{Total tokens vs.\ run duration per individual run (Cyberlab BFH).}
+    \label{fig:benchmark_scatter_cyberlab}
+\end{figure}
+
+Figure~\ref{fig:benchmark_scatter_cyberlab} plots total token consumption against run duration
+for every individual run.
+The unstructured output runs exhibit high variance in both dimensions, spanning 310\,s to
+1{,}091\,s and 119\,k to 305\,k tokens, indicating non-deterministic reasoning depth.
+Multi-agent runs cluster more tightly, with durations between 84\,s and 684\,s, reflecting
+the bounded scope of each sub-task.
+The positive correlation visible within each group confirms that longer runs consume more
+tokens, driven by deeper enumeration rather than repeated failures.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_services_27_05_2026.svg}
+    \caption{Average hosts, services, and findings discovered per model (Cyberlab BFH).}
+    \label{fig:benchmark_services_cyberlab}
+\end{figure}
+
+Figure~\ref{fig:benchmark_services_cyberlab} compares discovery breadth across the two
+configurations.
+The multi-agent setup discovers an average of 15 hosts, 27 services, and 27 findings per
+run on the Cyberlab BFH segment.
+The unstructured output scenario does not produce structured discovery metrics, as its
+assessment is written as free-form text rather than a machine-readable result map, so no
+comparable figures are available for that configuration.
+The Cyberlab environment is considerably larger than the Containerlab setup, containing
+roughly 30 live hosts across the 193.5.80.0/24 subnet, which explains the higher absolute
+counts compared to the virtual evaluation environment.
 
 \subsection{Qualitative Criteria}\label{subsec:qualitativ-criteria-cyberlab}
 

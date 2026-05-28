@@ -31,43 +31,6 @@ A direct comparison of results therefore requires either parsing the AI output o
 % ─────────────────────────────────────────────────────────────────────────────
 
 
-\section{Evaluation Setup}\label{sec:evaluation-setup}
-
-\subsection{Criteria}\label{subsec:criteria}
-
-\textbf{Qualitative criteria:}
-
-\begin{itemize}
-    \item \textbf{Correctness and Task completion/completeness:} Are the scenarios completed fully and are the results correct?
-    \item \textbf{Creativity: AI-specific} Does AI Recon identify relationships or suggest follow-up steps not covered by Traditional Recon?
-    \item \textbf{Consistency network discovery results:} How much does the output vary across $n = 10$ runs with an identical prompt, per model and environment?
-\end{itemize}
-
-\textbf{Quantitative criteria:}
-
-\begin{itemize}
-    \item \textbf{Speed:} Time from scenario start to complete output of all discovered hosts and services
-    \item \textbf{Token usage: AI-specific} Number of tokens consumed per run (AI Recon only)
-\end{itemize}
-
-\todo{We try to fix most of the parameters which influence the success criteria therefore we use a fixed engineered prompt for all models and environments}
-With 3 models $\times$ 3 environments $\times$ $n = 10$ runs, this yields 90 measurements for AI Recon.
-
-\subsection{Environments}\label{subsec:environments}
-
-\begin{enumerate}
-    \item Virtual environment (containerlab)
-    \item Physical environment
-    \item BFH lab
-\end{enumerate}
-
-\subsection{Models}\label{subsec:models}
-
-\begin{enumerate}
-    \item Self-hosted local LLM (Ollama)
-    \item BFH LLM
-    \item Frontier model (Anthropic Claude)
-\end{enumerate}
 
 \section{Todos}
 \begin{enumerate}

@@ -8,7 +8,7 @@
 \paragraph{Overview}
 
 Tables~\ref{tab:overview-containerlab-single} and~\ref{tab:overview-containerlab-multi} present
-results for both the single-agent and multi-agent configurations, where the multi-agent setup splits
+results for both the single-agent and multi-agent implementation, where the multi-agent setup splits
 the reconnaissance scenario into three specialised sub-tasks.
 The subsequent quantitative and qualitative analysis focuses on the multi-agent set up, as it
 constitutes the primary contribution of this work.
@@ -21,12 +21,12 @@ and multi-agent configurations, while smaller models benefit noticeably from tas
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l c c c c c c}
             \hline\hline
-            Model              & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings & Success Factor\\ [0.5ex]
+            Model & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings \ Success Factor\\ [0.5ex]
             \hline
-            claude-opus-4-7    & 122 s          & 52,888       & 5           & 9              & 8              & 10/12          \\
-            qwen3:30b          & 362 s          & 86,446       & 4           & 7              & 5              & 10/23          \\
-            gpt-oss:120b (BFH) & 963 s          & 62,475       & 5           & 6              & 4              & 10/18          \\
-            Static Scenario    & 29 s           & ---          & 5           & 13             & 8              & 10/10          \\
+            claude-opus-4-7    & 122 s & 52,888 & 5 & 9  & 8 & 10/12 \\
+            qwen3:30b          & 362 s & 86,446 & 4 & 7  & 5 & 10/23 \\
+            gpt-oss:120b (BFH) & 963 s & 62,475 & 5 & 6  & 4 & 10/18 \\
+            Static Scenario    & 29 s  & ---    & 5 & 13 & 8 & 10/10 \\
             \hline
         \end{tabular}
     }
@@ -51,121 +51,237 @@ and multi-agent configurations, while smaller models benefit noticeably from tas
     \label{tab:overview-containerlab-multi}
 \end{table}
 
-Comparing the two configurations, \texttt{claude-opus-4-7} achieves near-identical discovery quality
-in both modes (9 services, 8 findings), confirming that the frontier model is robust regardless of
-set up.
-In contrast, the smaller models profit from decomposition: \texttt{qwen3:30b} improves from 7 to 8
-services and reduces duration from 362\,s to 252\,s, while \texttt{gpt-oss:120b} improves from 6 to
-7 services and from 4 to 5 findings.
-The \emph{Static Scenario} serves as the reference baseline, discovering all 5 hosts, 13 services
-via exhaustive port scanning, and 8 findings in a deterministic 29\,s execution.
-Overall does all models profit from the decomposed context with a higher success factor.
-This value count the ratio of successful runs with findings.
-Failures are also safed but the non-determenistic
+Comparing the two configurations, \texttt{claude-opus-4-7} achieves near-identical discovery
+quality in both modes (9 services, 8 findings) while its duration increases only slightly
+from 122\,s to 150\,s, confirming that the frontier model is robust regardless of setup.
+The smaller models benefit more visibly from task decomposition: \texttt{qwen3:30b} reduces
+its duration by 30\,\% (362\,s to 252\,s) and improves service discovery from 7 to 8,
+and \texttt{gpt-oss:120b} cuts duration from 963\,s to 847\,s while gaining one service
+(6 to 7) and one finding (4 to 5).
+The most pronounced effect of decomposition is on token consumption: \texttt{qwen3:30b}
+reduces its token usage by 68\,\% (86,446 to 27,789) in multi-agent mode, as each sub-agent
+operates on a narrower, focused context rather than carrying the full task history.
+The \emph{Static Scenario} serves as the deterministic reference baseline, discovering all
+5 hosts and 13 services unconditionally in 29\,s with no token cost.
+The success factor — defined as the number of total attempts required to collect 10 successful
+runs with findings — improves for all models under decomposition:
+\texttt{claude-opus-4-7} reaches a perfect 10/10 (down from 10/12),
+\texttt{qwen3:30b} improves from 10/23 to 10/11, and \texttt{gpt-oss:120b} from 10/18 to 10/14.
 
-\subsection{Quantitative Criteria}\label{subsed:quantitative-criteria-containerlab}
+\subsection{Quantitative Criteria}\label{subsec:quantitative-criteria-containerlab}
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.8\linewidth]{figures/containerlab/benchmark_duration_comparison_26_05_2026_multi_agent.svg}
-    \caption{Mean run duration per model (Containerlab, multi-agent, $n=10$ runs each).}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_duration_comparison_25_05_2026_single_agent.svg}
+        \caption{Single-agent}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_duration_comparison_26_05_2026_multi_agent.svg}
+        \caption{Multi-agent}
+    \end{subfigure}
+    \caption{Mean run duration per model (Containerlab, $n=10$ runs each).}
     \label{fig:benchmark_duration_containerlab}
 \end{figure}
 
-Figure~\ref{fig:benchmark_duration_containerlab} visualises the mean run duration per model.
-\texttt{claude-opus-4-7} completes in 150\,s, \texttt{qwen3:30b} in 252\,s, and
-\texttt{gpt-oss:120b} in 847\,s.
-The Static Scenario at 29\,s reflects the baseline and reference static scenario with a fixed execution time of the deterministic script.
+Figure~\ref{fig:benchmark_duration_containerlab} visualises the mean run duration per model
+for both configurations.
+In single-agent mode, \texttt{gpt-oss:120b} dominates with 963\,s, followed by
+\texttt{qwen3:30b} at 362\,s and \texttt{claude-opus-4-7} at 122\,s.
+Multi-agent decomposition reduces duration for all three models: \texttt{gpt-oss:120b} drops
+to 847\,s (\(-12\,\%\)), \texttt{qwen3:30b} to 252\,s (\(-30\,\%\)), and
+\texttt{claude-opus-4-7} increases slightly to 150\,s due to the coordination overhead of
+spawning and collecting results from three sub-agents.
+The Static Scenario remains constant at 29\,s as the deterministic reference.
 
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.8\linewidth]{figures/containerlab/benchmark_token_usage_26_05_2026_multi_agent.svg}
-    \caption{Mean total token usage per model (Containerlab, multi-agent, $n=10$ runs each).}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_token_usage_25_05_2026_single_agent.svg}
+        \caption{Single-agent}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_token_usage_26_05_2026_multi_agent.svg}
+        \caption{Multi-agent}
+    \end{subfigure}
+    \caption{Mean total token usage per model (Containerlab, $n=10$ runs each).}
     \label{fig:benchmark_tokens_containerlab}
 \end{figure}
 
-Figure~\ref{fig:benchmark_tokens_containerlab} shows mean token consumption per model.
-\texttt{claude-opus-4-7} uses 59,988 tokens, \texttt{gpt-oss:120b} 46,736, and \texttt{qwen3:30b}
-the fewest at 27,789.
-Token count alone is not a reliable factor for result quality: \texttt{claude-opus-4-7} achieves
-the best outcomes while consuming the largest amount of tokens.
+Figure~\ref{fig:benchmark_tokens_containerlab} shows mean token consumption and reveals the
+most striking difference between the two configurations.
+\texttt{qwen3:30b} reduces its token usage by 68\,\% from 86,446 (single-agent) to 27,789
+(multi-agent), the largest relative drop of any model.
+\texttt{gpt-oss:120b} decreases from 62,475 to 46,736 (\(-25\,\%\)), while
+\texttt{claude-opus-4-7} increases slightly from 52,888 to 59,988 (\(+13\,\%\)).
+The reduction for smaller models reflects the benefit of focused sub-agent contexts: instead
+of one agent accumulating the full task history, each sub-agent receives only the information
+relevant to its specialised step, keeping prompt lengths short.
+Token count alone is not a reliable factor of result quality: \texttt{claude-opus-4-7}
+achieves the best discovery outcomes despite consuming the most tokens in multi-agent mode.
 
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.8\linewidth]{figures/containerlab/benchmark_tokens_vs_duration_26_05_2026_multi_agent.svg}
-    \caption{Total tokens vs.\ run duration per individual run (Containerlab, multi-agent, $n=10$ per model).}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_tokens_vs_duration_25_05_2026_single_agent.svg}
+        \caption{Single-agent}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_tokens_vs_duration_26_05_2026_multi_agent.svg}
+        \caption{Multi-agent}
+    \end{subfigure}
+    \caption{Total tokens vs.\ run duration per individual run (Containerlab, $n=10$ per model).}
     \label{fig:benchmark_scatter_containerlab}
 \end{figure}
 
-Figure~\ref{fig:benchmark_scatter_containerlab} plots total token consumption against run duration
-for every individual run.
-\texttt{claude-opus-4-7} remains consistently in the low-duration region and also consumes reliable for every run the same amount of tokens.
-\texttt{qwen3:30b} clusters in the low-token, mid-duration region, notable that the avg token consumtion and
-\texttt{gpt-oss:120b} occupies the far-right, confirming its consistently high duration.
-The horizontal dashed line for the Static Scenario reflects its fixed 29\,s execution with no
-token consumption.
-The spread within each model's cluster reveals run-to-run variability in how deeply the
-\acrshort{AI} agents chose to enumerate hosts and services before concluding.
+Figure~\ref{fig:benchmark_scatter_containerlab} plots total token consumption against run
+duration for every individual run, allowing within-model variance to be compared across
+configurations.
+In single-agent mode (left), \texttt{claude-opus-4-7} with the gray color clusters in low-duration,
+mid-token area; \texttt{qwen3:30b} scatters widely in the mid-duration, high-token region;
+and \texttt{gpt-oss:120b} is spread across the far-right high-duration band and is much more unreliable with token consumption and execution duration.
+In multi-agent mode (right), all three clusters shift toward lower token counts, and the
+\texttt{qwen3:30b} cluster tightens considerably, indicating more consistent behaviour under
+decomposed context.
+\texttt{claude-opus-4-7} remains tightly grouped in both modes, confirming its low variation between the runs.
+The horizontal dashed line for the Static Scenario reflects its fixed 29\,s execution with
+no token consumption in either configuration.
+The avg of the model runs are also presented as dashed line.
 
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.8\linewidth]{figures/containerlab/benchmark_services_26_05_2026_multi_agent.svg}
-    \caption{Average hosts, services, and findings discovered per model (Containerlab, multi-agent, $n=10$ runs each).}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_services_25_05_2026_single_agent.svg}
+        \caption{Single-agent}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_services_26_05_2026_multi_agent.svg}
+        \caption{Multi-agent}
+    \end{subfigure}
+    \caption{Average hosts, services, and findings discovered per model (Containerlab, $n=10$ runs each).}
     \label{fig:benchmark_services_containerlab}
 \end{figure}
 
-Figure~\ref{fig:benchmark_services_containerlab} compares discovery breadth across models.
-\texttt{claude-opus-4-7} consistently discovers all 5 reachable hosts, 9 services, and the maximum
-of 8 findings, matching the deterministic baseline on findings.
-\texttt{qwen3:30b} reaches 8 services and 5 findings; \texttt{gpt-oss:120b} discovers 7 services
-and 5 findings.
+Figure~\ref{fig:benchmark_services_containerlab} compares discovery breadth across models
+and configurations.
+\texttt{claude-opus-4-7} discovers 9 services and 8 findings in both modes, confirming that
+the frontier model extracts equivalent intelligence regardless of setup.
+The results are almost similar in both set ups but vary slightly in favor of the multi-agent approach for smaller models.
+\texttt{qwen3:30b} gains one service (7 to 8) and \texttt{gpt-oss:120b} gains one service
+(6 to 7) and one finding (4 to 5).
+Host discovery remains stable at 5 for \texttt{claude-opus-4-7} and \texttt{gpt-oss:120b},
+and at 4 for \texttt{qwen3:30b} in both configurations.
 The Static Scenario's 13 services exceed all \acrshort{AI} models because the script issues
-exhaustive port sweeps unconditionally, while \acrshort{AI} agents terminate scanning early once
-they judge the network to be sufficiently enumerated.
+exhaustive port sweeps unconditionally, while \acrshort{AI} agents terminate scanning early
+once they judge the network sufficiently enumerated.
 
 \subsection{Qualitative Criteria}\label{subsec:qualitativ-criteria-containerlab}
 
-
-\begin{table}[h]
-    \centering
-    \caption{Qualitative Evaluation Scale for LLM Reconnaissance Results}
-    \label{tab:qualitative-scale}
-    \begin{tabularx}{\textwidth}{@{}lllX@{}}
-\toprule
-\textbf{Criterion} & \textbf{Score} & \textbf{Level} & \textbf{Description} \\
-\midrule
-\multirow{5}{*}{\textbf{Correctness}}
-& 1--2  & Insufficient  & Results are mostly wrong or irrelevant; no actionable information \\
-& 3--4  & Poor          & Few correct findings; many errors in services, ports, or versions \\
-& 5--6  & Adequate      & Majority of hosts/services correct; isolated errors in version or protocol details \\
-& 7--8  & Good          & Findings largely correct and complete; minor inaccuracies \\
-& 9--10 & Excellent     & All key hosts, services, and versions correctly and precisely identified \\
-\midrule
-\multirow{5}{*}{\textbf{Hallucination}}
-& 1--2  & Severe        & Numerous fabricated hosts, services, or vulnerabilities without basis \\
-& 3--4  & Noticeable    & Several unsubstantiated findings; confusion of IPs or services \\
-& 5--6  & Moderate      & Isolated unconfirmed statements; version numbers or banners slightly distorted \\
-& 7--8  & Low           & Rare inaccuracies; findings are traceable to raw scan data \\
-& 9--10 & None          & All statements directly verifiable from scan output; no fabrications \\
-\bottomrule
-    \end{tabularx}
-\end{table}
+The evaluation criteria and scoring scale are defined in Table~\ref{tab:qualitative-scale}.
+The key discriminator in the Containerlab environment is whether a model extracts the
+cleartext \acrshort{LDAP} credentials exposed by the anonymous bind on \texttt{192.168.10.5}
+(\texttt{uid=asmith}/\texttt{uid=bjones}, password \texttt{Password123!}) — the scenario's
+single \emph{Critical} finding.
 
 \begin{table}[h]
     \centering
     \caption{Qualitative Evaluation -- ContainerLab (Multi-Agent)}
     \label{tab:qualitative-results-containerlab}
     \small
-    \begin{tabular}{@{}lccc@{}}
+    \begin{tabular}{@{}lccl@{}}
         \toprule
         \textbf{Model}  & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes} \\
         \midrule
-        claude-opus-4-7 &                      &                        &                \\
-        qwen3:30b       &                      &                        &                \\
-        gpt-oss:120b    &                      &                        &                \\
+        claude-opus-4-7  & 9   & 9   & LDAP credentials extracted in all 10 runs; printer identified as honeypot \\
+        qwen3:30b        & 5   & 8   & LDAP enumerated but credentials never extracted; rated as low risk \\
+        gpt-oss:120b     & 6   & 6   & Credentials extracted in $\approx$5/10 runs; fabricated CVE numbers in several reports \\
+        Static Scenario  & 10  & N/A & Deterministic script; exhaustive port scan; no assessment text generated \\
         \bottomrule
     \end{tabular}
 \end{table}
+
+\texttt{claude-opus-4-7} achieves the highest correctness score by consistently identifying
+the Critical \acrshort{LDAP} anonymous bind and extracting the plaintext credentials in every
+single run, accompanied by correct attack-chain reasoning (credential reuse → lateral movement
+via \acrshort{SSH}/\acrshort{SMB} relay).
+It also correctly characterises \texttt{192.168.10.50} as a honeypot based on the
+Python \texttt{BaseHTTPServer} banner behind an HP LaserJet facade.
+Its hallucination rate is low because all claims are directly traceable to scan output.
+
+\texttt{gpt-oss:120b} shows high run-to-run variance: in roughly half the successful runs it
+extracts the credentials and produces a thorough report, while in the other half it notes the
+\acrshort{LDAP} rootDSE and recommends restricting anonymous binds without actually performing
+the bind or reading the \texttt{userPassword} attribute.
+Several reports also reference fabricated CVE identifiers (e.g.\ \texttt{CVE-2023-xxxx}),
+lowering the hallucination score.
+
+\texttt{qwen3:30b} consistently performs the host and service discovery steps correctly but
+fails at the enumeration depth required to surface the Critical finding.
+In 9 of 10 runs it rates the \acrshort{LDAP} service as ``Low'' risk with ``no immediate
+vulnerability detected'', missing the cleartext credential exposure entirely.
+The low hallucination score reflects that the model makes few unverifiable claims — but
+this is a consequence of shallow analysis rather than rigour.
+
+Table~\ref{tab:vuln-coverage-containerlab} maps each introduced vulnerability against what
+each configuration actually discovered, allowing a per-finding comparison against the
+ground truth defined in the test environment.
+
+\begin{table}[H]
+    \centering
+    \caption{Vulnerability Coverage -- Containerlab LAN Scope (multi-agent, $n=10$ runs)}
+    \label{tab:vuln-coverage-containerlab}
+    \small
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{@{}p{6.5cm} c c c c@{}}
+        \toprule
+        \textbf{Vulnerability} & \textbf{Static} & \textbf{claude-opus} & \textbf{gpt-oss} & \textbf{qwen3} \\
+        \midrule
+        \multicolumn{5}{l}{\textit{ctrl-server (192.168.10.5) --- LDAP}} \\
+        LDAP anonymous bind (rootDSE / naming context) & \checkmark & \checkmark & \checkmark & -- \\
+        LDAP cleartext credentials (\texttt{asmith}/\texttt{bjones}: \texttt{Password123!}) & -- & \checkmark & (\checkmark) & -- \\
+        \midrule
+        \multicolumn{5}{l}{\textit{ctrl-server (192.168.10.5) --- SMB}} \\
+        SMB signing not required (relay attack surface) & \checkmark & \checkmark & \checkmark & \checkmark \\
+        SMB NTLM/LanMan weak auth protocols & -- & (\checkmark) & -- & -- \\
+        SMB public share anonymous read (\texttt{public}/\texttt{finance}) & -- & (\checkmark) & -- & -- \\
+        \midrule
+        \multicolumn{5}{l}{\textit{alice / bob (192.168.10.100, .101) --- SSH}} \\
+        SSH password authentication enabled & \checkmark & \checkmark & \checkmark & (\checkmark) \\
+        SSH banner leaks organisation name & -- & \checkmark & -- & -- \\
+        \midrule
+        \multicolumn{5}{l}{\textit{printer (192.168.10.50)}} \\
+        Unauthenticated web admin UI (port 80) & (\checkmark) & \checkmark & (\checkmark) & (\checkmark) \\
+        Print job history without auth (port 631) & (\checkmark) & (\checkmark) & -- & -- \\
+        SNMP public community string & -- & -- & -- & -- \\
+        Printer identified as honeypot (banner mismatch) & (\checkmark) & \checkmark & -- & -- \\
+        \midrule
+        \multicolumn{5}{l}{\textit{SSH hardening}} \\
+        Legacy HMAC-SHA1 still offered & -- & \checkmark & -- & -- \\
+        \bottomrule
+        \multicolumn{5}{l}{\small \checkmark\ found \quad (\checkmark)\ partial (port detected, not fully enumerated) \quad --\ not found} \\
+    \end{tabular}
+    }
+\end{table}
+
+The Static Scenario discovers all 13 \acrshort{LAN} services via exhaustive port sweeps and
+runs \texttt{ldap-rootdse} to retrieve the naming context (\texttt{dc=lab,dc=local}), but
+it never performs an \texttt{ldap-search} or anonymous bind, so the cleartext credentials
+remain unextracted.
+It identifies the printer's dual \texttt{Server} header (\texttt{BaseHTTP/0.6} alongside
+\texttt{HP-WebServer/2.6.5}) but through the generalistic implementation, the banner missmatch gets not further elaporated.
+
+\acrshort{SNMP} is not probed by any configuration, as the scenario issues only \acrshort{TCP}
+port sweeps and no model independently adds \texttt{snmpwalk} to its tool calls.
+The \acrshort{SMB} public and finance shares are listed as a recommended next step only by
+\texttt{claude-opus-4-7}, but authenticated share enumeration (\texttt{smbclient}) is not
+executed in any run.
+The \acrshort{DMZ} host (\texttt{172.16.1.10}) with its open \acrshort{DNS} zone transfer
+and exposed \texttt{/secret.txt} lies outside the \texttt{192.168.10.0/24} target subnet and
+is not reached by any configuration.

@@ -27,7 +27,7 @@ loger = logging.getLogger(__name__)
 
 MODELS: dict[str, dict] = {}  # type: ignore
 
-COLORS = ["#C3ACCE", "#89909F", "#538083", "#C76E00"]
+COLORS = ["#C3ACCE", "#89909F", "#C76E00", "#538083"]
 COLORS_FINDING = ["#5AB1BB", "#A5C882", "#F7DD72", "#4E6766"]
 
 
@@ -61,7 +61,7 @@ def plot_duration_comparison() -> None:
     ax.bar(names, means, color=COLORS[: len(names)], zorder=2)
     ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Mean Duration (s)")
-    ax.set_xlabel("Model")
+    ax.set_xlabel("Claude-Opus-4.7")
     ax.grid(axis="y", zorder=0, alpha=0.35)
     fig.tight_layout()
     _save(fig, "benchmark_duration_comparison" + date)
@@ -76,7 +76,7 @@ def plot_token_usage() -> None:
     ax.bar(names, means, color=COLORS[: len(names)], zorder=2)
     ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Mean Total Tokens")
-    ax.set_xlabel("Model")
+    ax.set_xlabel("Claude-Opus-4.7")
     ax.grid(axis="y", zorder=0, alpha=0.35)
     fig.tight_layout()
     _save(fig, "benchmark_token_usage" + date)
@@ -123,7 +123,7 @@ def plot_services() -> None:
     ax.yaxis.set_major_formatter(ScalarFormatter())
     ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Count")
-    ax.set_xlabel("Model")
+    ax.set_xlabel("Claude-Opus-4.7")
     ax.set_xticks(x)
     ax.set_xticklabels(names)
     ax.legend(loc="upper left")
@@ -199,7 +199,7 @@ def plot_tokens_vs_duration() -> None:
 
 
 def _save(fig: plt.Figure, name: str) -> None:
-    path = FIGURES_DIR / f"{name}.pdf"
+    path = FIGURES_DIR / f"{name}.svg"
     fig.savefig(path, bbox_inches="tight")
     plt.close(fig)
     loger.info("saved %s", path.relative_to(Path(__file__).parents[4]))
