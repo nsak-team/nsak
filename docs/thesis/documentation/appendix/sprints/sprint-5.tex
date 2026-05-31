@@ -2,8 +2,8 @@
 
 \subsubsection{Sprint Planning 5: 30.04.2026}\label{subsubsec:sprint-planning-5}
 
-We decided on the spot to extend this sprint to four weeks because Frank has become a father and we hadn't completed all the tickets after the first two weeks.
-In return, we have expanded the scope of the sprint, updated the sprint planning accordingly.
+We decided on the spot to extend this sprint to four weeks because Frank has become a father, and we hadn't completed all the tickets after the first two weeks.
+In return, we have expanded the scope of the sprint, updated the sprint planning accordingly~\ref{tab:sprint-planning-5}.
 We will catch up on the delay over the following two weeks, in which we both have vacation for conducting our second \enquote{focus weeks}.
 As we did not change or remove any milestones or tasks, we leave the roadmap as is~\ref{fig:roadmap-sprint-planning-5}.
 
@@ -14,7 +14,8 @@ As we did not change or remove any milestones or tasks, we leave the roadmap as 
         \textbf{Week} & \textbf{Responsible} & \textbf{Task} \\
         \midrule
         Week 1 \& 2 & Frank \& Lukas & Focus on thesis document and prepare evaluation \\
-        Week 3 & Lukas & Build benchmarking harness  \\
+        Week 3 & Lukas & Build benchmarking suite  \\
+        Week 3 & Frank & Investigate if we can replace the \enquote{Human Interaction Hook} with the \enquote{Human In The Loop} from LangChain \\
         Week 3 & Lukas \& Frank & Evaluate the scenarios in containerlab and test if they are sufficient to test in bfh lab \\
         Week 3 \& 4 & Frank & Write the evaluation for the benchmarking runs in the thesis, including diagrams \\
         Week 4 & Lukas & Build physical test environment  \\
@@ -41,18 +42,44 @@ As we did not change or remove any milestones or tasks, we leave the roadmap as 
 
 \ref{subsubsec:milestone-network-discovery}
 
+\paragraph{Implementation Review: Benchmarking Suite}\label{par:implementation-review-benchmarking-harness
+
+After defining the quantitative and qualitative criteria for the evaluation~\ref{subsec:criteria},
+we realized that it makes sense to develop a benchmarking harness to standardize the results of multiple scenario runs.
+Besides standardization the benchmarking harness also greatly reduces the repetitive work for collecting reports required for assessing the qualitative criteria,
+automates the aggregation of the quantitative criteria and provides the results as JSON for easy diagram generation.
+As we identified the need for this feature on the spot we did not plan an according milestone.
+The development is described in the implementation chapter of the thesis~\ref{tab:benchmark-suite-concepts}
+
+\paragraph{Implementation Review: LangChain - Human In The Loop}\label{par:implementation-review-human-in-the-loop}
+
+
+\paragraph{Evaluation Review: Benchmarking Results}\label{par:evaluation-review-benchmarking-results}
+
+
 \paragraph{Deliverable Review: Poster}\label{par:deliverable-review-poster}
 
 
 \paragraph{Deliverable Review: Book}\label{par:deliverable-review-book}
 
 
+
 \subsubsection{Sprint Retro 5: 28.05.2026}\label{subsubsec:sprint-retro-5}
 
+As usual, we held the sprint retro in Microsoft Whiteboard.
+The result is shown in~\ref{fig:sprint-retro-5} and the key takeaways are summarized below.
 
-\begin{figure}
+\textbf{Key Takeaways:}
+
+\begin{itemize}
+    \item We are both really happy about the progress we made in the \enquote{focus weeks}
+    \item We are a bit stressed as the finishing line is in sight, but that's expected and normal
+    \item This project was a crazy cross-disciplinary ride, and we could learn so much in each area
+\end{itemize}
+
+\begin{figure}[H]
     \centering
-    \includegraphics{/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/assets/retro-sprint5}
-    \caption{}
-    \label{fig:retro-sprint5}
+    \includegraphics[width=1.0\linewidth]{/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/assets/screenshots/project_management/sprint_5/sprint_retro_5}
+    \caption{Sprint Retro 5}
+    \label{fig:sprint-retro-5}
 \end{figure}

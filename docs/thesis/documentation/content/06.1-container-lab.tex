@@ -12,7 +12,7 @@ results for both the single-agent and multi-agent implementation, where the mult
 the reconnaissance scenario into three specialised sub-tasks.
 The subsequent quantitative and qualitative analysis focuses on the multi-agent set up, as it
 constitutes the primary contribution of this work.
-Overall, discovery quality in the Containerlab environment is comparable between the single-agent
+Overall, discovery quality in the \gls{Containerlab} environment is comparable between the single-agent
 and multi-agent configurations, while smaller models benefit noticeably from task decomposition.
 
 \begin{table}[H]
@@ -63,8 +63,8 @@ reduces its token usage by 68\,\% (86,446 to 27,789) in multi-agent mode, as eac
 operates on a narrower, focused context rather than carrying the full task history.
 The \emph{Static Scenario} serves as the deterministic reference baseline, discovering all
 5 hosts and 13 services unconditionally in 29\,s with no token cost.
-The success factor — defined as the number of total attempts required to collect 10 successful
-runs with findings — improves for all models under decomposition:
+The success factor \textthreequartersemdash defined as the number of total attempts required to collect 10 successful
+runs with findings \textthreequartersemdash improves for all models under decomposition:
 \texttt{claude-opus-4-7} reaches a perfect 10/10 (down from 10/12),
 \texttt{qwen3:30b} improves from 10/23 to 10/11, and \texttt{gpt-oss:120b} from 10/18 to 10/14.
 
@@ -185,9 +185,9 @@ once they judge the network sufficiently enumerated.
 \subsection{Qualitative Criteria}\label{subsec:qualitativ-criteria-containerlab}
 
 The evaluation criteria and scoring scale are defined in Table~\ref{tab:qualitative-scale}.
-The key discriminator in the Containerlab environment is whether a model extracts the
+The key discriminator in the \gls{Containerlab} environment is whether a model extracts the
 cleartext \acrshort{LDAP} credentials exposed by the anonymous bind on \texttt{192.168.10.5}
-(\texttt{uid=asmith}/\texttt{uid=bjones}, password \texttt{Password123!}) — the scenario's
+(\texttt{uid=asmith}/\texttt{uid=bjones}, password \texttt{Password123!}) \textthreequartersemdash the scenario's
 single \emph{Critical} finding.
 
 \begin{table}[h]
@@ -209,9 +209,9 @@ single \emph{Critical} finding.
 
 \texttt{claude-opus-4-7} achieves the highest correctness score by consistently identifying
 the Critical \acrshort{LDAP} anonymous bind and extracting the plaintext credentials in every
-single run, accompanied by correct attack-chain reasoning (credential reuse → lateral movement
+single run, accompanied by correct attack-chain reasoning (credential reuse \rightarrow lateral movement
 via \acrshort{SSH}/\acrshort{SMB} relay).
-It also correctly characterises \texttt{192.168.10.50} as a honeypot based on the
+It also correctly characterizes \texttt{192.168.10.50} as a honeypot based on the
 Python \texttt{BaseHTTPServer} banner behind an HP LaserJet facade.
 Its hallucination rate is low because all claims are directly traceable to scan output.
 
