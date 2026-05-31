@@ -20,11 +20,11 @@ While our prior work demonstrated that it is feasible to automate red and blue t
 it also revealed the limitations of this approach.
 Manually engineered scenarios offer modularity and reproducibility,
 but lack adaptability to changing conditions and the development still requires deep cybersecurity expertise.
-By contrast, \glspl{LLM} are able to reason over the current context and dynamically adjust their behavior depending on the environment they operate.
+By contrast, \glspl{LLM} are able to reason over the current context and dynamically adjust their behavior depending on the environment they operate in.
 
 The central hypothesis is that the integration of agentic \gls{AI} into the framework
 can improve adaptability, flexibility and the degree of automation compared to static scenario implementations.
-Simultaneously it may reduce the operators required depth of expertise to interpret the results and
+Simultaneously, it may reduce the operator's required depth of expertise to interpret the results and
 plan follow-up steps in an attack or defense sequence.
 
 This thesis therefore addresses the following research questions:
@@ -41,12 +41,12 @@ provided with capabilities for autonomous system interaction and operator suppor
 With these features, single- and multi-agent reconnaissance scenario variants are developed,
 which can be run interactively and autonomously, using models of various sizes.
 
-This allows us to examine three perspectives, resulting from the research questions:
+The evaluation is structured around three perspectives corresponding to the research questions:
 
 \textbf{Autonomous Scenario Comparison (RQ1)}~\textthreequartersemdash~A static reference scenario chaining host discovery, port scanning, and service enumeration serves as a baseline for comparison.
 To reduce the number of variables in the evaluation, a reproducible test environment is specified and built with \gls{Containerlab}.
 
-\textbf{Interactive Scenario Execution (RQ2)}~\textthreequartersemdash~Besides the direct comparison we also want to investigate how agentic \gls{AI} can interactively support an operator in red and blue team activities.
+\textbf{Interactive Scenario Execution (RQ2)}~\textthreequartersemdash~Besides the direct comparison we also want to investigate how agentic \gls{AI} can interactively support an operator during network reconnaissance activities.
 
 \textbf{Real-World Usability (RQ3)}~\textthreequartersemdash~Real-world usability is evaluated by testing against a physical setup of the evaluation environment and in the BFH network security lab.
 
