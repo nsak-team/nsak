@@ -182,16 +182,29 @@ Besides the execution of drills, this flexibility is what makes the \gls{AI} sce
 \subsection{Human Interaction Hook}\label{subsec:ai-scenarios-implementation-human-interaction-hook-via-cli}
 
 \subsubsection{LangChain Tool: Human Interaction Hook}\label{subsubsec:langchain-tool-human-interaction-hook}
-Even tough LangChain has its own concept, called \href{https://docs.langchain.com/oss/python/langchain/human-in-the-loop}{Human-in-the-loop},
-for now a simple python based tool was implemented as shown in~\ref{lst:langchain-tool-human-interaction-hook}, to achieve the same goal.
-When enabled via the \mintinline{python}{interactive} flag in \mintinline{python}{create_ai_agent()}, the agent can pause its execution
-and ask the operator a question, then incorporate the answer into its next reasoning step.
+
+We implemented a simple LangChain python tool which allows a human operator to interact with the agent~\ref{lst:langchain-tool-human-interaction-hook}.
+If enabled via the \mintinline{python}{interactive} flag when calling the \mintinline{python}{create_ai_agent()} function,
+the agent can pause its execution and ask the operator a question, then incorporate the answer into its next reasoning step.
 
 \begin{listing}[H]
     \inputminted[firstline=4, lastline=19]{python}{../../../src/nsak/core/ai/tools/human_interaction_hook.py}
     \caption{LangChain Tool: Human Interaction Hook}
     \label{lst:langchain-tool-human-interaction-hook}
 \end{listing}
+
+\subsubsection{LangChain Middleware: Human in the Loop (HITL)}\label{subsubsec:langchain-midleware-human-in-the-loop}
+
+After the implementation we read in the LangChain documentation,
+that it has its own middleware for allowing human interactions,
+called \href{https://docs.langchain.com/oss/python/langchain/human-in-the-loop}{Human-in-the-loop}.
+We speculated that this solution is more sophisticated than the few lines of python we wrote and tried to refactor our implementation accordingly.
+It turned out, that it required a lot more changes than we first thought and the proof-of-concept did not work as stable as the current tool based implementation.
+As we focus on the agents non-interactive mode for the evaluation,
+we don't want to spend more time on this potential improvement.
+For these reasons we decided not to merge the code and let the implementation as is.
+The branch containing the proof-of-concept is still available under~\href{https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/tree/310-human-in-the-loop?ref_type=heads}{310-human-in-the-loop}.
+
 
 \subsection{Logging}\label{subsec:ai-scenarios-implementation-logging}
 

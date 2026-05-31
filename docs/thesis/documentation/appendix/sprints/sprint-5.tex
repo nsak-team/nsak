@@ -40,7 +40,7 @@ As we did not change or remove any milestones or tasks, we leave the roadmap as 
 
 \paragraph{Milestone Review: Network Discovery}\label{par:milestone-review-network-discovery}
 
-\ref{subsubsec:milestone-network-discovery}
+The milestone was implemented as planned~\ref{subsubsec:milestone-network-discovery}.
 
 \paragraph{Implementation Review: Benchmarking Suite}\label{par:implementation-review-benchmarking-harness
 
@@ -49,15 +49,17 @@ we realized that it makes sense to develop a benchmarking harness to standardize
 Besides standardization the benchmarking harness also greatly reduces the repetitive work for collecting reports required for assessing the qualitative criteria,
 automates the aggregation of the quantitative criteria and provides the results as JSON for easy diagram generation.
 As we identified the need for this feature on the spot we did not plan an according milestone.
-The development is described in the implementation chapter of the thesis~\ref{tab:benchmark-suite-concepts}
+The development is described in the implementation chapter of the thesis~\ref{sec:benchmark-suite}
 
 \paragraph{Implementation Review: LangChain - Human In The Loop}\label{par:implementation-review-human-in-the-loop}
 
-
-\paragraph{Evaluation Review: Benchmarking Results}\label{par:evaluation-review-benchmarking-results}
-
+After implementing the human interaction hook tool for allowing an operator to interact with the agent,
+we found out that LangChain already provides its own implementation as a middleware.
+We then chose to implement a proof-of-concept, which did not bring the improvements we hoped for and decided to stick with the current implementation.
+More details are documented in the implementation chapter~\ref{subsubsec:langchain-midleware-human-in-the-loop}.
 
 \paragraph{Deliverable Review: Poster}\label{par:deliverable-review-poster}
+
 
 
 \paragraph{Deliverable Review: Book}\label{par:deliverable-review-book}
