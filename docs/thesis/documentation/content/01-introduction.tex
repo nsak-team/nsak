@@ -16,15 +16,15 @@ in a predecessor project~\ref{sec:predecessor-project-project-2}\cite{nsakReposi
 The framework aims to simplify the creation of automated security testing and
 adversary emulation scenarios in controlled network environments, by providing reusable building blocks.
 
-Our prior work demonstrated that it is feasible to automate red and blue team activities.
-On the other hand we also identified the limitations of this approach.
+While our prior work demonstrated that it is feasible to automate red and blue team activities,
+it also revealed the limitations of this approach.
 Manually engineered scenarios offer modularity and reproducibility,
 but lack adaptability to changing conditions and the development still requires deep cybersecurity expertise.
-By contrast, \glspl{LLM} are able to reason over the current context and dynamically adjust their behavior depending on the environment they are in.
+By contrast, \glspl{LLM} are able to reason over the current context and dynamically adjust their behavior depending on the environment they operate.
 
-The central hypothesis is that the integration of agentic \gls{AI} into the framework,
+The central hypothesis is that the integration of agentic \gls{AI} into the framework
 can improve adaptability, flexibility and the degree of automation compared to static scenario implementations.
-Simultaneously it may reduce the required depth of expertise to interpret the results and
+Simultaneously it may reduce the operators required depth of expertise to interpret the results and
 plan follow-up steps in an attack or defense sequence.
 
 This thesis therefore addresses the following research questions:
@@ -32,16 +32,13 @@ This thesis therefore addresses the following research questions:
 \begin{itemize}
     \item \textbf{RQ1:} How does an agentic \gls{AI} scenario perform compared to a static reference scenario?
     \item \textbf{RQ2:} To what extent can agentic \gls{AI} support operators during interactive network reconnaissance?
-    \item \textbf{RQ3:} How does the implementation hold up in a real-world environment?
+    \item \textbf{RQ3:} To what extent is the implementation suitable for deployment in real-world environments?
 \end{itemize}
 
 % Approach
-To address these questions, an \gls{AI} agent based on \gls{LangChain} is integrated into the framework.
-The agent is equipped with tools for retrieving the hosts network configuration,
-autonomous \gls{CLI} command execution, requesting human input and notification via email.
-To simplify the usage of \gls{NSAK} a configuration management is introduced,
-which allows users to configure different \glspl{LLM}, and secrets to other external systems such as email and logging.
-With these features, a single- and multi-agent variants of a reconnaissance scenario is developed,
+To address these questions, an \gls{AI} agent based on \gls{LangChain} is integrated into the framework and
+provided with capabilities for autonomous system interaction and operator support.
+With these features, single- and multi-agent reconnaissance scenario variants are developed,
 which can be run interactively and autonomously, using models of various sizes.
 
 This allows us to examine three perspectives, resulting from the research questions:
