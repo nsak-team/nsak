@@ -27,7 +27,7 @@ loger = logging.getLogger(__name__)
 
 MODELS: dict[str, dict] = {}  # type: ignore
 
-COLORS = ["#C3ACCE", "#89909F", "#C76E00", "#538083"]
+COLORS = ["#C3ACCE", "#89909F", "#538083", "#C76E00"]
 COLORS_FINDING = ["#5AB1BB", "#A5C882", "#F7DD72", "#4E6766"]
 
 
@@ -64,7 +64,7 @@ def plot_duration_comparison() -> None:
     ax.set_xlabel("Claude-Opus-4.7")
     ax.grid(axis="y", zorder=0, alpha=0.35)
     fig.tight_layout()
-    _save(fig, "benchmark_duration_comparison" + date)
+    _save(fig, "benchmark_duration_comparison" + date + "_multi_agent")
 
 
 def plot_token_usage() -> None:
@@ -79,7 +79,7 @@ def plot_token_usage() -> None:
     ax.set_xlabel("Claude-Opus-4.7")
     ax.grid(axis="y", zorder=0, alpha=0.35)
     fig.tight_layout()
-    _save(fig, "benchmark_token_usage" + date)
+    _save(fig, "benchmark_token_usage" + date + "_multi_agent")
 
 
 def plot_services() -> None:
@@ -129,7 +129,7 @@ def plot_services() -> None:
     ax.legend(loc="upper left")
     ax.grid(axis="y", zorder=0, alpha=0.35)
     fig.tight_layout()
-    _save(fig, "benchmark_services" + date)
+    _save(fig, "benchmark_services" + date + "_multi_agent")
 
 
 def plot_tokens_vs_duration() -> None:
@@ -150,11 +150,8 @@ def plot_tokens_vs_duration() -> None:
     ax.yaxis.set_major_formatter(_plain_fmt)
     ax.yaxis.set_minor_formatter(NullFormatter())
 
+    extra_entries: list[tuple[str, str, float]] = []
     for color, (model, data) in zip(COLORS, MODELS.items(), strict=False):
-        mean_tc = data["mean_tool_calls"] if data["tool_calls"] else None
-        label = (
-            f"{model} (avg. {mean_tc:.1f} tool calls)" if mean_tc is not None else model
-        )
         if data["tokens"]:
             ax.scatter(
                 data["tokens"],
@@ -162,37 +159,31 @@ def plot_tokens_vs_duration() -> None:
                 color=color,
                 s=60,
                 zorder=3,
-                label=label,
+                label=model,
             )
-            if data["tool_calls"]:
-                for x, y, tc in zip(
-                    data["tokens"], data["durations"], data["tool_calls"], strict=False
-                ):
-                    ax.annotate(
-                        f"({tc})",
-                        (x, y),
-                        textcoords="offset points",
-                        xytext=(4, 4),
-                        fontsize=7,
-                        color=color,
-                    )
         if data["mean_duration"] is not None:
             ax.axhline(
                 data["mean_duration"],
                 color=color,
                 linestyle="--",
                 linewidth=1.2,
-                label=label if not data["tokens"] else None,
+                label=model if not data["tokens"] else None,
             )
+        mean_tc = data["mean_tool_calls"] if data["tool_calls"] else None
+        if mean_tc is not None:
+            extra_entries.append((color, model, mean_tc))
 
     handles, _ = ax.get_legend_handles_labels()
-    handles.append(Patch(color="none", label="( ) = tool calls per run"))
+    for color, model, mean_tc in extra_entries:
+        handles.append(
+            Patch(facecolor=color, label=f"{model}: avg. {mean_tc:.1f} tool calls")
+        )
     ax.set_xlabel("Total tokens")
     ax.set_ylabel("Duration (s)")
     ax.legend(handles=handles, fontsize=9, loc="lower right")
     ax.grid(alpha=0.35, zorder=0)
     fig.tight_layout()
-    _save(fig, "benchmark_tokens_vs_duration" + date)
+    _save(fig, "benchmark_tokens_vs_duration" + date + "_multi_agent")
 
 
 # ── Save & main ───────────────────────────────────────────────────────────────

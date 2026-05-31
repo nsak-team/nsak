@@ -197,12 +197,12 @@ single \emph{Critical} finding.
     \small
     \begin{tabular}{@{}lccl@{}}
         \toprule
-        \textbf{Model}  & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes} \\
+        \textbf{Model}  & \textbf{Correctness} & \textbf{Hallucination} \\
         \midrule
-        claude-opus-4-7  & 9   & 9   & LDAP credentials extracted in all 10 runs; printer identified as honeypot \\
-        qwen3:30b        & 5   & 8   & LDAP enumerated but credentials never extracted; rated as low risk \\
-        gpt-oss:120b     & 6   & 6   & Credentials extracted in $\approx$5/10 runs; fabricated CVE numbers in several reports \\
-        Static Scenario  & 10  & N/A & Deterministic script; exhaustive port scan; no assessment text generated \\
+        claude-opus-4-7 & 9                    & 9                      \\
+        qwen3:30b       & 5                    & 8                      \\
+        gpt-oss:120b    & 6                    & 6                      \\
+        Static Scenario & 10                   & -                      \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -239,49 +239,49 @@ ground truth defined in the test environment.
     \label{tab:vuln-coverage-containerlab}
     \small
     \resizebox{\textwidth}{!}{
-    \begin{tabular}{@{}p{6.5cm} c c c c@{}}
-        \toprule
-        \textbf{Vulnerability} & \textbf{Static} & \textbf{claude-opus} & \textbf{gpt-oss} & \textbf{qwen3} \\
-        \midrule
-        \multicolumn{5}{l}{\textit{ctrl-server (192.168.10.5) --- LDAP}} \\
-        LDAP anonymous bind (rootDSE / naming context) & \checkmark & \checkmark & \checkmark & -- \\
-        LDAP cleartext credentials (\texttt{asmith}/\texttt{bjones}: \texttt{Password123!}) & -- & \checkmark & (\checkmark) & -- \\
-        \midrule
-        \multicolumn{5}{l}{\textit{ctrl-server (192.168.10.5) --- SMB}} \\
-        SMB signing not required (relay attack surface) & \checkmark & \checkmark & \checkmark & \checkmark \\
-        SMB NTLM/LanMan weak auth protocols & -- & (\checkmark) & -- & -- \\
-        SMB public share anonymous read (\texttt{public}/\texttt{finance}) & -- & (\checkmark) & -- & -- \\
-        \midrule
-        \multicolumn{5}{l}{\textit{alice / bob (192.168.10.100, .101) --- SSH}} \\
-        SSH password authentication enabled & \checkmark & \checkmark & \checkmark & (\checkmark) \\
-        SSH banner leaks organisation name & -- & \checkmark & -- & -- \\
-        \midrule
-        \multicolumn{5}{l}{\textit{printer (192.168.10.50)}} \\
-        Unauthenticated web admin UI (port 80) & (\checkmark) & \checkmark & (\checkmark) & (\checkmark) \\
-        Print job history without auth (port 631) & (\checkmark) & (\checkmark) & -- & -- \\
-        SNMP public community string & -- & -- & -- & -- \\
-        Printer identified as honeypot (banner mismatch) & (\checkmark) & \checkmark & -- & -- \\
-        \midrule
-        \multicolumn{5}{l}{\textit{SSH hardening}} \\
-        Legacy HMAC-SHA1 still offered & -- & \checkmark & -- & -- \\
-        \bottomrule
-        \multicolumn{5}{l}{\small \checkmark\ found \quad (\checkmark)\ partial (port detected, not fully enumerated) \quad --\ not found} \\
-    \end{tabular}
+        \begin{tabular}{@{}p{6.5cm} c c c c@{}}
+            \toprule
+            \textbf{Vulnerability}                                                              & \textbf{Static} & \textbf{claude-opus} & \textbf{gpt-oss} & \textbf{qwen3} \\
+            \midrule
+            \multicolumn{5}{l}{\textit{ctrl-server (192.168.10.5) --- LDAP}} \\
+            LDAP anonymous bind (rootDSE / naming context)                                      & \checkmark      & \checkmark           & \checkmark       & --             \\
+            LDAP cleartext credentials (\texttt{asmith}/\texttt{bjones}: \texttt{Password123!}) & -- & \checkmark & (\checkmark) & -- \\
+            \midrule
+            \multicolumn{5}{l}{\textit{ctrl-server (192.168.10.5) --- SMB}} \\
+            SMB signing not required (relay attack surface)                                     & \checkmark      & \checkmark           & \checkmark & \checkmark \\
+            SMB NTLM/LanMan weak auth protocols                                                 & --              & (\checkmark)         & --               & --             \\
+            SMB public share anonymous read (\texttt{public}/\texttt{finance})                  & --              & (\checkmark) & -- & -- \\
+            \midrule
+            \multicolumn{5}{l}{\textit{alice / bob (192.168.10.100, .101) --- SSH}} \\
+            SSH password authentication enabled                                                 & \checkmark      & \checkmark           & \checkmark       & (\checkmark)   \\
+            SSH banner leaks organisation name                                                  & --              & \checkmark           & --               & --             \\
+            \midrule
+            \multicolumn{5}{l}{\textit{printer (192.168.10.50)}} \\
+            Unauthenticated web admin UI (port 80)                                              & (\checkmark)    & \checkmark           & (\checkmark)     & (\checkmark)   \\
+            Print job history without auth (port 631)                                           & (\checkmark)    & (\checkmark)         & --               & --             \\
+            SNMP public community string                                                        & --              & --                   & --               & --             \\
+            Printer identified as honeypot (banner mismatch)                                    & (\checkmark)    & \checkmark           & --               & --             \\
+            \midrule
+            \multicolumn{5}{l}{\textit{SSH hardening}} \\
+            Legacy HMAC-SHA1 still offered                                                      & --              & \checkmark           & --               & --             \\
+            \bottomrule
+            \multicolumn{5}{l}{\small \checkmark\ found \quad (\checkmark)\ partial (port detected, not fully enumerated) \quad --\ not found} \\
+        \end{tabular}
     }
 \end{table}
 
-The Static Scenario discovers all 13 \acrshort{LAN} services via exhaustive port sweeps and
+The Static Scenario discovers all 13 \acrshort{LAN} services via intensive port sweeps and
 runs \texttt{ldap-rootdse} to retrieve the naming context (\texttt{dc=lab,dc=local}), but
 it never performs an \texttt{ldap-search} or anonymous bind, so the cleartext credentials
 remain unextracted.
 It identifies the printer's dual \texttt{Server} header (\texttt{BaseHTTP/0.6} alongside
-\texttt{HP-WebServer/2.6.5}) but through the generalistic implementation, the banner missmatch gets not further elaporated.
+\texttt{HP-WebServer/2.6.5}) but through the generalistic implementation, the banner missmatch gets not further elaborated.
 
 \acrshort{SNMP} is not probed by any configuration, as the scenario issues only \acrshort{TCP}
 port sweeps and no model independently adds \texttt{snmpwalk} to its tool calls.
 The \acrshort{SMB} public and finance shares are listed as a recommended next step only by
 \texttt{claude-opus-4-7}, but authenticated share enumeration (\texttt{smbclient}) is not
-executed in any run.
+executed in every run.
 The \acrshort{DMZ} host (\texttt{172.16.1.10}) with its open \acrshort{DNS} zone transfer
 and exposed \texttt{/secret.txt} lies outside the \texttt{192.168.10.0/24} target subnet and
 is not reached by any configuration.

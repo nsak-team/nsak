@@ -21,7 +21,7 @@ name: virtual-enterprise-network-lab
 # │  │  dmz-server  .10     │     │  ctrl-server .5  22,139,389,445          │  │
 # │  │    80,443  HTTP/S    │     │  alice   .100  22,445                    │  │
 # │  │    53      DNS/AXFR  │     │  bob     .101  22,445                    │  │
-# │  │  nsak-dmz   .200     │     │  printer  .50  80,161/udp,631            │  │
+# │  │                      │     │  printer  .50  80,161/udp,631            │  │
 # │  └──────────────────────┘     │  nsak-lan .200  (recon node, dual-homed) │  │
 # │                               └──────────────────────────────────────────┘  │
 # │                                                                             │
