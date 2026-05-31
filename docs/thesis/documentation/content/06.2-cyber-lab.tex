@@ -1,29 +1,33 @@
 % ─────────────────────────────────────────────────────────────────────────────
-% Environment: Containerlab (Virtual)
-% 3 models × 10 runs + 1 reference (traditional recon)
+% Environment: Cyberlab BFH (real network, ~35 live hosts on 193.5.80.0/24)
+% claude-opus-4-7 (multi-agent + unstructured), qwen3:8b (local) + static reference
 % Evaluation criteria: see §\ref{subsec:criteria}
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Cyberlab bfh}\label{sec:eval-cyberlab}
 
 \paragraph{Overview}
 
-\begin{table}[H]
-    \caption{Nonlinear Model Results}
-    \centering
 
+\begin{table}[H]
+    \caption{Benchmark Results --- Cyberlab BFH}
+    \centering
     \resizebox{\textwidth}{!}{
-        \begin{tabular}{c c c c}
+        \begin{tabular}{l c c c c c c}
             \hline\hline
-            Kind               & Avg Duration & Avg Tokens  \\ [0.5ex]
+            Configuration & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings & Success Factor \\ [0.5ex]
             \hline
-            Multi Agent  & 318 s        & 81453             \\
-            Unstructured Output & 739 s        & 222094          \\
+            Multi-Agent (claude-opus-4-7)  & 318 s  & 81,453  & 28 & 53 & 52 & 5/27   \\
+            Unstructured (claude-opus-4-7) & 739 s  & 222,094 & -- & -- & -- & 6/109  \\
+            Multi-Agent (qwen3:8b, local)  & ---    & ---     & -- & -- & -- & 0/6    \\
+            Static Scenario                & 1780 s & ---     & -- & -- & -- & --     \\
             \hline
         \end{tabular}
     }
-    \label{tab:overview-cyberlab}
+    \label{tab:overview-nslab}
 \end{table}
-The
+
+The Table ~\ref{tab:overview-nslab} shows some quantitative benchmark values.
+
 
 \subsection{Quantitative Criteria}\label{subsec:quantitative-criteria-cyberlab}
 
@@ -93,29 +97,13 @@ counts compared to the virtual evaluation environment.
 \subsection{Qualitative Criteria}\label{subsec:qualitativ-criteria-cyberlab}
 
 The evaluation criteria and scoring scale are defined in Table~\ref{tab:qualitative-scale}.
-The Cyberlab BFH segment does not feature a single staged vulnerability with a binary
-pass/fail verdict as the Containerlab scenario does.
-Instead, the discriminating findings are distributed across the infrastructure and require
-active tool invocations beyond a basic TCP port scan.
+The findings are distributed across the infrastructure and require
+active tool calling beyond a basic TCP port scan.
+The findings are not closer evaluated here, cause the bfh ns-lab is still in use.
+The findings the most severe findings include a complete extraction with end of live systems, open dns recursion and
+cloned host keys.
+Flaws in this network are partly introduced to train the students.
 Three findings serve as quality indicators:
-
-\begin{enumerate}
-    \item \textbf{\acrshort{SNMP} community \texttt{public}} on the Cisco router
-          (\texttt{193.5.80.250}) and the MikroTik device (\texttt{193.5.80.181}).
-          Querying this community discloses the full system description and, in the case of the
-          Cisco appliance, reveals an end-of-life \acrshort{IOS} version 12.4(23) from 2008 --
-          a significant operational risk invisible without UDP enumeration.
-    \item \textbf{Open DNS recursion} on five \acrshort{BIND} servers
-          (\texttt{.20}, \texttt{.78}, \texttt{.80}, \texttt{.185}, \texttt{.186}).
-          Without explicit \texttt{dns-recursion} and cache-snoop \acrshort{NSE} scripts the
-          resolvers appear as benign authoritative servers; with them, they are confirmed open
-          relays susceptible to amplification attacks.
-    \item \textbf{Cloned \acrshort{SSH} host keys} shared between hosts
-          \texttt{.182}, \texttt{.185}, and \texttt{.186}, which were deployed from the same
-          image without regenerating keys.
-          This is only discoverable through \texttt{ssh-hostkey} fingerprint comparison across
-          all three hosts simultaneously.
-\end{enumerate}
 
 \begin{table}[h]
 \centering
@@ -136,43 +124,24 @@ Static Scenario (reference)         & 10 & N/A & Deterministic script; exhaustiv
 
 \textbf{claude-opus-4-7 in multi-agent mode} achieves a correctness score of 7.
 In the five successful runs the model consistently identifies the six high-severity structural
-risks present in the network: legacy cryptography on the Cisco router and MikroTik device,
-Webmin exposed on five \acrshort{QEMU} router hosts, world-accessible \acrshort{NFS} exports
-on the Synology \acrshort{NAS}, \acrshort{SMB} message signing disabled on the Windows host
-and the \acrshort{NAS}, and the MySQL instance bound to a non-loopback interface.
+risks present in the network, the findings are not exposed here for security reasons.
 All findings are accompanied by severity ratings and actionable remediation steps.
-However, none of the successful runs includes \acrshort{UDP} enumeration, so the \acrshort{SNMP}
-community \texttt{public} on the Cisco and MikroTik devices is never discovered.
+However, none of the successful runs includes \acrshort{UDP} enumeration so all flaws with this protocol got not discoverd.
 Similarly, \texttt{dns-recursion} and \texttt{ssh-hostkey} comparison scripts are absent from
 most runs, leaving the open resolver risk and the cloned key finding unexplored.
 The hallucination score is 9: every claim in the final reports is directly traceable to
 \texttt{nmap} \acrshort{NSE} output, with no fabricated CVE identifiers or version numbers.
-A notable reliability concern is the high error rate of the multi-agent setup --
+A notable reliability concern is the high error rate of the multi-agent setup,
 only 5 of 27 attempts produced a fully structured result.
-Shorter successful runs (84--190\,s, 4--8 tool calls) performed only a ping sweep without
-port scanning, yielding host-layer data with no service coverage.
 
 \textbf{claude-opus-4-7 in unstructured output mode} achieves the highest correctness score of
 9 among the \acrshort{AI} configurations.
-When successful -- six runs out of 109 attempts -- the model issues \acrshort{UDP} scans
-alongside \acrshort{TCP} and discovers \acrshort{SNMP} \texttt{public} on both the Cisco router
-and the MikroTik device, allowing it to identify the end-of-life Cisco \acrshort{IOS}~12.4(23).
-It also runs \texttt{dns-recursion} and \texttt{dns-cache-snoop} scripts, confirming open
-recursion on all five \acrshort{BIND} instances.
-The \texttt{ssh-hostkey} sweep across all hosts reveals the shared key fingerprint between
-\texttt{.182}, \texttt{.185}, and \texttt{.186}.
-In addition, the model discovers a previously uncatalogued \acrshort{ESXi} host at
-\texttt{193.5.80.194} through port~902 (\texttt{VMware Authentication Daemon 1.10}), a host
-absent from the reference run.
+When successful, six runs out of 109 attempts,  the model issues \acrshort{UDP} scans
+alongside \acrshort{TCP} and discovered all mentioned flaws ~\ref{subsec:qualitativ-criteria-cyberlab}.
 The hallucination score is equally 9: all assessment statements are grounded in concrete scan
 artefacts.
 The main limitation of this configuration is its very low success rate (5.5\,\%) and the
 substantially higher token cost (mean 222\,094 tokens), driven by the unstructured reasoning
 traces produced before each tool call.
 
-\textbf{qwen3:8b} in the local multi-agent setup scores 1 for correctness.
-Across all six attempted runs the model reads the host configuration but issues zero
-\texttt{cli\_tool} calls.
-Without executing \texttt{nmap} or any equivalent utility the model produces a generic
-fallback report citing connectivity issues and recommending manual verification.
-No actual reconnaissance is performed, making a hallucination assessment meaningless.
+\textbf{Qwen3:8b} is not further assessed due to its low success rate, which is nearly zero.

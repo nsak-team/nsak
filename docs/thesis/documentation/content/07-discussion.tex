@@ -2,5 +2,180 @@
 
 \chapter{Discussion}\label{ch:discussion}
 
-What does this mean
-The Results of the
+This chapter connects and interprets the findings of the Chapter~\ref{ch:evaluation},
+with respect to the evaluation goals defined in
+Section~\ref{subsec:evaluation-goals}.
+Especially compared is the effectiveness of the \gls{AI}-based reconnaissance scenario
+(Section~\ref{subsubsec:ai-scenario-evaluation}) and its
+comparison against the manually engineered reference scenario
+(Section~\ref{subsubsec:ai-vs-engineered-scenarios}).
+While working with \gls{AGENTIC-AI} the results can not be separated from a model evaluation.
+The summary mainly evaluates the findings of the containerlab.
+On the one hand, the BFH Network Security Lab must not be exposed,
+but it is also a black box when it comes to the correctness of its findings.
+Therefore we evaluate the successful runs of the scenarios and compare the effectiveness of the agent to gather information.
+
+\section{Summary}\label{sec:discussion-summary}
+
+The evaluation shows that \gls{AI}-assisted reconnaissance is feasible but strongly
+dependent on the underlying model.
+The frontier model \textit{claude-opus-4-7} delivers the most convincing results
+across both environments.
+In the rather small virtual containerlab environment it reaches the highest correctness (9)
+and lowest hallucination (9) scores.
+Next to all discovered findings the detailed report on how to deal with the flaws is really helpful for further
+investigation and a first lead on how to treat the vulnerabilities.
+Also helpful is the extraction of some artifacts like cleartext passwords and credentials and further flaws in systems.
+The two smaller models are delivering worse results.
+The \textit{gpt-oss:120b} is adequate but prone to fabricating \acrshort{CVE} identifiers,
+\textit{qwen3:30b} performs host and service
+discovery correctly but lacks the enumeration depth for Critical finding.
+The implemented static scenario provides the highest success rate, with 5 hosts, all 13 services and a fast execution speed of 29\,s.
+No reasoning and evaluation is provided and leaves the operator with the task to assess the results.
+But the rapid speed and not existing token costs make up for it.
+It retrieves the \acrshort{LDAP} naming context yet never performs the anonymous bind that would expose the credentials.
+This captures the central trade-off of the comparison: the engineered scenario offers
+holistic and deterministic coverage, whereas the \gls{AI} scenario offers more in-depth analysis.
+
+Multi-agent task decomposition improves the usability of smaller models without harming the frontier model.
+\textit{qwen3:30b} cuts its token usage by roughly 68\,\% (86,446 to 27,789) and its
+duration by ca 30\,\%.
+\textit{Claude-opus-4-7} keeps identical discovery quality with slightly more overhead (+13\,\% tokens, 122\,s to 150\,s).
+Decomposition also raises execution reliability.
+The success factor improves for all three models, with \textit{claude-opus-4-7} reaching a perfect 10/10.
+
+
+\section{Context}\label{sec:discussion-context}
+
+\paragraph{AI versus engineered reconnaissance.}
+
+The comparison against the static scenario answers the goal (Section~\ref{subsubsec:ai-vs-engineered-scenarios}).
+On just the level of reproducibility and raw coverage the engineered scenario is unbeatable.
+It executes a fixed drill order and returns an identical structured \textit{NetworkDiscoveryResultMap}
+on every run.
+All services are discovered issued by an unconditional port sweep, where the \gls{AI} models compress the services to 7-9
+or terminate scanning in a halfway finished process.
+
+\todo{Add this part of the thesis}
+
+However, raw coverage is not an indicator of intelligence.
+The generalistic way how the engineered scenario was implemented, prevent the extraction of the cleartext credentials,
+does not elaborate the printer's banner mismatch, and produces no severity-rated assessment.
+The time needed to implement the right attack vector to access the vulnerability of different systems or services, is immense.
+The frontier \gls{AI} model, despite enumerating fewer services, delivers the most holistic report and findings
+by chaining observations into an attack context (credential reuse → lateral movement via SSH or SMB).
+This addresses the creativity criteria from Section~\ref{subsec:criteria}: the \gls{AI} scenario identifies connections
+that the engineered scenario, by construction, cannot.
+
+\paragraph{Single-agent versus multi-agent.}
+
+The two configurations confirm that smaller models benefit more from decomposition, where the larger models are not
+influenced or less influenced by bigger context.
+A frontier model already manages a large context well, so decomposition mainly adds orchestration overhead in the containerlab.
+In the more complex nslab the frontier model also benefits from a higher success rate. \todo{success rate}
+
+Smaller models are more failure prone as their context fills with accumulated tasks and history.
+The smaller tasks and focused context restore both efficiency and token reduction for the local hosted model and a
+more consistency that reflects within a tighter scatter cluster in Figure~\ref{fig:benchmark_scatter_containerlab}.
+This is the primary architectural and conceptual finding which motivates to use the multi-agent setup as the default configuration.
+
+\paragraph{Virtual versus real network.}
+The Cyberlab BFH segment validates the approach on a real network roughly seven
+times larger than Containerlab (\(\approx\)35 live hosts vs.\ 5).
+The multi-agent setup scaled to this size, discovering on average 28 hosts,
+53 services, and 52 findings per run, and consistently surfaced the six
+high-severity structural risks.
+
+\section{Unexpected Results}\label{sec:discussion-unexpected}
+
+First, the \textbf{unstructured-output configuration outperformed the structured
+multi-agent setup on correctness} in the nslab (9 vs.\ 7).
+The unstructured run surfaces all three severe findings \acrshort{SNMP}, open \acrshort{DNS}
+recursion, and the cloned \acrshort{SSH} host keys.
+This leads to the conclusion that the schema constraints which help with speed and reduce token usage come short in comparison
+with a free reasoning agent.
+The free reasoning agent issued UDP scans with additional TCP scans and executed NSE scripts that the multiagent specialised
+scenario did not.
+The results came with the price of a 5.5\,\% success rate and roughly three times the token cost (222{,}094 vs.\ 81{,}453).
+
+Second, the \textbf{gain of the token reduction} from decomposition was larger
+than expected.
+A 68\,\% drop for \textit{qwen3:30b} shows that prompt-context growth, not raw
+computation, dominates the cost of single-agent reconnaissance for smaller models.
+
+Third, the \textbf{complete failure of the local \textit{qwen3:8b} model} (zero
+\textit{cli\_tool} calls across all runs) was more absolute than anticipated.
+The model did not perform any reconnaissance, falling back to a generic recommendation report or a report with connectivity issues.
+
+Fourth, the \textbf{static scenario discovering more services yet fewer security
+findings} than the \gls{AI} models.
+This result was expected because of the complexity and reasoning that strengthen the claim to use ai models for security tasks.
+The static scenario that performed rapidly in the virtual environment needed a lot of time to enumerate the network.
+
+
+\section{Limitations}\label{sec:discussion-limitations}
+
+\paragraph{Result asymmetry.}
+As noted in Chapter~\ref{ch:evaluation}, the engineered scenario returns a structured
+\textit{NetworkDiscoveryResultMap} while the \gls{AI} scenario, particularly in
+unstructured mode, returns only a log/text stream.
+A fully quantitative comparison therefore required either parsing the
+free-form output or accepting this asymmetry.
+This limits the precision of the findings of unstructured output.
+
+\paragraph{Reliability and success rate.}
+The headline figures report \(n = 10\) \emph{successful} runs, but the success factors
+reveal unreliability.
+In the cyberlab the success factor concludes 5 of 27 attempts for the multi agent and 6 of 109 runs for the unstructured attempts.
+The runs were interrupted because of high token usage and missing comparison with other models, only the frontier model
+could perform the tasks, though prone to errors.
+The \gls{AI} scenario is not yet dependable enough for unsupervised operation, and the reported averages reflect a filtered best-case subset.
+
+\paragraph{Incomplete environment and scenario matrix.}
+The methodology (Section~\ref{subsec:environments}) foresaw three environments and a
+blue-team intrusion-detection scenario (Section~\ref{subsubsec:intrusion-detection-blue-team}).
+The evaluation covers the virtual Containerlab and the Cyberlab BFH segment but not a physical environment,
+and the evaluation focuses on the red-team reconnaissance
+scenario; the blue-team comparison (a \emph{should} goal) remains open.
+In the process to implement \gls{AI} agents with LangChain, we spent a lot of time to enhance user experience and
+implement a way to use structured output to evaluate the artifacts.
+Therefore the should goals could not be reached and the physical environment uses the same devices and services as the
+containerlab.
+Therefore we invested more time in evaluating the other environments.
+
+\paragraph{Subjectivity of qualitative scoring.}
+The correctness and hallucination scores were assigned manually against the scale in
+Table~\ref{tab:qualitative-scale}.
+Although the scale is explicit, the scoring involves human judgement and is not
+independently inter-rated, which introduces a degree of subjectivity into the
+qualitative results.
+
+
+\section{Recommendations}\label{sec:discussion-recommendations}
+
+\begin{enumerate}
+    \item \textbf{Match the model tier to the task.} Autonomous reconnaissance
+    requires a capable model; the frontier \textit{claude-opus-4-7} is the only
+    configuration that reliably extracted the Critical findings.
+    Small local models such as \textit{qwen3:8b} are unsuitable for tool-driven
+    reconnaissance and should not be relied upon.
+
+    \item \textbf{Use multi-agent decomposition for smaller or self-hosted models.}
+    Where a frontier model is unavailable for cost or data-locality reasons,
+    task decomposition recovers much of the efficiency and consistency gap,
+    most visibly the 68\,\% token reduction for \textit{qwen3:30b}.
+
+    \item \textbf{Combine engineered breadth with \gls{AI} depth.} A hybrid pipeline:
+    the deterministic scenario for exhaustive, reproducible service
+    enumeration, followed by an \gls{AI} layer for semantic assessment and
+    attack-chain reasoning, would pair the static scenario's coverage with
+    the interpretive strength of the \gls{AI}.
+
+    \item \textbf{Add a human-in-the-loop and retry strategy.} Given the low success
+    rates, an operator checkpoint or automatic retry on incomplete runs would
+    raise dependability to a level acceptable for practical use, and would
+    mitigate the silent ``ping-sweep-only'' failures.
+    While partly implemented in \todo{add section in AI implementation with middleware and dynamic tool call}
+    we omitted the branch, because the agent always tried to use just the recommended tools and did not deliver a
+    more sophisticated result.
+\end{enumerate}
