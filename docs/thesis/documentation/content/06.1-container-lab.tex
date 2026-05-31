@@ -73,12 +73,12 @@ runs with findings \textthreequartersemdash improves for all models under decomp
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\linewidth}
-        \includesvg[width=\linewidth]{figures/containerlab/benchmark_duration_comparison_25_05_2026_single_agent.svg}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_duration_comparison_single_agent.svg}
         \caption{Single-agent}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\linewidth}
-        \includesvg[width=\linewidth]{figures/containerlab/benchmark_duration_comparison_26_05_2026_multi_agent.svg}
+        \includesvg[width=\linewidth]{figures/containerlab/benchmark_duration_comparison_multi_agent.svg}
         \caption{Multi-agent}
     \end{subfigure}
     \caption{Mean run duration per model (Containerlab, $n=10$ runs each).}
@@ -226,7 +226,7 @@ lowering the hallucination score.
 fails at the enumeration depth required to surface the Critical finding.
 In 9 of 10 runs it rates the \acrshort{LDAP} service as ``Low'' risk with ``no immediate
 vulnerability detected'', missing the cleartext credential exposure entirely.
-The low hallucination score reflects that the model makes few unverifiable claims — but
+The low hallucination score reflects that the model makes few unverifiable claims \textthreequartersemdash but
 this is a consequence of shallow analysis rather than rigour.
 
 Table~\ref{tab:vuln-coverage-containerlab} maps each introduced vulnerability against what
