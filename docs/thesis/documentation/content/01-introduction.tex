@@ -4,48 +4,60 @@
 
 According to the World Economic Forum's Global Risks Report 2026,
 cyber insecurity is listed among the top ten global risks and is projected to rise significantly from position 30 to position 5 in the long term,
-highlighting the growing adverse threat of \gls{AI} technologies~\cite{WEF2025GlobalRisks}.
+highlighting the growing impact of \gls{AI} technologies~\cite{WEF2025GlobalRisks}.
+This global perspective is further underlined by other sources,
+such as the CrowdStrike Global Threat Report which highlights a significant rise in \gls{AI}-enabled adversaries~\cite{CrowdStrike2025Report}.
+This, combined with a shortage of security experts and the rising complexity of systems and business models~\cite{Figueredo2024RCVaR},
+underlines the increasing need for automated tools and frameworks capable of identifying and mitigating emerging cyber threats.
 
-Complementing this global perspective, the CrowdStrike Global Threat Report highlights a significant rise in \gls{AI}-enabled adversaries~\cite{CrowdStrike2025Report}.
+To address some of these issues, we established \gls{NSAK}
+\textthreequartersemdash~a modular, open-source network security scenario automation framework \textthreequartersemdash~
+in a predecessor project~\ref{sec:predecessor-project-project-2}\cite{nsakRepository2026}.
+The framework aims to simplify the creation of automated security testing and
+adversary emulation scenarios in controlled network environments, by providing reusable building blocks.
 
-The absence of, or understaffing of, security experts, paired with the emerging complexity of systems and business models~\cite{Figueredo2024RCVaR},
-highlights the increasing need for automated tools and frameworks capable of identifying and mitigating emerging cyber threats.
+Our prior work demonstrated that it is feasible to automate red and blue team activities.
+On the other hand we also identified the limitations of this approach.
+Manually engineered scenarios offer modularity and reproducibility,
+but lack adaptability to changing conditions and the development still requires deep cybersecurity expertise.
+By contrast, \glspl{LLM} are able to reason over the current context and dynamically adjust their behavior depending on the environment they are in.
 
-To address this, the \textit{Network Swiss Army Knife (NSAK)}, a modular, open-source framework,
-is designed to orchestrate security scenarios consisting of reusable .
-The framework aims to support automated security testing and adversary emulation in controlled network environments.
+The central hypothesis is that the integration of agentic \gls{AI} into the framework,
+can improve adaptability, flexibility and the degree of automation compared to static scenario implementations.
+Simultaneously it may reduce the required depth of expertise to interpret the results and
+plan follow-up steps in an attack or defense sequence.
 
-The development of the \gls{NSAK} framework builds upon previous project work, in which the core architecture,
-configuration management, and a scenario execution model were developed~\cite{nsakRepository2026}.
+This thesis therefore addresses the following research questions:
 
-Manually engineered scenarios offer flexibility and reproducibility,
-but require a high level of cybersecurity expertise and lack adaptability to changing conditions.
-\textbf{Large Language Models}, by contrast, can reason over tool output and dynamically adjust their behavior.
-
-% Research question
-This thesis investigates whether \textbf{agentic AI} can effectively automate and enhance network security scenarios within the \textbf{NSAK} framework.
-
-\textbf{Hypothesis}: \gls{AI} can enhance red and blue team simulations in a network environment by generating and executing scenarios within the \gls{NSAK} framework and assisting in the evaluation of detection results.
-\gls{AI} can enhance red and blue team simulations in a network environment by generating and executing scenarios within the \gls{NSAK} framework and assisting in the evaluation of detection results.
+\begin{itemize}
+    \item \textbf{RQ1:} How does an agentic \gls{AI} scenario perform compared to a static reference scenario?
+    \item \textbf{RQ2:} To what extent can agentic \gls{AI} support operators during interactive network reconnaissance?
+    \item \textbf{RQ3:} How does the implementation hold up in a real-world environment?
+\end{itemize}
 
 % Approach
-To address this question, the framework is extended with an agentic drill integration built on \texttt{LangChain}.
-The agent is equipped with tools for \gls{CLI} interaction, host configuration, and autonomous \textbf{purple team reconnaissance}.
-A deterministic reference scenario \textthreequartersemdash chaining the drills \texttt{host-discovery}, \texttt{port-scanning}, and \texttt{service-enumeration} \textthreequartersemdash serves as the reproducible baseline.
+To address these questions, an \gls{AI} agent based on \gls{LangChain} is integrated into the framework.
+The agent is equipped with tools for retrieving the hosts network configuration,
+autonomous \gls{CLI} command execution, requesting human input and notification via email.
+To simplify the usage of \gls{NSAK} a configuration management is introduced,
+which allows users to configure different \glspl{LLM}, and secrets to other external systems such as email and logging.
+With these features, a single- and multi-agent variants of a reconnaissance scenario is developed,
+which can be run interactively and autonomously, using models of various sizes.
 
-This thesis further extends the framework by enhancing configuration management for operating the \gls{NSAK} device,
-establishing a reproducible test environment, and investigating how agentic \gls{AI} can support automated red-team and blue-team scenarios.
+This allows us to examine three perspectives, resulting from the research questions:
 
-\todo{Match the structure overview to the actual structure}
-\todo{sharpen research question and contribution}
+\textbf{Autonomous Scenario Comparison (RQ1)}~\textthreequartersemdash~A static reference scenario chaining host discovery, port scanning, and service enumeration serves as a baseline for comparison.
+To reduce the number of variables in the evaluation, a reproducible test environment is specified and built with \gls{Containerlab}.
 
-The thesis is structured as follows: \textbf{Chapter 2 }reviews related work and analyzes how selected security frameworks integrate \gls{AI} into their products. \textbf{Chapter 3} introduces the fundamental concepts and outlines the key design decisions that form the basis of this work.
-\textbf{Chapter 4 }describes the research methodology, including the approach used for evaluation and data collection. \textbf{Chapter 5 }presents the implementation of the proposed solution, followed by \textbf{Chapter 6}, which evaluates its effectiveness in a virtual and physical test environments.
-Finally, \textbf{Chapter 7} discusses the results and their implications, while \textbf{Chapter 8} concludes the thesis and highlights potential directions for future work.
+\textbf{Interactive Scenario Execution (RQ2)}~\textthreequartersemdash~Besides the direct comparison we also want to investigate how agentic \gls{AI} can interactively support an operator in red and blue team activities.
 
-\hrule
-Former abstract:
+\textbf{Real-World Usability (RQ3)}~\textthreequartersemdash~Real-world usability is evaluated by testing against a physical setup of the evaluation environment and in the BFH network security lab.
 
-% Evaluation
-Three models are benchmarked across 10 runs in three environments (\emph{containerlab}, \emph{physical lab}, and \emph{BFH Cyber Lab}):
-a frontier model (\texttt{Claude Opus 4.7}), an institutionally hosted open-weight model (\texttt{gpt-oss:120b}), and a locally-run open-source model (\texttt{qwen3:30b} via Ollama).
+The thesis is structured as follows:
+Chapter~\ref{ch:related-research} reviews related work and analyzes how selected security frameworks integrate \gls{AI} into their products.
+Chapter~\ref{ch:concepts} introduces the fundamental concepts and outlines the key design decisions that form the basis of this work.
+Chapter~\ref{ch:methodology} describes the research methodology, including the approach used for evaluation and data collection.
+Chapter~\ref{ch:implementation} presents the implementation of the proposed solution, followed by
+Chapter~\ref{ch:evaluation}, which evaluates its effectiveness in virtual and physical test environments.
+Chapter~\ref{ch:discussion} discusses the results and their implications, while
+Chapter~\ref{ch:conclusion} concludes the thesis and highlights potential directions for future work.
