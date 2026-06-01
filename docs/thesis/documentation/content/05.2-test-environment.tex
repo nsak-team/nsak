@@ -34,29 +34,8 @@ The primary advantages of \gls{Containerlab} are:
 \end{itemize}
 In summary, while OCI containers serves as the underlying container engine, \gls{Containerlab} provides a higher-level network simulation.
 
-The following listing~\ref{lst:containerlab-topology-yaml-exampel} shows an excerpt of a \gls{Containerlab} topology.yaml file.
+Listing~\ref{lst:containerlab-topology-yaml-exampel} in the appendix shows an excerpt of a \gls{Containerlab} topology.yaml file.
 Basically the nodes are defined and with virtual Ethernet links connected. The bridge represents a multi port switch.
-\begin{listing}[H]
-\begin{minted}{yaml}
-topology:
- nodes:
-  node1:
-  kind: linux
-  image: alpine:3.19
-  cap-add:
-   - NET_ADMIN
-  sysctls:
-   net.ipv4.ipforward: 1
-
-  node2:
-   kind: linux
-
- links:
-  - endpoints: [ "node1:eth1", "bridge:nd1" ]
-\end{minted}
-\caption{Excerpt of the Containerlab topology definition}
-\label{lst:containerlab-topology-yaml-exampel}
-\end{listing}
 
 \subsection{Network Topology}\label{subsec:test-network-topology}
 

@@ -1,0 +1,175 @@
+\section{Configuration Management: Source Listings}\label{sec:appendix-configuration-management-listings}
+
+\subsection{NSAK Core Configuration}\label{subsec:appendix-nsak-core-configuration}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/settings.py}
+    \caption{NSAK Static Configuration}
+    \label{lst:nsak-settings}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/configuration/configuration.py}
+    \caption{NSAK Runtime Configuration}
+    \label{lst:nsak-config}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/cli/__init__.py}
+    \caption{NSAK CLI Initialisation}
+    \label{lst:nsak-cli-init}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{yaml}
+debug: true
+device:
+  id: bananapi_r4
+  name: BananaPI R4
+  path: <base-path>/lib/devices/bananapi_r4
+  author: vonal3@bfh.ch
+  repository: <repository-url>
+  configuration:
+    network:
+      ethernets:
+        lan1@eth0:
+          addresses:
+            10.10.10.30/24:
+              is_target: true
+              is_management: false
+    \end{minted}
+    \caption{Persisted Runtime Configuration (run/config.yaml)}
+    \label{lst:nsak-config-yaml}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{bash}
+# Show usage, options and subcommands for the device resource
+nsak device --list
+
+# List all devices found in the resource library
+nsak device list
+
+# Output:
+❯ nsak device list
+ID           NAME         PATH
+bananapi_r4  BananaPI R4  <repository>/lib/devices/bananapi_r4
+    \end{minted}
+    \caption{NSAK CLI: List Devices}
+    \label{lst:nsak-cli-list-devices}
+\end{listing}
+
+\subsection{Device Resource Management}\label{subsec:appendix-device-resource-management}
+
+\begin{listing}[H]
+    \begin{minted}{yaml}
+devices:
+    <str:resource-id>:
+        id: <str:device-id>
+        name: <str:device-name>
+        description: <str:device-description>
+        author: <str:author-email>
+        repository: <str:resource-repository>
+    \end{minted}
+    \caption{Device Resource YAML Specification}
+    \label{lst:device-resource-yaml-specification}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{yaml}
+devices:
+    <str:resource-id>:
+        # ...
+        configuration:
+          network:
+            ethernets:
+              <str:intreface-name>:
+                addresses:
+                  <str:cidr>:
+                    is_target: <boolean>
+                    is_management: <boolean>
+    \end{minted}
+    \caption{Device Resource Configuration YAML Specification}
+    \label{lst:device-resource-configuration-yaml-specification}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=20, lastline=87]{python}{../../../src/nsak/core/device/device_loader.py}
+    \caption{DeviceLoader Configuration Parsing}
+    \label{lst:device-loader-configuration-parsing}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=12, lastline=30]{python}{../../../src/nsak/core/network/configuration.py}
+    \inputminted[firstline=14, lastline=39]{python}{../../../src/nsak/core/device/device.py}
+    \caption{Device Configuration Datastructures}
+    \label{lst:device-configuration-datastructures}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{bash}
+# List all subcommands for the Device resource
+nsak device --help
+
+# List all available devices
+nsak device list
+
+# Show the device details and configuration
+nsak device show <str:device-id>
+
+# Load a device into in the NSAK configuration
+nsak device load <str:device-id>
+
+# Show the currently loaded device stored in the NSAK configuration
+nsak device loaded
+
+# Reset the loaded device
+nsak device unload
+    \end{minted}
+    \caption{Device Configuration CLI Management}
+    \label{lst:device-configuration-cli-management}
+\end{listing}
+
+\subsection{Resource YAML Specifications}\label{subsec:appendix-resource-yaml-specifications}
+
+\begin{listing}[H]
+    \begin{minted}{yaml}
+# Resource type version was removed, as it was not used anyway
+
+# scenarios|drills|environments|devices
+<str:resource-type-key>:
+    # unique resource identifier
+    <str:resource-id>:
+        # The "metadata" key is removed and the children are now nested directly under the resource
+        name: <str:name>
+        description: <str:description>
+        author: <str:email>
+        repository: <str:link>
+        # ... resource type specific properties, which previously were at the top level
+    \end{minted}
+    \caption{Mergeable Resource YAML Specification}
+    \label{lst:mergeable-resource-yaml-specification}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{yaml}
+<str:resource-type-key>:
+    <str:resource-id>:
+        # Unchanged properties...
+
+        interface:
+            arguments:
+                <str:argument-name>:
+                    type: <str:type-annotation>
+                    default: <any:default-value>
+            return_type: <str:type-annotation>
+    \end{minted}
+    \caption{Updated Interface Specification}
+    \label{lst:updated-interface-specification}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{yaml}{../../../lib/scenarios/mitm/scenario.yaml}
+    \caption{mitm Scenario YAML}
+    \label{lst:mitm-scenario-yaml}
+\end{listing}

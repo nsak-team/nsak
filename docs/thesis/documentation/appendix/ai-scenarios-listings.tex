@@ -1,0 +1,111 @@
+\section{AI Scenarios: Source Listings}\label{sec:appendix-ai-scenarios-listings}
+
+\subsection{AI Agent Core}\label{subsec:appendix-ai-agent-core}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent}
+    \label{lst:langchain-agent}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=27, lastline=51]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{AI Provider Map and MCP Client Initialisation}
+    \label{lst:ai-provider-map}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=173, lastline=206]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{create\_ai\_agent() Factory Function}
+    \label{lst:create-ai-agent}
+\end{listing}
+
+\subsection{AI Configuration}\label{subsec:appendix-ai-configuration}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../src/nsak/core/configuration/ai_configuration.py}
+    \caption{AI Configuration Dataclass}
+    \label{lst:ai-configuration}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=6, lastline=14]{python}{../../../src/nsak/core/configuration/loki_configuration.py}
+    \caption{Loki Logging Configuration}
+    \label{lst:logging-loki-configuration}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=15, lastline=27]{python}{../../../src/nsak/core/configuration/email_configuration.py}
+    \caption{E-Mail Alerting Configuration}
+    \label{lst:email-altering-configuration}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=28, lastline=40]{python}{../../../src/nsak/core/email/email_backend.py}
+    \caption{E-Mail Alerting Implementation}
+    \label{lst:email-altering-implementation}
+\end{listing}
+
+\subsection{LangChain Tools}\label{subsec:appendix-langchain-tools}
+
+\begin{listing}[H]
+    \inputminted[firstline=9, lastline=51]{python}{../../../src/nsak/core/ai/tools/host_configuration.py}
+    \caption{LangChain Tool: Host Configuration}
+    \label{lst:langchain-tool-host-configuraiton}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=10, lastline=70]{python}{../../../src/nsak/core/ai/tools/cli_tool.py}
+    \caption{LangChain Tool: CLI Tool}
+    \label{lst:langchain-tool-cli-tool}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=4, lastline=19]{python}{../../../src/nsak/core/ai/tools/human_interaction_hook.py}
+    \caption{LangChain Tool: Human Interaction Hook}
+    \label{lst:langchain-tool-human-interaction-hook}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=6, lastline=26]{python}{../../../src/nsak/core/ai/tools/send_email.py}
+    \caption{LangChain Tool: E-Mail Alerting}
+    \label{lst:langchain-tool-email-alerting}
+\end{listing}
+
+\subsection{Scenario Implementations}\label{subsec:appendix-ai-scenario-implementations}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../lib/scenarios/ai_agent/scenario.py}
+    \caption{Scenario: AI Agent - scenario.py}
+    \label{lst:scenario-ai-agent-py}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{yaml}{../../../lib/scenarios/ai_agent/scenario.yaml}
+    \caption{Scenario: AI Agent - scenario.yaml}
+    \label{lst:scenario-ai-agent-yaml}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../lib/scenarios/ai_reconnaissance/scenario.py}
+    \caption{Scenario: AI Reconnaissance - scenario.py}
+    \label{lst:scenario-ai-recon-py}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{yaml}{../../../lib/scenarios/ai_reconnaissance/scenario.yaml}
+    \caption{Scenario: AI Reconnaissance - scenario.yaml}
+    \label{lst:scenario-ai-recon-yaml}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{python}{../../../lib/scenarios/ai_intrusion_detection/scenario.py}
+    \caption{Scenario: AI Intrusion Detection - scenario.py}
+    \label{lst:scenario-ai-ids-py}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted{yaml}{../../../lib/scenarios/ai_intrusion_detection/scenario.yaml}
+    \caption{Scenario: AI Intrusion Detection - scenario.yaml}
+    \label{lst:scenario-ai-ids-yaml}
+\end{listing}
