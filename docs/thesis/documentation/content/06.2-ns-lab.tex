@@ -3,20 +3,20 @@
 % claude-opus-4-7 (multi-agent + unstructured), qwen3:8b (local) + static reference
 % Evaluation criteria: see §\ref{subsec:criteria}
 % ─────────────────────────────────────────────────────────────────────────────
-\section{Cyberlab bfh}\label{sec:eval-cyberlab}
+\section{Network Security Lab BFH}\label{sec:eval-cyberlab}
 
 \paragraph{Overview}
 
 
 \begin{table}[H]
-    \caption{Benchmark Results --- Cyberlab BFH}
+    \caption{Benchmark Results --- Network Security Lab BFH}
     \centering
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l c c c c c c}
             \hline\hline
             Configuration & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings & Success Factor \\ [0.5ex]
             \hline
-            Multi-Agent (claude-opus-4-7)  & 318 s  & 81,453  & 28 & 53 & 52 & 5/27   \\
+            Multi-Agent (claude-opus-4-7)  & 510 s  & 116,738  & 28 & 53 & 52 & 5/27   \\
             Unstructured (claude-opus-4-7) & 739 s  & 222,094 & -- & -- & -- & 6/109  \\
             Multi-Agent (qwen3:8b, local)  & ---    & ---     & -- & -- & -- & 0/6    \\
             Static Scenario                & 1780 s & ---     & -- & -- & -- & --     \\
@@ -26,59 +26,55 @@
     \label{tab:overview-nslab}
 \end{table}
 
-The Table ~\ref{tab:overview-nslab} shows some quantitative benchmark values.
+Table~\ref{tab:overview-nslab} summarises the quantitative benchmark values,  the configurations are discussed below.
 
 
 \subsection{Quantitative Criteria}\label{subsec:quantitative-criteria-cyberlab}
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_duration_comparison_27_05_2026.svg}
+    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_duration_comparison_ns_lab.svg}
     \caption{Mean run duration per model (Cyberlab BFH).}
     \label{fig:benchmark_duration_cyberlab}
 \end{figure}
 
 Figure~\ref{fig:benchmark_duration_cyberlab} shows the mean run duration per configuration.
-The multi-agent setup completes in 318\,s on average, while the unstructured output scenario
+The multi-agent setup completes in 510\,s on average, while the unstructured output scenario
 requires 739\,s — more than twice as long.
-The extended duration of the unstructured variant stems from its tendency to produce lengthy
-free-form responses before each tool invocation, increasing overall wall-clock time without
-a proportional gain in coverage.
+The extended duration of the unstructured version is due to the fact from its tendency to produce lengthy
+free-form responses before each tool invocation.
+The static benchmark scenario needs 1780\,s to enumerate the whole network which exceeds the \gls{AI} configurations by far.
+
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_token_usage_27_05_2026.svg}
+    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_token_usage_ns_lab.svg}
     \caption{Mean total token usage per model (Cyberlab BFH).}
     \label{fig:benchmark_tokens_cyberlab}
 \end{figure}
 
 Figure~\ref{fig:benchmark_tokens_cyberlab} visualises mean token consumption.
 The unstructured output scenario consumes 222,094 tokens on average, nearly three times the
-81,453 tokens used by the multi-agent configuration.
-This difference reflects the verbosity of unstructured reasoning traces compared to the
-focused, schema-constrained outputs of the multi-agent setup, where each sub-agent exchanges
-only the information necessary for its specialised task.
+116,738 tokens used by the multi-agent configuration, roughly 100\% higher token consumption.
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_tokens_vs_duration_27_05_2026.svg}
+    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_tokens_vs_duration_ns_lab.svg}
     \caption{Total tokens vs.\ run duration per individual run (Cyberlab BFH).}
     \label{fig:benchmark_scatter_cyberlab}
 \end{figure}
 
 Figure~\ref{fig:benchmark_scatter_cyberlab} plots total token consumption against run duration
-for every individual run.
-The unstructured output runs exhibit high variance in both dimensions, spanning 310\,s to
-1{,}091\,s and 119\,k to 305\,k tokens, indicating non-deterministic reasoning depth.
-Multi-agent runs cluster more tightly, with durations between 84\,s and 684\,s, reflecting
-the bounded scope of each sub-task.
+for every run.
+The unstructured output runs shows high variance, spanning 310\,s to
+1{,}091\,s and 119\,k to 305\,k tokens.
+Multi-agent runs cluster more tightly, with durations between 84\,s and 684\,s.
 The positive correlation visible within each group confirms that longer runs consume more
-tokens, driven by deeper enumeration.
-The static benchmark scenario needs 1780s to enumerate the whole network
+tokens.
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_services_27_05_2026.svg}
+    \includesvg[width=0.7\linewidth]{figures/cyber-lab/benchmark_services_ns_lab.svg}
     \caption{Average hosts, services, and findings discovered per model (Cyberlab BFH).}
     \label{fig:benchmark_services_cyberlab}
 \end{figure}
@@ -90,19 +86,16 @@ run on the Cyberlab BFH segment.
 The unstructured output scenario does not produce structured discovery metrics, as its
 assessment is written as free-form text rather than a machine-readable result map, so no
 comparable figures are available for that configuration.
-The Cyberlab environment is considerably larger than the Containerlab setup, containing
-roughly 35 live hosts across the 193.5.80.0/24 subnet, which explains the higher absolute
-counts compared to the virtual evaluation environment.
+The static scenario lists again every service per host which result in more services (130)but rather close finding count with
+52 findings for \gls{Ai} vs 58 for the static scenario.
 
 \subsection{Qualitative Criteria}\label{subsec:qualitativ-criteria-cyberlab}
 
 The evaluation criteria and scoring scale are defined in Table~\ref{tab:qualitative-scale}.
-The findings are distributed across the infrastructure and require
-active tool calling beyond a basic TCP port scan.
-The findings are not closer evaluated here, cause the bfh ns-lab is still in use.
-The findings the most severe findings include a complete extraction with end of live systems, open dns recursion and
-cloned host keys.
-Flaws in this network are partly introduced to train the students.
+The qualitative findings are not evaluated in detail here, because the BFH nslab is still in use.
+The most severe findings include the full extraction of end-of-life systems, open \gls{DNS} recursion, and cloned host keys.
+Flaws in this network are partly introduced to train the students which further complicates the evaluation.
+
 Three findings serve as quality indicators:
 
 \begin{table}[h]
@@ -114,7 +107,7 @@ Three findings serve as quality indicators:
 \toprule
 \textbf{Model} & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes} \\
 \midrule
-claude-opus-4-7 (multi-agent)       & 7 & 9 & All major structural risks found; SNMP and cloned keys missed \\
+claude-opus-4-7 (multi-agent)       & 7 & 9 & All major structural risks found; SNMP, open DNS recursion and cloned keys missed \\
 claude-opus-4-7 (unstructured)      & 9 & 9 & All three discriminating findings surfaced; ESXi host discovered \\
 qwen3:8b (local, multi-agent)       & 1 & N/A & Zero CLI calls; no reconnaissance executed \\
 Static Scenario (reference)         & 10 & N/A & Deterministic script; exhaustive enumeration; no assessment text \\
@@ -124,24 +117,23 @@ Static Scenario (reference)         & 10 & N/A & Deterministic script; exhaustiv
 
 \textbf{claude-opus-4-7 in multi-agent mode} achieves a correctness score of 7.
 In the five successful runs the model consistently identifies the six high-severity structural
-risks present in the network, the findings are not exposed here for security reasons.
+risks present in the network.
 All findings are accompanied by severity ratings and actionable remediation steps.
-However, none of the successful runs includes \acrshort{UDP} enumeration so all flaws with this protocol got not discoverd.
+However, none of the successful runs includes \gls{UDP} enumeration, so all flaws on this protocol went undiscovered.
 Similarly, \texttt{dns-recursion} and \texttt{ssh-hostkey} comparison scripts are absent from
 most runs, leaving the open resolver risk and the cloned key finding unexplored.
 The hallucination score is 9: every claim in the final reports is directly traceable to
-\texttt{nmap} \acrshort{NSE} output, with no fabricated CVE identifiers or version numbers.
-A notable reliability concern is the high error rate of the multi-agent setup,
-only 5 of 27 attempts produced a fully structured result.
+\texttt{nmap} \gls{NSE} output, with no fabricated CVE identifiers or version numbers.
+A notable reliability concern is the high error rate of the multi-agent setup: only 5 of 27 attempts produced a fully structured result.
 
 \textbf{claude-opus-4-7 in unstructured output mode} achieves the highest correctness score of
-9 among the \acrshort{AI} configurations.
-When successful, six runs out of 109 attempts,  the model issues \acrshort{UDP} scans
-alongside \acrshort{TCP} and discovered all mentioned flaws ~\ref{subsec:qualitativ-criteria-cyberlab}.
+9 among the \gls{AI} configurations.
+When successful (six of 109 attempts), the model issued \gls{UDP} scans
+alongside \gls{TCP} and discovered all of the flaws listed above.
 The hallucination score is equally 9: all assessment statements are grounded in concrete scan
 artefacts.
 The main limitation of this configuration is its very low success rate (5.5\,\%) and the
-substantially higher token cost (mean 222\,094 tokens), driven by the unstructured reasoning
+substantially higher token cost (mean 222,094 tokens), driven by the unstructured reasoning
 traces produced before each tool call.
 
 \textbf{Qwen3:8b} is not further assessed due to its low success rate, which is nearly zero.

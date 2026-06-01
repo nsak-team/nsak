@@ -6,11 +6,11 @@
     \centering
     \begin{tabular}{|l|p{6cm}|p{6cm}|}
         \hline
-        \textbf{Aspect} & \textbf{Traditional Recon}                                  & \textbf{AI Recon}                                       \\
+        \textbf{Aspect} & \textbf{Traditional Recon (Static Scenario)}                                  & \textbf{AI Recon}                                       \\
         \hline
         File            & lib/scenarios/reconnaissance/scenario.py                    & lib/scenarios/ai\_reconnaissance/scenario.py            \\
         \hline
-        Return value    & NetworkDiscoveryResultMap (structured)                      & None (LangChain stream only)                            \\
+        Return value    & NetworkDiscoveryResultMap (structured)                      & depend on mode structured or unstructured as stream                           \\
         \hline
         Tools           & arp-scan, nmap (Drills)                                     & LangChain tool\_calls (cli, host\_configuration)        \\
         \hline
@@ -25,19 +25,6 @@
     \label{tab:recon_comparison}
 \end{table}
 
-\textbf{Limitation:} Traditional Recon returns a structured \texttt{NetworkDiscoveryResultMap}, whereas AI Recon returns \texttt{None} (log stream only).
-A direct comparison of results therefore requires either parsing the AI output or documenting this asymmetry as a limitation.
-
-% ─────────────────────────────────────────────────────────────────────────────
-
-
-
-\section{Todos}
-\begin{enumerate}
-    \item section for test runs evaluation and implementation
-    \item human interaction loop and dynamic mcp
-    \item test harness for automated runs
-    \item unified result data structure with evaluation criteria, avg speed, tokenusage, summary
-    \item graphical presentation of result tabel
-    \item Evaluation Mail Wenger und Urs
-\end{enumerate}
+Table~\ref{tab:recon_comparison} presents an overview of the scenarios and limitations of the implementations.
+The deterministic static scenario is limited to a fixed order and execution of reconnaissance whereas the non deterministic \gls{AI} driven
+scenario can choose a broader pallet of tools depending on the situation.

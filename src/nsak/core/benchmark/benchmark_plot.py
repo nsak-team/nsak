@@ -11,6 +11,7 @@ import argparse
 import json
 import logging
 import math
+import textwrap
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -27,7 +28,7 @@ loger = logging.getLogger(__name__)
 
 MODELS: dict[str, dict] = {}  # type: ignore
 
-COLORS = ["#C3ACCE", "#89909F", "#538083", "#C76E00"]
+COLORS = ["#C3ACCE", "#89909F", "#C76E00", "#538083"]
 COLORS_FINDING = ["#5AB1BB", "#A5C882", "#F7DD72", "#4E6766"]
 
 
@@ -52,16 +53,27 @@ def load_json(path: Path) -> None:
     }
 
 
+def _wrap_label(label: str, width: int = 12) -> str:
+    """Break long x-axis tick labels onto multiple lines at spaces.
+
+    Short labels (e.g. ``claude-opus-4-7``) are left unchanged; only labels
+    wider than ``width`` and containing spaces are stacked vertically.
+    """
+    return textwrap.fill(
+        label, width=width, break_long_words=False, break_on_hyphens=False
+    )
+
+
 def plot_duration_comparison() -> None:
     """Mean duration per model, side by side."""
     names = list(MODELS.keys())
     means = [MODELS[m]["mean_duration"] for m in names]
 
     fig, ax = plt.subplots(figsize=(max(5, math.floor(len(names) * 1.5)), 4))
-    ax.bar(names, means, color=COLORS[: len(names)], zorder=2)
+    ax.bar([_wrap_label(n) for n in names], means, color=COLORS[: len(names)], zorder=2)
     ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Mean Duration (s)")
-    ax.set_xlabel("Claude-Opus-4.7")
+    ax.set_xlabel("Scenarios")
     ax.grid(axis="y", zorder=0, alpha=0.35)
     fig.tight_layout()
     _save(fig, "benchmark_duration_comparison" + date + "_multi_agent")
@@ -73,7 +85,7 @@ def plot_token_usage() -> None:
     means = [MODELS[m]["mean_tokens"] for m in names]
 
     fig, ax = plt.subplots(figsize=(max(5, len(names)), 4))
-    ax.bar(names, means, color=COLORS[: len(names)], zorder=2)
+    ax.bar([_wrap_label(n) for n in names], means, color=COLORS[: len(names)], zorder=2)
     ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Mean Total Tokens")
     ax.set_xlabel("Claude-Opus-4.7")
@@ -123,9 +135,9 @@ def plot_services() -> None:
     ax.yaxis.set_major_formatter(ScalarFormatter())
     ax.ticklabel_format(style="plain", axis="y")
     ax.set_ylabel("Count")
-    ax.set_xlabel("Claude-Opus-4.7")
+    ax.set_xlabel("Scenarios")
     ax.set_xticks(x)
-    ax.set_xticklabels(names)
+    ax.set_xticklabels([_wrap_label(n) for n in names])
     ax.legend(loc="upper left")
     ax.grid(axis="y", zorder=0, alpha=0.35)
     fig.tight_layout()

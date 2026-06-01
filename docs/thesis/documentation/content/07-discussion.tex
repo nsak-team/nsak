@@ -10,7 +10,9 @@ Especially compared is the effectiveness of the \gls{AI}-based reconnaissance sc
 comparison against the manually engineered reference scenario
 (Section~\ref{subsubsec:ai-vs-engineered-scenarios}).
 While working with \gls{AGENTIC-AI} the results can not be separated from a model evaluation.
-The summary mainly evaluates the findings of the containerlab.
+The summary draws the overall picture across both evaluation environments.
+The subsequent sections then discuss the virtual \gls{Containerlab} and the real Cyberlab BFH
+segment separately, because the two environments differ in scale and complexity.
 On the one hand, the BFH Network Security Lab must not be exposed,
 but it is also a black box when it comes to the correctness of its findings.
 Therefore we evaluate the successful runs of the scenarios and compare the effectiveness of the agent to gather information.
@@ -21,19 +23,19 @@ The evaluation shows that \gls{AI}-assisted reconnaissance is feasible but stron
 dependent on the underlying model.
 The frontier model \textit{claude-opus-4-7} delivers the most convincing results
 across both environments.
-In the rather small virtual containerlab environment it reaches the highest correctness (9)
+In the rather small virtual \gls{Containerlab} environment it reaches the highest correctness (9)
 and lowest hallucination (9) scores.
 Next to all discovered findings the detailed report on how to deal with the flaws is really helpful for further
 investigation and a first lead on how to treat the vulnerabilities.
 Also helpful is the extraction of some artifacts like cleartext passwords and credentials and further flaws in systems.
 The two smaller models are delivering worse results.
-The \textit{gpt-oss:120b} is adequate but prone to fabricating \acrshort{CVE} identifiers,
+The \textit{gpt-oss:120b} is adequate but prone to fabricating \gls{CVE} identifiers,
 \textit{qwen3:30b} performs host and service
 discovery correctly but lacks the enumeration depth for Critical finding.
 The implemented static scenario provides the highest success rate, with 5 hosts, all 13 services and a fast execution speed of 29\,s.
 No reasoning and evaluation is provided and leaves the operator with the task to assess the results.
 But the rapid speed and not existing token costs make up for it.
-It retrieves the \acrshort{LDAP} naming context yet never performs the anonymous bind that would expose the credentials.
+It retrieves the \gls{LDAP} naming context yet never performs the anonymous bind that would expose the credentials.
 This captures the central trade-off of the comparison: the engineered scenario offers
 holistic and deterministic coverage, whereas the \gls{AI} scenario offers more in-depth analysis.
 
@@ -44,8 +46,20 @@ duration by ca 30\,\%.
 Decomposition also raises execution reliability.
 The success factor improves for all three models, with \textit{claude-opus-4-7} reaching a perfect 10/10.
 
+The picture transfers to the real Cyberlab BFH segment, a network roughly seven times larger than
+the \gls{Containerlab} with about 35 live hosts on the 193.5.80.0/24 subnet.
+There the multi-agent \textit{claude-opus-4-7} setup discovers on average 28 hosts, 53 services, and
+52 findings per run and consistently surfaces the six high-severity structural risks.
+The unstructured variant of the same model reaches an even higher correctness (9 vs.\ 7) because it
+issues additional \gls{UDP} scans and \gls{NSE} scripts, but only at a 5.5\,\% success rate
+and roughly three times the token cost (222,094 vs.\ 81,453).
+The locally hosted \textit{qwen3:8b} fails completely with zero tool calls, and the static scenario
+needs 1780\,s to enumerate the whole network.
+The real environment therefore confirms the \gls{Containerlab} picture: the frontier model scales,
+the engineered scenario stays reproducible but slow, and reliability remains the main open issue.
 
-\section{Context}\label{sec:discussion-context}
+
+\section{Virtual Environment (Containerlab)}\label{sec:discussion-containerlab}
 
 \paragraph{AI versus engineered reconnaissance.}
 
@@ -71,27 +85,49 @@ that the engineered scenario, by construction, cannot.
 
 The two configurations confirm that smaller models benefit more from decomposition, where the larger models are not
 influenced or less influenced by bigger context.
-A frontier model already manages a large context well, so decomposition mainly adds orchestration overhead in the containerlab.
-In the more complex nslab the frontier model also benefits from a higher success rate. \todo{success rate}
+A frontier model already manages a large context well, so decomposition mainly adds orchestration overhead in the \gls{Containerlab}.
 
 Smaller models are more failure prone as their context fills with accumulated tasks and history.
 The smaller tasks and focused context restore both efficiency and token reduction for the local hosted model and a
 more consistency that reflects within a tighter scatter cluster in Figure~\ref{fig:benchmark_scatter_containerlab}.
 This is the primary architectural and conceptual finding which motivates to use the multi-agent setup as the default configuration.
 
-\paragraph{Virtual versus real network.}
+
+\section{Real Network (Cyberlab BFH)}\label{sec:discussion-cyberlab}
+
+\paragraph{Scaling to a real network.}
+
 The Cyberlab BFH segment validates the approach on a real network roughly seven
-times larger than Containerlab (\(\approx\)35 live hosts vs.\ 5).
+times larger than \gls{Containerlab} (\(\approx\)35 live hosts vs.\ 5).
 The multi-agent setup scaled to this size, discovering on average 28 hosts,
 53 services, and 52 findings per run, and consistently surfaced the six
 high-severity structural risks.
+Unlike the \gls{Containerlab}, the lab is a black box without a published ground truth and must
+not be exposed, so the discussion is limited to the successful runs and the effectiveness of the
+agent to gather information rather than a full per-finding comparison.
+In this more complex environment the frontier model also benefits from decomposition through a
+higher success rate, where 5 of 27 multi-agent attempts produced a fully structured result.
+
+\paragraph{Structured multi-agent versus unstructured reasoning.}
+
+The real network exposes a trade-off that the virtual environment does not.
+The unstructured-output configuration reaches a higher correctness (9 vs.\ 7) than the structured
+multi-agent setup, because it issues \gls{UDP} scans alongside \gls{TCP} and executes
+\gls{NSE} scripts that the specialised sub-agents omit, surfacing all three discriminating
+findings (\gls{SNMP}, open \gls{DNS} recursion, and the cloned \gls{SSH} host keys).
+The schema constraints that help the multi-agent setup with speed and token usage therefore come
+short of a free reasoning agent on enumeration depth.
+The gain comes at a price: a 5.5\,\% success rate (6 of 109 attempts) and roughly three times the
+token cost (222,094 vs.\ 81,453).
+The local \textit{qwen3:8b} is unusable on this scale, executing zero tool calls and producing no reconnaissance.
+
 
 \section{Unexpected Results}\label{sec:discussion-unexpected}
 
 First, the \textbf{unstructured-output configuration outperformed the structured
 multi-agent setup on correctness} in the nslab (9 vs.\ 7).
-The unstructured run surfaces all three severe findings \acrshort{SNMP}, open \acrshort{DNS}
-recursion, and the cloned \acrshort{SSH} host keys.
+The unstructured run surfaces all three severe findings \gls{SNMP}, open \gls{DNS}
+recursion, and the cloned \gls{SSH} host keys.
 This leads to the conclusion that the schema constraints which help with speed and reduce token usage come short in comparison
 with a free reasoning agent.
 The free reasoning agent issued UDP scans with additional TCP scans and executed NSE scripts that the multiagent specialised
