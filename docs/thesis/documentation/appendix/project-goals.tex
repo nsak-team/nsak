@@ -1,6 +1,6 @@
 % Time form: Present tense
 
-\section{Project Goals}\label{sec:project-goals}
+\chapter{Project Goals}\label{ch:project-goals}
 
 For a goal to be considered \textbf{S.M.A.R.T.}, it must fulfill the following criteria:
 
@@ -12,9 +12,9 @@ For a goal to be considered \textbf{S.M.A.R.T.}, it must fulfill the following c
 	\item \textbf{Time-bound}: Goals categorized as \textit{must} have to be achieved within the thesis, while \textit{should} or \textit{could} goals are considered optional or nice to have.
 \end{itemize}
 
-\subsection{Research Goals}\label{subsec:research-goals}
+\section{Research Goals}\label{sec:research-goals}
 
-\subsubsection{Compare Frameworks (must)}\label{subsubsec:compare-frameworks}
+\subsection{Compare Frameworks (must)}\label{subsec:compare-frameworks}
 
 To identify the USP (unique selling point) of the \gls{NSAK} framework, we will analyze and compare existing security emulation frameworks.
 First, relevant frameworks such as MITRE Caldera and Atomic Red Team will be identified and reviewed.
@@ -39,7 +39,7 @@ The analysis and comparison will be based on the following properties:
 	\item The USP of the \gls{NSAK} framework is identified
 \end{itemize}
 
-\subsubsection{\gls{AI} Integration Research (must)}\label{subsubsec:ai-integration-research}
+\subsection{\gls{AI} Integration Research (must)}\label{subsec:ai-integration-research}
 
 The goal of this research is to investigate how \gls{AI} (artificial intelligence) can support automated security testing and adversary emulation.
 The research evaluates potential integration points where \gls{AI} could enhance the scenario execution, automation, decision-making, and analysis capabilities of the \gls{NSAK} framework.
@@ -53,9 +53,9 @@ The research evaluates potential integration points where \gls{AI} could enhance
 	\item What architectural changes would be required to integrate \gls{AI} into \gls{NSAK}?
 \end{itemize}
 
-\subsection{Framework}\label{subsec:framework}
+\section{Framework}\label{sec:framework}
 
-\subsubsection{Configuration Management (must)}\label{subsubsec:configuration-management}
+\subsection{Configuration Management (must)}\label{subsec:configuration-management}
 
 The goal is to extend the \gls{NSAK} framework, so that scenarios and drills can expose configurable parameters to increase the flexibility of scenarios and reusability of drills.
 Parameters can be provided via command-line arguments or \gls{YAML} files and are resolved by the framework into a unified run configuration used for scenario execution.
@@ -69,10 +69,10 @@ Parameters can be provided via command-line arguments or \gls{YAML} files and ar
 	\item The framework resolves the inputs into a run configuration (internal data structure).
 \end{itemize}
 
-\subsubsection{REST API (could)}\label{subsubsec:rest-api}
+\subsection{REST API (could)}\label{subsec:rest-api}
 
 Adding a REST \gls{API} to the \gls{NSAK} framework was already proposed in the predecessor project, as it greatly enhances interoperability with other tools.
-The priority of this goal depends heavily on the outcome of the goal~\ref{subsubsec:ai-integration-research} and on whether we want to fulfill the goal~\ref{subsubsec:web-gui}, which is prioritized as \enquote{could}.
+The priority of this goal depends heavily on the outcome of the goal~\ref{subsec:ai-integration-research} and on whether we want to fulfill the goal~\ref{subsec:web-gui}, which is prioritized as \enquote{could}.
 If the evaluated \gls{AI} integration requires a \gls{REST API} (e.g., \gls{MCP}), this goal needs to be prioritized as \enquote{must}; it will be prioritized as \enquote{could}.
 
 \paragraph{Success criteria:}
@@ -80,15 +80,15 @@ If the evaluated \gls{AI} integration requires a \gls{REST API} (e.g., \gls{MCP}
 \begin{itemize}
 	\item A REST \gls{API} specification with feature parity to the \gls{CLI} is created.
 	\item The REST \gls{API} is implemented according to the specification.
-	\item The \gls{API} is documented (OpenAPI) and usable by external clients.
+	\item The \gls{API} is documented (\gls{OpenAPI}) and usable by external clients.
 	\item The REST \gls{API} remains optional and does not replace the \gls{CLI}-based interaction.
 	\item Authentication and Authorization are explicitly out of scope.
 \end{itemize}
 
-\subsubsection{MCP Server (could)}\label{subsubsec:mcp-server}
+\subsection{MCP Server (could)}\label{subsec:mcp-server}
 
 The \gls{MCP} Protocol allows the \gls{AI} to interact with applications in a standardized way - and could therefore be necessary for implementing \gls{AI}-based scenarios.
-If the outcome of the research task~\ref{subsubsec:ai-integration-research} highlights the necessity to specify/expose an \gls{MCP}-Server to interact seamlessly with the \gls{NSAK} framework, the implementation is a (must), otherwise a (could).
+If the outcome of the research task~\ref{subsec:ai-integration-research} highlights the necessity to specify/expose an \gls{MCP}-Server to interact seamlessly with the \gls{NSAK} framework, the implementation is a (must), otherwise a (could).
 
 \begin{itemize}
 	\item A \gls{MCP}-Server is specified and implemented
@@ -96,7 +96,7 @@ If the outcome of the research task~\ref{subsubsec:ai-integration-research} high
 	\item A form of authentication is provided.
 \end{itemize}
 
-\subsubsection{Web GUI (could)}\label{subsubsec:web-gui}
+\subsection{Web GUI (could)}\label{subsec:web-gui}
 
 The goal is to design and implement a web-based graphical user interface that allows users to interact with the \gls{NSAK} framework in a user-friendly way.
 The Web \gls{GUI} will enable management of scenarios and drills, triggering scenario execution, and visualization of execution results and system status.
@@ -112,24 +112,24 @@ The Web \gls{GUI} will enable management of scenarios and drills, triggering sce
 \end{itemize}
 \newpage
 
-\subsection{Scenarios}\label{subsec:scenarios}
+\section{Scenarios}\label{sec:scenarios}
 
-\subsubsection{\gls{AI} Scenarios (must)}\label{subsubsec:ai-scenarios}
+\subsection{\gls{AI} Scenarios (must)}\label{subsec:ai-scenarios}
 
-The goal is to implement artificial intelligence according to the result of~\ref{subsubsec:ai-integration-research} and to explore the use of \gls{AI} to support red, blue, and purple team exercises in the \gls{NSAK} framework.
+The goal is to implement artificial intelligence according to the result of~\ref{subsec:ai-integration-research} and to explore the use of \gls{AI} to support red, blue, and purple team exercises in the \gls{NSAK} framework.
 The \gls{AI} will be evaluated for its potential to assist in executing attacks in a scenario and analyzing detection results.
 The findings will help assess how \gls{AI} could enhance and coordinate red and blue team activities across a network via the \gls{NSAK} device.
 
 \paragraph{Success criteria:}
 
 \begin{itemize}
-	\item The \gls{AI} is integrated into \gls{NSAK} as a scenario or as part of the framework, depending on the result of~\ref{subsubsec:ai-integration-research}.
+	\item The \gls{AI} is integrated into \gls{NSAK} as a scenario or as part of the framework, depending on the result of~\ref{subsec:ai-integration-research}.
 	\item The \gls{AI} can execute \gls{CLI} or Python tools to directly or indirectly interact with the attached network.
 	\item An operator can interact with or stop the running \gls{AI}.
 	\item The result artifacts are stored and can be presented or reused for further scenarios.
 \end{itemize}
 
-\subsubsection{Reproducible Test Environment (must)}\label{subsubsec:reproducible-test-environments}
+\subsection{Reproducible Test Environment (must)}\label{subsec:reproducible-test-environments}
 
 The goal is to design and implement a reproducible and safe test environment for the \gls{NSAK} framework that enables consistent execution and evaluation of scenarios and drills.
 The environment should provide a stable basis for testing and comparison of manual and \gls{AI}-assisted scenarios.
@@ -144,7 +144,7 @@ The environment should provide a stable basis for testing and comparison of manu
 \end{itemize}
 \newpage
 
-\subsubsection{Network Discovery -- Red Team (must)}\label{subsubsec:network-discovery-red-team}
+\subsection{Network Discovery -- Red Team (must)}\label{subsec:network-discovery-red-team}
 
 The goal is to implement a reference red team scenario for network discovery within the \gls{NSAK} framework.
 The scenario should simulate reconnaissance activities to identify hosts, services, and network characteristics, and the results should be comparable to the \gls{AI}-Agent approach.
@@ -158,7 +158,7 @@ The scenario should simulate reconnaissance activities to identify hosts, servic
 	\item The results can be compared with those generated by the \gls{AI}-assisted approach.
 \end{itemize}
 
-\subsubsection{Intrusion Detection -- Blue Team (should)}\label{subsubsec:intrusion-detection-blue-team}
+\subsection{Intrusion Detection -- Blue Team (should)}\label{subsec:intrusion-detection-blue-team}
 
 The goal is to define and implement a blue team reference scenario for intrusion detection within the \gls{NSAK} framework.
 The scenario should allow observation and evaluation of suspicious network activity to assess detection capabilities in the test environment and compare the results with those of the \gls{AI} approach.
@@ -172,11 +172,11 @@ The scenario should allow observation and evaluation of suspicious network activ
 \end{itemize}
 \newpage
 
-\subsection{Evaluation Goals}\label{subsec:evaluation-goals}
+\section{Evaluation Goals}\label{sec:evaluation-goals}
 
-\subsubsection{\gls{AI} Scenario Evaluation (must)}\label{subsubsec:ai-scenario-evaluation}
+\subsection{\gls{AI} Scenario Evaluation (must)}\label{subsec:ai-scenario-evaluation}
 
-The objective is to determine the effectiveness of the \gls{AI}-based scenario introduced by the goal~\ref{subsubsec:ai-scenarios} within the network environment defined by the goal~\ref{subsubsec:reproducible-test-environments}
+The objective is to determine the effectiveness of the \gls{AI}-based scenario introduced by the goal~\ref{subsec:ai-scenarios} within the network environment defined by the goal~\ref{subsec:reproducible-test-environments}
 The evaluation will assess whether the \gls{AI} scenario successfully executed the expected red and blue team activities for the provided prompts and the quality of the results.
 
 \paragraph{Success criteria:}
@@ -188,7 +188,7 @@ The evaluation will assess whether the \gls{AI} scenario successfully executed t
 \end{itemize}
 
 
-\subsubsection{\gls{AI} vs Engineered Scenarios (must/should)}\label{subsubsec:ai-vs-engineered-scenarios}
+\subsection{\gls{AI} vs Engineered Scenarios (must/should)}\label{subsec:ai-vs-engineered-scenarios}
 
 The goal of this evaluation is to compare the quality of \gls{AI}-based red (network reconnaissance) (must) and blue (network intrusion detection) (should) team scenarios with that of manually engineered scenarios.
 
@@ -204,7 +204,7 @@ The results will help determine the potential benefits and limitations of \gls{A
 	\item There is a conclusion on the effectiveness of the \gls{AI} scenario compared to manually engineered scenarios.
 \end{itemize}
 
-\subsection{Out of Scope / Optional Feature}\label{subsec:out-of-scope-optional-feature}
+\section{Out of Scope / Optional Feature}\label{sec:out-of-scope-optional-feature}
 
 At the project management meeting on 05.03.26 (see Table~\ref{tab:meeting-notes-checkpoint2} in Appendix~A.7), the initial project scope was discussed.
 During planning, the team proposed using \gls{AI}-based scenarios and comparing them with the implemented versions, which required reassessing certain milestones.
