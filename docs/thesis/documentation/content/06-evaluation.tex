@@ -2,29 +2,68 @@
 
 \chapter{Evaluation}\label{ch:evaluation}
 
+This chapter evaluates the agentic \gls{AI} integration across the three research questions defined in the~\ref{ch:introduction}.
+The assessment is structured into two parts,
+a controlled evaluation in the reproducible \gls{Containerlab} environment~\ref{sec:eval-containerlab},
+and a real-world evaluation in the BFH network security lab~\ref{sec:eval-cyberlab}.
+Each part examines the same qualitative and quantitative criteria specified in Chapter~\ref{sec:evaluation-setup} (\nameref{sec:evaluation-setup}),
+allowing for a direct comparison across configurations and environments.
+The \nameref{sec:benchmark-suite} (\ref{sec:benchmark-suite}) was leveraged for investigating the research questions \nameref{rq1} and \nameref{rq3},
+as they do not require the interactive mode of the scenarios.
+
+\section{Scenario Overview}\label{sec:scenario-overview}
+
+Table~\ref{tab:evaluated-scenarios} presents an overview of the used scenarios and their characteristics.
+
 \begin{table}[h]
     \centering
-    \begin{tabular}{|l|p{6cm}|p{6cm}|}
+    \begin{tabularx}{\linewidth}{lXXX}
         \hline
-        \textbf{Aspect} & \textbf{Traditional Recon (Static Scenario)}                                  & \textbf{AI Recon}                                       \\
+        \textbf{Scenario} & \textbf{Type} & \textbf{Output} \\
         \hline
-        File            & lib/scenarios/reconnaissance/scenario.py                    & lib/scenarios/ai\_reconnaissance/scenario.py            \\
+        \textbf{Reference Scenario} & Static & Structured  \\
+        \textbf{AI Scenario} & Single Agent & Structured \\
+        \textbf{AI Scenario} & Multi Agent & Structured \\
+        \textbf{AI Scenario} & Multi Agent & Unstructured \\
         \hline
-        Return value    & NetworkDiscoveryResultMap (structured)                      & depend on mode structured or unstructured as stream                           \\
-        \hline
-        Tools           & arp-scan, nmap (Drills)                                     & LangChain tool\_calls (cli, host\_configuration)        \\
-        \hline
-        Async           & sync                                                        & async                                                   \\
-        \hline
-        Determinism     & deterministic (fixed drill order in code)                   & non-deterministic (LLM selects tools autonomously)      \\
-        \hline
-        Error handling  & explicit in code (e.g.\ DHCP fallback, interface discovery) & implicit at model level (may skip steps or hallucinate) \\
-        \hline
-    \end{tabular}
-    \caption{Comparison between Traditional Recon and AI Recon}
-    \label{tab:recon_comparison}
+    \end{tabularx}
+    \caption{Evaluated Scenarios}
+    \label{tab:evaluated-scenarios}
 \end{table}
 
-Table~\ref{tab:recon_comparison} presents an overview of the scenarios and limitations of the implementations.
-The deterministic static scenario is limited to a fixed order and execution of reconnaissance whereas the non deterministic \gls{AI} driven
-scenario can choose a broader pallet of tools depending on the situation.
+The main distinction must be made between the static reference scenario and the \gls{AI} based scenarios,
+because they significantly differ in how they function conceptually and technically.
+The static scenario is limited to a fixed execution order of drills~\ref{subsec:drill-concept} (namely, arp-scan, nmap),
+which also results in a more predictable exception based error handling.
+The agent driven scenarios on the other hand can choose a broader palette of \gls{LangChain} tools (e.g., \gls{CLI}, host configuration) depending on the situation
+and the error handling can become quite intransparent, because a model might retry failed tool calls, start to hallucinate or even decides to skip entire steps.
+Additionally, there are three variations of the \gls{AI} scenario with different implementation details,
+with slightly different implementation details compensating different limitations.
+The characteristics and which limitations they try to address are described in the following paragraphs:
+
+\paragraph{Type}
+As already described the reference scenario does not incorporate on an \gls{LLM},
+but on a \textbf{Static} sequential implementation.
+A \textbf{Single Agent} scenario in non-interactive mode rely on one prompt to achieve its goal.
+This can result in a long chain of tool calls, all contributing to the context.
+Even though it is hard to quantify, its widely accepted that large contexts in relation to the maximum context size (context window) are degrading the models' performance.
+\todo{Add a reference for the claim}
+To address this issue and optimize for smaller models, we implemented the \textbf{Multi Agent} variants.
+This implementation tries to reduce the context size with a divide-and-conquer approach
+~\textthreequartersemdash~the prompt is split into multiple steps and each result is fed into the next agent with the next instruction~\textthreequartersemdash~
+which probably results in longer runtimes.
+For large models this approach could be even harmfully, as they probably don't have a problem with the context size and even call the same tools in multiple agents.
+
+\paragraph{Output}
+While \textbf{Structured} output comes with many benefits,
+especially for quantitative criteria,
+it seems to result in a high failure rate for \glspl{LLM}~\textthreequartersemdash~especially for smaller models.
+This is probably caused by the increased context size and complexity resulting from the generated grammar required for validating the datastructure.
+\todo{Add a source for the claims}
+Because all models struggled to produce any valid responses in the BFH network security lab,
+we developed an \gls{AI} scenario variant with \textbf{Unstructured} output on the spot.
+This resolved the issue and the agents could successfully generate reports on their findings,
+but we could not relly on the automation provided by the benchmarking suite,
+which resulted in much more manual labor.
+
+\todo{Maybe move the scenario overview to concepts or implementation. IDK?}

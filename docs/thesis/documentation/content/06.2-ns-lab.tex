@@ -86,13 +86,13 @@ run on the Cyberlab BFH segment.
 The unstructured output scenario does not produce structured discovery metrics, as its
 assessment is written as free-form text rather than a machine-readable result map, so no
 comparable figures are available for that configuration.
-The static scenario lists again every service per host which result in more services (130)but rather close finding count with
+The static scenario lists again every service per host which result in more services (130) but rather close finding count with
 52 findings for \gls{AI} vs 58 for the static scenario.
 
 \subsection{Qualitative Criteria}\label{subsec:qualitativ-criteria-cyberlab}
 
-The evaluation criteria and scoring scale are defined in Table~\ref{tab:qualitative-scale}.
-The qualitative findings are not evaluated in detail here, because the BFH nslab is still in use.
+The evaluation criteria and scoring scale are defined in table~\ref{tab:qualitative-scale}.
+The qualitative findings are not evaluated in detail here, because the BFH network security lab is still in use.
 The most severe findings include the full extraction of end-of-life systems, open \gls{DNS} recursion, and cloned host keys.
 Flaws in this network are partly introduced to train the students which further complicates the evaluation.
 
@@ -115,15 +115,17 @@ Static Scenario (reference)         & 10 & N/A & Deterministic script; exhaustiv
 \end{tabular}
 \end{table}
 
+\todo{the table is missplaced}
+
 \textbf{claude-opus-4-7 in multi-agent mode} achieves a correctness score of 7.
 In the five successful runs the model consistently identifies the six high-severity structural
 risks present in the network.
 All findings are accompanied by severity ratings and actionable remediation steps.
 However, none of the successful runs includes \gls{UDP} enumeration, so all flaws on this protocol went undiscovered.
-Similarly, \texttt{dns-recursion} and \texttt{ssh-hostkey} comparison scripts are absent from
+Similarly, \mintinline{bash}{dns-recursion} and \mintinline{bash}{ssh-hostkey} comparison scripts are absent from
 most runs, leaving the open resolver risk and the cloned key finding unexplored.
 The hallucination score is 9: every claim in the final reports is directly traceable to
-\texttt{nmap} \gls{NSE} output, with no fabricated CVE identifiers or version numbers.
+\mintinline{bash}{nmap} \gls{NSE} output, with no fabricated CVE identifiers or version numbers.
 A notable reliability concern is the high error rate of the multi-agent setup: only 5 of 27 attempts produced a fully structured result.
 
 \textbf{claude-opus-4-7 in unstructured output mode} achieves the highest correctness score of

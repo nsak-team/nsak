@@ -8,8 +8,7 @@
 \paragraph{Overview}
 
 Tables~\ref{tab:overview-containerlab-single} and~\ref{tab:overview-containerlab-multi} present
-results for both the single-agent and multi-agent implementation, where the multi-agent setup splits
-the reconnaissance scenario into three specialised sub-tasks.
+results for both the single-agent and multi-agent implementation.
 
 \begin{table}[H]
     \caption{Benchmark Results --- Containerlab, Single-Agent ($n = 10$ runs each)}
@@ -160,6 +159,7 @@ and at 4 for \textit{qwen3:30b} in both configurations.
 The Static Scenario's 13 services exceed all \gls{AI} models because the script issues
 exhaustive port sweeps unconditionally, while \gls{AI} agents terminate scanning early
 once they reason the network is sufficiently enumerated.
+\todo{I think the above part is already part of the discussion / also a bit speculative? / Can we defend this claim?}
 The static scenario list every host and follows with the services which result in 13 services.
 The \gls{AI} scenarios consolidate the host information directly into the service rows, so a host
 with open ports is not listed a second time and only the gateway (without open ports) keeps its own
@@ -170,7 +170,7 @@ The difference reflects the representation of the discovery map rather than the 
 
 \subsection{Qualitative Criteria}\label{subsec:qualitativ-criteria-containerlab}
 
-The evaluation criteria and scoring scale are defined in Table~\ref{tab:qualitative-scale}.
+The evaluation criteria and scoring scale are defined in table~\ref{tab:qualitative-scale}.
 One of the key factors in the \gls{Containerlab} environment is whether a model extracts the
 cleartext \gls{LDAP} credentials exposed by the anonymous bind on \textit{192.168.10.5}
 (\textit{uid=asmith}/\textit{uid=bjones}, password \textit{Password123!}) \textthreequartersemdash the scenario's
@@ -260,10 +260,14 @@ ground truth defined in the test environment.
     }
 \end{table}
 
-The Static Scenario discovers all 13 (- the 5 hosts) 8 \gls{LAN} services via intensive port sweeps and
+\todo{checkmark not rendered correctly}
+
+The Static Scenario discovers all 13 (minus the 5 hosts) 8 \gls{LAN} services via intensive port sweeps and
 runs \textit{ldap-rootdse} to retrieve the naming context (\textit{dc=lab,dc=local}), but
 it never performs a \textit{ldap-search} or anonymous bind, so the cleartext credentials
 remain unextracted.
+\todo{first sentences is a bit confusing}
+
 It identifies the printer's dual \textit{Server} header (\textit{BaseHTTP/0.6} alongside
 \textit{HP-WebServer/2.6.5}) but due to its generalistic implementation, the banner mismatch is not further elaborated.
 

@@ -122,6 +122,7 @@
 \usepackage{minted}
 \usepackage{textcomp}
 \usepackage{unicode-math}
+\usepackage{nameref}
 \setmonofont{DejaVu Sans Mono}
 \setminted{
     fontfamily=tt,
@@ -132,6 +133,9 @@
     baselinestretch=1.2,
     linenos=true,
     style=emacs,
+}
+\setmintedinline{
+	fontsize=\smash
 }
 \newminted[yamlcode]{yaml}{
 	fontsize=\tiny,
@@ -224,6 +228,7 @@
 \input{content/05.3-ai-scenarios}
 \input{content/05.4-reconnaissance-scenario}
 \input{content/05.5-benchmark-suite}
+\input{content/05.6-inference-services}
 \input{content/06-evaluation}
 \input{content/06.1-container-lab}
 \input{content/06.2-ns-lab}

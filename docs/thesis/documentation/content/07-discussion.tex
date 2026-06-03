@@ -2,8 +2,8 @@
 
 \chapter{Discussion}\label{ch:discussion}
 
-This chapter connects and interprets the findings of Chapter~\ref{ch:evaluation}
-with respect to the research questions defined in Chapter~\ref{ch:introduction}, which are
+This chapter connects and interprets the findings of Chapter~\ref{ch:evaluation} (\nameref{ch:evaluation})
+with respect to the research questions defined in Chapter~\ref{ch:introduction} (\nameref{ch:introduction}), which are
 addressed at the end of this chapter in Section~\ref{sec:conclusion-to-rq}.
 While working with \gls{AGENTIC-AI}, the results cannot be separated from a model evaluation.
 The summary draws the overall picture across both evaluation environments.
@@ -40,7 +40,7 @@ duration by ca 30\,\%.
 Decomposition also raises execution reliability.
 The success factor improves for all three models, with \textit{claude-opus-4-7} reaching a perfect 10/10.
 
-In the more realistic BFH nslab segment, a network roughly seven times larger than
+In the more realistic BFH network security segment, a network roughly seven times larger than
 the \gls{Containerlab} with about 35 live hosts, the multi-agent \textit{claude-opus-4-7} setup discovers on average 28 hosts, 53 services, and
 52 findings per run and consistently surfaces the six high-severity structural risks.
 The unstructured variant of the same model reaches an even higher correctness (9 vs.\ 7) because it
@@ -48,7 +48,7 @@ issues additional \gls{UDP} scans and \gls{NSE} scripts, but only at a 5.5\,\% s
 and roughly three times the token cost (222,094 vs.\ 116,738).
 The locally hosted \textit{qwen3:8b} fails completely with zero tool calls, and the static scenario
 needs 1780\,s to enumerate the whole network.
-The nslab environment therefore confirms the \gls{Containerlab} findings.
+The BFH network security lab environment therefore confirms the \gls{Containerlab} findings.
 The frontier model scales, while the engineered scenario stays reproducible but slow.
 
 \section{Virtual Environment (Containerlab)}\label{sec:discussion-containerlab}
@@ -132,18 +132,18 @@ The model did not perform any reconnaissance, falling back to a generic recommen
 
 \section{Limitations}\label{sec:discussion-limitations}
 
-\paragraph{Reliability and success rate.}\\
-The headline figures report \(n = 10\) \emph{successful} runs, but the success factors
-reveal unreliability.
-In the cyberlab the success factor concludes 5 of 27 attempts for the multi agent and 6 of 109 runs for the unstructured attempts.
+\paragraph{Reliability and success rate.}
+The headline figures report \(n = 10\) \emph{successful} runs,
+but the success factors reveal unreliability.
+In the cyberlab the success factor concludes 5 of 27 attempts for the multi-agent and 6 of 109 runs for the unstructured attempts.
 The runs were interrupted because of high token usage and missing comparison with other models, only the frontier model
 could perform the tasks, though prone to errors.
 The \gls{AI} scenario is not yet dependable enough for unsupervised operation, and the reported averages reflect a filtered best-case subset.
 
 \paragraph{Incomplete environment and scenario matrix.}
 The methodology (Section~\ref{subsec:environments}) foresaw three environments and a
-blue-team intrusion-detection scenario (Section~\ref{subsubsec:intrusion-detection-blue-team}).
-The evaluation covers the virtual Containerlab and the Cyberlab BFH segment but not a physical environment,
+blue-team intrusion-detection scenario (Section~\ref{subsec:intrusion-detection-blue-team}).
+The evaluation covers the virtual \gls{Containerlab} and the Cyberlab BFH segment but not a physical environment,
 and the evaluation focuses on the red-team reconnaissance scenario; the blue-team comparison (a \emph{should} goal) remains open.
 In the process to implement \gls{AI} agents with LangChain, the challenge to extend the agents with guardrails, dynamic tool calling to enhance the results and
 decompose the scenarios to address speed and token usage for smaller models where rated more critical than another similar physical environment. \todo{decision in project management}
@@ -191,7 +191,7 @@ light of the evaluation.
 
 \paragraph{RQ1 -- Agentic AI versus a static reference scenario.}
 The agentic \gls{AI} scenario matches the static reference scenario on raw discovery, extracting the identical hosts and
-services in the \gls{Containerlab}, but on no run  does it exceed the baseline in speed or determinism
+services in the \gls{Containerlab}, but on no run does it exceed the baseline in speed or determinism
 The advantage of the \gls{AI} is qualitative rather than quantitative.
 It extracts cleartext credentials, reasons about the printer banner mismatch, and produces a severity-rated assessment
 with follow-up steps that the deterministic scenario cannot.

@@ -16,15 +16,15 @@ The drill chain is designed to work generically across different network environ
 \subsection{Discover Hosts Drill}\label{subsec:reconnaissance-drill-discover-hosts}
 
 The \textit{Discover Hosts} drill is the first active step of the scenario.
-For local network segments, it runs \texttt{arp-scan --localnet} on the given interface, which sends \gls{ARP} requests and collects the \gls{IP} address, \gls{MAC} address, and vendor of each responding host.
-If an explicit subnet is provided, the drill falls back to \texttt{nmap -sn} instead, which uses \gls{ICMP} and \gls{TCP} probes and therefore works across Layer~3 boundaries.
+For local network segments, it runs \mintinline{bash}{arp-scan --localnet} on the given interface, which sends \gls{ARP} requests and collects the \gls{IP} address, \gls{MAC} address, and vendor of each responding host.
+If an explicit subnet is provided, the drill falls back to \mintinline{bash}{nmap -sn} instead, which uses \gls{ICMP} and \gls{TCP} probes and therefore works across Layer~3 boundaries.
 \gls{MAC} addresses are only available for hosts on the same Layer~2 segment; remote hosts are recorded without a \gls{MAC}.
 The full implementation is provided in Listing~\ref{lst:discover-hosts-drill-py}.
 
 \subsubsection{Drill Interface}\label{subsubsec:reconnaissance-port-discovery}
 
-The drill exposes two arguments: a required \texttt{interface} and an optional \texttt{subnet}.
-If \texttt{subnet} is omitted, the drill defaults to a local ARP scan; if provided, it switches to the nmap-based subnet scan.
+The drill exposes two arguments: a required \mintinline{bash}{interface} and an optional \mintinline{bash}{subnet}.
+If \mintinline{bash}{subnet} is omitted, the drill defaults to a local ARP scan; if provided, it switches to the nmap-based subnet scan.
 The resource configuration is shown in Listing~\ref{lst:discover-hosts-drill-yaml}.
 
 \subsection{Enumeration}\label{subsec:enumeration}
@@ -33,23 +33,23 @@ After host discovery, the scenario runs two further drills that progressively de
 
 \subsubsection{Port Scan}\label{subsubsec:port-scan}
 
-The \textit{Port Scan} drill receives the \texttt{NetworkDiscoveryResultMap} produced by host discovery and runs \texttt{nmap -sV --open} against each discovered \gls{IP}.
-For every open port, the drill records the port number, transport protocol (\gls{TCP}/\gls{UDP}), service name, and detected version string and appends a \texttt{NetworkService} entry to the existing result map.
+The \textit{Port Scan} drill receives the \mintinline{bash}{NetworkDiscoveryResultMap} produced by host discovery and runs \mintinline{bash}{nmap -sV --open} against each discovered \gls{IP}.
+For every open port, the drill records the port number, transport protocol (\gls{TCP}/\gls{UDP}), service name, and detected version string and appends a \mintinline{bash}{NetworkService} entry to the existing result map.
 The full implementation is provided in Listing~\ref{lst:port-scan-drill-py}.
 
 \subsubsection{Service Enumeration}\label{subsubsec:service-enumeration}
 
 The \textit{Enumerate Services} drill takes the enriched result map and runs targeted \gls{NSE} scripts for each discovered service.
-Well-known services such as HTTP, DNS, FTP, SMTP, SMB, and LDAP are mapped to a specific set of scripts (e.g.\ \texttt{http-title}, \texttt{dns-zone-transfer}, \texttt{smb-security-mode}).
-Unknown services fall back to the generic \texttt{banner} script, which captures the initial response of any \gls{TCP} service.
-The drill returns a mapping of \texttt{ip:port} keys to lists of finding strings extracted from the \gls{NSE} output.
+Well-known services such as HTTP, DNS, FTP, SMTP, SMB, and LDAP are mapped to a specific set of scripts (e.g.\ \mintinline{bash}{http-title}, \mintinline{bash}{dns-zone-transfer}, \mintinline{bash}{smb-security-mode}).
+Unknown services fall back to the generic \mintinline{bash}{banner} script, which captures the initial response of any \gls{TCP} service.
+The drill returns a mapping of \mintinline{bash}{ip:port} keys to lists of finding strings extracted from the \gls{NSE} output.
 The full implementation is provided in Listing~\ref{lst:enumerate-services-drill-py}.
 
 \subsection{Output Artifacts}\label{subsec:reconnaissance-scenario-artifacts}
 
-The primary output of the scenario is the \texttt{NetworkDiscoveryResultMap}, which aggregates all results per interface.
-Each entry maps an interface name to a \texttt{NetworkDiscoveryResult} containing the list of discovered \texttt{NetworkService} objects with their endpoints (IP, MAC, port, protocol, version).
+The primary output of the scenario is the \mintinline{bash}{NetworkDiscoveryResultMap}, which aggregates all results per interface.
+Each entry maps an interface name to a \mintinline{bash}{NetworkDiscoveryResult} containing the list of discovered \mintinline{bash}{NetworkService} objects with their endpoints (IP, MAC, port, protocol, version).
 After port scanning, the scenario prints the result as a human-readable table.
-The service enumeration findings are printed separately as a structured list grouped by \texttt{ip:port}.
+The service enumeration findings are printed separately as a structured list grouped by \mintinline{bash}{ip:port}.
 
 \todo{Add Snippet}
