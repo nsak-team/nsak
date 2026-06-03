@@ -25,8 +25,10 @@ a frontier model (\mintinline{bash}{Claude Opus 4.7}), an institutionally hosted
     \item \textbf{Token usage: AI-specific} Number of tokens consumed per run (AI Recon only)
 \end{itemize}
 
-\todo{We try to fix most of the parameters which influence the success criteria therefore we use a fixed engineered prompt for all models and environments}
-With 3 models $\times$ 3 environments $\times$ $n = 10$ runs, this yields 90 measurements for AI Recon.
+To fix most of the influencing factors we defined a system prompt and a scenario prompt to set the starting line for all models
+equally
+.
+With 3 models $\times$ 3 environments and 1 implemented static scenario $\times$ $n = 10$ runs, this yields 120 measurements for Reconnaissance.
 
 \subsection{Environments}\label{subsec:environments}
 
@@ -60,11 +62,11 @@ With 3 models $\times$ 3 environments $\times$ $n = 10$ runs, this yields 90 mea
 & 9--10 & Excellent     & All key hosts, services, and versions correctly and precisely identified \\
 \midrule
 \multirow{5}{*}{\textbf{Hallucination}}
-& 9-10  & Severe        & Numerous fabricated hosts, services, or vulnerabilities without basis \\
-& 7-8  & Noticeable    & Several unsubstantiated findings; confusion of IPs or services \\
-& 5-6  & Moderate      & Isolated unconfirmed statements; version numbers or banners slightly distorted \\
-& 3-4  & Low           & Rare inaccuracies; findings are traceable to raw scan data \\
-& 1-2 & None          & All statements directly verifiable from scan output; no fabrications \\
+& 9--10  & Severe        & Numerous fabricated hosts, services, or vulnerabilities without basis \\
+& 7--8  & Noticeable    & Several unsubstantiated findings; confusion of IPs or services \\
+& 5--6  & Moderate      & Isolated unconfirmed statements; version numbers or banners slightly distorted \\
+& 3--4  & Low           & Rare inaccuracies; findings are traceable to raw scan data \\
+& 1--2 & None          & All statements directly verifiable from scan output; no fabrications \\
 \bottomrule
     \end{tabularx}
 \end{table}

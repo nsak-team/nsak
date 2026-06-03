@@ -107,8 +107,8 @@ Three findings serve as quality indicators:
 \toprule
 \textbf{Model} & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes} \\
 \midrule
-claude-opus-4-7 (multi-agent)       & 7 & 9 & All major structural risks found; SNMP, open DNS recursion and cloned keys missed \\
-claude-opus-4-7 (unstructured)      & 9 & 9 & All three discriminating findings surfaced; ESXi host discovered \\
+claude-opus-4-7 (multi-agent)       & 7 & 2 & All major structural risks found; SNMP, open DNS recursion and cloned keys missed \\
+claude-opus-4-7 (unstructured)      & 9 & 2 & All three discriminating findings surfaced; ESXi host discovered \\
 qwen3:8b (local, multi-agent)       & 1 & N/A & Zero CLI calls; no reconnaissance executed \\
 Static Scenario (reference)         & 10 & N/A & Deterministic script; exhaustive enumeration; no assessment text \\
 \bottomrule
@@ -124,7 +124,7 @@ All findings are accompanied by severity ratings and actionable remediation step
 However, none of the successful runs includes \gls{UDP} enumeration, so all flaws on this protocol went undiscovered.
 Similarly, \mintinline{bash}{dns-recursion} and \mintinline{bash}{ssh-hostkey} comparison scripts are absent from
 most runs, leaving the open resolver risk and the cloned key finding unexplored.
-The hallucination score is 9: every claim in the final reports is directly traceable to
+The hallucination score is 2: every claim in the final reports is directly traceable to
 \mintinline{bash}{nmap} \gls{NSE} output, with no fabricated CVE identifiers or version numbers.
 A notable reliability concern is the high error rate of the multi-agent setup: only 5 of 27 attempts produced a fully structured result.
 
@@ -132,7 +132,7 @@ A notable reliability concern is the high error rate of the multi-agent setup: o
 9 among the \gls{AI} configurations.
 When successful (six of 109 attempts), the model issued \gls{UDP} scans
 alongside \gls{TCP} and discovered all the flaws listed above.
-The hallucination score is equally 9: all assessment statements are grounded in concrete scan
+The hallucination score is equally 2: all assessment statements are grounded in concrete scan
 artifacts.
 The main limitation of this configuration is its very low success rate (5.5\,\%) and the
 substantially higher token cost (mean 222,094 tokens), driven by the unstructured reasoning

@@ -2,6 +2,10 @@
 
 \chapter{Concepts}\label{ch:concepts}
 
+Before the implementation is presented, this chapter establishes the conceptual designs of the \gls{NSAK} framework.
+It wraps up the predecessor project this thesis builds on and defines the resource types —
+\textit{Device}, \textit{Environment}, \textit{Drill}, and \textit{Scenario} — that reoccur throughout this work.
+
 \section{Predecessor Project: Project 2}\label{sec:predecessor-project-project-2}
 
 This section summarizes the predecessor project that led to the bachelor's thesis.
@@ -84,3 +88,7 @@ This means that adding a new argument to a drill or scenario immediately exposes
 \subsubsection{Mergeable YAML Structure}\label{subsubsec:mergeable-yaml-structure}
 All resource \glsxtrshort{YAML} files follow a common structure in which resources are nested under a resource-type key (e.g.\ \mintinline{bash}{drills:}, \mintinline{bash}{scenarios:}).
 This structure ensures that \glsxtrshort{YAML} files from different parts of the library could be merged into a single in-memory data structure without key conflicts, which is a prerequisite for supporting multiple library paths and composite library configurations in the future.
+
+Together, the resource model and the layered configuration system define how the \gls{NSAK} framework is structured and operated.
+Whether the design and especially, \gls{AI}-driven scenarios, can compare tho a manual implemented needs to be accessed.
+Therefore, the methodology to address this questions are introduced in the next chapter.

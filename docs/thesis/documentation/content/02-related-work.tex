@@ -15,33 +15,73 @@ The knowledge base is structured into \gls{TTP}, which are organized into 14 att
 The \gls{TTP} is getting continuously updated and extended, which helps to defend against the capabilities of threat actors.
 
 The evaluation of the proposed frameworks is based on information obtained from official documentation~\cite{caldera,atomicredteam,metasploitdocs} and the findings of Zilberman et al.~\cite{Zilberman2020SoKThreatEmulators}.
-
+\renewcommand{\arraystretch}{1.3}
 \begin{table}[H]
-	\centering
-	\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
-		\hline
-		\textbf{Characteristic} & \textbf{Metasploit Framework} & \textbf{Atomic Red Team} & \textbf{MITRE Caldera} \\
-		\hline
-		Primary Purpose & Exploitation and penetration testing framework & Security testing through small atomic ATT\&CK tests & Automated adversary emulation platform \\
-		\hline
-		Relation to MITRE ATT\&CK & Partial mapping via modules & Direct mapping to ATT\&CK techniques & Built around ATT\&CK adversary emulation \\
-		\hline
-		Automation Level & Medium (scripts and modules) & Low (manual execution of tests) & High (automated attack chains) \\
-		\hline
-		Main Functionality & Exploit development, payload delivery, post-exploitation & Execute small ATT\&CK technique tests & Simulate adversary campaigns across hosts \\
-		\hline
-		Architecture & Modular framework with exploits, payloads, and auxiliary modules & Collection of scripts/tests organized by ATT\&CK techniques & Client-server platform \\
-		\hline
-		Typical Use Case & Penetration testing and vulnerability validation & Detection validation and security control testing & Red team automation and purple team exercises \\
-		\hline
-		Difficulty Level & Medium--High & Low--Medium & Medium--High \\
-		\hline
-	\end{tabular}
-	\caption{Comparison of Metasploit, Atomic Red Team, and MITRE Caldera (\cite{Zilberman2020SoKThreatEmulators, atomicredteam, caldera, metasploitdocs})}
-	\label{tab:framework-comparison}
-\end{table}
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}
+        {
+     >{\raggedright\arraybackslash}X|
+     >{\raggedright\arraybackslash}X|
+     >{\raggedright\arraybackslash}X|
+     >{\raggedright\arraybackslash}X|
+        }
+    \hline
 
-\todo{Table formatting}
+    \textbf{Characteristic} &
+    \textbf{Metasploit Framework} &
+    \textbf{Atomic Red Team} &
+    \textbf{MITRE Caldera} \\
+    \hline
+
+    Primary Purpose &
+    Exploitation and penetration testing framework &
+    Security testing through small atomic ATT\&CK tests &
+    Automated adversary emulation platform \\
+    \hline
+
+    Relation to MITRE ATT\&CK &
+    Partial mapping via modules &
+    Direct mapping to ATT\&CK techniques &
+    Built around ATT\&CK adversary emulation \\
+    \hline
+
+    Automation Level &
+    Medium (scripts and modules) &
+    Low (manual execution of tests) &
+    High (automated attack chains) \\
+    \hline
+
+    Main Functionality &
+    Exploit development, payload delivery, post-exploitation &
+    Execute small ATT\&CK technique tests &
+    Simulate adversary campaigns across hosts \\
+    \hline
+
+    Architecture &
+    Modular framework with exploits, payloads, and auxiliary modules &
+    Collection of scripts/tests organized by ATT\&CK techniques &
+    Client-server platform \\
+    \hline
+
+    Typical Use Case &
+    Penetration testing and vulnerability validation &
+    Detection validation and security control testing &
+    Red team automation and purple team exercises \\
+    \hline
+
+    Difficulty Level &
+    Medium--High &
+    Low--Medium &
+    Medium--High \\
+    \hline
+
+    \end{tabularx}
+    \caption{Comparison of Metasploit, Atomic Red Team, and MITRE Caldera}
+    \label{tab:framework-comparison}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
 
 As shown in table~\ref{tab:framework-comparison}, the key characteristics of the frameworks are differ greatly.
 \textbf{Atomic Red Team} provides libraries of attack scripts that implement individual \gls{TTP} of MITRE ATT\&CK. Each attack can be executed independently or chained together into a larger attack scenario. \textbf{Mitre Caldera} is a complex, agent based adversary simulation tool, whereas \textbf{Metasploit} is a framework that provides exploits, payloads and auxiliary modules.
@@ -144,14 +184,14 @@ In the cybersecurity podcast Risky Business, it is mentioned that \gls{MCP} is \
 The open-source strategy of Anthropic (\ref{subsec:mcp}) has led to the development of multiple \gls{MCP} implementations that were not designed with a strong focus on security, but rather on rapid adoption of a novel technique.
 
 This provocative claim is based on the observation that, in order to handle the excessive \gls{MCP} tooling, \gls{AI AGENT}s may instead rely on direct access to a root shell, as it provides a more efficient way of interaction~\cite{riskybiz_mcp}.
+ This observation is directly relevant to the \gls{NSAK}.
+The architectural decision is not to remove the tools instead expose the tools most fitting for the task.
+The \gls{NSAK} acts as a harness.
+It exposes a small set of capabilities to the agent to constrain the agents reasoning while the hardware position bounds the agent in reach in the first place.
 
-\todo{How and why is this relevant for our thesis? how could we implement it? To which findings should we pay attention? What can we ignore for now? }
-
-\todo{Ellaborate on this, because we will actually not use MCP}
+Consequently, the tool surface has to be small, efficient and partly dynamic or selective to address the mcp overhead.
 
 \subsubsection{Evaluated Frameworks and MCP}
-
-\todo{I think we are to focused on the term MCP now. We should speak of tool-calling, MCP is just one method for achieveing this.}
 
 Caldera uses a \gls{MCP} plugin as a bridge between the model and the \gls{REST API}, allowing the agent to plan and issue commands in a manner similar to a human operator.
 
@@ -174,10 +214,10 @@ The \textbf{Atomic Red Team} \gls{MCP} Server provides an interface that allows 
 It enables searching, validating, and optionally executing attack techniques (e.g., based on MITRE ATT\&CK).
 \cite{atomic_red_team_mcp}
 
-\todo{What about the other frameworks? What about AI Agents? What can we learn from their approach? How does it affect our strategy?}
-
 \subsubsection{Outcome Comparison}\label{subsubsec:outcome}
 
 The framework comparison highlights the difference between the \gls{NSAK} and the established frameworks.
 Each compared framework performs a specific task in a complex operation, and the \gls{NSAK} device can leverage the strengths of multiple aspects of a different set of tools.
 Building upon these insights, the \gls{NSAK} is designed to extend and integrate these capabilities into a unified and adaptable system and the change of focus to \gls{AI} gets further elaborated in this thesis.
+The following chapter therefore introduces the core concepts of the \gls{NSAK}, inherited from the predecessor project and
+extended in this thesis, which form the basis for the implementation presented later.
