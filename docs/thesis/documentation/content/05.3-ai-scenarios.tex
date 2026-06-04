@@ -74,7 +74,7 @@ The primary LangChain concepts used in the \gls{NSAK} framework are:
     \item \mintinline{python}{messages} - a list of conversation messages (user, \gls{AI}, tool) maintained across the agent's reasoning loop.
 \end{itemize}
 
-The listing~\ref{lst:langchain-agent} is showing the agents implementation in detail.
+The listings in the appendix section~\ref{subsec:appendix-ai-agent-core} are showing the agents implementation in detail.
 The \mintinline{python}{AiAgent.__init__()} method calls \mintinline{python}{create_model()} to instantiate the provider-specific chat model
 and then passes it to \mintinline{python}{create_agent()} together with the tool list and a fixed system prompt that establishes the cybersecurity simulation context.
 The \mintinline{python}{run()} method invokes the agent once and streams all resulting messages (user, \gls{AI}, tool calls, tool results) as formatted strings.

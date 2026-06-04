@@ -4,7 +4,7 @@ from nsak.core.configuration import config
 from nsak.core.email.email_backend import email_backend
 
 # Hardcoded for now!
-grafana_link_template = "https://grafana.hiube.ch/a/grafana-lokiexplore-app/explore/nsak_run_uuid/{run_uuid}/logs?var-ds=P8E80F9AEF21F6940&var-filters=nsak_run_uuid|%3D|{run_uuid}&patterns=[]&var-lineFormat=&var-fields=&var-levels=&var-metadata=&var-jsonFields=&var-patterns=&var-lineFilterV2=&var-lineFilters=caseSensitive,0|__gfp__~|\\[(AI)__gfp__(Prompt)__gfp__(Tool)\\]&timezone=browser&var-all-fields=&userDisplayedFields=false&displayedFields=[]&urlColumns=[]&visualizationType=%22logs%22&prettifyLogMessage=true&sortOrder=%22Ascending%22&wrapLogMessage=true"
+grafana_link_template = "https://grafana.hiube.ch/a/grafana-lokiexplore-app/explore/nsak_run_uuid/{run_uuid}/logs?var-filters=nsak_run_uuid|%3D|{run_uuid}&patterns=[]&var-lineFormat=&var-fields=&var-levels=&var-metadata=&var-jsonFields=&var-patterns=&var-lineFilterV2=&var-lineFilters=caseSensitive,0|__gfp__~|\\[(AI)__gfp__(Prompt)__gfp__(Tool)\\]&timezone=browser&var-all-fields=&userDisplayedFields=false&displayedFields=[]&urlColumns=[]&visualizationType=%22logs%22&prettifyLogMessage=true&sortOrder=%22Ascending%22&wrapLogMessage=true"
 template = """
 Scenario: %(scenario)s\n
 Run ID: %(run_uuid)s\n

@@ -1,20 +1,11 @@
 \newpage
 \section{Configuration Management Implementation}\label{sec:configuration-management-implementation}
 
-The configuration management in \gls{NSAK} is organised into three distinct layers, each serving a different scope and lifetime.
+This section describes the implementation of the three concepts,
+~\textthreequartersemdash~\textit{static}, \textit{runtime} and \textbf{resource configuration}~\textthreequartersemdash~
+introduced in the concepts section of the thesis~\ref{sec:configuration-management-concepts}
+and specified by the according milestone~\ref{subsubsec:milestone-configuration-management}.
 
-The \textbf{static configuration} layer resolves fixed filesystem paths at import time.
-It derives all relevant paths from a single base directory, which can be overridden via an environment variable to support different deployment contexts such as \gls{Docker} containers or automated test environments.
-
-The \textbf{runtime configuration} layer holds mutable state that persists across \gls{CLI} invocations.
-It is loaded from a \gls{YAML} file on every command execution and written back whenever state changes, for example, when a different device is loaded.
-This layer serves as the single source of truth for any information that must be shared between separate \gls{CLI} calls.
-
-The \textbf{resource configuration} layer is defined by the resource library itself.
-Each resource type \textendash devices, drills, scenarios, and environments \textendash declares its configuration inside a \gls{YAML} file stored in the library.
-For devices, this includes network interface assignments, while drills and scenarios additionally declare their typed argument interfaces, which the \gls{CLI} uses to generate the correct command options at runtime.
-
-\todo{This section is repeating what's already stated in the concepts chapter...}
 
 \subsection{NSAK Configuration Management}\label{subsec:nsak-configuration-management}
 

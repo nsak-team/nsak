@@ -3,21 +3,57 @@
 \subsection{AI Agent Core}\label{subsec:appendix-ai-agent-core}
 
 \begin{listing}[H]
-    \inputminted{python}{../../../src/nsak/core/ai/ai_agent.py}
-    \caption{LangChain: AI Agent}
-    \label{lst:langchain-agent}
+    \inputminted[firstline=33, lastline=76]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - TrackToolCallMiddleware}
+    \label{lst:langchain-agent-track-tool-call-middleware}
 \end{listing}
 
 \begin{listing}[H]
-    \inputminted[firstline=27, lastline=51]{python}{../../../src/nsak/core/ai/ai_agent.py}
-    \caption{AI Provider Map and MCP Client Initialisation}
-    \label{lst:ai-provider-map}
+    \inputminted[firstline=79, lastline=123]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - UsageCallback}
+    \label{lst:langchain-agent-usage-callback}
 \end{listing}
 
 \begin{listing}[H]
-    \inputminted[firstline=173, lastline=206]{python}{../../../src/nsak/core/ai/ai_agent.py}
-    \caption{create\_ai\_agent() Factory Function}
-    \label{lst:create-ai-agent}
+    \inputminted[firstline=126, lastline=154]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - Provider Map}
+    \label{lst:langchain-agent-provider-map}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=157, lastline=219]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - Init}
+    \label{lst:langchain-agent-init}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=221, lastline=246]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - create\_model}
+    \label{lst:langchain-agent-create-model}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=248, lastline=264]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - ainvoke / invoke}
+    \label{lst:langchain-agent-invoke}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=266, lastline=320]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - run / run\_interactive}
+    \label{lst:langchain-agent-run}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=323, lastline=350]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - get\_mcp\_tools}
+    \label{lst:langchain-agent-get-mcp-tools}
+\end{listing}
+
+\begin{listing}[H]
+    \inputminted[firstline=353]{python}{../../../src/nsak/core/ai/ai_agent.py}
+    \caption{LangChain: AI Agent - create\_ai\_agent}
+    \label{lst:langchain-agent-create-ai-agent}
 \end{listing}
 
 \subsection{AI Configuration}\label{subsec:appendix-ai-configuration}
@@ -75,7 +111,7 @@
 \subsection{Scenario Implementations}\label{subsec:appendix-ai-scenario-implementations}
 
 \begin{listing}[H]
-    \inputminted{python}{../../../lib/scenarios/ai_agent/scenario.py}
+    \inputminted[firstline=10]{python}{../../../lib/scenarios/ai_agent/scenario.py}
     \caption{Scenario: AI Agent - scenario.py}
     \label{lst:scenario-ai-agent-py}
 \end{listing}
@@ -87,7 +123,7 @@
 \end{listing}
 
 \begin{listing}[H]
-    \inputminted{python}{../../../lib/scenarios/ai_reconnaissance/scenario.py}
+    \inputminted[firstline=19, lastline=77]{python}{../../../lib/scenarios/ai_reconnaissance/scenario.py}
     \caption{Scenario: AI Reconnaissance - scenario.py}
     \label{lst:scenario-ai-recon-py}
 \end{listing}
@@ -99,7 +135,7 @@
 \end{listing}
 
 \begin{listing}[H]
-    \inputminted{python}{../../../lib/scenarios/ai_intrusion_detection/scenario.py}
+    \inputminted[firstline=12]{python}{../../../lib/scenarios/ai_intrusion_detection/scenario.py}
     \caption{Scenario: AI Intrusion Detection - scenario.py}
     \label{lst:scenario-ai-ids-py}
 \end{listing}
