@@ -89,7 +89,7 @@ In \gls{NSAK}, tools can be provided through several complementary mechanisms:
 
 \begin{itemize}
     \item \textbf{LangChain Tools} - native Python functions decorated with \mintinline{python}{@tool},
-    which LangChain automatically wraps with type-safe JSON schemas for the model.
+    which LangChain automatically wraps with type-safe \gls{JSON} schemas for the model.
     This is the primary mechanism used for \gls{NSAK}-specific tools (host configuration, \gls{CLI} access, e-mail, human interaction hook).
     Further, all \gls{NSAK} drills are wrapped as LangChain tools via \mintinline{python}{generate_drill_tools()},
     giving the agent type-safe access to all drill capabilities.
@@ -98,8 +98,6 @@ In \gls{NSAK}, tools can be provided through several complementary mechanisms:
     \item \textbf{\gls{CLI} Access} - the \mintinline{python}{cli_tool} gives the agent direct shell access,
     allowing it to run any installed binary (nmap, tshark, etc.).
 \end{itemize}
-
-\todo{Explain the issue with limited context windows and high token usage of certain MCP tools, such as drawio mcp}
 
 \subsubsection{Tool Calling Models}\label{subsubsec:ai-agent-tool-calling-models}
 
@@ -114,7 +112,6 @@ The \mintinline{python}{create_ai_agent()} factory function shown in listing~\re
 It reads the \mintinline{python}{ai} configuration block, assembles the tool list (always including \mintinline{python}{cli_tool},
 \mintinline{python}{host_configuration}, and \mintinline{python}{send_email}), optionally adds the human interaction hook or drill tools,
 loads \gls{MCP} tools with graceful fallback, and returns a configured \mintinline{python}{AiAgent} instance.
-
 
 The \mintinline{python}{enable_drill_tools} flag, when set to \mintinline{python}{True}, calls \mintinline{python}{generate_drill_tools()}, which dynamically wraps every \gls{NSAK} drill as a type-safe LangChain tool.
 This gives the agent access to structured capabilities such as \mintinline{bash}{discover_hosts} and \mintinline{bash}{port_scan} without requiring \gls{CLI} invocation.
@@ -179,26 +176,29 @@ A useful reference for such a migration is available at \href{https://www.youtub
 
 \subsection{Logging}\label{subsec:ai-scenarios-implementation-logging}
 
-\todo{Explain the general python logging setup and implementation of NSAK}
+\gls{NSAK} uses the standard Python \mintinline{python}{logging} module,
+configured with a handler that writes to both stdout and a file in the run directory.
+Log levels follow the conventional hierarchy, and each logger is namespaced by module to allow fine-grained filtering.
+The logging setup is initialised once at framework startup and is available to all scenarios, drills, and agent components without additional configuration.
 
 \subsubsection{LangChain Agent Logs}\label{subsubsec:ai-scenarios-implementation-langchain-agent-logs}
 
-\todo{Explain that the LangChain agent already provides extensive logging, where we found that the log levels are sometimes questionable (e.g. WARNING for AI responses and tool alls).}
+LangChain provides built-in verbose logging that emits detailed traces of agent reasoning steps, tool invocations, and model responses.
+These traces are useful for debugging but are emitted at inconsistent log levels~\textthreequartersemdash~notably,
+\gls{AI} responses and tool call results are logged at \mintinline{python}{WARNING} rather than \mintinline{python}{DEBUG},
+which pollutes the log output under default configurations.
+This behaviour is a known quirk of the LangChain logging integration.
 
 \subsubsection{Remote Logging System: Grafana / Loki}\label{subsubsec:ai-scenarios-implementation-remote-logging-system}
 
-Uses the package \href{https://pypi.org/project/python-logging-loki/}{python-logging-loki}.
-We went for this method over more conventional approaches, because we can provide more metadata in form of \enquote{tags}.
-
-instead of collecting the logs from stdout
-Filters:
-Regex: \mintinline{python}{\[(AI)|(Prompt)|(Tool)\]}
-\todo{Complete this section}
-
-\ref{subsec:grafana-loki-logging-system}
-
-
-\todo{Add a figure }
+To support the collection from multiple devices and
+structured analysis of agent runs across multiple executions,
+a self-hosted logging backend was configured using Grafana Loki and the \mintinline{python}{python-logging-loki} package~\ref{subsec:grafana-loki-logging-system}.
+On the client side the \href{https://pypi.org/project/python-logging-loki/}{python-logging-loki} package was installed
+and provided log handler was added to existing setup.
+We went for this method over system logging agents such as promtail,
+because this way we can provide more metadata in form of \enquote{tags} on the application level,
+instead of relying on of the parsing of text based logs.
 
 \subsection{E-Mail Alerting}\label{subsec:ai-scenarios-implementation-e-mail-alerting}
 
@@ -207,7 +207,7 @@ The \enquote{EmailBackend} implemented to the \gls{NSAK} framework is an opinion
 and leverages the previously introduced~\ref{sec:configuration-management-implementation} to set up necessary configuration.
 If no \gls{SMTP} configuration is provided as specified in~\ref{lst:email-altering-configuration},
 the system will write the E-Mails as logs instead.
-The working tool can be seen in actions in the test run of the \gls{AI} Reconnaissance scenario~\ref{subsubsec:scenario-ai-reconnaissance-test-run},
+The working tool can be seen in actions in the test run of the \gls{AI} Reconnaissance scenario~\ref{subsec:scenario-ai-reconnaissance},
 where the operator instructs the agent to send the results via E-Mail.
 
 
@@ -218,7 +218,6 @@ During a scenario run the agent can autonomously send e-mails to operators - for
 when the \gls{AI} intrusion detection scenario identifies a suspicious host or the operator instructed the \gls{AI} reconnaissance scenario to send a report.
 The recipient of the mail is defined via the configuration management and cannot be changed by the agent, so that the operator always knows which mails where sent and who received them.
 Optional \mintinline{python}{cc_recipients} and \mintinline{python}{attachments} parameters allow the agent to inform additional stakeholders or attach diagrams and reports.
-Each email comes with some predefined
 For better \gls{traceability} a template is defined, which is filled with meta information including the current scenario and a unique ID,
 which can be used to associate the mail in grafana.
 Further, the subject line is always prefixed with \mintinline{text}{[NSAK]}, so that operators can filter them in their inbox.
@@ -248,18 +247,11 @@ As a first measure, the project team decided to add this functionality as simple
 
 \subsection{Scenario: AI Agent}\label{subsec:scenario-ai-agent}
 
-The \gls{AI} Agent scenario is the most generic of the three: it accepts a free-form \mintinline{python}{prompt} argument and runs the \gls{AI} agent in an interactive loop, maintaining the full conversation history across turns.
+The \gls{AI} Agent scenario is the most generic of the three: it accepts a free-form \mintinline{python}{prompt} argument
+and runs the \gls{AI} agent in an interactive loop, maintaining the full conversation history across turns.
 This makes it the primary entry point for ad-hoc \gls{AI}-assisted tasks where no dedicated scenario exists yet.
 The operator can guide the agent step by step, observe its reasoning, and issue follow-up instructions until they type an empty line or \mintinline{bash}{exit}.
 Listing~\ref{lst:scenario-ai-agent-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-agent-yaml} shows its \gls{YAML} interface declaration.
-
-
-\subsubsection{Scenario: AI Agent - Test Run}\label{subsubsec:scenario-ai-agent-test-run}
-
-\mintinline{bash}{nsak scenario execute ai_agent --prompt "Scan the target network and report all findings" --interactive True}
-
-\todo{Describe and add a reference to the result of the test runs and the limited tool calling capabilities of smaller models}
-
 
 \subsection{Scenario: AI Reconnaissance}\label{subsec:scenario-ai-reconnaissance}
 
@@ -272,28 +264,15 @@ This prompt-driven approach means the scenario does not contain any network scan
 ~\textthreequartersemdash~the agent decides which nmap flags to use, how to interpret results, and what to scan next.
 Listing~\ref{lst:scenario-ai-recon-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-recon-yaml} shows its \gls{YAML} interface declaration.
 
-
-\subsubsection{Scenario: AI Reconnaissance - Test Run}\label{subsubsec:scenario-ai-reconnaissance-test-run}
-
-\mintinline{bash}{nsak scenario execute ai_reconnaissance --interface eth0}
-
-\todo{Describe and add a reference to the result of the first testrun}
-
 \subsection{Scenario: AI Intrusion Detection}\label{subsec:scenario-ai-intrusion-detection}
 
 The \gls{AI} Intrusion Detection scenario is a proof of concept, as it was specified as \enquote{Should} goal.
 It demonstrates a two-phase approach: first it performs host discovery using \mintinline{python}{DrillManager.execute("discover_hosts")},
 then it captures live network traffic using \mintinline{bash}{tshark} (a system dependency declared in the scenario \gls{YAML}).
-Up to 200 packets are captured over a 60-second window and extracted as \gls{CSV} fields (frame number, source and destination \gls{MAC}, source and destination \gls{IP}, \gls{TCP}/\gls{UDP} destination port, protocol stack, and frame length).
+Up to 200 packets are captured over a 60-second window and extracted as \gls{CSV} fields (frame number, source and destination \gls{MAC},
+source and destination \gls{IP}, \gls{TCP}/\gls{UDP} destination port, protocol stack, and frame length).
 
 Both the host discovery table and the packet \gls{CSV} are injected into a structured \mintinline{python}{PROMPT_TEMPLATE} that instructs the \gls{AI} to identify at most five suspicious events,
 each with source/destination \gls{IP} and \gls{MAC}, protocol, and the reason for suspicion, and to identify any malicious hosts.
 By constraining the number of events the prompt keeps the agent's output concise and actionable.
 Listing~\ref{lst:scenario-ai-ids-py} shows the full scenario entrypoint and listing~\ref{lst:scenario-ai-ids-yaml} shows its \gls{YAML} interface declaration.
-
-
-\subsubsection{Scenario: AI Intrusion Detection - Test Run}\label{subsubsec:scenario-ai-intrusion-detection-test-run}
-
-\mintinline{bash}{nsak scenario execute ai_intrusion_detection --interface eth0}
-
-\todo{Describe and add a reference to the result of the first testrun}
