@@ -6,20 +6,21 @@
 
 \subsection{Frank}\label{subsec:peronal-section-frank}
 
-In this project, I gained experience in enumerating a network configuration in a virtual environment with ContainerLab.
-The simplicity of how a containerized environment can be deployed and reconfigured is still really impressive.
-I benefited from the opportunity to implement a file server, \gls{DNS}, and a firewall and much more, and it motivated me to follow up by building a home cyber lab.
-Also, I benefited greatly from using and researching different models and the Langchain framework.
-So I am definitely going to extend the lab with an \gls{LLM}.
-Personally, I favor using \glspl{LLM} for user implementation, primarily for reasoning and recommendations.
-The most surprising fact for me was the difficulty of deploying the \gls{NSAK} autonomously in the NSLab.
-I expected runs to be much more seamless in fulfilling the task.
-I liked the project management tools and ceremonies, which help structure the project, but they come with an overhead and are not suited for a part-time bachelor project.
-The limitation on operating with fixed iterations in GitLab did not align with our approach of 2 blocked focus weeks.
-A deep respect for well-written papers, it is a challenge to write professionally and follow the \enquote{red string}
-in the whole thesis.
+In this project, I gained experience configuring a network in a virtual, containerized environment using ContainerLab.
+The simplicity of deploying and reconfiguring the environment is particularly impressive.
+I had the opportunity to implement a file server, \gls{DNS}, a firewall, and other services, which motivated me to further pursue building a home cyber lab.
+I also benefited greatly from working with and researching various state-of-the-art papers, models, and the LangChain framework.
+Personally, I prefer using \glspl{LLM} mainly for reasoning and recommendations.
+The most surprising aspect for me was the difficulty of deploying the \gls{NSAK} autonomously in the NSLab.
+I had expected the execution process to be much more seamless in completing the task.
+I also appreciated the project management tools and ceremonies, as they help structure the work, although they introduce some overhead and are not ideally suited for a part-time bachelor’s project.
+In particular, the constraint of working with fixed iterations in GitLab did not align well with our approach of two blocked focus weeks.
+Overall, I developed a deep respect for well-written academic papers.
+Writing professionally and maintaining a consistent \enquote{red thread} throughout an entire thesis is quite challenging.
 
-\subsection{Lukas}\label{subsec:peronal-section-lukas}
+
+
+\subsection{Lukas}\label{subsec:personal-section-lukas}
 
 Initially very skeptic of the actual capabilities and usefulness of \glspl{LLM},
 a year ago I would not have guessed that I will write an \gls{AI} focused bachelors thesis.
@@ -36,8 +37,33 @@ Working together with Frank was a pleasure and I think we did leverage the stren
 The experience has convinced me that \gls{AI} is here to stay as one more amazing engineering tool.
 
 \section{Technical Conclusion}\label{sec:tecnical-conclussion}
+The goal of this thesis was to integrate agentic \gls{AI} into the \gls{NSAK} framework and assess how the agent can strengthen network security beyond static scenarios. Using the \gls{NSAK} directly as an agentic harness proved effective, allowing the agent to use a set of \textit{LangChain Tools} to autonomously and interactively execute network discovery.
+The evaluation showed that agentic \gls{AI} complements deterministic enumeration.
 
+Scripted scenarios excel in speed and reproducibility, and the agent adds reasoning and assessment, limited only by the model capabilities.
+Its main strength lies in its interactive mode, where additional input from the operator can guide and refine the investigation process.
+
+One key finding is that multi-agent task decomposition improves the performance of smaller models by reducing context complexity and increasing consistency.
+Despite these advances, hallucinations remain a limitation, making supervised operation with a human reviewer the proposed deployment model.
 
 \section{Future Work}\label{sec:future-work}
 
-\todo{Wo sind meine notizen? xD}
+The implementation and evaluation surfaced several directions worth pursuing beyond the scope of this thesis.
+
+\begin{itemize}
+    \item \textbf{Dynamic tool calling.}
+    Exposing only the tools relevant to the current task instead of the full set would reduce context bloat and improve the reasoning of smaller models.
+    While partly implemented on branch 310 in the project, but rejected because of time limitations.
+
+    \item \textbf{Human-in-the-loop middleware.}
+    Replacing the custom human interaction hook with \gls{LangChain} human in the loop middleware to introduce a robust way to approve or reject a tool call.
+    Introduced also on branch WIP branch 310, but the agent unfortunately is prone to use every tool which is presented in this way even if the tool is not necessary to fulfill the task.
+    We decided not to merge the changes in this state, but recommend for the next steps.
+
+    \item \textbf{Guardrails and security boundaries.}
+    Explicit scope restriction and sandboxing would prevent the agent from acting outside of the boundaries and would be crucial to use the framework in a productive environment.
+
+    \item \textbf{Broader attack-chain coverage.}
+    Extending the agent beyond reconnaissance to later phases of the attack chain.
+    Pivot from human against agent to human enhancing multi agents that build a sophisticated attack chain with switch from human implementation to agentic support seamlessly.
+\end{itemize}

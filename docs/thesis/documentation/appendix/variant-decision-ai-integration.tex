@@ -1,6 +1,4 @@
 % Time form: past tense
-
-\newpage
 \section{Variant Decision: AI Integration}\label{sec:variant-decisions-ai-integration}
 
 During the \gls{AI}-research~\ref{sec:ai-research} we identified two interesting ways to allow \gls{NSAK} to interact with \gls{AI} based technologies.
@@ -10,17 +8,17 @@ In the second variant shown in~\ref{fig:ai-integration-variant-2-nsak-as-mcp-ser
 \subsection{Variant 1: AI-agent in NSAK}\label{subsec:variant-decision-ai-integration-variant-1}
 
 \begin{figure}[H]
-	\centering
-	\includesvg[width=1.0\linewidth]{../assets/diagrams/research/llm_agent_mcp_communications_variant_1.drawio}
-	\caption{AI Integration Variant 1: AI-agent in NSAK}
-	\label{fig:ai-integration-variant-1-ai-agent-in-nsak}
+    \centering
+    \includesvg[width=1.0\linewidth]{../assets/diagrams/research/llm_agent_mcp_communications_variant_1.drawio}
+    \caption{AI Integration Variant 1: AI-agent in NSAK}
+    \label{fig:ai-integration-variant-1-ai-agent-in-nsak}
 \end{figure}
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant1-internal-agent.drawio}
-	\caption{Variant 1, AI Agent in NSAK}
-	\label{fig:variant1-internal-agent}
+    \centering
+    \includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant1-internal-agent.drawio}
+    \caption{Variant 1, AI Agent in NSAK}
+    \label{fig:variant1-internal-agent}
 \end{figure}
 
 In this architecture, the \gls{AI} agent is embedded within the \gls{NSAK} device.
@@ -32,17 +30,17 @@ The results of these operations are subsequently processed and returned to the \
 \subsection{Variant 2: NSAK as MCP Server}\label{subsec:variant-decision-ai-integration-variant-2}
 
 \begin{figure}[H]
-	\centering
-	\includesvg[width=1.0\linewidth]{../assets/diagrams/research/llm_agent_mcp_communications_variant_2.drawio}
-	\caption{AI Integration Variant 2: NSAK as MCP server}
-	\label{fig:ai-integration-variant-2-nsak-as-mcp-server}
+    \centering
+    \includesvg[width=1.0\linewidth]{../assets/diagrams/research/llm_agent_mcp_communications_variant_2.drawio}
+    \caption{AI Integration Variant 2: NSAK as MCP server}
+    \label{fig:ai-integration-variant-2-nsak-as-mcp-server}
 \end{figure}
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant2-external-ai-client.drawio}
-	\caption{Variant 2 NSAK MCP Server}
-	\label{fig:variant2-external-ai-client}
+    \centering
+    \includegraphics[width=0.7\linewidth]{../assets/diagrams/ai-variants/variant2-external-ai-client.drawio}
+    \caption{Variant 2 NSAK MCP Server}
+    \label{fig:variant2-external-ai-client}
 \end{figure}
 
 Variant 1, in which the \gls{AGENTIC-AI} is embedded within the \gls{NSAK} device, enables the definition and enforcement of schemas and security policies within a controlled environment.
@@ -57,7 +55,12 @@ It enables deeper system integration, higher security, and a wider range of exec
 
 \subsection{Decision}\label{subsec:variant-decision-ai-integration}
 
-\todo{enhance the decision with technical background}
-The project team decided in favor of \textbf{Variant 1: AI-agent in NSAK}~\ref{subsec:variant-decision-ai-integration-variant-1}, as it promises to greatly increase the capabilities of \gls{NSAK} regarding autonomy and automation.
+The project team selected \textbf{Variant 1: AI Agent in NSAK}~\ref{subsec:variant-decision-ai-integration-variant-1}, as it significantly enhances the autonomy and automation capabilities of the \gls{NSAK} framework.
 
-\todo{This is not correct anymore: we use LangChain Tools instead of MCP for tool calling, which is their own abstraction over vendor specific APIs}
+From a technical perspective, embedding the agent directly within the \gls{NSAK} device enabled the framework to serve as an \gls{AGENTIC-AI} harness.
+Furthermore, the agent can leverage existing drills and scenarios as reusable building blocks.
+
+For tool calling, the team decided against relying directly on \gls{MCP}.
+A large number of tools bloat the context and pollute the quality of the result.
+Instead, \textit{LangChain Tools} were used.
+This approach preserved modularity while allowing the agent's toolset to be integrated with the \gls{NSAK} framework.

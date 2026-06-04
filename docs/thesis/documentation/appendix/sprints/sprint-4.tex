@@ -42,13 +42,11 @@ In~\ref{fig:milestone-network-discovery-red-team}, not all \enquote{must} goals 
 During planning, a human interaction mode was discussed in which an operator could choose how fast or noisy the reconnaissance should be executed.
 This feature was not implemented, as it does not contribute to answering the thesis question.
 The scenario is able to discover MAC and IP addresses using arp-scan on Layer~2, and protocols and services using nmap within the local subnet.
-All results are stored in a \texttt{NetworkDiscoveryResultMap} and displayed to the operator.
-Service enumeration using targeted \gls{NSE} scripts was implemented as a dedicated drill, which runs service-specific scripts such as \texttt{http-title}, \texttt{dns-zone-transfer}, and \texttt{smb-security-mode} on all discovered ports.
+All results are stored in a \textit{NetworkDiscoveryResultMap} and displayed to the operator.
+Service enumeration using targeted \gls{NSE} scripts was implemented as a dedicated drill, which runs service-specific scripts such as \textit{http-title}, \textit{dns-zone-transfer}, and \textit{smb-security-mode} on all discovered ports.
 
 The scenario could be extended with an optional static IP address, which would be useful in networks where \gls{DHCP} is not available.
 Host discovery in remote networks is currently limited to IP addresses only, as \gls{MAC} addresses are not available across Layer~3 boundaries.
-
-\todo{Maybe move the content to the implementation section and reference it}
 
 \begin{figure}[H]
     \centering

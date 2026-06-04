@@ -204,11 +204,12 @@ The two smaller models, by contrast, fall short of the static baseline on both c
 Agentic \gls{AI} supports the operator primarily by condensing raw scan output into a structured, severity-rated report
 with concrete recommendations and a proposed next step, which lowers the depth of expertise required to interpret the
 results.
-Multi-agent decomposition makes this support accessible even with smaller, self-hosted models, cutting token usage~\ref{sec:discussion-containerlab}
-The support is bounded by model capability and trust: the misclassified honeypot and the fabricated \gls{CVE}
-identifiers show that the operator must still validate the agent's claims, so the system acts as an assistant that
-augments rather than replaces human judgement.
-
+Additionally, the scenario can be run as a guided reconnaissance by setting the \mintinline{bash}{--interactive} flag.
+In this mode the agent does not complete the reconnaissance on its own.
+The agent relies on the human interaction hook, a \gls{LangChain} tool that lets the agent pause its reasoning loop, present its intermediate findings and proposed next step~\ref{subsec:ai-scenarios-implementation-human-interaction-hook-via-cli}.
+The operator's answer is used as additional input in the total context for the next observation, keeping the operator in charge while the agent handles the tool execution.
+The flexibility to choose the right support level based on the situation and the operator's knowledge, makes agentic \gls{AI} a useful assistant.
+This support is limited by model capability and trust, the false classification as honeypot and the fabricated \gls{CVE} show that teh operator must still be alert and able to categorize findings correctly.
 
 \paragraph{RQ3 -- Suitability for real-world deployment.}
 The approach scales to a real network.

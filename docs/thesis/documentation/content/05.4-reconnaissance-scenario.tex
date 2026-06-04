@@ -19,6 +19,7 @@ The \textit{Discover Hosts} drill is the first active step of the scenario.
 For local network segments, it runs \mintinline{bash}{arp-scan --localnet} on the given interface, which sends \gls{ARP} requests and collects the \gls{IP} address, \gls{MAC} address, and vendor of each responding host.
 If an explicit subnet is provided, the drill falls back to \mintinline{bash}{nmap -sn} instead, which uses \gls{ICMP} and \gls{TCP} probes and therefore works across Layer~3 boundaries.
 \gls{MAC} addresses are only available for hosts on the same Layer~2 segment; remote hosts are recorded without a \gls{MAC}.
+Further limitations and possible extensions of the drill, such as supporting a static \gls{IP} address in networks without \gls{DHCP}, are discussed in the sprint review~\ref{par:milestone-review-network-discovery-red-team}.
 The full implementation is provided in Listing~\ref{lst:discover-hosts-drill-py}.
 
 \subsubsection{Drill Interface}\label{subsubsec:reconnaissance-port-discovery}
