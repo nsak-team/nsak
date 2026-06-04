@@ -13,7 +13,7 @@ as they do not require the interactive mode of the scenarios.
 
 \section{Scenario Overview}\label{sec:scenario-overview}
 
-Table~\ref{tab:evaluated-scenarios} presents an overview of the used scenarios and their characteristics.
+Table~\ref{tab:evaluated-scenarios} presents an overview of the evaluated scenarios and their characteristics.
 
 \begin{table}[h]
     \centering
@@ -46,8 +46,6 @@ As already described the reference scenario does not incorporate on an \gls{LLM}
 but on a \textbf{Static} sequential implementation.
 A \textbf{Single Agent} scenario in non-interactive mode rely on one prompt to achieve its goal.
 This can result in a long chain of tool calls, all contributing to the context.
-Even though it is hard to quantify, its widely accepted that large contexts in relation to the maximum context size (context window) are degrading the models' performance.
-\todo{Add a reference for the claim}
 To address this issue and optimize for smaller models, we implemented the \textbf{Multi Agent} variants.
 This implementation tries to reduce the context size with a divide-and-conquer approach
 ~\textthreequartersemdash~the prompt is split into multiple steps and each result is fed into the next agent with the next instruction~\textthreequartersemdash~
@@ -58,12 +56,9 @@ For large models this approach could be even harmfully, as they probably don't h
 While \textbf{Structured} output comes with many benefits,
 especially for quantitative criteria,
 it seems to result in a high failure rate for \glspl{LLM}~\textthreequartersemdash~especially for smaller models.
-This is probably caused by the increased context size and complexity resulting from the generated grammar required for validating the datastructure.
-\todo{Add a source for the claims}
+This is probably caused by the increased context size and complexity resulting from the generated grammar required for validating the data structure.
 Because all models struggled to produce any valid responses in the BFH network security lab,
 we developed an \gls{AI} scenario variant with \textbf{Unstructured} output on the spot.
 This resolved the issue and the agents could successfully generate reports on their findings,
 but we could not relly on the automation provided by the benchmarking suite,
 which resulted in much more manual labor.
-
-\todo{Maybe move the scenario overview to concepts or implementation. IDK?}

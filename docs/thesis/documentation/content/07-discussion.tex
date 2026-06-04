@@ -147,7 +147,7 @@ blue-team intrusion-detection scenario (Section~\ref{subsec:intrusion-detection-
 The evaluation covers the virtual \gls{Containerlab} and the Cyberlab BFH segment but not a physical environment,
 and the evaluation focuses on the red-team reconnaissance scenario; the blue-team comparison (a \emph{should} goal) remains open.
 In the process to implement \gls{AI} agents with LangChain, the challenge to extend the agents with guardrails, dynamic tool calling to enhance the results and
-decompose the scenarios to address speed and token usage for smaller models where rated more critical than another similar physical environment. \todo{decision in project management}
+decompose the scenarios to address speed and token usage for smaller models where rated more critical than another similar physical environment.
 
 \paragraph{Subjectivity of qualitative scoring.}
 The correctness and hallucination scores were assigned manually against the scale in
@@ -172,17 +172,16 @@ qualitative results.
 
     \item \textbf{Combine engineered breadth with \gls{AI} depth.} A hybrid pipeline:
     the deterministic scenario for exhaustive, reproducible service
-    enumeration, followed by an \gls{AI} layer for semantic assessment and
+    enumeration, filtered by a \gls{RAG} system, followed by an \gls{AI} layer for semantic assessment and
     attack-chain reasoning, would pair the static scenario's coverage with
-    the interpretive strength of the \gls{AI}. \todo{Mention RAG systems}
+    the interpretive strength of the \gls{AI}.
 
     \item \textbf{Add a human-in-the-loop and retry strategy.} Given the low success
     rates, an operator checkpoint or automatic retry on incomplete runs would
     raise dependability to a level acceptable for practical use, and would
-    mitigate the silent ``ping-sweep-only'' failures.
-    While partly implemented in \todo{add section in AI implementation with middleware and dynamic tool call}
-    we omitted the branch, because the agent always tried to use just the recommended tools and did not deliver a
-    more sophisticated result.
+    mitigate the silent \enquote{ping-sweep-only} failures.
+    While partly implemented in  we discarded the branch,
+    because the agent always tried to use just the recommended tools and did not deliver a more sophisticated result.
 \end{enumerate}
 
 \section{Answering the Research Questions}\label{sec:conclusion-to-rq}
