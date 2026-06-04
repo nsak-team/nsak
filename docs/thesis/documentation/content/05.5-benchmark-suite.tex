@@ -1,12 +1,12 @@
-\newpage
 \section{Benchmark Suite}\label{sec:benchmark-suite}
 
-As described in the evaluation criteria~\ref{subsec:criteria} there will be at least 120 evaluation runs,
-which will be a lot of data to analyze and assess.
-For this reason, we decided to implement a benchmarking suite, consisting of a benchmark harness that executes benchmark runs and summarizes their results into a report.
-The idea is to fully automate the aggregation of the \textbf{quantitative criteria} (duration, token usage) and
-to prepare the reports needed for the \textbf{qualitative criteria} (correctness and consistency) as good as possible.
-The key concepts for this implementation are described the table below~\ref{tab:benchmark-suite-concepts}:
+As described in the evaluation criteria~\ref{subsec:criteria},
+the evaluation requires a large number of runs across multiple models, scenarios, and environments.
+To reduce manual effort and ensure consistency,
+a benchmarking suite is implemented that automates the execution of runs and the aggregation of results.
+The idea is to fully automate the collection of \textbf{quantitative criteria} (duration, token usage, discovery counts)
+and to prepare the reports needed for \textbf{qualitative criteria} (correctness and hallucination) as completely as possible.
+The key concepts are summarised in Table~\ref{tab:benchmark-suite-concepts}:
 
 \begin{table}[h]
     \centering
@@ -23,3 +23,34 @@ The key concepts for this implementation are described the table below~\ref{tab:
     \caption{Benchmark Suite Concepts}
     \label{tab:benchmark-suite-concepts}
 \end{table}
+
+\subsection{BenchmarkManager}\label{subsec:benchmark-manager}
+
+The \mintinline{python}{BenchmarkManager} is the central harness responsible for orchestrating benchmark runs.
+Given a scenario, a model, and a run count $n$, it executes the scenario $n$ times sequentially,
+collects the result of each run into a \mintinline{python}{BenchmarkRun},
+and aggregates all runs into a \mintinline{python}{BenchmarkReport}.
+Between runs, the manager resets any mutable state to ensure that each execution starts from a clean state.
+Run duration is measured by the manager rather than the scenario itself,
+so that timing includes the full execution from invocation to final output.
+
+\subsection{BenchmarkRun and BenchmarkResult}\label{subsec:benchmark-run-and-result}
+
+A \mintinline{python}{BenchmarkRun} captures the context of a single execution:
+the scenario name, model identifier, run index, start timestamp,
+and the \mintinline{python}{BenchmarkResult} produced by the scenario.
+The \mintinline{python}{BenchmarkResult} is a structured data type that holds the quantitative metrics collected during the run:
+duration, total token consumption (prompt and completion tokens reported separately),
+and the structured discovery output containing discovered hosts, services, and findings.
+The token usage is extracted directly from the \gls{LangChain} callback handler for \gls{AI}-driven scenarios.
+For the static reference scenario the token fields are left empty.
+
+\subsection{BenchmarkReport}\label{subsec:benchmark-report}
+
+On completion of all $n$ runs, the \mintinline{python}{BenchmarkManager} produces a \mintinline{python}{BenchmarkReport} that aggregates the individual results.
+The report aggregates summary statistics
+~\textthreequartersemdash~mean and standard deviation for duration, token usage, and discovery counts~\textthreequartersemdash~
+, saves a Markdown formated file and serializes the full run history to \gls{JSON} for further analysis.
+A human-readable summary table is printed to stdout at the end of each benchmark session.
+The structured \gls{JSON} output serves as the primary input for the quantitative figures presented in Chapter~\ref{ch:evaluation}.
+The Markdown formated report on the other hand serves as the primary source for the qualitative assessment and comparison.

@@ -2,10 +2,27 @@
 
 \chapter{Implementation}\label{ch:implementation}
 
-To address these questions, an \gls{AI} agent based on \gls{LangChain} is integrated into the framework.
-The agent is equipped with tools for retrieving the hosts network configuration,
-autonomous \gls{CLI} command execution, requesting human input and notification via email.
-To simplify the usage of \gls{NSAK} a configuration management is introduced,
-which allows users to configure different \glspl{LLM} and manage secrets for external systems such as email and logging.
+This chapter describes the implementation of the agentic \gls{AI} integration into the \gls{NSAK} framework.
+It is structured around four main contributions.
 
-\todo{Refactor}
+First, a layered configuration management system is introduced,
+which allows operators to configure \glspl{LLM},
+manage credentials for external systems,
+and control framework behavior without modifying scenario code.
+
+Second, the core \gls{AI} agent is implemented using \gls{LangChain}
+and equipped with a focused set of tools:
+host network configuration retrieval, autonomous \gls{CLI} command execution, human interaction, and email alerting.
+Supporting infrastructure including logging and a \gls{CLI} kill switch is introduced alongside the agent.
+
+Third, the \gls{AI}-driven reconnaissance scenario is implemented on top of the agent.
+Which was extended into three variants for evaluating different optimizations~\textthreequartersemdash~
+A single- and a multi-agent version with structured output and a multi-agent version without structured output.
+
+Fourth, a static reference reconnaissance scenario is implemented as the
+baseline for evaluation, chaining host discovery, port scanning, and service
+enumeration as a fixed drill sequence.
+
+Finally, a benchmarking suite is introduced to automate the collection of
+quantitative metrics and prepare the reports required for qualitative
+assessment across all evaluation runs.
