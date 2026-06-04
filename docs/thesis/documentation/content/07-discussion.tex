@@ -9,14 +9,15 @@ While working with \gls{AGENTIC-AI}, the results cannot be separated from a mode
 The summary draws the overall picture across both evaluation environments.
 The subsequent sections then discuss the virtual \gls{Containerlab} and the real Cyberlab BFH
 segment separately, because the two environments differ in scale and complexity.
-The requirements to not expose the still in use BFH Network Security Lab limits to a narrow discussion of the results.
+Because the BFH Network Security Lab is still in use, we were instructed to not disclose any details,
+which limits the discussion of the results.
 
 
 \section{Summary}\label{sec:discussion-summary}
 
 The evaluation shows that \gls{AI}-assisted reconnaissance is feasible but strongly
 dependent on the underlying model.
-The frontier model \textit{claude-opus-4-7} delivers the most convincing results
+As expected, the frontier model \textit{claude-opus-4-7} delivers the most convincing results
 across both environments.
 In the rather small virtual \gls{Containerlab} environment it reaches the highest correctness (9)
 and lowest hallucination (1) scores.
@@ -26,7 +27,7 @@ The extraction of credentials exceeds the basic steps of reconnaissance, which a
 belongs to a later phase of the credential access step of the attack chain.
 The two smaller models struggle with in depth results and are prone to hallucinate or just present basic tips in the report.
 \textit{Gpt-oss:120b} is adequate but prone to fabricating \gls{CVE} identifiers,
-\textit{qwen3:30b} performs host and service discovery correctly but lacks the enumeration depth for Critical finding.
+\textit{qwen3:30b} performs host and service discovery correctly but lacks the enumeration depth for critical findings.
 The implemented static scenario provides the highest success rate, with 5 hosts, all 8 services and a fast execution speed of 29\,s.
 No reasoning and evaluation is provided and leaves the operator with the task to assess the results.
 But the rapid speed and not existing token costs make up for it.
@@ -53,21 +54,21 @@ The frontier model scales, while the engineered scenario stays reproducible but 
 
 \section{Virtual Environment (Containerlab)}\label{sec:discussion-containerlab}
 
-\paragraph{AI versus engineered reconnaissance.}
+\paragraph{AI vs. engineered reconnaissance.}
 
 On just the level of reproducibility and raw coverage the engineered scenario is unbeatable.
-It executes a fixed drill order and returns an identical structured \textit{NetworkDiscoveryResultMap}
+It executes a fixed drill order and returns an identical structured \textit{ReconnaissanceScenarioResult}
 on every run.
 All services are discovered issued by an unconditional port sweep, where the \gls{AI} frontier model extract the same
 hosts and services with a higher duration and token costs.
-However, raw coverage is not an indicator of intelligence.
+However, raw coverage is not an indicator of qualitative results.
 The generalistic way how the engineered scenario was implemented, prevent the extraction of the cleartext credentials,
 does not elaborate the printer's banner mismatch, and produces no severity-rated assessment.
 The wrongly addressed honeypot~\ref{subsec:qualitativ-criteria-containerlab} shows the weakness of \gls{AI} agents.
 The reports must still be proved to be correct.
 Next the two different agent setups are elaborated.
 
-\paragraph{Single-agent versus multi-agent.}
+\paragraph{Single- vs. multi-agent.}
 
 The two configurations confirm that smaller models benefit more from decomposition, where the larger models are not
 influenced or less influenced by bigger context.
@@ -78,10 +79,10 @@ The smaller tasks and focused context restore both efficiency and token reductio
 more consistency that reflects within a tighter scatter cluster in Figure~\ref{fig:benchmark_scatter_containerlab}.
 This is the primary architectural and conceptual finding which motivates to use the multi-agent setup as the default configuration.
 
-\paragraph{Interactive operator support.}
+\paragraph{Interactive operator support}
 
-In regards of the operator support, the \gls{AI} scenario differs most from the static baseline.
-Instead of a raw \textit{NetworkDiscoveryResultMap}, the frontier model returns an assessment that ranks findings by
+In regard of operator support, the \gls{AI} scenario differs most from the static baseline.
+Instead of a raw \textit{ReconnaissanceScenarioResult}, the frontier model returns an assessment that ranks findings by
 severity, explains why each matters, and proposes the next step in the attack chain, which lowers the interpretation
 effort and the depth of expertise the operator has to bring.
 Multi-agent decomposition widens access to this support, by cutting the token footprint and tightening output
@@ -99,9 +100,9 @@ times larger than \gls{Containerlab} (\(\approx\)35 live hosts vs.\ 5).
 The multi-agent setup scaled to this size, discovering on average 28 hosts,
 53 services, and 52 findings per run, and consistently surfaced the six
 high-severity structural risks.
-Unlike the \gls{Containerlab}, the lab is a black box without a published ground truth and must
-not be exposed, so the discussion is limited to the successful runs and the effectiveness of the
-agent to gather information rather than a finding comparison.
+Unlike the \gls{Containerlab}, the lab is a black box without a published topology and must
+not be disclosed, so the discussion is limited to the successful runs and the effectiveness of the
+agent to gather information.
 In this more complex environment the frontier model also benefits from decomposition through a
 higher success rate, where 5 of 27 multi-agent attempts produced a fully structured result.
 
@@ -122,8 +123,8 @@ The local \textit{qwen3:8b} is unusable on this scale, executing zero tool calls
 First, the \textbf{gain of the token reduction} from decomposition was larger
 than expected.
 A 68\,\% drop for \textit{qwen3:30b} in the containerlab and shows that prompt-context growth,
-dominates the cost of single-agent reconnaissance for smaller models or more complicated environments which results ultimately
-also in larger context.
+dominates the cost of single-agent reconnaissance for smaller models or
+more complicated environments which results ultimately in larger context.
 
 Second, the \textbf{complete failure of the local \textit{qwen3:8b} model} (zero
 \textit{cli\_tool} calls across all runs) was more absolute than anticipated.
@@ -160,7 +161,7 @@ qualitative results.
 \begin{enumerate}
     \item \textbf{Match the model tier to the task.} Autonomous reconnaissance
     requires a capable model; the frontier \textit{claude-opus-4-7} is the only
-    configuration that reliably extracted the Critical findings.
+    configuration that reliably extracted the \textit{Critical} findings.
     Small local models such as \textit{qwen3:8b} are unsuitable for tool-driven
     reconnaissance and should not be relied upon.
 
@@ -173,7 +174,7 @@ qualitative results.
     the deterministic scenario for exhaustive, reproducible service
     enumeration, followed by an \gls{AI} layer for semantic assessment and
     attack-chain reasoning, would pair the static scenario's coverage with
-    the interpretive strength of the \gls{AI}.
+    the interpretive strength of the \gls{AI}. \todo{Mention RAG systems}
 
     \item \textbf{Add a human-in-the-loop and retry strategy.} Given the low success
     rates, an operator checkpoint or automatic retry on incomplete runs would
@@ -191,7 +192,7 @@ light of the evaluation.
 
 \paragraph{RQ1 -- Agentic AI versus a static reference scenario.}
 The agentic \gls{AI} scenario matches the static reference scenario on raw discovery, extracting the identical hosts and
-services in the \gls{Containerlab}, but on no run does it exceed the baseline in speed or determinism
+services in the \gls{Containerlab}, but on no run does it exceed the baseline in speed or determinism.
 The advantage of the \gls{AI} is qualitative rather than quantitative.
 It extracts cleartext credentials, reasons about the printer banner mismatch, and produces a severity-rated assessment
 with follow-up steps that the deterministic scenario cannot.

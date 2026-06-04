@@ -40,7 +40,7 @@ Table~\ref{tab:overview-nslab} summarises the quantitative benchmark values,  th
 
 Figure~\ref{fig:benchmark_duration_cyberlab} shows the mean run duration per configuration.
 The multi-agent setup completes in 510\,s on average, while the unstructured output scenario
-requires 739\,s — more than twice as long.
+requires 739\,s \textthreequartersemdash more than twice as long.
 The extended duration of the unstructured version is due to the fact from its tendency to produce lengthy
 free-form responses before each tool invocation.
 The static benchmark scenario needs 1780\,s to enumerate the whole network which exceeds the \gls{AI} configurations by far.
@@ -98,24 +98,23 @@ Flaws in this network are partly introduced to train the students which further 
 
 Three findings serve as quality indicators:
 
-\begin{table}[h]
-\centering
-\caption{Qualitative Evaluation -- Cyberlab BFH}
-\label{tab:qualitative-results-cyberlab-bfh}
-\small
-\begin{tabular}{@{}lccl@{}}
-\toprule
-\textbf{Model} & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes} \\
-\midrule
-claude-opus-4-7 (multi-agent)       & 7 & 2 & All major structural risks found; SNMP, open DNS recursion and cloned keys missed \\
-claude-opus-4-7 (unstructured)      & 9 & 2 & All three discriminating findings surfaced; ESXi host discovered \\
-qwen3:8b (local, multi-agent)       & 1 & N/A & Zero CLI calls; no reconnaissance executed \\
-Static Scenario (reference)         & 10 & N/A & Deterministic script; exhaustive enumeration; no assessment text \\
-\bottomrule
-\end{tabular}
+\begin{table}[H]
+    \centering
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{@{}lccl@{}}
+            \toprule
+            \textbf{Model} & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes} \\
+            \midrule
+            claude-opus-4-7 (multi-agent)       & 7 & 2 & All major structural risks found; \gls{SNMP}, open \gls{DNS} recursion and cloned keys missed \\
+            claude-opus-4-7 (unstructured)      & 9 & 2 & All three discriminating findings surfaced; ESXi host discovered \\
+            qwen3:8b (local, multi-agent)       & 1 & N/A & Zero \gls{CLI} calls; no reconnaissance executed                                              \\
+            Static Scenario (reference)         & 10 & N/A & Deterministic script; exhaustive enumeration; no assessment text \\
+            \bottomrule
+        \end{tabular}
+    }
+    \caption{Qualitative Evaluation -- Cyberlab BFH}
+    \label{tab:qualitative-results-cyberlab-bfh}
 \end{table}
-
-\todo{the table is missplaced}
 
 \textbf{claude-opus-4-7 in multi-agent mode} achieves a correctness score of 7.
 In the five successful runs the model consistently identifies the six high-severity structural

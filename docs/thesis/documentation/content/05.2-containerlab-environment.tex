@@ -1,7 +1,7 @@
 \newpage
 \section{Reproducible Test Environment}\label{sec:reproducible-test-environment}
 
-Unless stated otherwise, all referenced implementation artifacts in this section originate from the NSAK repository \cite{nsakRepository2026}.
+Unless stated otherwise, all referenced implementation artifacts in this section originate from the \gls{NSAK} repository~\cite{nsakRepository2026}.
 
 The scope of this thesis is confined to the \gls{AI} based reconnaissance and optionally,
 the intrusion detection scenarios~\ref{subsubsec:milestone-ai-scenarios},
@@ -18,12 +18,8 @@ This environment is described in a \gls{Docker Compose} file, located under:
 The whole setup can be simulated with the following command:
 \mintinline{bash}|nsak environment simulate simple_tcp_client_server mitm|.
 
-...
-
-\todo{Maybe it would make sense to describe this in the project 2 section instead}
-
 While \gls{Docker} or \gls{Podman} provides a general-purpose containerization platform, they abstract away most of the lower levels of the network stack and thus lack the support for modeling network topologies.
-In the existing implementation this was partially addressed, by using the~\href{https://docs.docker.com/engine/network/drivers/macvlan/}{macvlan} network driver, to enable level 2 networking.
+In the existing implementation this was partially addressed, by using the~\href{https://docs.docker.com/engine/network/drivers/macv\gls{LAN}/}{macvlan} network driver, to enable level 2 networking.
 In contrast, \gls{Containerlab} builds upon \gls{Docker Compose} and optimize its functionalities for networking purposes.
 
 The primary advantages of \gls{Containerlab} are:
@@ -34,8 +30,11 @@ The primary advantages of \gls{Containerlab} are:
 \end{itemize}
 In summary, while OCI containers serves as the underlying container engine, \gls{Containerlab} provides a higher-level network simulation.
 
-Listing~\ref{lst:containerlab-topology-yaml-exampel} in the appendix shows an excerpt of a \gls{Containerlab} topology.yaml file.
-Basically the nodes are defined and with virtual Ethernet links connected. The bridge represents a multi port switch.
+Listing~\ref{lst:containerlab-topology-yaml-example} in the appendix shows an excerpt of a \gls{Containerlab} topology.yaml file.
+Basically the nodes are defined and with virtual Ethernet links connected.
+The bridge represents a multi-port switch.
+
+\todo{missing listing}
 
 \subsection{Network Topology}\label{subsec:test-network-topology}
 
@@ -56,13 +55,13 @@ The \texttt{nsak} container can be deployed in different network segments, enabl
 
 To evaluate reconnaissance scenarios, common services must run on endpoints.
 
-\gls{BIND} is a complete implementation of the DNS protocol that can be configured through the \mintinline{bash}|named.conf| file as an authoritative name server and resolver.
+\gls{BIND} is a complete implementation of the \gls{DNS} protocol that can be configured through the \mintinline{bash}|named.conf| file as an authoritative name server and resolver.
 
-In the test lab illustrated in~\ref{fig:virtual-test-environments}, the functionality of the web server and DNS server was combined for simplicity.
+In the test lab illustrated in~\ref{fig:virtual-test-environments}, the functionality of the web server and \gls{DNS} server was combined for simplicity.
 
 During the \gls{DMZ}-server container build process, a setup shell script is executed.
 
-In the first part, the authoritative \gls{BIND} \mintinline{bash}|named.conf| file, DNS options, and master zones for forward and reverse lookups are created.
+In the first part, the authoritative \gls{BIND} \mintinline{bash}|named.conf| file, \gls{DNS} options, and master zones for forward and reverse lookups are created.
 
 In the forward zone, domain names map to IP addresses, while in the reverse zone, IP addresses map to domain names~\ref{lst:dmz-server}.
 
@@ -83,7 +82,7 @@ Like in real setups, HTTP traffic on port 80 is redirected to HTTPS on port 443.
 To provide an artifact for reconnaissance purposes, a file named \mintinline{bash} | {secret.txt} containing sensitive data is placed on the server. |
 
 
-The LAN zone of the network, consists of 4 devices.
+The \gls{LAN} zone of the network, consists of 4 devices.
 
 
 \subsection{Domain Control and File Server}\label{subsec:ctrl-server}
@@ -100,7 +99,7 @@ Sensitive files such as payroll exports and budget summaries are placed in the r
 
 \subsection{Workstations}\label{subsec:workstations}
 
-Two workstations reside on the LAN segment: Alice at 192.168.10.100, assigned to the Finance department, and Bob at 192.168.10.101, assigned to the IT department.
+Two workstations reside on the \gls{LAN} segment: Alice at 192.168.10.100, assigned to the Finance department, and Bob at 192.168.10.101, assigned to the IT department.
 
 Both nodes expose \gls{SSH} on port 22 and \gls{SMB} on port 445, and both \gls{SSH} banners intentionally disclose the organization name.
 
@@ -118,6 +117,7 @@ The second interface, a \gls{REST API}, listens on port 631 at the \mintinline{b
 All printer requests are logged in \\ \mintinline{bash}|{/var/logs/printer_sim_logs}| inside the container~\ref{lst:printer}.
 
 
-\subsection{Introduced Vulnerabilities}\label{introduced-vulnerabilities}
+\subsection{Introduced Vulnerabilities}\label{subsec:introduced-vulnerabilities}
 
-For reconnaissance purposes, several vulnerabilities and flaws were introduced, which are partly mentioned in the previous sections and are presented in detail in Listing~\ref{lst:flaws-and-vulnerabilities}. These flaws are necessary to compare the results of the larger and smaller models as well as the implemented vs the AI-enhanced scenarios.
+For reconnaissance purposes, several vulnerabilities and flaws were introduced, which are partly mentioned in the previous sections and are presented in detail in Listing~\ref{lst:flaws-and-vulnerabilities}.
+These flaws are necessary to compare the results of the larger and smaller models as well as the implemented vs the \gls{AI} enhanced scenarios.
