@@ -2,19 +2,27 @@
 
 \chapter{Methodology}\label{ch:methodology}
 
+This chapter defines the evaluation strategy used to assess the agentic \gls{AI} integration across the three research questions.
+The evaluation is structured around a controlled benchmark in a reproducible virtual environment and a real-world assessment in the BFH network security lab.
+A static reference scenario serves as the baseline against which all \gls{AI}-driven configurations are compared.
 
 \section{Evaluation Setup}\label{sec:evaluation-setup}
 
 Three models are benchmarked across 10 runs in three environments (\emph{containerlab}, \emph{physical lab}, and \emph{BFH Cyber Lab}):
-a frontier model (\mintinline{bash}{Claude Opus 4.7}), an institutionally hosted open-weight model (\mintinline{bash}{gpt-oss:120b}), and a locally-run open-source model (\mintinline{bash}{qwen3:30b} via Ollama).
+a frontier model (\mintinline{bash}{Claude Opus 4.7}),
+an institutionally hosted open-weight model (\mintinline{bash}{gpt-oss:120b}),
+and a locally-run open-source model (\mintinline{bash}{qwen3:30b} via Ollama).
 
 \subsection{Criteria}\label{subsec:criteria}
+
+The evaluation criteria are divided into quantitative and qualitative categories.
+Quantitative criteria are collected automatically by the benchmarking suite introduced in Section~\ref{sec:benchmark-suite}.
+Qualitative criteria require manual assessment and are scored against the scale defined in Table~\ref{tab:qualitative-scale}.
 
 \textbf{Qualitative criteria:}
 
 \begin{itemize}
     \item \textbf{Correctness and Task completion/completeness:} Are the scenarios completed fully and are the results correct?
-    \item \textbf{Creativity: AI-specific} Does AI Recon identify relationships or suggest follow-up steps not covered by Traditional Recon?
     \item \textbf{Consistency network discovery results:} How much does the output vary across $n = 10$ runs with an identical prompt, per model and environment?
 \end{itemize}
 
@@ -22,15 +30,15 @@ a frontier model (\mintinline{bash}{Claude Opus 4.7}), an institutionally hosted
 
 \begin{itemize}
     \item \textbf{Speed:} Time from scenario start to complete output of all discovered hosts and services
-    \item \textbf{Token usage: AI-specific} Number of tokens consumed per run (AI Recon only)
+    \item \textbf{Token usage: AI-specific} Number of tokens consumed per run (\gls{AI} Reconnaissance only)
 \end{itemize}
 
-To fix most of the influencing factors we defined a system prompt and a scenario prompt to set the starting line for all models
-equally
-.
+To fix most of the influencing factors we defined a system prompt and a scenario prompt to set the starting line for all models equally.
 With 3 models $\times$ 3 environments and 1 implemented static scenario $\times$ $n = 10$ runs, this yields 120 measurements for Reconnaissance.
 
 \subsection{Environments}\label{subsec:environments}
+
+Three environments are used across the evaluation, each representing a different level of control, reproducibility and realism.
 
 \begin{enumerate}
     \item Virtual environment (containerlab)
@@ -40,33 +48,46 @@ With 3 models $\times$ 3 environments and 1 implemented static scenario $\times$
 
 \subsection{Models}\label{subsec:models}
 
-\begin{enumerate}
-    \item Self-hosted local LLM (Ollama)
-    \item BFH LLM
-    \item Frontier model (Anthropic Claude)
-\end{enumerate}
+Table~\ref{tab:used-inference-models} lists the \glspl{LLM} used and how they were accessed.
+The three models span a range of parameter counts, deployment modes, and capability levels,
+allowing the evaluation to draw conclusions about the suitability of different model categories for agentic network reconnaissance.
+
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\linewidth}{lX}
+        \hline
+        \textbf{Model} & \textbf{Provider} \\
+        \hline
+        qwen3:30b & Self-hosted via \gls{Ollama} \\
+        gpt-oss:120b & BFH-TI Machine Learning Management Platform \\
+        claude-opus-4-7 & \gls{Anthropic} \gls{API} \\
+        \hline
+    \end{tabularx}
+    \caption{Evaluated Inference Models}
+    \label{tab:used-inference-models}
+\end{table}
 
 \begin{table}[h]
     \centering
     \caption{Qualitative Evaluation Scale for LLM Reconnaissance Results}
     \label{tab:qualitative-scale}
     \begin{tabularx}{\textwidth}{@{}lllX@{}}
-\toprule
-\textbf{Criterion} & \textbf{Score} & \textbf{Level} & \textbf{Description} \\
-\midrule
-\multirow{5}{*}{\textbf{Correctness}}
-& 1--2  & Insufficient  & Results are mostly wrong or irrelevant; no actionable information \\
-& 3--4  & Poor          & Few correct findings; many errors in services, ports, or versions \\
-& 5--6  & Adequate      & Majority of hosts/services correct; isolated errors in version or protocol details \\
-& 7--8  & Good          & Findings largely correct and complete; minor inaccuracies \\
-& 9--10 & Excellent     & All key hosts, services, and versions correctly and precisely identified \\
-\midrule
-\multirow{5}{*}{\textbf{Hallucination}}
-& 9--10  & Severe        & Numerous fabricated hosts, services, or vulnerabilities without basis \\
-& 7--8  & Noticeable    & Several unsubstantiated findings; confusion of IPs or services \\
-& 5--6  & Moderate      & Isolated unconfirmed statements; version numbers or banners slightly distorted \\
-& 3--4  & Low           & Rare inaccuracies; findings are traceable to raw scan data \\
-& 1--2 & None          & All statements directly verifiable from scan output; no fabrications \\
-\bottomrule
+        \toprule
+        \textbf{Criterion} & \textbf{Score} & \textbf{Level} & \textbf{Description} \\
+        \midrule
+        \multirow{5}{*}{\textbf{Correctness}}
+        & 1--2  & Insufficient  & Results are mostly wrong or irrelevant; no actionable information \\
+        & 3--4  & Poor          & Few correct findings; many errors in services, ports, or versions \\
+        & 5--6  & Adequate      & Majority of hosts/services correct; isolated errors in version or protocol details \\
+        & 7--8  & Good          & Findings largely correct and complete; minor inaccuracies \\
+        & 9--10 & Excellent     & All key hosts, services, and versions correctly and precisely identified \\
+        \midrule
+        \multirow{5}{*}{\textbf{Hallucination}}
+        & 9--10  & Severe        & Numerous fabricated hosts, services, or vulnerabilities without basis \\
+        & 7--8  & Noticeable    & Several unsubstantiated findings; confusion of IPs or services \\
+        & 5--6  & Moderate      & Isolated unconfirmed statements; version numbers or banners slightly distorted \\
+        & 3--4  & Low           & Rare inaccuracies; findings are traceable to raw scan data \\
+        & 1--2 & None          & All statements directly verifiable from scan output; no fabrications \\
+        \bottomrule
     \end{tabularx}
 \end{table}
