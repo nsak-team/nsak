@@ -1,13 +1,14 @@
 \newpage
-\section{AI \textendash Scenarios}\label{sec:ai-scenarios-implementation}
+\section{AI Scenarios}\label{sec:ai-scenarios-implementation}
 
 This section describes the design and implementation of the milestone \gls{AI} Scenarios~\ref{subsubsec:milestone-ai-scenarios},
-which is based on the user story map workshop \gls{AI} Purple Team~\ref{subsec:nsak-scenario-ai-purple-team}.
+which is based on the user story map workshop \gls{AI} Purple Team~\ref{sec:nsak-scenario-ai-purple-team}.
 In the workshop we defined the features which such a scenario may provide and categorized them in \enquote{Must}, \enquote{Could} and \enquote{Should}.
 Because of time constraints, we set the focused only on the user stories categorized as \enquote{Must}.
 The main goal is to implement an \gls{AI} reconnaissance scenario, which is described in the~\ref{subsec:scenario-ai-reconnaissance}.
 But on the way it made sense to also create an intermediary scenario which can run custom prompts~\ref{subsec:scenario-ai-agent}.
-Further, we already explored the \gls{AI} based intrusion detection scenario~\ref{subsec:scenario-ai-intrusion-detection} which should be seen as proof of concept, because the corresponding milestone and goals are categorized as \enquote{Should}.
+Further, we already explored the \gls{AI} based intrusion detection scenario~\ref{subsec:scenario-ai-intrusion-detection}
+which should be seen as proof of concept, because the corresponding milestone and goals are categorized as \enquote{Should}.
 
 \subsection{\gls{AI} Agent}\label{subsec:ai-scenarios-implementation-ai-agent}
 
@@ -27,10 +28,6 @@ The project team chose \href{https://www.langchain.com/}{LangChain} as the agent
 For the integration into the \gls{NSAK} framework we decided to implement an \mintinline{python}{AiAgent} class as the central abstraction,
 which wraps a \mintinline{python}{BaseChatModel} together with a set of LangChain tools and delegates the reasoning loop to LangChain's built-in \mintinline{python}{create_agent()}.
 
-\todo{Describe the three different abstraction levels: DeepAgent, LangChain and LangGraph (maybe include cheatsheet with proper citation)}
-
-
-
 \subsubsection{AI Configuration}\label{subsubsec:ai-configuration}
 
 Before any \gls{AI} based scenario can run, the \mintinline{python}{AiConfiguration} entry must be set in the runtime configuration,
@@ -38,7 +35,6 @@ containing the model, provider and credentials.
 Listing~\ref{lst:ai-configuration} shows the dataclass, which holds two fields: \mintinline{python}{model} and \mintinline{python}{base_url}.
 For authentication, the basic auth can be provided in the \mintinline{python}{base_url} field,
 otherwise the \mintinline{python}{api_key} must be set.
-
 
 With the \gls{CLI} command \mintinline{bash}{nsak config set ai} the configuration can be set interactively,
 alternatively the values can be set individually like in the following example:
@@ -53,7 +49,7 @@ alternatively the values can be set individually like in the following example:
 \subsubsection{Provider Abstraction}\label{subsubsec:ai-provider-abstraction}
 
 The \mintinline{python}{AiAgent.create_model()} method parses the provider prefix and dispatches to the appropriate LangChain chat model class via \mintinline{python}{PROVIDER_MAP},
-as shown in listing~\ref{lst:ai-provider-map}.
+as shown in listing~\ref{lst:langchain-agent-provider-map}.
 This means any supported provider can be swapped out by changing a single configuration value, without touching scenario code.
 Most providers allow to set the \enquote{temperature} of a model,
 where lower values produce more deterministic responses, while higher values increase creativity and diversity~\cite{anthropic_model_temperature}.
@@ -114,8 +110,10 @@ but also for different strengths or capabilities such as tool calling.
 The tool calling variants are often have the suffix \enquote{instruct}.
 Luckily, \enquote{qwen2.5:7b-coder} has such variant called \enquote{qwen2.5:7b-instruct}.
 
-The \mintinline{python}{create_ai_agent()} factory function shown in listing~\ref{lst:create-ai-agent} is the central assembly point used by all three \gls{AI} scenarios.
-It reads the \mintinline{python}{ai} configuration block, assembles the tool list (always including \mintinline{python}{cli_tool}, \mintinline{python}{host_configuration}, and \mintinline{python}{send_email}), optionally adds the human interaction hook or drill tools, loads \gls{MCP} tools with graceful fallback, and returns a configured \mintinline{python}{AiAgent} instance.
+The \mintinline{python}{create_ai_agent()} factory function shown in listing~\ref{lst:langchain-agent-create-ai-agent} is the central assembly point used by all three \gls{AI} scenarios.
+It reads the \mintinline{python}{ai} configuration block, assembles the tool list (always including \mintinline{python}{cli_tool},
+\mintinline{python}{host_configuration}, and \mintinline{python}{send_email}), optionally adds the human interaction hook or drill tools,
+loads \gls{MCP} tools with graceful fallback, and returns a configured \mintinline{python}{AiAgent} instance.
 
 
 The \mintinline{python}{enable_drill_tools} flag, when set to \mintinline{python}{True}, calls \mintinline{python}{generate_drill_tools()}, which dynamically wraps every \gls{NSAK} drill as a type-safe LangChain tool.
@@ -129,7 +127,6 @@ LangChain Agents must be invoked in an event loop to properly support \gls{MCP},
 Further we need to add support for async drills and scenarios, as otherwise we could not run the \gls{AI} agent inn those contexts.
 
 \gls{NSAK} integrates an external draw.io \gls{MCP} server to allow the \gls{AI} agent to create and manipulate diagrams during a scenario run.
-The client is initialised at module level (listing~\ref{lst:ai-provider-map}, lines 41--51 using \mintinline{python}{MultiServerMCPClient} from \mintinline{bash}{langchain-mcp-adapters}, pointing to \mintinline{bash}{https://drawio.hiube.ch/mcp} with Basic authentication.
 
 \gls{MCP} tools are loaded asynchronously inside \mintinline{python}{create_ai_agent()} and appended to the tool list.
 If the server is unavailable, the exception is caught and logged as a warning so the scenarios can still run without diagram support.
@@ -137,8 +134,10 @@ If the server is unavailable, the exception is caught and logged as a warning so
 \subsubsection{LangChain Tool: Host Configuration}\label{subsubsec:langchain-tool-host-configuration}
 
 The \mintinline{python}{host_configuration} tool shown in listing~\ref{lst:langchain-tool-host-configuraiton} gives the agent a structured view of the host's current configuration.
-It returns a dictionary containing the loaded device configuration with interface names, \gls{IP} addresses, and the \mintinline{python}{is_target} / \mintinline{python}{is_management} flags loaded from the device \gls{YAML}.
-This bootstraps the agent's situational awareness without requiring it to run \mintinline{bash}{ip addr} or parse raw network output - the agent knows from the start which interfaces are part of the attack surface and which are for management traffic.
+It returns a dictionary containing the loaded device configuration with interface names, \gls{IP} addresses,
+and the \mintinline{python}{is_target} / \mintinline{python}{is_management} flags loaded from the device \gls{YAML}.
+This bootstraps the agent's situational awareness without requiring it to run \mintinline{bash}{ip addr}
+or parse raw network output - the agent knows from the start which interfaces are part of the attack surface and which are for management traffic.
 
 
 \subsubsection{LangChain Tool: CLI Tool}\label{subsubsec:langchain-tool-cli-tool}
@@ -146,7 +145,8 @@ This bootstraps the agent's situational awareness without requiring it to run \m
 The \mintinline{python}{cli_tool} shown in listing~\ref{lst:langchain-tool-cli-tool} allows the \gls{AI} agent to execute arbitrary shell commands with a configurable timeout (default 120 s).
 It returns a tuple of \mintinline{python}{(exit_code, stdout, stderr)}, giving the agent full feedback to diagnose failures and adapt its next action.
 The scope is intentionally broad: the agent can invoke nmap, tshark, apt, or any other binary available in the execution environment.
-Besides the execution of drills, this flexibility is what makes the \gls{AI} scenarios powerful, but it is also why the kill switch described in~\ref{subsec:ai-scenarios-implementation-cli-kill-switch} is a necessary safety measure.
+Besides the execution of drills, this flexibility is what makes the \gls{AI} scenarios powerful,
+but it is also why the kill switch described in~\ref{subsec:ai-scenarios-implementation-cli-kill-switch} is a necessary safety measure.
 
 
 \subsection{Human Interaction Hook}\label{subsec:ai-scenarios-implementation-human-interaction-hook-via-cli}
@@ -170,6 +170,12 @@ we don't want to spend more time on this potential improvement.
 For these reasons we decided not to merge the code and let the implementation as is.
 The branch containing the proof-of-concept is still available under~\href{https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/tree/310-human-in-the-loop?ref_type=heads}{310-human-in-the-loop}.
 
+\subsubsection{LangChain Agent Chat UI}\label{subsubsec:langchain-agent-chat-ui}
+
+We did not add the~\href{https://docs.langchain.com/oss/python/langchain/ui}{LangChain Agent Chat UI} because we made some implicit architecture decisions which prevent easy integration.
+
+If we decide to implement it regardless, we would need to redesign and refactor the \gls{AI} Agent implementation, for example by switching to a callback-based output model.
+A useful reference for such a migration is available at \href{https://www.youtube.com/watch?v=lInrwVnZ83o}{this LangChain UI tutorial}.
 
 \subsection{Logging}\label{subsec:ai-scenarios-implementation-logging}
 
@@ -258,10 +264,12 @@ Listing~\ref{lst:scenario-ai-agent-py} shows the scenario entrypoint and listing
 \subsection{Scenario: AI Reconnaissance}\label{subsec:scenario-ai-reconnaissance}
 
 The \gls{AI} Reconnaissance scenario automates host and service discovery on a specified network interface.
-It encodes a structured five-step plan directly into the initial prompt: the agent is instructed to call \mintinline{python}{host_configuration} to determine the \gls{IP} addresses and subnets on the interface, then use the \mintinline{python}{cli} tool to invoke nmap for host scanning, then again for service enumeration, and finally to report all findings including vulnerability indicators.
+It encodes a structured five-step plan directly into the initial prompt: the agent is instructed to call \mintinline{python}{host_configuration} to determine the \gls{IP} addresses and subnets on the interface,
+then use the \mintinline{python}{cli} tool to invoke nmap for host scanning, then again for service enumeration, and finally to report all findings including vulnerability indicators.
 If the \mintinline{python}{interactive} flag is set, the last step invites the operator to issue follow-up instructions via the \mintinline{python}{human_interaction_hook}.
 
-This prompt-driven approach means the scenario does not contain any network scanning logic itself - the agent decides which nmap flags to use, how to interpret results, and what to scan next.
+This prompt-driven approach means the scenario does not contain any network scanning logic itself
+~\textthreequartersemdash~the agent decides which nmap flags to use, how to interpret results, and what to scan next.
 Listing~\ref{lst:scenario-ai-recon-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-recon-yaml} shows its \gls{YAML} interface declaration.
 
 
@@ -278,7 +286,8 @@ It demonstrates a two-phase approach: first it performs host discovery using \mi
 then it captures live network traffic using \mintinline{bash}{tshark} (a system dependency declared in the scenario \gls{YAML}).
 Up to 200 packets are captured over a 60-second window and extracted as \gls{CSV} fields (frame number, source and destination \gls{MAC}, source and destination \gls{IP}, \gls{TCP}/\gls{UDP} destination port, protocol stack, and frame length).
 
-Both the host discovery table and the packet \gls{CSV} are injected into a structured \mintinline{python}{PROMPT_TEMPLATE} that instructs the \gls{AI} to identify at most five suspicious events, each with source/destination \gls{IP} and \gls{MAC}, protocol, and the reason for suspicion, and to identify any malicious hosts.
+Both the host discovery table and the packet \gls{CSV} are injected into a structured \mintinline{python}{PROMPT_TEMPLATE} that instructs the \gls{AI} to identify at most five suspicious events,
+each with source/destination \gls{IP} and \gls{MAC}, protocol, and the reason for suspicion, and to identify any malicious hosts.
 By constraining the number of events the prompt keeps the agent's output concise and actionable.
 Listing~\ref{lst:scenario-ai-ids-py} shows the full scenario entrypoint and listing~\ref{lst:scenario-ai-ids-yaml} shows its \gls{YAML} interface declaration.
 
@@ -288,12 +297,3 @@ Listing~\ref{lst:scenario-ai-ids-py} shows the full scenario entrypoint and list
 \mintinline{bash}{nsak scenario execute ai_intrusion_detection --interface eth0}
 
 \todo{Describe and add a reference to the result of the first testrun}
-
-\subsection{LangChain Agent Chat UI}\label{subsec:langchain-agent-chat-ui}
-
-We did not add the~\href{https://docs.langchain.com/oss/python/langchain/ui}{LangChain Agent Chat UI} because we made some implicit architecture decisions which prevent easy integration.
-
-If we decide to implement it regardless, we would need to redesign and refactor the \gls{AI} Agent implementation, for example by switching to a callback-based output model.
-A useful reference for such a migration is available at \href{https://www.youtube.com/watch?v=lInrwVnZ83o}{this LangChain UI tutorial}.
-
-\todo{Move this to the LangChain part}

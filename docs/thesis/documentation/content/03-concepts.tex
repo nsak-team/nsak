@@ -97,13 +97,9 @@ To ensure a controlled and safe evaluation of the implementation, a simulated te
 This approach prevents unintended interference with production systems and ensures reproducibility during the development and testing phases.
 For this exact purpose the~\enquote{Environment}\ref{subsec:environment-concept} resource type was implemented in the predecessor project~\ref{sec:predecessor-project-project-2}.
 Concretely, a simplified network topology comprising a client (Alice) and a server (Bob) is used to emulate and analyze a \gls{MITM} scenario.
-This environment is described in a \gls{Docker Compose} file, located under: \path|lib/environments/simple_tcp_client_server/compose.yaml|.
 
-The whole setup can be simulated with the following command:
-\mintinline{bash}|nsak environment simulate simple_tcp_client_server mitm|.
-
-While \gls{Docker} or \gls{Podman} provides a general-purpose containerization platform, they abstract away most of the lower levels of the network stack and thus lack the support for modeling network topologies.
-In the existing implementation this was partially addressed, by using the~\href{https://docs.docker.com/engine/network/drivers/macv\gls{LAN}/}{macvlan} network driver, to enable level 2 networking.
+While \gls{Docker} and \gls{Podman} provide a general-purpose containerization platform,
+they abstract away most of the lower levels of the network stack and thus lack the support for modeling network topologies.
 In contrast, \gls{Containerlab} builds upon \gls{Docker Compose} and optimize its functionalities for networking purposes.
 
 The primary advantages of \gls{Containerlab} are:
@@ -114,10 +110,13 @@ The primary advantages of \gls{Containerlab} are:
 \end{itemize}
 In summary, while OCI containers serves as the underlying container engine, \gls{Containerlab} provides a higher-level network simulation.
 
-\subsection{\gls{AI}, \glspl{LLM} \& Agents}\label{subsec:ai-llm-and-agents-concepts}
+\subsection{Additional \gls{AI} Related Concepts}\label{subsec:additional-ai-related-concepts}
+
+This section will not repeat the concepts already introduced in section \nameref{sec:ai-research}.
 
 \subsubsection{LangChain}\label{subsubsec:langchain-concepts}
 
+\todo{Describe the three different abstraction levels: DeepAgent, LangChain and LangGraph (maybe include cheatsheet with proper citation)}
 
 \subsubsection{Structured Output}\label{subsubsec:structured-output-concepts}
 

@@ -1,141 +1,61 @@
 \section{Test-Environment-Code}\label{sec:test-environment-code}
 
-\subsection{container-lab}\label{subsec:container-lab}
-
 \begin{listing}[H]
-	\inputminted[
-	linenos=false,
-	fontsize=\tiny,
-	firstline=99,
-	lastline=140
-	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{Firewall}
-	\label{lst:firewall}
-\end{listing}
-
-Listing \ref{lst:firewall} shows the nf-tabels rules set for segmentation of wan, dmz and lan.
-
-\begin{listing}[H]
-	\inputminted[
-	linenos=false,
-	fontsize=\tiny,
-	firstline=142,
-	lastline=171
-	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{Web-Server and DNS}
-	\label{lst:dmz-server}
-\end{listing}
-
-Listing~\ref{lst:dmz-server} shows a web server and DNS server node in the Containerlab \gls{YAML} configuration.
-This node is located in the demilitarized zone (DMZ) of the network.
-
-\begin{listing}[H]
-	\inputminted[
-	linenos=false,
-	fontsize=\tiny,
-	firstline=173,
-	lastline=205
-	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{File Server and Domain Control}
-	\label{lst:ctrl-server}
-\end{listing}
-
-The LAN segment consists of four nodes, as shown in the following code snippets.
-
-\begin{listing}[H]
-	\inputminted[
-		linenos=false,
-		fontsize=\tiny,
-		firstline=207,
-		lastline=270
-	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{Work-Stations Bob and Alice}
-	\label{lst:workstations}
+	\inputminted[lastline=54]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: Overview}
+	\label{lst:containerlab-topology-yaml-overview}
 \end{listing}
 
 \begin{listing}[H]
-	\inputminted[
-	linenos=false,
-	fontsize=\tiny,
-	firstline=272,
-	lastline=303
-	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{Printer}
-	\label{lst:printer}
+	\inputminted[firstline=56, lastline=87]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: Network}
+	\label{lst:containerlab-topology-yaml-network}
 \end{listing}
 
-
-Listing~\ref{lst:workstations} illustrates two workstations, Alice and Bob, the printer shown in Listing~\ref{lst:printer}, and the domain controller with Samba file server shown in Listing~\ref{lst:ctrl-server}.
-
 \begin{listing}[H]
-	\inputminted[
-	linenos=false,
-	fontsize=\tiny,
-	firstline=329,
-	lastline=343
-	]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
-	\caption{Links}
-	\label{lst:links}
+	\inputminted[firstline=89, lastline=130]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: Firewall}
+	\label{lst:containerlab-topology-yaml-firewall}
 \end{listing}
 
-Listing~\ref{lst:links} shows the connection between endpoints over the defined interfaces.
-
-\subsection{Flaws and Vulnerabilities}\label{subsec:flaws-and-vulnerabilities}
-
+\begin{listing}[H]
+	\inputminted[firstline=132, lastline=161]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: DMZ}
+	\label{lst:containerlab-topology-yaml-dmz}
+\end{listing}
 
 \begin{listing}[H]
-	\caption{Introduced Vulnerabilities in the Virtual Enterprise Network}
-	\label{lst:flaws-and-vulnerabilities}
-	\begin{minted}[
-		fontsize=\tiny,
-		breaklines,
-		breakanywhere,
-		linenos,
-		tabsize=2
-		]{text}
-		DMZ --- dmz-server (172.16.1.10)
+	\inputminted[firstline=163, lastline=195]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: Control Server}
+	\label{lst:containerlab-topology-yaml-ctrl-server}
+\end{listing}
 
-		DNS / BIND9
-		- allow-transfer { any; } --- AXFR (zone transfer) open to everyone
-		- dnssec-validation no --- no DNSSEC validation
-		- Zone contains internal LAN addresses (ctrl, alice, bob, printer)
+\begin{listing}[H]
+	\inputminted[firstline=197, lastline=228]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: Alice (Client)}
+	\label{lst:containerlab-topology-yaml-alice}
+\end{listing}
 
-		Web / nginx
-		- /secret.txt accessible without auth -> returns DB Password: {flag:exposed-SOS}
-		- Self-signed certificate (CN=dmz-server.vlab.local)
-		---
-		LAN --- ctrl-server (192.168.10.5)
+\begin{listing}[H]
+	\inputminted[firstline=230, lastline=260]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: Bob (Client)}
+	\label{lst:containerlab-topology-yaml-bob}
+\end{listing}
 
-		LDAP / OpenLDAP
-		- by anonymous read --- anonymous read access to all entries -> user list, emails, departments
-		- rootpw Password123! stored in plaintext in config
-		- User passwords stored in LDIF: userPassword: Password123!
-		ldapsearch -x -H ldap://192.168.10.5 -b "dc=lab,dc=local"
+\begin{listing}[H]
+	\inputminted[firstline=262, lastline=293]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: Printer}
+	\label{lst:containerlab-topology-yaml-printer}
+\end{listing}
 
-		SMB / Samba
-		- ntlm auth = yes + lanman auth = yes --- outdated, weak auth protocols
-		- Share public anonymously readable (no auth) -> README.txt hints at bjones
-		- Share finance contains salary and budget data (asmith / Password123!)
-		- Share it contains dc01_build_sheet.txt with full infrastructure details
-		- All passwords: Password123!
-		---
-		LAN --- alice (192.168.10.100) \& bob (192.168.10.101)
+\begin{listing}[H]
+	\inputminted[firstline=295, lastline=321]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: NSAK}
+	\label{lst:containerlab-topology-yaml-nsak}
+\end{listing}
 
-		- SSH password auth enabled, weak password Password123!
-		- SSH banner leaks organisation name
-		- alice: /home/asmith/Documents/Q3_Finance.txt (confidential), /home/asmith/Desktop/drive_mappings.txt (share paths)
-		- bob: /home/bjones/Scripts/hosts.txt (all internal IPs + roles), README.txt hints at admin access
-		---
-		LAN --- printer (192.168.10.50)
-
-		- Port 80: unauthenticated web admin interface, leaks firmware version (HP-WebServer/2.6.5), serial number, location, contact
-		- Port 631 /jobs: print job history without auth -> reveals usernames (asmith, bjones, admin) and document names
-		(server_credentials.txt, payroll)
-		- SNMP community string public (v1/v2c) -> snmpwalk exposes full device info
-		---
-		Firewall policy (intentional gaps)
-
-		- LAN -> DMZ fully open (no port restriction) --- LAN users can reach all DMZ ports, not just 80/443
-		- DMZ -> WAN: DNS forwarding to 8.8.8.8 allowed -> DNS exfiltration possible
-	\end{minted}
+\begin{listing}[H]
+	\inputminted[firstline=323]{yaml}{../../../lib/environments/virtual_enterprise_network_lab/virtual_enterprise_network_lab.clab.yaml}
+	\caption{Containerlab Topology YAML: Links}
+	\label{lst:containerlab-topology-yaml-links}
 \end{listing}
