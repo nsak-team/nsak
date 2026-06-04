@@ -1,25 +1,25 @@
 % Time form: Past tense
 
 \newpage
-\section{Self-Hosted \glsxtrshort{LLM}}\label{sec:self_hosted_llm}
-During the risk assessment~\ref{subsec:risk_assessment} we identified that the \glsxtrshort{AI} tokens required to use cloud based \glsxtrshort{LLM}s might be very expensive, and it's really hard to estimate the costs.
+\chapter{Service and Tooling}\label{ch:services-and-tooling}
+During the risk assessment~\ref{sec:risk_assessment} we identified that the \glsxtrshort{AI} tokens required to use cloud based \glsxtrshort{LLM}s might be very expensive, and it's really hard to estimate the costs.
 One of the possibilities to avoid this risk was the usage of self-hosted \glsxtrshort{LLM}s, and luckily we already had existing hardware at home which is suitable for running smaller \glsxtrshort{LLM}s.
 Besides eliminating the costs for \glsxtrshort{AI} tokens, at least during the development phase, it also allows the quick evaluation of different \glsxtrshort{AI} Models.
 Depending on the quality and performance of the smaller models running in the self-hosted setup we can consider not using a cloud based \glsxtrshort{LLM} at all.
 
-\todo{Refactor the section: Move all information in their respective subsections, etc.}
+\todo{Refactor the section: Move all information in their respective sections, etc.}
 
-\subsection{Hardware Setup}\label{subsec:hw_setup}
+\section{Hardware Setup}\label{sec:hw_setup}
 
 \begin{table}[h]
     \centering
     \begin{tabular}{ll}
         \hline
-        \textbf{Component} & \textbf{Specification} \\
+        \textbf{Component} & \textbf{Specification}                                  \\
         \hline
-        CPU & AMD Ryzen 5\ 3600 (6 cores / 12 threads, up to 4.2 GHz) \\
-        GPU & NVIDIA GeForce RTX 3070 (8 GB \glsxtrshort{VRAM}) \\
-        System Memory & 32 GB RAM \\
+        CPU                & AMD Ryzen 5\ 3600 (6 cores / 12 threads, up to 4.2 GHz) \\
+        GPU                & NVIDIA GeForce RTX 3070 (8 GB \glsxtrshort{VRAM})       \\
+        System Memory      & 32 GB RAM                                               \\
         \hline
     \end{tabular}
     \caption{Hardware configuration of the self-hosted \glsxtrshort{LLM} inference server.}
@@ -28,7 +28,7 @@ Depending on the quality and performance of the smaller models running in the se
 
 The 8 GB \glsxtrshort{VRAM} of the RTX 3070 allows us to run models with up to 7 billion parameters, depending on the specific model~\cite{simplr2025vramllm}.
 
-\subsection{System Setup}\label{subsec:system_setup}
+\section{System Setup}\label{sec:system_setup}
 
 The system setup described in~\ref{lst:self-hosted-base-setup-instructions} will configure and expose the Ollama \gls{API} and OpenWeb UI via NGINX,
 which provided a chat \gls{GUI} to interact with Ollama.
@@ -44,7 +44,8 @@ act as reverse proxy for the \enquote{Open WebUI} and the Ollama \gls{API} under
 \end{itemize}
 
 \newpage
-\subsubsection{System Hardening}\label{subsubsec:system_hardening}
+
+\section{System Hardening}\label{sec:system_hardening}
 
 It is recommended to put a proper firewall before the services we want to expose to the internet,
 but for our purposes we can just disable the port forwarding when we don't use the \glsxtrshort{AI}.
@@ -52,7 +53,7 @@ It still makes sense to perform a minimal system hardening as shown in the follo
 before exposing the services to the internet.
 
 \begin{listing}[H]
-\begin{minted}{bash}
+    \begin{minted}{bash}
 # Install UFW
 sudo pacman -Syu ufw
 sudo ufw status
@@ -73,12 +74,12 @@ sudo ufw allow 11434/tcp
 sudo ufw enable
 
 sudo ufw status
-\end{minted}
-\caption{UFW configuration}
-\label{lst:ufw-configuration}
+    \end{minted}
+    \caption{UFW configuration}
+    \label{lst:ufw-configuration}
 \end{listing}
 
-\subsubsection{Expose Open WebUI and Ollama}\label{subsubsec:expose-openwebui-and-ollama}
+\section{Expose Open WebUI and Ollama}\label{sec:expose-openwebui-and-ollama}
 
 For exposing the services from the home network via HTTPS to the internet, we need a domain name which points to the home router.
 To achieve this we can use DynDNS, which is provided for free by~\gls{Infomaniak} where the domain \enquote{hiube.ch} was registered, and is supported by the \gls{FRITZ!Box} used in the home network.
@@ -112,15 +113,15 @@ The Open WebUI and Ollama \gls{API} should already be reachable via \enquote{ai.
 The easiest way to generate the certificate, is to trigger certbot by restarting the \enquote{swag} service as shown in the listing below~\ref{lst:restart-swag-container}.\\
 
 \begin{listing}[H]
-\begin{minted}{bash}
+    \begin{minted}{bash}
 # Login as user ai and restart the swag service
 podman-compose restart swag
-\end{minted}
-\caption{Restart SWAG Container}
-\label{lst:restart-swag-container}
+    \end{minted}
+    \caption{Restart SWAG Container}
+    \label{lst:restart-swag-container}
 \end{listing}
 
-\subsection{Evaluation}\label{subsec:evaluation}
+\section{Evaluation}\label{sec:evaluation}
 
 For quickly evaluate models and assess their capabilities we can now use the Open WebUI served under \enquote{ai.hiube.ch}.
 The screenshot~\ref{fig:open_webui_evaluation} shows a quick test with \enquote{qwen2.5-coder:7B}.
