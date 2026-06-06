@@ -1,0 +1,53 @@
+\documentclass[
+    english,
+    authorontitle=true,
+    aspectratio=169,
+]{bfhbeamer}
+
+\usepackage{iftex}
+\ifPDFTeX
+\usepackage[utf8]{inputenc}
+\fi
+\usepackage{pifont}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{tabto}
+
+\let\code\texttt
+
+\title{Network Swiss Army Knife (NSAK)}
+\subtitle{Bachelor Thesis · BFH-TI 2026}
+\author[]{Lukas von Allmen (vonal3) and Frank Gauss (gausf1)}
+\institute{Bern University of Applied Sciences}
+%\titlegraphic*{\includegraphics{{assets/nsak_title_new}}}
+
+\setbeamertemplate{section page}[BFH-ruled]
+\AtBeginSection{\sectionpage}
+
+\begin{document}
+
+\setbeamertemplate{title page}[BFH-graphic]
+\maketitle
+
+% --- Info: Introduction / Problem Statement ---
+\input{content/01-introduction}
+
+% --- Demo 1 ---
+\section{Demo 1: Static Reconnaissance}
+\input{content/02-demo1-static-recon}
+
+% --- Demo 2 ---
+\section{Demo 2: AI Reconnaissance}
+\input{content/03-demo2-ai-recon}
+
+% --- Demo 3 ---
+\section{Demo 3: Interactive AI Agent}
+\input{content/04-demo3-ai-agent}
+
+% --- Info: Results & Conclusion ---
+\input{content/05-results}
+
+\end{document}
