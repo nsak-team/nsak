@@ -1,56 +1,48 @@
-%\begin{frame}{Motivation}
-%    \begin{tikzpicture}[remember picture,overlay]
-%
-%        \node at (2,0) {
-%            \begin{minipage}{4cm}
-%                \centering
-%                \includegraphics[width=\linewidth]{assets/automation-and-ai-transparent}\\
-%                {\scriptsize\textit{Automation \& AI}}
-%            \end{minipage}
-%        };
-%
-%        \node at (7,0) {
-%            \begin{minipage}{4cm}
-%                \centering
-%                \includegraphics[width=\linewidth]{assets/complexity-transparent}\\
-%                {\scriptsize\textit{Complex frameworks with configuration overhead}}
-%            \end{minipage}
-%        };
-%
-%        \node at (12,0) {
-%            \begin{minipage}{4cm}
-%                \centering
-%                \includegraphics[width=\linewidth]{assets/layer-2-4-transparent}\\
-%                {\scriptsize\textit{Layer 2 - 4 Network Testing}}
-%            \end{minipage}
-%        };
-%
-%    \end{tikzpicture}
-%
-%
-%\end{frame}
-\begin{frame}{Network Swiss Army Knife}
-\begin{tikzpicture}[remember picture,overlay]
+\begin{frame}{Starting Point: The NSAK Framework}
+    \framesubtitle{Established in the predecessor project (Project 2)}
 
-\node at (4,0) {
-  \begin{minipage}{7cm}
-    \centering
-    \includegraphics[width=\linewidth]{assets/swiss-army-nsak-transparent}\\
-    {\scriptsize\textit{Network Swiss Army Knife (NSAK)}}
-  \end{minipage}
-};
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.5\textwidth}
+            \vspace*{0.8cm}
+            \textbf{A modular, open-source network security}\\\textbf{framework}
 
-\node[anchor=west] at (7,0.5) {
-  \begin{minipage}{5cm}
-    \begin{itemize}
-      \item Modularity
-      \item Configuration Friendly
-      \item Portable and Isolated
-      \item Containerized
-      \item Framework
-    \end{itemize}
-  \end{minipage}
-};
+            \vspace{0.6em}
+            Built around four reusable resource types:
+            \vspace{0.4em}
+            \begin{itemize}
+                \item[\faServer] \textbf{Device} \textit{\scriptsize execution host at a network position}
+                \item[\faNetworkWired] \textbf{Environment} \textit{\scriptsize target network topology}
+                \item[\faLayerGroup] \textbf{Scenario} \textit{\scriptsize a red/blue team use case}
+                \item[\faCogs] \textbf{Drill} \textit{\scriptsize reusable building block}
+            \end{itemize}
+        \end{column}
 
-\end{tikzpicture}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=0.9\linewidth]{assets/swiss-army-nsak-transparent}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Hypothesis and Research Questions}
+    \framesubtitle{From static scenarios to agentic AI}
+    \uncover<1->{
+        \begin{block}{Hypothesis}
+
+            \small
+            Integrating \textbf{agentic AI} into NSAK improves \textbf{adaptability, flexibility} and
+            \textbf{automation} over static scenarios, while \textbf{lowering the operator's required expertise}
+            to interpret results and plan follow-up steps.
+
+        \end{block}
+    }
+
+    \vspace{0.4em}
+    \uncover<2->{
+        \begin{itemize}
+            \item[\textbf{RQ1}] How does an agentic AI scenario perform \textbf{compared to a static reference} scenario in network reconnaissance?
+            \item[\textbf{RQ2}] To what extent can agentic AI \textbf{support operators} during interactive reconnaissance?
+            \item[\textbf{RQ3}] To what extent is the implementation \textbf{suitable for real-world} deployment?
+        \end{itemize}
+    }
 \end{frame}

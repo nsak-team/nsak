@@ -5,8 +5,7 @@
 This chapter introduces the core concepts that underpin the implementation and evaluation presented in this thesis.
 It begins with the core terminology of the \gls{NSAK} framework inherited from the predecessor project.
 It then describes the layered configuration management, followed by the test environment setup.
-Finally, it completes the \gls{AI}-related concepts relevant for this work,
-without repeating the terms already introduced in section \nameref{sec:ai-research}.
+Finally, it completes the \gls{AI}-related concepts relevant for this work.
 
 \section{Predecessor Project: Project 2}\label{sec:predecessor-project-project-2}
 
@@ -16,10 +15,10 @@ The \gls{NSAK} is a cybersecurity framework that operates with the following res
 The security operation is executed in a network environment and can involve one or more attacks or defense scenarios.
 The smallest unit in the framework is a drill, which can be orchestrated in a scenario and chained with other drills.
 
-While the modularity and proof of concept were confirmed, several aspects like enhanced configuration management, \gls{GUI}
-or a \gls{REST API} are mentioned for future work.
+While modularity and the proof of concept were confirmed, further work is required in areas such as enhanced configuration management, a \gls{GUI}, and a \gls{REST API}.
+These improvements are intended to increase usability and support automation, and enables integration with external systems and workflows.
 
-Some of the goals of this thesis directly address these open points and are defined in the section~\ref{ch:project-goals}.
+Some of the objectives of this thesis directly address these open points and are defined in the section~\ref{ch:project-goals}.
 
 The \glsxtrshort{NSAK} framework is built around four resource types that were originally defined in \enquote{Project 2}\cite{nsakRepository2026}.
 Each resource type has a distinct role in the framework and is stored as a \glsxtrshort{YAML} file in the resource library.
@@ -93,7 +92,7 @@ This structure ensures that \glsxtrshort{YAML} files from different parts of the
 
 \subsection{Reproducible Test Environment}\label{subsec:reproducible-test-environment-concept}
 
-To ensure a controlled and safe evaluation of the implementation, a simulated test environment has to be established.
+To ensure a controlled and safe evaluation of the implementation, a simulated test environment is required.
 This approach prevents unintended interference with production systems and ensures reproducibility during the development and testing phases.
 For this exact purpose the~\enquote{Environment}\ref{subsec:environment-concept} resource type was implemented in the predecessor project~\ref{sec:predecessor-project-project-2}.
 Concretely, a simplified network topology comprising a client (Alice) and a server (Bob) is used to emulate and analyze a \gls{MITM} scenario.
@@ -113,7 +112,7 @@ In summary, while OCI containers serves as the underlying container engine, \gls
 \subsection{Additional \gls{AI} Related Concepts}\label{subsec:additional-ai-related-concepts}
 
 This section will not repeat the concepts already introduced in section \nameref{sec:ai-research}.
-
+\todo{warum braucht es den satz???}
 \subsubsection{LangChain}\label{subsubsec:langchain-concept}
 
 LangChain is an open-source Python framework that provides abstractions for building applications powered by \glspl{LLM}~\cite{langchain_repo}.

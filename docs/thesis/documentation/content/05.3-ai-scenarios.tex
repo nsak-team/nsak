@@ -100,7 +100,7 @@ In \gls{NSAK}, tools can be provided through several complementary mechanisms:
 
 \subsubsection{Tool Calling Models}\label{subsubsec:ai-agent-tool-calling-models}
 
-Considering its limited size of 7 billion parameters, we were quite happy with our first test model \enquote{qwen2.5:7b-coder}.
+Considering its limited size of 7 billion parameters, the results were considered satisfactory in the first test model \enquote{qwen2.5:7b-coder}.
 But as it turns out, not all models are capable of calling tools.
 Often, multiple variants of the same model are available, and they don't only differ in size,
 but also for different strengths or capabilities such as tool calling.
@@ -120,8 +120,7 @@ This gives the agent access to structured capabilities such as \mintinline{bash}
 The \gls{MCP}~\cite{anthropic-mcp} is an open protocol that standardises how \gls{AI} models connect to external tool servers.
 Rather than implementing tool calling ad-hoc, \gls{MCP} servers expose a well-defined interface that any compatible \gls{LLM} framework can consume~\cite{mcp-landscape}.
 LangChain Agents must be invoked in an event loop to properly support \gls{MCP}, this forced us to refactor the implementation \enquote{ai\_agent.py} to be async.
-Further we need to add support for async drills and scenarios, as otherwise we could not run the \gls{AI} agent inn those contexts.
-
+Furthermore, support for asynchronous drills and scenarios needs to be added, as otherwise the \gls{AI} agent cannot operate in these contexts.
 \gls{NSAK} integrates an external draw.io \gls{MCP} server to allow the \gls{AI} agent to create and manipulate diagrams during a scenario run.
 
 \gls{MCP} tools are loaded asynchronously inside \mintinline{python}{create_ai_agent()} and appended to the tool list.

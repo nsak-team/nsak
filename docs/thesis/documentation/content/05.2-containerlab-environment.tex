@@ -23,9 +23,7 @@ The \mintinline{bash}{nsak} container can be deployed in different network segme
 
 \subsection{DMZ-Server}\label{subsec:reproducible-test-environment-dmz-server}
 
-To evaluate reconnaissance scenarios, common services must run on endpoints.
-
-\gls{BIND} is a complete implementation of the \gls{DNS} protocol that can be configured through the \mintinline{bash}|named.conf| file as an authoritative name server and resolver.
+To evaluate reconnaissance scenarios, common services must run on endpoints. \gls{BIND} is a complete implementation of the \gls{DNS} protocol that can be configured through the \mintinline{bash}|named.conf| file as an authoritative name server and resolver.
 
 In the test lab illustrated in~\ref{fig:virtual-test-environments}, the functionality of the web server and \gls{DNS} server was combined for simplicity.
 
@@ -84,8 +82,7 @@ All printer requests are logged in \\ \mintinline{bash}|{/var/logs/printer_sim_l
 
 \subsection{Introduced Vulnerabilities}\label{subsec:introduced-vulnerabilities}
 
-For reconnaissance purposes, several vulnerabilities and flaws were introduced,
-which are partly mentioned in the previous sections and are presented in detail in Listing~\ref{lst:containerlab-topology-yaml-overview}.
+For reconnaissance purposes, several vulnerabilities and flaws were introduced, and presented in detail in Listing~\ref{lst:containerlab-topology-yaml-overview}.
 These flaws are necessary to compare the results of the larger and smaller models as well as the implemented vs the \gls{AI} enhanced scenarios.
 
 \subsection{\gls{Containerlab} \mintinline{bash}{virtual_enterprise_network_lab.clab.yaml}}\label{subsec:contairlab-topology-yaml}

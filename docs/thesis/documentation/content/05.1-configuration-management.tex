@@ -67,7 +67,7 @@ The classes will be located under \mintinline{bash}{src/nsak/core/device} within
     \label{tab:device-resource-classes}
 \end{table}
 
-In \enquote{Project 2}\ref{sec:predecessor-project-project-2}, it became already clear that the described classes share a lot of boilerplate code between each other.
+In \enquote{Project 2}\ref{sec:predecessor-project-project-2}, it became already evident that the described classes contain a lot of boilerplate code between each other.
 For this reason, the base classes described in~\ref{tab:device-resource-classes} were added to eliminate duplicated logic, thereby improving compliance with the \gls{DRY} principles.
 The classes will be located under \mintinline{bash}{src/nsak/core/resource} within their respective files and the adoption of the existing classes is described in section~\ref{subsubsec:refactor-existing-resources}.
 
@@ -94,7 +94,7 @@ The available bash commands are shown in the listing~\ref{lst:nsak-cli-list-devi
 \subsubsection{Device Configuration Management Implementation}\label{subsubsec:device-configuration-management-implementation}
 
 To allow a device to expose its configuration options, the \gls{YAML} specification needs to be extended accordingly.
-For now, the focus is only on network configuration, as this is the most important information for the scenarios and drills.
+Currently, the focus is only on network configuration, as this is the most important information for the scenarios and drills.
 The specification was designed so that other sections can be added later.
 The excerpt~\ref{lst:device-resource-configuration-yaml-specification} shows the specification for the configuration section of the device resource \gls{YAML}.
 
@@ -114,8 +114,7 @@ The implementation of the device resource~\ref{subsec:device-configuration-manag
 three base classes which are abstracting the common structure and functionality.
 This section describes the resulting changes in the existing code and resource \gls{YAML} specifications.
 
-As already stated in section~\ref{subsubsec:device-configuration-management-implementation} all resource type specific classes were refactored to inherit from their respective base classes
-as described in table~\ref{tab:device-resource-classes}.
+As stated in Section~\ref{subsubsec:device-configuration-management-implementation}, all resource classes were refactored to inherit from base classes (Table~\ref{tab:device-resource-classes}).
 With the example of the \mintinline{bash}{EnvironmentLoader}, the diff below~\ref{fig:environment-loader-base-class-refactor-diff} illustrates how the abstraction of common properties and methods allows for the removal of a lot of boilerplate code.
 
 \begin{figure}[H]
@@ -124,7 +123,7 @@ With the example of the \mintinline{bash}{EnvironmentLoader}, the diff below~\re
     \caption{EnvironmentLoader Base Class Refactoring Diff}
     \label{fig:environment-loader-base-class-refactor-diff}
 \end{figure}
-
+\todo{PRESENT???? }
 The structure of all resources was aligned by nesting the resource under their respective resource type key (\mintinline{bash}{scenarios}, \mintinline{bash}{drills}, \mintinline{bash}{environments}, and \mintinline{bash}{devices}),
 so that we could merge all \gls{YAML} resource files into a single library data structure without key conflicts.
 In the \gls{YAML} specification~\ref{lst:mergeable-resource-yaml-specification}, the new base structure derived from the device resource~\ref{subsubsec:create-new-device-resource-type} is illustrated.

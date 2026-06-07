@@ -1,0 +1,33 @@
+sequenceDiagram
+    actor Operator
+    participant Recon as Static Recon Scenario<br/>(implemented)
+    participant Target as Target Network
+    participant Agent as AI Agent (LLM)
+    participant RAG as RAG System
+    participant KB as Knowledge Base<br/>(CVE, hardening, MITRE ATTACK)
+
+    Note over Recon,KB: Future work: hybrid pipeline<br/>engineered breadth + RAG grounding + AI depth
+
+    Operator->>Recon: run reconnaissance
+    activate Recon
+
+    Note over Recon,Target: 1. Deterministic breadth
+    Recon->>Target: exhaustive scan<br/>(arp-scan, nmap -sV, NSE)
+    Target-->>Recon: hosts, services, versions, findings
+    Recon-->>Agent: ReconnaissanceScenarioResult<br/>(reproducible, structured)
+    deactivate Recon
+
+    activate Agent
+    Note over Agent,KB: 2. Ground the findings (RAG)
+    loop per finding
+        Agent->>RAG: retrieve context for service / version
+        activate RAG
+        RAG->>KB: similarity search
+        KB-->>RAG: relevant documents
+        RAG-->>Agent: grounded knowledge
+        deactivate RAG
+    end
+
+    Note over Agent: 3. AI depth<br/>semantic assessment + attack-chain reasoning<br/>(grounded means fewer hallucinations)
+    Agent-->>Operator: prioritized report<br/>(findings, severity, next steps)
+    deactivate Agent

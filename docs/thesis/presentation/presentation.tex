@@ -13,12 +13,15 @@
 \usepackage[utf8]{inputenc}%kompatibilität mit TeX Versionen vor April 2018
 \fi
 \usepackage{bytefield}
+\usepackage{amssymb}
 \usepackage{pifont}
 \usepackage{xcolor}
 \usepackage{fontawesome5}
 \usepackage{todonotes}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{svg}
+\svgsetup{inkscapelatex=false}
 \usepackage{subfigure}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
@@ -29,7 +32,7 @@
 \let\code\texttt
 
 \title{Network Swiss Army Knife (NSAK) }
-\subtitle{Bachelor-Thesis}
+\subtitle{Bachelor Thesis -- Integrating Agentic AI for Network Reconnaissance}
 \author[]{Lukas von Allmen (vonal3) and Frank Gauss (gausf1)}
 \institute{Bern University of Applied Sciences}
 \titlegraphic*{\includegraphics{{assets/nsak_title_new}}}%is only used with BFH-graphic and BFH-fullgraphic
@@ -54,21 +57,22 @@
 %\setbeamertemplate{title page}[BFH-fullgraphic]
 %\maketitle
 
-%\section{Introduction}\label{sec:introduction}
+\section{Introduction}\label{sec:introduction}
 \input{content/01-introduction}
 
-\section{Design and Architecture}\label{sec:design-and-architecture}
-\input{content/02-design-and-architecture}
-
-\section{Hardware Evaluation}\label{sec:hardware-evaluation}
-\input{content/03-hardware-evaluation}
+\section{Background and Concepts}\label{sec:background-and-concepts}
+\input{content/02-concepts}
 
 \section{Implementation}\label{sec:implementation}
-\input{content/04-nsak-framework}
-\input{content/05-mitm}
-\input{content/06-rogue-ap}
+\input{content/03-ai-integration}
 
-\section{Evaluation and Discussion}\label{sec:evaluation_and_discussion}
-\input{content/07-conclusion}
+\section{Evaluation Setup}\label{sec:evaluation-setup}
+\input{content/04-evaluation-setup}
+
+\section{Results}\label{sec:results}
+\input{content/05-results}
+
+\section{Discussion and Conclusion}\label{sec:discussion-and-conclusion}
+\input{content/06-discussion}
 
 \end{document}

@@ -1,0 +1,122 @@
+\begin{frame}{Agent Capabilities and Safety}
+    \framesubtitle{Tools}
+
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.55\textwidth}
+            \textbf{LangChain tools available to the agent}
+            \begin{itemize}
+                \item[\faNetworkWired] \texttt{host\_configuration} \scriptsize situational awareness (interfaces, target/mgmt)
+                \item[\faTerminal] \texttt{cli\_tool} \scriptsize arbitrary shell -- nmap, tshark, \ldots
+                \item[\faCogs] \textbf{Drills as tools} \scriptsize \texttt{discover\_hosts}, \texttt{port\_scan} auto-wrapped
+                \item[\faEnvelope] \texttt{send\_email} \scriptsize reports to a fixed recipient
+                \item[\faUser] \texttt{human\_interaction\_hook} \scriptsize pause \& ask the operator
+                \item[\faPlug] \textbf{MCP} \scriptsize external draw.io diagram server
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Implemented Scenarios}
+    \framesubtitle{One static baseline, three AI scenarios}
+
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.5\textwidth}
+            \uncover<1-> {
+                \textbf{\faClipboardCheck~~Static Reference (baseline)}
+                \begin{itemize}
+                    \item \scriptsize Fixed drill chain: \texttt{arp-scan} $\rightarrow$ \texttt{nmap -sV} $\rightarrow$ NSE scripts
+                    \item \scriptsize Deterministic, structured result, predictable errors
+                \end{itemize}
+            }
+
+            \vspace{0.6em}
+            \uncover<2-> {
+                \textbf{\faRobot~~AI Agent}
+                \begin{itemize}
+                    \item \scriptsize single and multi-agent
+                    \item \scriptsize unstructured and structured output
+                    \item \scriptsize interactive with human interaction hook.
+                    \item \scriptsize model independent
+                \end{itemize}
+            }
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \uncover<3-> {
+                \textbf{\faSearch~~AI Reconnaissance \scriptsize (main)}
+                \begin{itemize}
+                    \item \scriptsize 5-step prompt; \textbf{agent} picks nmap flags \& interprets results
+                    \item \scriptsize Reports findings + vulnerability indicators
+                \end{itemize}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+%
+%\begin{frame}{Single- vs.\ Multi-Agent}
+%    \framesubtitle{Addressing context size for smaller models}
+%
+%    \begin{columns}[T,onlytextwidth]
+%        \begin{column}{0.5\textwidth}
+\begin{frame}{Answering the Research Questions}
+\footnotesize
+
+\begin{itemize}
+    \item[\textbf{RQ1}] \textbf{AI vs.\ static:} Same discovery power as baseline, no gains in speed/determinism.
+    Adds value via \textbf{interpretation} (credentials, banner reasoning, severity scoring).
+
+    \vspace{0.2em}
+    \item[\textbf{RQ2}] \textbf{Operator support:} Converts scans into structured, severity-ranked output + next steps.
+    \texttt{--interactive} preserves human control.
+
+    \vspace{0.2em}
+    \item[\textbf{RQ3}] \textbf{Deployment:} Scales to $\sim$35 hosts, highlights key risks.
+    \textbf{Requires supervision} (reliability limits).
+\end{itemize}
+
+\end{frame}%                \textbf{Single Agent}
+%                \begin{itemize}
+%                    \item \scriptsize One prompt to achieve the goal
+%                    \item \scriptsize Long chain of tool calls, \textbf{growing context}
+%                    \item \scriptsize Smaller models fail as context fills up
+%                \end{itemize}
+%            }
+%
+%            \vspace{0.6em}
+%            \uncover<2-> {
+%                \textbf{Multi Agent} \textit{\scriptsize divide-and-conquer}
+%                \begin{itemize}
+%                    \item \scriptsize Prompt split into steps; result fed into next agent
+%                    \item \scriptsize Smaller, focused context per step
+%                    \item \scriptsize Helps small models; may add overhead for frontier
+%                \end{itemize}
+%            }
+%        \end{column}
+%
+%        \begin{column}{0.5\textwidth}
+%            \uncover<3-> {
+%                \begin{block}{Structured vs.\ Unstructured output}
+%                    \scriptsize
+%                    \textbf{Structured} (schema-constrained): great for automated metrics,
+%                    but \textbf{high failure rate} -- especially for small models.
+%                    \vspace{0.3em}\\
+%                    \textbf{Unstructured}: needed in the BFH lab where all models failed to
+%                    produce valid structured output; freed the agent but required manual evaluation.
+%                \end{block}
+%            }
+%        \end{column}
+%    \end{columns}
+%\end{frame}
+
+
+\begin{frame}{Multi-Agent Reconnaissance Pipeline}
+    \framesubtitle{Discovery $\rightarrow$ enumeration $\rightarrow$ assessment, each a fresh agent}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth,height=0.78\textheight,keepaspectratio]{assets/multi-agent-sequence}
+        \label{multi-agent-sequence-diagram}
+    \end{figure}
+\end{frame}

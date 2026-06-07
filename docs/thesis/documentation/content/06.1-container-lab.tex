@@ -123,7 +123,7 @@ Token count alone is not a reliable indicator of result quality, which is addres
 Figure~\ref{fig:benchmark_scatter_containerlab} plots total token consumption against run
 duration for every individual run, allowing to compares the models across configurations.
 In single-agent mode (left), \textit{claude-opus-4-7} (gray) clusters in low-duration,
-mid-token area; \textit{qwen3:30b} scatters widely in the mid-duration, high-token region;
+mid-token area; the local model \textit{qwen3:30b} scatters widely in the mid-duration, high-token region;
 and \textit{gpt-oss:120b}; spreads across the far-right high-duration and is much more unreliable with token consumption and execution duration.
 In multi-agent mode (right), all three clusters shift toward lower token counts, and the
 \textit{qwen3:30b} cluster more closely.
@@ -171,7 +171,7 @@ The difference reflects the representation of the discovery map rather than the 
 
 The evaluation criteria and scoring scale are defined in table~\ref{tab:qualitative-scale}.
 One of the key factors in the \gls{Containerlab} environment is whether a model extracts the
-cleartext \gls{LDAP} credentials exposed by the anonymous bind on \textit{192.168.10.5}
+cleartext \gls{LDAP} credentials exposed by the anonymous bind on:\\ \textit{192.168.10.5}
 (\textit{uid=asmith}/\textit{uid=bjones}, password \textit{Password123!}) \textthreequartersemdash the scenario's
 single \textit{Critical} finding.
 
@@ -263,7 +263,7 @@ it never performs a \textit{ldap-search} or anonymous bind, so the cleartext cre
 remain unextracted.
 
 It identifies the printer's dual \textit{Server} header (\textit{BaseHTTP/0.6} alongside
-\textit{HP-WebServer/2.6.5}) but due to its generalistic implementation, the banner mismatch is not further elaborated.
+\\ \textit{HP-WebServer/2.6.5}) but due to its generalistic implementation, the banner mismatch is not further elaborated.
 
 \gls{SNMP} is not probed by any configuration, as the scenario issues only \gls{TCP}
 port sweeps and no model independently adds \textit{snmpwalk} to its tool calls.

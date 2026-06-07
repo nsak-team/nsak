@@ -94,7 +94,7 @@ whereas \textbf{Metasploit} is a framework that provides exploits, payloads and 
 Further details of the frameworks are presented in the following sections.
 \ref{subsec:atomic-red-team-evaluation}\ref{subsec:caldera-evaluation}\ref{subsec:metasploit-evalutaion}
 
-\subsection{Atomic Red Team}\label{subsec:atomic-red-team-evaluation}
+\subsection{Atomic Red Team: Features and Capabilities}\label{subsec:atomic-red-team-evaluation}
 
 The Atomic Red Team repository provides documentation and configuration files for each technique.
 For every TTP, a \gls{YAML} configuration file defines the execution parameters, while an enhanced Markdown file contains a human-readable description of the attack.
@@ -107,7 +107,7 @@ If a technique cannot be executed, for example due to operating system constrain
 The Open Source mentality, expandability and easily usable scripts can be a great asset for an independent framework such as the \gls{NSAK}.
 
 
-\subsection{Caldera}\label{subsec:caldera-evaluation}
+\subsection{Caldera: Features and Capabilities}\label{subsec:caldera-evaluation}
 
 Mitre Caldera is also built on the MITRE ATT\&CK knowledge base and functions as a command-and-control center.
 A central server controls agents running on the target system, executes attacks called abilities, and sends the operation results back to the server.
@@ -118,7 +118,7 @@ The additional features, like a training plugin for educational purposes, includ
 With its provided interface and functionality, Caldera is most suitable as a threat emulator,
 offering a wide range of built-in features, including lateral movement and \gls{CNC} communication~\cite{Zilberman2020SoKThreatEmulators}.
 
-\subsection{Metasploit}\label{subsec:metasploit-evalutaion}
+\subsection{Metasploit: Features and Capabilities}\label{subsec:metasploit-evalutaion}
 
 Metasploit is a widely used penetration testing framework for testing or attacking systems and exploiting known vulnerabilities.
 Metasploit follows a sequence of steps to identify a vulnerability in a target system, select a vulnerability for the attack,
@@ -129,7 +129,7 @@ According to Zilberman et al., an operator requires extensive cybersecurity know
 To support the operator, the \gls{GUI} \enquote{Armitage}, which is not further evaluated in this work, can be used~\cite{Zilberman2020SoKThreatEmulators}.
 
 
-\subsection{\gls{NSAK}}\label{subsec:nsak-usp}
+\subsection{\gls{NSAK: Features and Capabilities}}\label{subsec:nsak-usp}
 The \gls{NSAK} framework, as an independent universal Network Swiss Army Knife,
 was implemented with a strong focus on networking and hardware devices in mind.
 This is underlined by the provided resource types, such as the network environment~\ref{subsec:environment-concept},
@@ -163,8 +163,8 @@ During training, these parameters are continually adjusted to enable the model t
 The models most of us use today, such as ChatGPT, Claude and Gemini are pre-trained \gls{LLM}s used for language inference.
 
 These advances led to \gls{MCP}, a protocol that allows tools and services to expose an interface specifically for \gls{AI}.
-Further, the introduction of \gls{AI}-agents is enabling a new level of autonomy for achieving concrete goals with \gls{LLM}s.
-The combination of these technologies is now resulting in systems, where \gls{LLM}s empower autonomous agents capable of decision-making to execute complex tasks.
+Further, the introduction of \gls{AI}-agents is enabling a new level of autonomy for achieving concrete goals such information gathering, task automation, or multistep problem-solving with \gls{LLM}s.
+The combination of specialized \gls{LLM}s, \gls{MCP}-based tool integration is now resulting in systems, where \gls{LLM}s empower autonomous agents capable of decision-making to execute complex tasks.
 
 \subsection{\gls{MCP}}\label{subsec:mcp}
 
@@ -174,11 +174,11 @@ Dynamic tool discovery and schema negotiation is helping clients and agents to a
 Additionally, \gls{MCP} allows information to flow in both directions, so the model can send requests, and tools can send updates or events.
 
 This architectural approach shifts the \gls{AI} integration from static toward an interoperable ecosystem of \gls{AI}-enabled services.
-On the other hand, the flexible design and open source approach of \gls{MCP} unlocks multiple novel and systematic security risks that are in need of enhanced security and governance~\cite{hasan2025modelcontextprotocolmcp}.
+On the other hand, the flexible design and open source approach of \gls{MCP} unlocks multiple novel and systematic security risks, including insecure tool integrations and prompt injection via external data sources that are in need of enhanced security and governance~\cite{hasan2025modelcontextprotocolmcp}.
 
 \subsection{Agentic-AI}\label{subsec:agentic-ai}
 
-\gls{AGENTIC-AI} can be understood as an advanced machine intelligence that is capable of perceiving, reasoning, and acting with a certain level of autonomy.
+\gls{AGENTIC-AI} is defined as an advanced machine intelligence that is capable of perceiving, reasoning, and acting with a certain level of autonomy.
 Traditional systems and agents are more limited to executing predefined commands, whereas \gls{AGENTIC-AI} is not restricted in this way.
 Due to their ability to adapt in real time, they can continuously refine their knowledge, techniques, and data.
 The ability to access multiple inputs, from natural language processing to sensor data, allows \gls{AI AGENT}s to develop a good understanding of their environment~\cite{chapter1}.
@@ -204,18 +204,15 @@ In the cybersecurity podcast Risky Business, it is mentioned that \gls{MCP} is \
 The open-source strategy of \gls{Anthropic} (\ref{subsec:mcp}) has led to the development of multiple \gls{MCP} implementations that were not designed with a strong focus on security,
 but rather on rapid adoption of a novel technique.
 
-This provocative claim is based on the observation that,
-in order to handle the excessive \gls{MCP} tooling,
-\gls{AI AGENT}s may instead rely on direct access to a root shell,
-as it provides a more efficient way of interaction~\cite{riskybiz_mcp}.
+This claim is based on the observation that, when faced with excessive \gls{MCP} tooling, \gls{AI} agents may resort to direct access to a root shell, which provides a more efficient way of interaction~\cite{riskybiz_mcp}.
 Recently, other concepts for calling tools were established, such as .
 These observations are directly relevant to this thesis,
-because the \gls{AI} based scenarios will heavily relly on tool usage,
-and we don't want to restrict the agent to \gls{MCP} based tools.
-Consequently, from now on we will focus on the more general concept of \textbf{Tool Calling} instead.
+singe the \gls{AI}-based scenarios will heavily rely on tool usage,
+and this thesis focus to restrict the agent to \gls{MCP} based tools.
+Consequently, from now on this thesis focus on the more general concept of \textbf{Tool Calling} instead.
 
-Another issue with tools is that they need to be described to the \gls{LLM},
-which contributes to the input tokens and thus the context size.
+Another limitation of tool usage is that tools must be described to the \gls{LLM}, which
+increases input token consumption and consequently the required context size.
 Depending on the model, its size and the available hardware resources,
 this can lead to descriptions filling a significant portion of the context window,
 degrading the overall performance and quality of the responses.
@@ -232,8 +229,8 @@ allowing the agent to plan and issue commands in a manner similar to a human ope
 
 Caldera introduces three main research areas.
 First, a planner determines the order and selection of abilities and can dynamically construct new adversaries based on user requirements through prompt-based interaction.
-Second, an adversary factory model is used to generate adversaries tailored to the operator's specific use cases.
-Last, a forward-deployed agent is enhanced with \gls{RAG} for \gls{CTI}, leveraging \gls{STIX}-based data to create reproducible and testable adversaries~\cite{caldera_mcp_blog}.
+Second, an adversary factory model generates adversaries tailored to the operator's specific use cases.
+Lastly, a forward-deployed agent is enhanced with \gls{RAG} for \gls{CTI}, leveraging \gls{STIX}-based data to create reproducible and testable adversaries~\cite{caldera_mcp_blog}.
 
 The \gls{MCP}-Server, provided by \textbf{Metasploit}, enables a \gls{LLM} to interact with the Metasploit Framework dynamically.
 The Interface covers module information (a Metasploit module is a known exploit), exploitation workflows, payload generation,
@@ -250,21 +247,21 @@ It enables searching, validating, and optionally executing attack techniques
 
 The framework comparison highlights the difference between \gls{NSAK} and the established frameworks.
 Each compared framework has its own focus and is able to perform a specific task in a complex operation.
-For this thesis we decided to go forward with the \gls{NSAK} framework for the following reasons.
+This thesis focuses on the \gls{NSAK} framework for the following reasons.
 \paragraph{Network Focus}
-Because this thesis focuses on the evaluation of \gls{AI} based red and blue team activities in virtual and physical network environments,
-we need a framework which has a strong focus on networking and is able to run on small embedded devices.
+Since this thesis focuses on the evaluation of \gls{AI}-based red and blue team activities in virtual and physical network environments,
+a framework which has a strong focus on networking and is able to run on small embedded devices is required.
 \paragraph{Harness Concept}
 In the context of \gls{AI}, the term \enquote{harness} is used to describe the software layer surrounding an agent that provides guardrails,
 tooling, configuration, logging, monitoring, and other supporting functionality required for secure and reliable operation.
-Because \gls{NSAK} already acts as a harness for network focused cybersecurity scenarios~\ref{subsec:nsak-usp},
+As \gls{NSAK} already acts as a harness for network focused cybersecurity scenarios~\ref{subsec:nsak-usp},
 we can implement an \gls{AI} agent and reuse the already implemented tooling.
 \paragraph{Familiarity}
-We are already familiar with the \gls{NSAK} framework, the Python based library and their development workflow,
+The existing familiarity with the \gls{NSAK} framework, its Python based library, and development workflow,
 which allows us to efficiently extend the core and develop new scenarios and drills for the library.
 \paragraph{Interoperability}
-If needed we can leverage the strengths of the other frameworks by using their \glspl{API} or building and adapter,
+When \gls{NSAK} does not provide specific functionality or when external specialized capabilities are required, other frameworks can be modular integrated via their \glspl{API}
 to call specific functionalities in drills and scenarios.
 
-The following chapter therefore introduces the core concepts of \gls{NSAK}, inherited from the predecessor project
-and extended in this thesis, which are forming the basis for the implementation presented later.
+The following chapter therefore introduces the core concepts of \gls{NSAK}, inherited from the predecessor project~\cite{nsakRepository2026}
+and extended in this thesis, which are forming the basis for the implementation presented in~\ref{ch:implementation}.

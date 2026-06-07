@@ -1,0 +1,115 @@
+\begin{frame}{Answering the Research Questions}
+    \footnotesize
+
+    \begin{itemize}
+        [<+->]
+        \item[\textbf{RQ1}] \textbf{AI vs.\ static:} Same discovery power as baseline, no gains in speed/determinism.
+        Adds value via \textbf{reasoning and interpretation} (credentials, banner reasoning, severity scoring).
+
+        \vspace{0.2em}
+        \item[\textbf{RQ2}] \textbf{Operator support:} Converts scans into structured, severity-ranked output + next steps.
+        \texttt{--interactive} Operator stays in the loop and control.
+
+        \vspace{0.2em}
+        \item[\textbf{RQ3}] \textbf{Deployment:} Scales to $\sim$35 hosts, highlights key risks.
+        \textbf{Requires supervision} (reliability limits).
+    \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Key Findings}
+    \framesubtitle{Takeaways across both environments}
+
+% --- Slide 1: only left column ---
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.5\textwidth}
+            \textbf{\faCheckCircle~~What works}
+            \begin{itemize}
+                \item \scriptsize Even smaller models can autonomously run \textbf{standard red-team reconnaissance}
+                \item \scriptsize \textbf{Multi-agent decomposition} helps smaller models (--68\% tokens for \texttt{qwen3:30b})
+                \item \scriptsize AI delivers \textbf{depth}: assessment, prioritized findings, remediation
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+        \end{column}
+    \end{columns}
+
+    \vspace{0.5em}
+
+% --- Slide 2: right column appears ---
+    \begin{onlyenv}<2->
+        \begin{columns}[T,onlytextwidth]
+            \begin{column}{0.5\textwidth}
+            \end{column}
+
+            \begin{column}{0.5\textwidth}
+                \textbf{\faExclamationTriangle~~What limits it}
+                \begin{itemize}
+                    \item \scriptsize \textbf{High failure rate} -- best-case subset
+                    \item \scriptsize \textbf{Hallucinations}: fabricated CVEs, honeypots
+                    \item \scriptsize \textbf{Model tier matters}: \texttt{qwen3:8b} unusable
+                    \item \scriptsize Manual qualitative scoring
+                \end{itemize}
+            \end{column}
+        \end{columns}
+    \end{onlyenv}
+
+\end{frame}
+
+
+\begin{frame}{Recommendations and Future Work}
+    \framesubtitle{}
+
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.5\textwidth}
+            \textbf{Recommendations}
+            \begin{itemize}
+                \item \scriptsize \textbf{Match model tier to task} -- frontier model for autonomous recon
+                \item \scriptsize \textbf{Multi-agent} for smaller / self-hosted models
+                \item \scriptsize \textbf{Hybrid pipeline}: static breadth + AI depth (+ RAG)
+                \item \scriptsize \textbf{Human-in-the-loop} + retry on incomplete runs
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \textbf{Future work}
+            \begin{itemize}
+                \item \scriptsize \textbf{Dynamic tool calling} -- expose only relevant tools
+                \item \scriptsize \textbf{Guardrails \& sandboxing} -- scope restriction for production
+                \item \scriptsize Robust \textbf{HITL middleware}
+                \item \scriptsize \textbf{Broader attack-chain} coverage beyond reconnaissance
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \framesubtitle{RAG-Pipeline Agent}
+    \begin{figure}
+        Keine Ahnung warum es das diagram nicht rendert ?????
+        \centering
+        \includegraphics[width=0.5]{assets/rag-future}
+        \label{fig:rag-future.drawio}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conclusion}
+    \framesubtitle{Agentic AI complements deterministic enumeration}
+
+    \begin{itemize}
+        \item[\faCheck] Using NSAK directly as an \textbf{agentic harness} proved effective -- the agent autonomously and interactively executes network discovery via LangChain tools.
+        \item[\faCheck] Scripted scenarios excel in \textbf{speed and reproducibility}; the agent adds \textbf{reasoning and assessment}, limited by model capability.
+        \item[\faCheck] \textbf{Multi-agent decomposition} improves smaller models by reducing context complexity and increasing consistency.
+        \item[\faExclamationTriangle] Hallucinations remain a limitation -- \textbf{supervised operation with a human reviewer} is the proposed deployment model.
+    \end{itemize}
+
+    \vspace{0.5em}
+    \begin{center}
+        \footnotesize\textit{LLMs make cybersecurity use cases more accessible and cost-effective -- with a human in the loop.}
+    \end{center}
+\end{frame}
+
+
+\section[Demo \& Questions]{Demo: Agentic Reconnaissance in Action\\~\\ Questions?}\label{sec:demo-and-questions}
