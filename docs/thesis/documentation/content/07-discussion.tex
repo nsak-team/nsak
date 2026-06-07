@@ -170,11 +170,15 @@ qualitative results.
     task decomposition recovers much of the efficiency and consistency gap,
     most visibly the 68\,\% token reduction for \textit{qwen3:30b}.
 
-    \item \textbf{Combine engineered breadth with \gls{AI} depth.} A hybrid pipeline:
+    \item \textbf{Combine engineered breadth with \gls{AI} depth in a \gls{RAG} pipeline.}
+    Optimize reliability and quality, by leveraging
     the deterministic scenario for exhaustive, reproducible service
-    enumeration, filtered by a \gls{RAG} system, followed by an \gls{AI} layer for semantic assessment and
-    attack-chain reasoning, would pair the static scenario's coverage with
+    enumeration, followed by an \gls{AI} layer for semantic assessment and
+    attack-chain reasoning.
+    This pairs the static scenario's coverage with
     the interpretive strength of the \gls{AI}.
+    A \gls{RAG} based implementation was initially considered, but excluded to preserve the
+    independence of the \gls{AI} and static scenarios in the comparison.
 
     \item \textbf{Add a human-in-the-loop and retry strategy.} Given the low success
     rates, an operator checkpoint or automatic retry on incomplete runs would
