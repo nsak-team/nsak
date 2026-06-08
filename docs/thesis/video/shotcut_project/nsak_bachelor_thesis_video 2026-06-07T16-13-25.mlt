@@ -630,8 +630,7 @@
   </chain>
   <playlist id="playlist6">
     <property name="shotcut:video">1</property>
-    <property name="shotcut:name">ai_demo_004 (discarded)</property>
-    <property name="shotcut:lock">1</property>
+    <property name="shotcut:name">ai_demo_004</property>
     <blank length="00:00:54.800"/>
     <entry producer="chain30" in="00:00:27.480" out="00:00:29.440">
       <property name="shotcut:group">1</property>
@@ -1039,8 +1038,7 @@
   </chain>
   <playlist id="playlist4">
     <property name="shotcut:video">1</property>
-    <property name="shotcut:name">ai_demo_002 (discarded)</property>
-    <property name="shotcut:lock">1</property>
+    <property name="shotcut:name">ai_demo_002</property>
     <blank length="00:00:35.720"/>
     <entry producer="chain8" in="00:00:39.200" out="00:00:41.160">
       <property name="shotcut:group">3</property>
@@ -1372,9 +1370,9 @@
     <track producer="playlist9"/>
     <track producer="playlist8" hide="audio"/>
     <track producer="playlist7" hide="both"/>
-    <track producer="playlist6" hide="both"/>
+    <track producer="playlist6" hide="audio"/>
     <track producer="playlist5" hide="audio"/>
-    <track producer="playlist4" hide="both"/>
+    <track producer="playlist4" hide="audio"/>
     <track producer="playlist2"/>
     <track producer="playlist1" hide="audio"/>
     <transition id="transition0">
