@@ -1,40 +1,46 @@
 % -------------------------------------------------------
-% Introduction / Problem Statement
-% Voiceover: ~16 seconds
+% Slide 1 — The Challenge
 % -------------------------------------------------------
 
-\begin{frame}{Automating Network Security Testing}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \centering
-      {\Large\faCode}\\[0.4em]
-      \textbf{Deterministic Implementation}
-      \vspace{0.5em}
-      \begin{itemize}
-        \setlength\itemsep{0.35em}
-        \item[\faAngleRight] Scripted, rule-based execution
-        \item[\faAngleRight] Reproducible results
-        \item[\faAngleRight] Domain expertise required
-        \item[\faAngleRight] Fast, no token cost
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.04\textwidth}\end{column}
-    \begin{column}{0.48\textwidth}
-      \centering
-      {\Large\faRobot}\\[0.4em]
-      \textbf{Agentic AI}
-      \vspace{0.5em}
-      \begin{itemize}
-        \setlength\itemsep{0.35em}
-        \item[\faAngleRight] Adaptive, reasoning-driven
-        \item[\faAngleRight] Natural language interface
-        \item[\faAngleRight] Human-in-the-loop control
-        \item[\faAngleRight] Detailed findings reports
-      \end{itemize}
-    \end{column}
-  \end{columns}
-  \vspace{1.2em}
+\begin{frame}{The Challenge}
+  \quad{{\Large\faExclamationTriangle}~~~\large\textbf{Rising Cyber Threats}}\\[1em]
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item[\faAngleRight] Attackers already leverage AI~\textthreequartersemdash~defenders must keep pace
+    \item[\faAngleRight] Red \& blue team exercises demand deep expertise
+    \item[\faAngleRight] High recurring effort~\textthreequartersemdash~inaccessible for small and medium-sized enterprises
+    \item[\faAngleRight] Scripted automation is brittle and inflexible
+  \end{itemize}
+\end{frame}
+
+% -------------------------------------------------------
+% Slide 2 — Our Approach
+% -------------------------------------------------------
+
+\begin{frame}{Our Approach}
+  \quad{{\Large\faRobot}~~~\large\textbf{Agentic AI}}\\[1em]
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item[\faAngleRight] Integrate an LLM agent into NSAK via LangChain
+    \item[\faAngleRight] Equip it with tool calling for autonomous execution
+    \item[\faAngleRight] Benchmark against a scripted reference scenario
+  \end{itemize}
+\end{frame}
+
+% -------------------------------------------------------
+% Slide 3 — Research Questions
+% -------------------------------------------------------
+
+\begin{frame}{Research Questions}
+  \quad{{\Large\faFlask}~~~\large\textbf{Three Open Questions}}\\[1em]
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item[\faAngleRight] Can an AI agent match a scripted scenario at automated network reconnaissance?
+    \item[\faAngleRight] How effectively can AI assist a human operator during a live security investigation?
+    \item[\faAngleRight] Does it hold up in real-world networks beyond a controlled lab?
+  \end{itemize}
+  \vspace{1em}
   \begin{center}
-    \textbf{Evaluation:}\quad 3 LLMs $\times$ 3 Network Environments
+    {\small 3 LLMs \quad\textbullet\quad 2 Network Environments \quad\textbullet\quad Static Reference Baseline}
   \end{center}
 \end{frame}

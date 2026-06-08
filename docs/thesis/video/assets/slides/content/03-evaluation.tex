@@ -1,0 +1,40 @@
+% -------------------------------------------------------
+% Evaluation Highlights
+% -------------------------------------------------------
+
+\begin{frame}{Evaluation Highlights}
+  \setbeamerfont{itemize/enumerate body}{size=\small}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \centering
+      {\Large\faNetworkWired}\\[0.3em]
+      \textbf{Containerlab}\\
+      \textbf{(Virtual)}
+      \vspace{0.4em}
+      \begin{itemize}
+        \setlength\itemsep{0.4em}
+        \item[\textcolor{green!60!black}{\faCheck}] All 3 models completed reconnaissance autonomously
+        \item[\textcolor{green!60!black}{\faCheck}] Multi-agent decomposition improved smaller models significantly
+        \item[\textcolor{orange!80!black}{\faMinus}] Larger models showed no benefit from decomposition
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.04\textwidth}\end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      {\Large\faBuilding}\\[0.3em]
+      \textbf{BFH Network Security Lab}\\
+      \textbf{(Physical)}
+      \vspace{0.4em}
+      \begin{itemize}
+        \setlength\itemsep{0.4em}
+        \item[\textcolor{green!60!black}{\faCheck}] Agent navigated a live network with 35+ hosts
+        \item[\textcolor{orange!80!black}{\faMinus}] Structured output failed — adapted to unstructured mode
+        \item[\textcolor{orange!80!black}{\faMinus}] Small local model (qwen3:8b) could not complete the task
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vspace{0.9em}
+  \begin{center}
+    {\small Static scenario: fast \& reproducible, but no reasoning or report generation}
+  \end{center}
+\end{frame}

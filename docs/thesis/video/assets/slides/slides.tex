@@ -1,7 +1,7 @@
 \documentclass[
     english,
-    authorontitle=true,
     aspectratio=169,
+    authorontitle=true,
 ]{bfhbeamer}
 
 \usepackage{iftex}
@@ -15,6 +15,7 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usepackage{tabto}
+\usepackage{textcomp}
 
 \let\code\texttt
 
@@ -26,28 +27,31 @@
 
 \setbeamertemplate{section page}[BFH-ruled]
 \AtBeginSection{\sectionpage}
+\setbeamertemplate{footline}{}
+
+\setbeamercolor{background canvas}{bg=}
+
+\setbeamerfont{itemize/enumerate body}{size=\large}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
 
 \begin{document}
 
 \setbeamertemplate{title page}[BFH-graphic]
 \maketitle
 
-% --- Info: Introduction / Problem Statement ---
+% --- Info: Problem & Research Question ---
 \input{content/01-introduction}
 
-% --- Demo 1 ---
-\section{Demo 1: Static Reconnaissance}\label{sec:demo-1:-static-reconnaissance}
-\input{content/02-demo1-static-recon}
+% --- Info: What We Built ---
+\input{content/02-implementation}
 
-% --- Demo 2 ---
-\section{Demo 2: AI Reconnaissance}\label{sec:demo-2:-ai-reconnaissance}
-\input{content/03-demo2-ai-recon}
+% --- Info: Evaluation Highlights ---
+\input{content/03-evaluation}
 
-% --- Demo 3 ---
-\section{Demo 3: Interactive AI Agent}\label{sec:demo-3:-interactive-ai-agent}
-\input{content/04-demo3-ai-agent}
+% --- Demo ---
+\input{content/04-demo-agent}
 
-% --- Info: Results & Conclusion ---
+% --- Info: Key Findings & Conclusion ---
 \input{content/05-results}
 
 \end{document}
