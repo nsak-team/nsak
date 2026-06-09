@@ -14,14 +14,18 @@ The \gls{NSAK} is a cybersecurity framework that operates with the following res
 \textit{Devices}, which are physical or virtual machines capable of running the \gls{NSAK}.
 The security operation is executed in a network environment and can involve one or more attacks or defense scenarios.
 The smallest unit in the framework is a drill, which can be orchestrated in a scenario and chained with other drills.
+Before this thesis, \gls{NSAK} already provided a working proof of concept built around the following capabilities:
+\begin{enumerate}
+    \item The resource types \textit{Environment}, \textit{Drill}, and \textit{Scenario} could be declared as \gls{YAML} resources, and drills could be chained into scenarios and executed manually from the \gls{CLI}. The \textit{Device} type existed only as a concept with provisioning instructions and was not yet implemented in the core.
+    \item Scenarios were containerized as \glsxtrshort{OCI} images and executed via Podman.
+    \item A containerized \enquote{simple TCP client--server} lab allowed scenarios to be simulated before running them against a physical network.
+\end{enumerate}
+This was demonstrated with two scenarios: a \gls{MITM} attack (host discovery, \gls{ARP} spoofing, and a transparent \gls{TCP} proxy) and a Rogue Access Point that captured the forwarded traffic.
 
-While modularity and the proof of concept were confirmed, further work is required in areas such as enhanced configuration management, a \gls{GUI}, and a \gls{REST API}.
-These improvements are intended to increase usability and support automation, and enables integration with external systems and workflows.
-
-Some of the objectives of this thesis directly address these open points and are defined in the section~\ref{ch:project-goals}.
-
-The \glsxtrshort{NSAK} framework is built around four resource types that were originally defined in \enquote{Project 2}\cite{nsakRepository2026}.
-Each resource type has a distinct role in the framework and is stored as a \glsxtrshort{YAML} file in the resource library.
+What the predecessor declared to future work was a flexible configuration management, a more complete cleanup mechanism, broader test coverage, a \gls{REST API}, and a \gls{GUI}.
+To integrate \gls{AI} was not part of the framework at all and also not mentioned in future work section.
+Modularity and the proof of concept were confirmed.
+The remaining open points motivates to conclude with this thesis and the goals are defined in section~\ref{ch:project-goals}.
 
 \subsection{Device}\label{subsec:device-concept}
 

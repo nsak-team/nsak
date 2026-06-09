@@ -31,6 +31,9 @@ Qualitative criteria require manual assessment and are scored against the scale 
 \begin{itemize}
     \item \textbf{Speed:} Time from scenario start to complete output of all discovered hosts and services
     \item \textbf{Token usage: AI-specific} Number of tokens consumed per run (\gls{AI} Reconnaissance only)
+    \item \textbf{Success factor:} Number of valid runs with structured output and findings.
+    The factor is presented in the form of (e.g.\ 10/12 means 10 usable runs out of 12 attempts).
+
 \end{itemize}
 
 To fix most of the influencing factors we defined a system prompt and a scenario prompt to set the starting line for all models equally.

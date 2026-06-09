@@ -29,59 +29,68 @@ The evaluation of the proposed frameworks is based on information obtained from 
      >{\raggedright\arraybackslash}X|
      >{\raggedright\arraybackslash}X|
      >{\raggedright\arraybackslash}X|
+     >{\raggedright\arraybackslash}X|
         }
     \hline
 
     \textbf{Characteristic} &
     \textbf{Metasploit Framework} &
     \textbf{Atomic Red Team} &
-    \textbf{MITRE Caldera} \\
+    \textbf{MITRE Caldera} &
+    \textbf{NSAK} \\
     \hline
 
     Primary Purpose &
     Exploitation and penetration testing framework &
     Security testing through small atomic ATT\&CK tests &
-    Automated adversary emulation platform \\
+    Automated adversary emulation platform &
+    Network-focused framework for red and blue team scenarios \\
     \hline
 
     Relation to MITRE ATT\&CK &
     Partial mapping via modules &
     Direct mapping to ATT\&CK techniques &
-    Built around ATT\&CK adversary emulation \\
+    Built around ATT\&CK adversary emulation &
+    - \\
     \hline
 
     Automation Level &
     Medium (scripts and modules) &
     Low (manual execution of tests) &
-    High (automated attack chains) \\
+    High (automated attack chains) &
+    Low (manual execution)\\
     \hline
 
     Main Functionality &
     Exploit development, payload delivery, post-exploitation &
     Execute small ATT\&CK technique tests &
-    Simulate adversary campaigns across hosts \\
+    Simulate adversary campaigns across hosts &
+    Execute Attack scenarios with a set of drills\\
     \hline
 
     Architecture &
     Modular framework with exploits, payloads, and auxiliary modules &
     Collection of scripts/tests organized by ATT\&CK techniques &
-    Client-server platform \\
+    Client-server platform &
+    Modular Python library (devices, environments, scenarios, drills) with container isolation \\
     \hline
 
     Typical Use Case &
     Penetration testing and vulnerability validation &
     Detection validation and security control testing &
-    Red team automation and purple team exercises \\
+    Red team automation and purple team exercises &
+    Red/blue teaming in virtual and physical network labs \\
     \hline
 
     Difficulty Level &
     Medium--High &
     Low--Medium &
-    Medium--High \\
+    Medium--High &
+    Low--Medium \\
     \hline
 
     \end{tabularx}
-    \caption{Comparison of Metasploit, Atomic Red Team, and MITRE Caldera}
+    \caption{Comparison of Metasploit, Atomic Red Team, MITRE Caldera, and NSAK}
     \label{tab:framework-comparison}
 \end{table}
 \renewcommand{\arraystretch}{1}
@@ -128,7 +137,7 @@ According to Zilberman et al., an operator requires extensive cybersecurity know
 To support the operator, the \gls{GUI} \enquote{Armitage}, which is not further evaluated in this work, can be used~\cite{Zilberman2020SoKThreatEmulators}.
 
 
-\subsection{\gls{NSAK: Features and Capabilities}}\label{subsec:nsak-usp}
+\subsection{NSAK: Features and Capabilities}\label{subsec:nsak-usp}
 The \gls{NSAK} framework, as an independent universal Network Swiss Army Knife,
 was implemented with a strong focus on networking and hardware devices in mind.
 This is underlined by the provided resource types, such as the network environment~\ref{subsec:environment-concept},
@@ -210,10 +219,9 @@ and this thesis focus to restrict the agent to \gls{MCP} based tools.
 Consequently, from now on this thesis focus on the more general concept of \textbf{Tool Calling} instead.
 
 Another limitation of tool usage is that tools must be described to the \gls{LLM}, which
-increases input token consumption and consequently the required context size.
-Depending on the model, its size and the available hardware resources,
-this can lead to descriptions filling a significant portion of the context window,
-degrading the overall performance and quality of the responses.
+increases input token consumption and the required context size.
+Depending on the model this can lead to a significant filling of the context window,
+degrading the overall performance and quality of the responses. \todo{citation reference}
 The architectural decision is not to remove tools completely,
 but instead to expose a minimum set and an overview of available capabilities.
 An \gls{LLM} can now request a tool description from the agent,
