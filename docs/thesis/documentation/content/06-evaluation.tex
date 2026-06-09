@@ -2,13 +2,13 @@
 
 \chapter{Evaluation}\label{ch:evaluation}
 
-This chapter evaluates the agentic \gls{AI} integration across the three research questions defined in the~\ref{ch:introduction}.
+This chapter evaluates the agentic \gls{AI} integration across the three research questions defined in Chapter~\ref{ch:introduction}.
 The assessment is structured into two parts,
-a controlled evaluation in the reproducible \gls{Containerlab} environment~\ref{sec:eval-containerlab},
-and a real-world evaluation in the BFH network security lab~\ref{sec:eval-cyberlab}.
+a controlled evaluation in the reproducible \gls{Containerlab} environment (Section~\ref{sec:eval-containerlab}),
+and a real-world evaluation in the BFH network security lab (Section~\ref{sec:eval-cyberlab}).
 Each part examines the same qualitative and quantitative criteria specified in Chapter~\ref{sec:evaluation-setup} (\nameref{sec:evaluation-setup}),
 allowing for a direct comparison across configurations and environments.
-The \nameref{sec:benchmark-suite} (\ref{sec:benchmark-suite}) was leveraged for investigating the research questions \nameref{rq1} and \nameref{rq3},
+The \nameref{sec:benchmark-suite} (Section~\ref{sec:benchmark-suite}) was leveraged for investigating the research questions \nameref{rq1} and \nameref{rq3},
 as they do not require the interactive mode of the scenarios.
 
 \section{Scenario Overview}\label{sec:scenario-overview}
@@ -33,7 +33,7 @@ Table~\ref{tab:evaluated-scenarios} presents an overview of the evaluated scenar
 
 The main distinction must be drawn between the static reference scenario and the \gls{AI} based scenarios,
 as they significantly differ in how they function conceptually and technically.
-The static scenario is limited to a fixed execution order of drills~\ref{subsec:drill-concept} (namely, arp-scan, nmap),
+The static scenario is limited to a fixed execution order of drills (Section~\ref{subsec:drill-concept}; namely arp-scan and nmap),
 which also results in a more predictable exception based error handling.
 The agent driven scenarios on the other hand can choose a broader palette of \gls{LangChain} tools (e.g., \gls{CLI}, host configuration) depending on the situation
 and the error handling can become quite intransparent, because a model might retry failed tool calls, start to hallucinate or even decides to skip entire steps.
@@ -50,7 +50,7 @@ To address this issue and optimize for smaller models, we implemented the \textb
 This implementation tries to reduce the context size with a divide-and-conquer approach
 ~\textthreequartersemdash~the prompt is split into multiple steps and each result is fed into the next agent with the next instruction~\textthreequartersemdash~
 which probably results in longer runtimes.
-For large models this approach could be even harmfully, as they probably don't have a problem with the context size and even call the same tools in multiple agents.
+For large models this approach could be even harmful, as they probably don't have a problem with the context size and even call the same tools in multiple agents.
 
 \paragraph{Output}
 While \textbf{Structured} output comes with many benefits,

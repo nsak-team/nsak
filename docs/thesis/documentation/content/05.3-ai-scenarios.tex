@@ -65,7 +65,7 @@ The primary LangChain concepts used in the \gls{NSAK} framework are:
 \begin{itemize}
     \item \mintinline{python}{BaseChatModel} - provider-agnostic interface for the underlying \gls{LLM}.
     \item \mintinline{python}{BaseTool} - interface for callable tools that the agent can invoke.
-    \item \mintinline{python}{create_agent()} - builds a LangGraph-based ReAct agent graph that wires the model and tools together.
+    \item \mintinline{python}{create_agent()} - builds a LangGraph-based ReAct agent graph that wires the model and tools together~\cite{langgraph_docs}.
     \item \mintinline{python}{messages} - a list of conversation messages (user, \gls{AI}, tool) maintained across the agent's reasoning loop.
 \end{itemize}
 
@@ -79,7 +79,7 @@ and the full conversation history is retained in the \mintinline{python}{message
 
 \subsubsection{Tool Calling Concepts}\label{subsubsec:ai-agent-tool-calling-concepts}
 
-Tool calling is the mechanism by which the \gls{LLM} declares that it wants to invoke an external function.
+Tool calling is the mechanism by which the \gls{LLM} declares that it wants to invoke an external function~\cite{langchain_docs}.
 The framework intercepts the model's output, parses the tool call, executes the corresponding Python function, \gls{MCP}, or Skill,
 and appends the result to the message history before asking the model to continue.
 This loop repeats until the model produces a final text response with no tool calls.

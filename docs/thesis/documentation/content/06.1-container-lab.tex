@@ -121,10 +121,10 @@ Token count alone is not a reliable indicator of result quality, which is addres
 \end{figure}
 
 Figure~\ref{fig:benchmark_scatter_containerlab} plots total token consumption against run
-duration for every individual run, allowing to compares the models across configurations.
+duration for every individual run, allowing to compare the models across configurations.
 In single-agent mode (left), \textit{claude-opus-4-7} (gray) clusters in low-duration,
 mid-token area; the local model \textit{qwen3:30b} scatters widely in the mid-duration, high-token region;
-and \textit{gpt-oss:120b}; spreads across the far-right high-duration and is much more unreliable with token consumption and execution duration.
+and \textit{gpt-oss:120b} spreads across the far-right high-duration and is much more unreliable with token consumption and execution duration.
 In multi-agent mode (right), all three clusters shift toward lower token counts, and the
 \textit{qwen3:30b} cluster more closely.
 \textit{claude-opus-4-7} remains tightly grouped in both modes, confirming its low variation between the runs.
@@ -257,7 +257,7 @@ ground truth defined in the test environment.
     }
 \end{table}
 
-The static scenario discovers all 13 (minus the 5 hosts) 8 \gls{LAN} services via intensive port sweeps and
+The static scenario discovers all 8 \gls{LAN} services via intensive port sweeps and
 runs \textit{ldap-rootdse} to retrieve the naming context (\textit{dc=lab,dc=local}), but
 it never performs a \textit{ldap-search} or anonymous bind, so the cleartext credentials
 remain unextracted.

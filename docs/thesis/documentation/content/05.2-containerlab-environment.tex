@@ -23,7 +23,7 @@ The \mintinline{bash}{nsak} container can be deployed in different network segme
 
 \subsection{DMZ-Server}\label{subsec:reproducible-test-environment-dmz-server}
 
-To evaluate reconnaissance scenarios, common services must run on endpoints. \gls{BIND} is a complete implementation of the \gls{DNS} protocol that can be configured through the \mintinline{bash}|named.conf| file as an authoritative name server and resolver.
+To evaluate reconnaissance scenarios, common services must run on endpoints. \gls{BIND} is a complete implementation of the \gls{DNS} protocol that can be configured through the \mintinline{bash}|named.conf| file as an authoritative name server and resolver~\cite{bind9}.
 
 In the test lab illustrated in~\ref{fig:virtual-test-environments}, the functionality of the web server and \gls{DNS} server was combined for simplicity.
 
@@ -45,7 +45,7 @@ In our test environment, the restriction of \gls{AXFR} requests to only trustwor
 
 In the second part, a minimal \gls{Nginx} web server with \gls{HTTP} and \gls{HTTPS} support is created.
 Like in real setups, \gls{HTTP} traffic on port 80 is redirected to \gls{HTTPS} on port 443.
-To provide an artifact for reconnaissance purposes, a file named \mintinline{bash}|{secret.txt} containing sensitive data is placed on the server.|
+To provide an artifact for reconnaissance purposes, a file named \mintinline{bash}|secret.txt| containing sensitive data is placed on the server.
 
 The \gls{LAN} zone of the network, consists of 4 devices.
 
@@ -77,7 +77,7 @@ The printer service, reachable at 192.168.10.50, provides two different interfac
 The first web interface is administrative and is available on port 80.
 It shows internal printer metadata, such as device name and contact information.
 The printer version is intentionally disclosed in this admin view.
-The second interface, a \gls{REST API}, listens on port 631 at the \mintinline{bash}| {/jobs}| endpoint, where it displays a predefined list of print jobs.
+The second interface, a \gls{REST API}, listens on port 631 at the \mintinline{bash}|/jobs| endpoint, where it displays a predefined list of print jobs.
 All printer requests are logged in \\ \mintinline{bash}|{/var/logs/printer_sim_logs}| inside the container~\ref{lst:containerlab-topology-yaml-printer}.
 
 \subsection{Introduced Vulnerabilities}\label{subsec:introduced-vulnerabilities}

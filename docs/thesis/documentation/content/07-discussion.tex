@@ -14,7 +14,6 @@ which limits the discussion of the results.
 
 
 \section{Summary}\label{sec:discussion-summary}
-\todo{Allgemein kann man nochmal aufgreifen was das Ziel der arbeit ist, welche zentralen Problemstellungen und RQs habtcla}
 The evaluation shows that \gls{AI}-assisted reconnaissance is feasible but strongly
 dependent on the underlying model.
 As expected, the frontier model \textit{claude-opus-4-7} delivers the most convincing results
@@ -59,7 +58,7 @@ The frontier model scales, while the engineered scenario stays reproducible but 
 On just the level of reproducibility and raw coverage the engineered scenario is unbeatable.
 It executes a fixed drill order and returns an identical structured \textit{ReconnaissanceScenarioResult}
 on every run.
-All services are discovered issued by an unconditional port sweep, where the \gls{AI} frontier model extract the same
+All services are discovered issued by an unconditional port sweep, where the \gls{AI} frontier model extracts the same
 hosts and services with a higher duration and token costs.
 However, raw coverage is not an indicator of qualitative results.
 The generalistic way how the engineered scenario was implemented, prevent the extraction of the cleartext credentials,
@@ -147,7 +146,7 @@ blue-team intrusion-detection scenario (Section~\ref{subsec:intrusion-detection-
 The evaluation covers the virtual \gls{Containerlab} and the Cyberlab BFH segment but not a physical environment,
 and the evaluation focuses on the red-team reconnaissance scenario; the blue-team comparison (a \emph{should} goal) remains open.
 In the process to implement \gls{AI} agents with LangChain, the challenge to extend the agents with guardrails, dynamic tool calling to enhance the results and
-decompose the scenarios to address speed and token usage for smaller models where rated more critical than another similar physical environment.
+decompose the scenarios to address speed and token usage for smaller models were rated more critical than another similar physical environment.
 
 \paragraph{Subjectivity of qualitative scoring.}
 The correctness and hallucination scores were assigned manually against the scale in
@@ -212,7 +211,7 @@ In this mode the agent does not complete the reconnaissance on its own.
 The agent relies on the human interaction hook, a \gls{LangChain} tool that lets the agent pause its reasoning loop, present its intermediate findings and proposed next step~\ref{subsec:ai-scenarios-implementation-human-interaction-hook-via-cli}.
 The operator's answer is used as additional input in the total context for the next observation, keeping the operator in charge while the agent handles the tool execution.
 The flexibility to choose the right support level based on the situation and the operator's knowledge, makes agentic \gls{AI} a useful assistant.
-This support is limited by model capability and trust, the false classification as honeypot and the fabricated \gls{CVE} show that teh operator must still be alert and able to categorize findings correctly.
+This support is limited by model capability and trust, the false classification as honeypot and the fabricated \gls{CVE} show that the operator must still be alert and able to categorize findings correctly.
 
 \paragraph{RQ3 -- Suitability for real-world deployment.}
 The approach scales to a real network.

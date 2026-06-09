@@ -123,7 +123,6 @@ With the example of the \mintinline{bash}{EnvironmentLoader}, the diff below~\re
     \caption{EnvironmentLoader Base Class Refactoring Diff}
     \label{fig:environment-loader-base-class-refactor-diff}
 \end{figure}
-\todo{PRESENT???? }
 The structure of all resources was aligned by nesting the resource under their respective resource type key (\mintinline{bash}{scenarios}, \mintinline{bash}{drills}, \mintinline{bash}{environments}, and \mintinline{bash}{devices}),
 so that we could merge all \gls{YAML} resource files into a single library data structure without key conflicts.
 In the \gls{YAML} specification~\ref{lst:mergeable-resource-yaml-specification}, the new base structure derived from the device resource~\ref{subsubsec:create-new-device-resource-type} is illustrated.

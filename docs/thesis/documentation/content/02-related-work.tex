@@ -12,7 +12,7 @@ In the following section, the selected frameworks are briefly introduced, and th
 As a point of reference, the cybersecurity community increasingly relies on the concepts of MITRE ATT\&CK,
 which has established itself as a standard framework in the field since its introduction in 2014~\cite{mitreattack, alsada2023attack}.
 
-The MITRE ATT\&CK framework is a globally accessible knowledge base of adversary tactics and techniques based on real-world observations~\cite{mitreattack}.
+At its core, MITRE ATT\&CK organises adversary behavior into a publicly available catalogue of tactics and techniques from observed real-world intrusions~\cite{mitreattack}.
 The knowledge base is structured into \gls{TTP}, which are organized into 14 attack behavior groups.
 The \gls{TTP} is getting continuously updated and extended, which helps to defend against the capabilities of threat actors.
 
@@ -91,8 +91,7 @@ As shown in table~\ref{tab:framework-comparison}, the key characteristics of the
 Each attack can be executed independently or chained together into a larger attack scenario.
 \textbf{Mitre Caldera} is a complex, agent based adversary simulation tool,
 whereas \textbf{Metasploit} is a framework that provides exploits, payloads and auxiliary modules.
-Further details of the frameworks are presented in the following sections.
-\ref{subsec:atomic-red-team-evaluation}\ref{subsec:caldera-evaluation}\ref{subsec:metasploit-evalutaion}
+Further details of the frameworks are presented in Sections~\ref{subsec:atomic-red-team-evaluation}, \ref{subsec:caldera-evaluation}, and~\ref{subsec:metasploit-evalutaion}.
 
 \subsection{Atomic Red Team: Features and Capabilities}\label{subsec:atomic-red-team-evaluation}
 
@@ -151,7 +150,7 @@ which should help reduce the operational costs of red and blue teams~\cite{nsakR
 
 \gls{LM} describes the technique for advancing language intelligence in machines and its development history can be divided into several stages.
 The first stage, \gls{SLM} emerged around the 1990s, and the basic idea is to assume, that such a model can predict the next word.
-But the fact that an exponential number of transition probabilities are needed, caused a lack of accuracy and led limited success.
+But the fact that an exponential number of transition probabilities are needed, caused a lack of accuracy and led to limited success.
 
 To overcome these limitations, \gls{NLM} was introduced to learn a distributed representation of words and capture more complex patterns, leading to a major breakthrough.
 Building on this, the advancement of pre-trained language models \gls{PLM}, which are first trained on large datasets and then fine-tuned for specific tasks, represented another significant development.
@@ -169,7 +168,7 @@ The combination of specialized \gls{LLM}s, \gls{MCP}-based tool integration is n
 \subsection{\gls{MCP}}\label{subsec:mcp}
 
 \gls{Anthropic}, a US software company focused on \gls{AI} research, introduced the protocol in 2024.
-The \gls{MCP} was introduced as an open source standard that enables \gls{AI} assistants to connect to external systems, including databases, business tools, and development environments~\cite{anthropic-mcp}.
+Published as an open source standard, \gls{MCP} defines a uniform interface through which \gls{AI} assistants can interact with external systems, including databases, business tools, and development environments~\cite{anthropic-mcp}.
 Dynamic tool discovery and schema negotiation is helping clients and agents to access these functions in a standardized manner and allows autonomous interaction.
 Additionally, \gls{MCP} allows information to flow in both directions, so the model can send requests, and tools can send updates or events.
 
@@ -186,7 +185,7 @@ The ability to access multiple inputs, from natural language processing to senso
 \gls{MAS} defines a way in which multiple specialist agent coordinate and cooperate with each other to solve a task, that would not be solvable to one agent alone.
 
 Therefore, the agents need a form of interaction that allows them to act reactively, often through a shared mental model, which helps create a common understanding of the complex tasks to be solved.
-To implement a \gls{MAS} efficiently, modern design principles such as encapsulation and modularity are important, which are helping to balance resource usage of the system and \gls{LLM}~\cite{chapter3}
+To implement a \gls{MAS} efficiently, modern design principles such as encapsulation and modularity are important, which are helping to balance resource usage of the system and \gls{LLM}~\cite{chapter3}.
 
 Huang et al. provide evidence that \gls{AGENTIC-AI} and \gls{MAS} are capable of solving complex tasks across various sectors, including security and banking.
 However, these systems also introduce new potential vulnerabilities, both within \gls{AI AGENT} systems themselves and through their interactions with external environments.
@@ -205,7 +204,6 @@ The open-source strategy of \gls{Anthropic} (\ref{subsec:mcp}) has led to the de
 but rather on rapid adoption of a novel technique.
 
 This claim is based on the observation that, when faced with excessive \gls{MCP} tooling, \gls{AI} agents may resort to direct access to a root shell, which provides a more efficient way of interaction~\cite{riskybiz_mcp}.
-Recently, other concepts for calling tools were established, such as .
 These observations are directly relevant to this thesis,
 singe the \gls{AI}-based scenarios will heavily rely on tool usage,
 and this thesis focus to restrict the agent to \gls{MCP} based tools.

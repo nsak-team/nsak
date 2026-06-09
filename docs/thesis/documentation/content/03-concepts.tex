@@ -99,7 +99,7 @@ Concretely, a simplified network topology comprising a client (Alice) and a serv
 
 While \gls{Docker} and \gls{Podman} provide a general-purpose containerization platform,
 they abstract away most of the lower levels of the network stack and thus lack the support for modeling network topologies.
-In contrast, \gls{Containerlab} builds upon \gls{Docker Compose} and optimize its functionalities for networking purposes.
+In contrast, \gls{Containerlab} builds upon \gls{Docker Compose} and optimize its functionalities for networking purposes~\cite{containerlab}.
 
 The primary advantages of \gls{Containerlab} are:
 \begin{itemize}
@@ -131,7 +131,7 @@ In this thesis, LangGraph is used as the primary framework for implementing both
 By default, \glspl{LLM} produce free-form text responses.
 In contrast, structured output allows to generate responses conforming to a predefined schema, such as a \gls{JSON} object with typed fields.
 This is typically enforced through grammar-based sampling or constrained decoding,
-which restricts the set of valid tokens at each generation step to those that keep the output consistent with the target schema~\cite{}.
+which restricts the set of valid tokens at each generation step to those that keep the output consistent with the target schema~\cite{langchain_structured_output}.
 While most commercial inference \glspl{API} support the described \textit{native} implementation,
 it is also possible achieve the same functionality on the agent side with tool calling.
 In \gls{LangChain} both methods are supported,
@@ -143,18 +143,18 @@ which simplifies the comparison and evaluation of the results.
 This term describes the practice of designing and refining the input provided to an \gls{LLM} to improve the quality of the output.
 This includes structuring instructions, providing examples, and defining output constraints.
 In agentic systems, the system prompt is the primary mechanism through which an agent's behavior, scope, and reasoning style are defined.
-Even tough we did not set our focus on Prompt Engineering,
+Even though we did not set our focus on Prompt Engineering,
 we implicitly used it to improve and fine tune the agents behavior during the implementation and evaluation phase of the thesis.
 
 \subsubsection{Reasoning}\label{subsubsec:reasoning-concept}
 In the context of \glspl{LLM}, reasoning refers to the model's ability to decompose a problem into intermediate steps and derive a conclusion from them.
-This is typically achieved through prompting strategies such as chain-of-thought,
+This is typically achieved through prompting strategies such as chain-of-thought~\cite{wei2022chain},
 where the model is instructed to think step by step before producing a final answer.
 \gls{LangChain} leverages reasoning by default for agents with tool calling support,
 which is relevant during the implementation and evaluation phase of the thesis.
 
 \subsubsection{\gls{RAG}}\label{subsubsec:rag-concept}
-Retrieval Augmented Generation is a technique that extends an \gls{LLM} by retrieving relevant documents or knowledge at inference time and including them in the context window alongside the user prompt.
+Retrieval Augmented Generation is a technique that extends an \gls{LLM} by retrieving relevant documents or knowledge at inference time and including them in the context window alongside the user prompt~\cite{lewis2020rag}.
 This allows the model to ground its responses in external, up-to-date, or domain-specific information without requiring retraining.
 We did not implement a \gls{RAG} system in the \gls{AI} based scenarios,
 because the evaluation is focused on the pure tool calling capabilities of the current models.
