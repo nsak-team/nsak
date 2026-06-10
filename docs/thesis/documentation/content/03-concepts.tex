@@ -56,7 +56,7 @@ The smallest unit in the framework is a drill, which can be orchestrated in a sc
 Before this thesis, \gls{NSAK} already provided a working proof of concept built around the following capabilities:
 \begin{enumerate}
     \item The resource types \textit{Environment}, \textit{Drill}, and \textit{Scenario} could be declared as \gls{YAML} resources, and drills could be chained into scenarios and executed manually from the \gls{CLI}. The \textit{Device} type existed only as a concept with provisioning instructions and was not yet implemented in the core.
-    \item Scenarios were containerized as \glsxtrshort{OCI} images and executed via Podman.
+    \item Scenarios were containerized as \glsxtrshort{OCI-Container} images and executed via \gls{Podman}.
     \item A containerized \enquote{simple TCP client--server} lab allowed scenarios to be simulated before running them against a physical network.
 \end{enumerate}
 This was demonstrated with two scenarios: a \gls{MITM} attack (host discovery, \gls{ARP} spoofing, and a transparent \gls{TCP} proxy) and a Rogue Access Point that captured the forwarded traffic.
