@@ -7,6 +7,45 @@ It begins with the core terminology of the \gls{NSAK} framework inherited from t
 It then describes the layered configuration management, followed by the test environment setup.
 Finally, it completes the \gls{AI}-related concepts relevant for this work.
 
+To provide an overview before the individual concepts are discussed, the architecture of the \gls{NSAK} framework is presented following the C4 model, which describes a software system top-down at increasing levels of detail.
+Only the first three levels (system context, container, and component) are presented; the fourth level (code) is omitted, as it adds little value at the conceptual level.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\linewidth]{../../assets/diagrams/system-container}
+    \caption{System context of the \glsxtrshort{NSAK} framework (C4 level~1).}
+    \label{fig:system-context}
+\end{figure}
+
+Figure~\ref{fig:system-context} shows the system context, the highest level of the C4 model.
+It positions the \gls{NSAK} framework as a single system between the operator (a security engineer) and the external systems.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\linewidth]{../../assets/diagrams/component-diagram-lean}
+    \caption{Container view of the \glsxtrshort{NSAK} framework (C4 level~2).}
+    \label{fig:lean-component}
+\end{figure}
+
+Figure~\ref{fig:lean-component} decomposes the framework into its main building blocks.
+The operator interacts with the cli with the framework on top of the core library which manages the functionalities, while
+the resource library (\mintinline{bash}{lib/}, \glsxtrshort{YAML}) and the runtime state (\mintinline{bash}{run/} provide the file based configuration layers described in Section~\ref{sec:configuration-management-concepts}
+The scenario runtime executes both static scenarios which is a fixed set of drills and \gls{AI}-based scenarios.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\linewidth]{../../assets/diagrams/core-diagram}
+    \caption{Component view of the \glsxtrshort{NSAK} core (C4 level~3).}
+    \label{fig:lean-core}
+\end{figure}
+
+Figure~\ref{fig:lean-core} is a closer view of the core and its components.
+The components are grouped into resources (Device, Environment, Drill, Scenario, and Benchmark).
+Services are defined as active components that execute or are needed to interact with external services.
+The \gls{AI} agent (\mintinline{bash}{create_agent}) connects through \gls{LangChain} to the \gls{LLM} providers, the drills, the \gls{CLI}, and \gls{MCP} tools.
+The resources shown here correspond to the terminology introduced in the following sections.
+
+
 \section{Predecessor Project: Project 2}\label{sec:predecessor-project-project-2}
 
 This section summarizes the predecessor project that led to the bachelor's thesis.
@@ -115,8 +154,6 @@ In summary, while OCI containers serves as the underlying container engine, \gls
 
 \subsection{Additional \gls{AI} Related Concepts}\label{subsec:additional-ai-related-concepts}
 
-This section will not repeat the concepts already introduced in section \nameref{sec:ai-research}.
-\todo{warum braucht es den satz???}
 \subsubsection{LangChain}\label{subsubsec:langchain-concept}
 
 LangChain is an open-source Python framework that provides abstractions for building applications powered by \glspl{LLM}~\cite{langchain_repo}.
