@@ -8,8 +8,8 @@
     <property name="shotcut:skipConvert">0</property>
     <property name="xml_retain">1</property>
   </playlist>
-  <producer id="black" in="00:00:00.000" out="00:01:29.960">
-    <property name="length">00:01:30.000</property>
+  <producer id="black" in="00:00:00.000" out="00:01:59.960">
+    <property name="length">00:02:00.000</property>
     <property name="eof">pause</property>
     <property name="resource">0</property>
     <property name="aspect_ratio">1</property>
@@ -18,27 +18,280 @@
     <property name="set.test_audio">0</property>
   </producer>
   <playlist id="background">
-    <entry producer="black" in="00:00:00.000" out="00:01:29.960"/>
+    <entry producer="black" in="00:00:00.000" out="00:01:59.960"/>
   </playlist>
+  <chain id="chain0" out="00:00:10.680">
+    <property name="length">00:00:10.720</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/slide_001.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-09T22:47:12</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">ba413c2e57f1230e3689121557f054a9</property>
+    <property name="shotcut:caption">slide_001.mp3</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain4" out="00:00:11.720">
+    <property name="length">00:00:11.760</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/slide_002.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-09T22:47:47</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">ced594bc7576923c01c8b512982b2ef7</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:caption">slide_002.mp3</property>
+  </chain>
+  <chain id="chain5" out="00:00:14.960">
+    <property name="length">00:00:15.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/slide_003.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-09T22:49:28</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">1010dc261ea031ac614d04dd8471ab8c</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:caption">slide_003.mp3</property>
+  </chain>
+  <chain id="chain6" out="00:00:16.400">
+    <property name="length">00:00:16.440</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/slide_004.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-09T22:50:19</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">ff74a4d0685acfc096343ebcb534c690</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:caption">slide_004.mp3</property>
+  </chain>
+  <chain id="chain1" out="00:00:20.840">
+    <property name="length">00:00:20.880</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/outro_slide.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-10T00:34:48</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">5ff05f98bc5cd2868bdf787f58845811</property>
+    <property name="shotcut:caption">outro_slide.mp3</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain2" out="00:00:03.600">
+    <property name="length">00:00:03.640</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/demo_000.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-10T00:48:58</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">b2ba7d2d92ecdc2910b961221a5e83bd</property>
+    <property name="shotcut:caption">demo_000.mp3</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain3" out="00:00:11.280">
+    <property name="length">00:00:11.320</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/demo_001_better.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-10T01:03:28</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">43379325daf98ed6d229feacb5865da6</property>
+    <property name="shotcut:caption">demo_001_better.mp3</property>
+  </chain>
+  <chain id="chain7" out="00:00:09.480">
+    <property name="length">00:00:09.520</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/demo_002.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-09T22:52:35</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">10d2d089f5b05b1dcd027a629234bc95</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:caption">demo_002.mp3</property>
+  </chain>
+  <chain id="chain8" out="00:00:08.560">
+    <property name="length">00:00:08.600</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/demo_003_fast.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-10T00:57:31</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">b75c4e67170c2ef6dcf5e94d29cade06</property>
+    <property name="shotcut:caption">demo_003_fast.mp3</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain9" out="00:00:02.280">
+    <property name="length">00:00:02.320</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/voiceovers/thank_you.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">1</property>
+    <property name="meta.media.0.codec.layout">mono</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">128000</property>
+    <property name="meta.attr.encoder.markup">Lavf60.16.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2026-06-10T00:43:01</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">3dcb4a6e58e3d3b8cf4830317cc73823</property>
+    <property name="shotcut:caption">thank_you.mp3</property>
+  </chain>
   <playlist id="playlist0">
     <property name="shotcut:audio">1</property>
     <property name="shotcut:name">A1</property>
-    <blank length="00:00:00.040"/>
+    <blank length="00:00:05.000"/>
+    <entry producer="chain0" in="00:00:00.000" out="00:00:10.680"/>
+    <entry producer="chain4" in="00:00:00.000" out="00:00:11.720"/>
+    <entry producer="chain5" in="00:00:00.000" out="00:00:14.960"/>
+    <entry producer="chain6" in="00:00:00.000" out="00:00:16.400"/>
+    <entry producer="chain1" in="00:00:00.000" out="00:00:20.840"/>
+    <entry producer="chain2" in="00:00:00.000" out="00:00:03.600"/>
+    <entry producer="chain3" in="00:00:00.000" out="00:00:11.280"/>
+    <entry producer="chain7" in="00:00:00.000" out="00:00:09.480"/>
+    <entry producer="chain8" in="00:00:00.000" out="00:00:08.560"/>
+    <entry producer="chain9" in="00:00:00.000" out="00:00:02.280"/>
   </playlist>
   <playlist id="playlist3">
     <property name="shotcut:audio">1</property>
     <property name="shotcut:name">A2</property>
     <blank length="00:00:00.040"/>
   </playlist>
-  <playlist id="playlist9">
-    <property name="shotcut:video">1</property>
-    <property name="shotcut:name">V1</property>
-    <blank length="00:00:00.040"/>
-  </playlist>
-  <chain id="chain51" out="00:02:44.520">
-    <property name="length">00:02:44.560</property>
+  <chain id="chain26" out="00:02:44.040">
+    <property name="length">00:02:44.080</property>
     <property name="eof">pause</property>
-    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_006.mp4</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_003.mp4</property>
     <property name="mlt_service">avformat-novalidate</property>
     <property name="meta.media.nb_streams">2</property>
     <property name="meta.media.0.stream.type">video</property>
@@ -53,8 +306,8 @@
     <property name="meta.media.0.codec.color_trc">1</property>
     <property name="meta.media.0.codec.name">h264</property>
     <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">600608</property>
-    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
+    <property name="meta.media.0.codec.bit_rate">520447</property>
+    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
     <property name="meta.attr.0.stream.handler_name.markup">OBS Video Handler</property>
     <property name="meta.attr.0.stream.encoder.markup">obs_x264</property>
     <property name="meta.attr.0.stream.name.markup">simple_video_recording</property>
@@ -66,13 +319,13 @@
     <property name="meta.media.1.codec.name">aac</property>
     <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
     <property name="meta.media.1.codec.bit_rate">192000</property>
-    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
+    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
     <property name="meta.attr.1.stream.handler_name.markup">OBS Audio Handler</property>
     <property name="meta.attr.1.stream.name.markup">simple_aac_recording0</property>
     <property name="meta.attr.major_brand.markup">iso4</property>
     <property name="meta.attr.minor_version.markup">0</property>
     <property name="meta.attr.compatible_brands.markup">iso4isomobs1iso2avc1mp41</property>
-    <property name="meta.attr.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
+    <property name="meta.attr.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
     <property name="meta.attr.encoder.markup">OBS Studio (32.1.2)</property>
     <property name="seekable">1</property>
     <property name="meta.media.sample_aspect_num">1</property>
@@ -80,7 +333,7 @@
     <property name="format">3</property>
     <property name="audio_index">1</property>
     <property name="video_index">0</property>
-    <property name="creation_time">2026-06-06T20:18:05</property>
+    <property name="creation_time">2026-06-06T19:53:04</property>
     <property name="vstream">0</property>
     <property name="meta.media.frame_rate_num">60</property>
     <property name="meta.media.frame_rate_den">1</property>
@@ -93,16 +346,16 @@
     <property name="meta.media.color_range">mpeg</property>
     <property name="astream">0</property>
     <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:hash">d5faa94cb97d86203a2d16b216e7e5c9</property>
+    <property name="shotcut:hash">cf732d522180a071043f8b6d144e0187</property>
     <property name="meta.media.top_field_first">0</property>
     <property name="meta.media.progressive">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_006.mp4</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_003.mp4</property>
     <property name="xml">was here</property>
   </chain>
-  <producer id="producer0" in="00:00:00.000" out="00:00:03.760">
-    <property name="length">00:00:03.800</property>
+  <producer id="producer0" in="00:00:00.000" out="00:00:01.200">
+    <property name="length">00:00:01.240</property>
     <property name="eof">pause</property>
-    <property name="resource">2:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_006.mp4</property>
+    <property name="resource">2:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_003.mp4</property>
     <property name="aspect_ratio">1</property>
     <property name="meta.media.nb_streams">2</property>
     <property name="meta.media.0.stream.type">video</property>
@@ -117,7 +370,7 @@
     <property name="meta.media.0.codec.color_trc">1</property>
     <property name="meta.media.0.codec.name">h264</property>
     <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">5513706</property>
+    <property name="meta.media.0.codec.bit_rate">10363261</property>
     <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
     <property name="meta.media.1.stream.type">audio</property>
     <property name="meta.media.1.codec.sample_fmt">fltp</property>
@@ -126,7 +379,7 @@
     <property name="meta.media.1.codec.layout">stereo</property>
     <property name="meta.media.1.codec.name">aac</property>
     <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
-    <property name="meta.media.1.codec.bit_rate">2285</property>
+    <property name="meta.media.1.codec.bit_rate">2304</property>
     <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
     <property name="meta.attr.major_brand.markup">isom</property>
     <property name="meta.attr.minor_version.markup">512</property>
@@ -139,15 +392,15 @@
     <property name="audio_index">1</property>
     <property name="video_index">0</property>
     <property name="warp_speed">2</property>
-    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_006.mp4</property>
+    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_003.mp4</property>
     <property name="mlt_service">timewarp</property>
     <property name="shotcut:producer">avformat</property>
     <property name="video_delay">0</property>
     <property name="astream">0</property>
     <property name="vstream">0</property>
-    <property name="shotcut:hash">453382ce7b4bbc9dab09aade092a8519</property>
+    <property name="shotcut:hash">c04c8e9a24d2c25865bf0dc53dd79d16</property>
     <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_006.mp4 (2x)</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_003.mp4 (2x)</property>
     <property name="xml">was here</property>
     <property name="meta.media.frame_rate_num">60000</property>
     <property name="meta.media.frame_rate_den">1001</property>
@@ -161,10 +414,10 @@
     <property name="meta.media.top_field_first">0</property>
     <property name="meta.media.progressive">1</property>
   </producer>
-  <chain id="chain56" out="00:02:44.520">
-    <property name="length">00:02:44.560</property>
+  <chain id="chain29" out="00:02:44.040">
+    <property name="length">00:02:44.080</property>
     <property name="eof">pause</property>
-    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_006.mp4</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_003.mp4</property>
     <property name="mlt_service">avformat-novalidate</property>
     <property name="meta.media.nb_streams">2</property>
     <property name="meta.media.0.stream.type">video</property>
@@ -179,8 +432,8 @@
     <property name="meta.media.0.codec.color_trc">1</property>
     <property name="meta.media.0.codec.name">h264</property>
     <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">600608</property>
-    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
+    <property name="meta.media.0.codec.bit_rate">520447</property>
+    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
     <property name="meta.attr.0.stream.handler_name.markup">OBS Video Handler</property>
     <property name="meta.attr.0.stream.encoder.markup">obs_x264</property>
     <property name="meta.attr.0.stream.name.markup">simple_video_recording</property>
@@ -192,13 +445,13 @@
     <property name="meta.media.1.codec.name">aac</property>
     <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
     <property name="meta.media.1.codec.bit_rate">192000</property>
-    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
+    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
     <property name="meta.attr.1.stream.handler_name.markup">OBS Audio Handler</property>
     <property name="meta.attr.1.stream.name.markup">simple_aac_recording0</property>
     <property name="meta.attr.major_brand.markup">iso4</property>
     <property name="meta.attr.minor_version.markup">0</property>
     <property name="meta.attr.compatible_brands.markup">iso4isomobs1iso2avc1mp41</property>
-    <property name="meta.attr.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
+    <property name="meta.attr.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
     <property name="meta.attr.encoder.markup">OBS Studio (32.1.2)</property>
     <property name="seekable">1</property>
     <property name="meta.media.sample_aspect_num">1</property>
@@ -206,7 +459,7 @@
     <property name="format">3</property>
     <property name="audio_index">1</property>
     <property name="video_index">0</property>
-    <property name="creation_time">2026-06-06T20:18:05</property>
+    <property name="creation_time">2026-06-06T19:53:04</property>
     <property name="vstream">0</property>
     <property name="meta.media.frame_rate_num">60</property>
     <property name="meta.media.frame_rate_den">1</property>
@@ -219,25 +472,312 @@
     <property name="meta.media.color_range">mpeg</property>
     <property name="astream">0</property>
     <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:hash">d5faa94cb97d86203a2d16b216e7e5c9</property>
+    <property name="shotcut:hash">cf732d522180a071043f8b6d144e0187</property>
     <property name="meta.media.top_field_first">0</property>
     <property name="meta.media.progressive">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_006.mp4</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_003.mp4</property>
     <property name="xml">was here</property>
   </chain>
-  <playlist id="playlist8">
+  <playlist id="playlist5">
     <property name="shotcut:video">1</property>
-    <property name="shotcut:name">ai_demo_006</property>
-    <blank length="00:01:07.040"/>
-    <entry producer="chain51" in="00:00:34.360" out="00:00:36.320">
-      <property name="shotcut:group">0</property>
+    <property name="shotcut:name">ai_demo_003 (disclaimer)</property>
+    <property name="shotcut:lock">1</property>
+    <entry producer="chain26" in="00:00:14.040" out="00:00:15.600">
+      <property name="shotcut:group">2</property>
     </entry>
-    <entry producer="producer0" in="00:00:00.000" out="00:00:03.760">
-      <property name="shotcut:group">0</property>
+    <entry producer="producer0" in="00:00:00.000" out="00:00:01.200">
+      <property name="shotcut:group">2</property>
     </entry>
-    <entry producer="chain56" in="00:02:24.600" out="00:02:27.560">
-      <property name="shotcut:group">0</property>
+    <entry producer="chain29" in="00:00:56.760" out="00:00:59.720">
+      <property name="shotcut:group">2</property>
     </entry>
+  </playlist>
+  <chain id="chain30" out="00:09:23.400">
+    <property name="length">00:09:23.440</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_004.mp4</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">2</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">60</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.width">1920</property>
+    <property name="meta.media.0.codec.height">1080</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.color_trc">1</property>
+    <property name="meta.media.0.codec.name">h264</property>
+    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
+    <property name="meta.media.0.codec.bit_rate">709870</property>
+    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
+    <property name="meta.attr.0.stream.handler_name.markup">OBS Video Handler</property>
+    <property name="meta.attr.0.stream.encoder.markup">obs_x264</property>
+    <property name="meta.attr.0.stream.name.markup">simple_video_recording</property>
+    <property name="meta.media.1.stream.type">audio</property>
+    <property name="meta.media.1.codec.sample_fmt">fltp</property>
+    <property name="meta.media.1.codec.sample_rate">48000</property>
+    <property name="meta.media.1.codec.channels">2</property>
+    <property name="meta.media.1.codec.layout">stereo</property>
+    <property name="meta.media.1.codec.name">aac</property>
+    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
+    <property name="meta.media.1.codec.bit_rate">192000</property>
+    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
+    <property name="meta.attr.1.stream.handler_name.markup">OBS Audio Handler</property>
+    <property name="meta.attr.1.stream.name.markup">simple_aac_recording0</property>
+    <property name="meta.attr.major_brand.markup">iso4</property>
+    <property name="meta.attr.minor_version.markup">0</property>
+    <property name="meta.attr.compatible_brands.markup">iso4isomobs1iso2avc1mp41</property>
+    <property name="meta.attr.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
+    <property name="meta.attr.encoder.markup">OBS Studio (32.1.2)</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="format">3</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2026-06-06T19:59:20</property>
+    <property name="vstream">0</property>
+    <property name="meta.media.frame_rate_num">60</property>
+    <property name="meta.media.frame_rate_den">1</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">1</property>
+    <property name="meta.media.has_b_frames">2</property>
+    <property name="meta.media.width">1920</property>
+    <property name="meta.media.height">1080</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">b34eaab622724846752ed9a2b98ce1fb</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_004.mp4</property>
+    <property name="xml">was here</property>
+  </chain>
+  <producer id="producer1" in="00:00:00.000" out="00:00:05.160">
+    <property name="length">00:00:05.200</property>
+    <property name="eof">pause</property>
+    <property name="resource">6:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_004.mp4</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.nb_streams">2</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">59.9401</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.width">1920</property>
+    <property name="meta.media.0.codec.height">1080</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.color_trc">1</property>
+    <property name="meta.media.0.codec.name">h264</property>
+    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
+    <property name="meta.media.0.codec.bit_rate">3299471</property>
+    <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
+    <property name="meta.media.1.stream.type">audio</property>
+    <property name="meta.media.1.codec.sample_fmt">fltp</property>
+    <property name="meta.media.1.codec.sample_rate">48000</property>
+    <property name="meta.media.1.codec.channels">2</property>
+    <property name="meta.media.1.codec.layout">stereo</property>
+    <property name="meta.media.1.codec.name">aac</property>
+    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
+    <property name="meta.media.1.codec.bit_rate">2276</property>
+    <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
+    <property name="meta.attr.major_brand.markup">isom</property>
+    <property name="meta.attr.minor_version.markup">512</property>
+    <property name="meta.attr.compatible_brands.markup">isomiso2avc1mp41</property>
+    <property name="meta.attr.encoder.markup">Lavf62.12.101</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="format">3</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="warp_speed">6</property>
+    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_004.mp4</property>
+    <property name="mlt_service">timewarp</property>
+    <property name="shotcut:producer">avformat</property>
+    <property name="video_delay">0</property>
+    <property name="astream">0</property>
+    <property name="vstream">0</property>
+    <property name="shotcut:hash">ab8fb9c778eb78b46d17d84f31a21b39</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_004.mp4 (6x)</property>
+    <property name="xml">was here</property>
+    <property name="meta.media.frame_rate_num">60000</property>
+    <property name="meta.media.frame_rate_den">1001</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">1</property>
+    <property name="meta.media.has_b_frames">2</property>
+    <property name="meta.media.width">1920</property>
+    <property name="meta.media.height">1080</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+  </producer>
+  <chain id="chain43" out="00:09:23.400">
+    <property name="length">00:09:23.440</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_004.mp4</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">2</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">60</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.width">1920</property>
+    <property name="meta.media.0.codec.height">1080</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.color_trc">1</property>
+    <property name="meta.media.0.codec.name">h264</property>
+    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
+    <property name="meta.media.0.codec.bit_rate">709870</property>
+    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
+    <property name="meta.attr.0.stream.handler_name.markup">OBS Video Handler</property>
+    <property name="meta.attr.0.stream.encoder.markup">obs_x264</property>
+    <property name="meta.attr.0.stream.name.markup">simple_video_recording</property>
+    <property name="meta.media.1.stream.type">audio</property>
+    <property name="meta.media.1.codec.sample_fmt">fltp</property>
+    <property name="meta.media.1.codec.sample_rate">48000</property>
+    <property name="meta.media.1.codec.channels">2</property>
+    <property name="meta.media.1.codec.layout">stereo</property>
+    <property name="meta.media.1.codec.name">aac</property>
+    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
+    <property name="meta.media.1.codec.bit_rate">192000</property>
+    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
+    <property name="meta.attr.1.stream.handler_name.markup">OBS Audio Handler</property>
+    <property name="meta.attr.1.stream.name.markup">simple_aac_recording0</property>
+    <property name="meta.attr.major_brand.markup">iso4</property>
+    <property name="meta.attr.minor_version.markup">0</property>
+    <property name="meta.attr.compatible_brands.markup">iso4isomobs1iso2avc1mp41</property>
+    <property name="meta.attr.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
+    <property name="meta.attr.encoder.markup">OBS Studio (32.1.2)</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="format">3</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2026-06-06T19:59:20</property>
+    <property name="vstream">0</property>
+    <property name="meta.media.frame_rate_num">60</property>
+    <property name="meta.media.frame_rate_den">1</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">1</property>
+    <property name="meta.media.has_b_frames">2</property>
+    <property name="meta.media.width">1920</property>
+    <property name="meta.media.height">1080</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">b34eaab622724846752ed9a2b98ce1fb</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_004.mp4</property>
+    <property name="xml">was here</property>
+  </chain>
+  <producer id="producer9" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/output-004.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">fa65cdedafe79893ab8febd260565783</property>
+    <property name="shotcut:caption">output-004.png</property>
+    <filter id="filter0" out="00:00:05.960">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+    <filter id="filter1" out="00:00:05.960">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:05.680=1;00:00:05.960=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+    <filter id="filter2" out="00:00:05.960">
+      <property name="color">#ffffffff</property>
+      <property name="radius">10</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+      <property name="mlt_service">dropshadow</property>
+      <property name="disable">0</property>
+    </filter>
+  </producer>
+  <producer id="producer15" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/output-010.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">06d8bfda6603b3a09cd044918cc6e4b9</property>
+    <property name="shotcut:caption">output-010.png</property>
+    <filter id="filter3" out="00:00:09.920">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+    <filter id="filter4" out="00:00:09.920">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:09.640=1;00:00:09.920=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+    <filter id="filter5" out="00:00:09.920">
+      <property name="color">#ffffffff</property>
+      <property name="radius">10</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+      <property name="mlt_service">dropshadow</property>
+    </filter>
+  </producer>
+  <playlist id="playlist6">
+    <property name="shotcut:video">1</property>
+    <property name="shotcut:name">ai_demo_004 (discarded)</property>
+    <property name="shotcut:lock">1</property>
+    <entry producer="chain30" in="00:00:27.880" out="00:00:29.440">
+      <property name="shotcut:group">1</property>
+    </entry>
+    <entry producer="producer1" in="00:00:00.000" out="00:00:05.120">
+      <property name="shotcut:group">1</property>
+    </entry>
+    <entry producer="chain43" in="00:08:28.560" out="00:08:31.520">
+      <property name="shotcut:group">1</property>
+    </entry>
+    <blank length="00:00:19.240"/>
+    <entry producer="producer9" in="00:00:00.000" out="00:00:05.960"/>
+    <blank length="00:00:38.560"/>
+    <entry producer="producer15" in="00:00:00.000" out="00:00:09.920"/>
   </playlist>
   <chain id="chain44" out="00:04:50.640">
     <property name="length">00:04:50.680</property>
@@ -303,7 +843,7 @@
     <property name="shotcut:caption">nsak_ai_agent_demo_005.mp4</property>
     <property name="xml">was here</property>
   </chain>
-  <producer id="producer1" in="00:00:00.000" out="00:00:03.360">
+  <producer id="producer2" in="00:00:00.000" out="00:00:03.360">
     <property name="length">00:00:03.400</property>
     <property name="eof">pause</property>
     <property name="resource">2:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_005.mp4</property>
@@ -433,220 +973,427 @@
     <property name="shotcut:video">1</property>
     <property name="shotcut:name">ai_demo_005 (discarded)</property>
     <property name="shotcut:lock">1</property>
-    <blank length="00:00:01.800"/>
-    <entry producer="chain44" in="00:00:02.720" out="00:00:04.680"/>
-    <entry producer="producer1" in="00:00:00.000" out="00:00:03.360"/>
-    <entry producer="chain50" in="00:04:41.440" out="00:04:44.400"/>
+    <entry producer="chain44" in="00:00:03.120" out="00:00:04.680">
+      <property name="shotcut:group">5</property>
+    </entry>
+    <entry producer="producer2" in="00:00:00.000" out="00:00:03.360">
+      <property name="shotcut:group">5</property>
+    </entry>
+    <entry producer="chain50" in="00:04:41.440" out="00:04:44.400">
+      <property name="shotcut:group">5</property>
+    </entry>
   </playlist>
-  <chain id="chain30" out="00:09:23.400">
-    <property name="length">00:09:23.440</property>
+  <producer id="producer3" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
     <property name="eof">pause</property>
-    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_004.mp4</property>
-    <property name="mlt_service">avformat-novalidate</property>
-    <property name="meta.media.nb_streams">2</property>
-    <property name="meta.media.0.stream.type">video</property>
-    <property name="meta.media.0.stream.frame_rate">60</property>
-    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
-    <property name="meta.media.0.codec.width">1920</property>
-    <property name="meta.media.0.codec.height">1080</property>
-    <property name="meta.media.0.codec.rotate">0</property>
-    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
-    <property name="meta.media.0.codec.sample_aspect_ratio">1</property>
-    <property name="meta.media.0.codec.colorspace">709</property>
-    <property name="meta.media.0.codec.color_trc">1</property>
-    <property name="meta.media.0.codec.name">h264</property>
-    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">709870</property>
-    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
-    <property name="meta.attr.0.stream.handler_name.markup">OBS Video Handler</property>
-    <property name="meta.attr.0.stream.encoder.markup">obs_x264</property>
-    <property name="meta.attr.0.stream.name.markup">simple_video_recording</property>
-    <property name="meta.media.1.stream.type">audio</property>
-    <property name="meta.media.1.codec.sample_fmt">fltp</property>
-    <property name="meta.media.1.codec.sample_rate">48000</property>
-    <property name="meta.media.1.codec.channels">2</property>
-    <property name="meta.media.1.codec.layout">stereo</property>
-    <property name="meta.media.1.codec.name">aac</property>
-    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
-    <property name="meta.media.1.codec.bit_rate">192000</property>
-    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
-    <property name="meta.attr.1.stream.handler_name.markup">OBS Audio Handler</property>
-    <property name="meta.attr.1.stream.name.markup">simple_aac_recording0</property>
-    <property name="meta.attr.major_brand.markup">iso4</property>
-    <property name="meta.attr.minor_version.markup">0</property>
-    <property name="meta.attr.compatible_brands.markup">iso4isomobs1iso2avc1mp41</property>
-    <property name="meta.attr.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
-    <property name="meta.attr.encoder.markup">OBS Studio (32.1.2)</property>
-    <property name="seekable">1</property>
-    <property name="meta.media.sample_aspect_num">1</property>
-    <property name="meta.media.sample_aspect_den">1</property>
-    <property name="format">3</property>
-    <property name="audio_index">1</property>
-    <property name="video_index">0</property>
-    <property name="creation_time">2026-06-06T19:59:20</property>
-    <property name="vstream">0</property>
-    <property name="meta.media.frame_rate_num">60</property>
-    <property name="meta.media.frame_rate_den">1</property>
-    <property name="meta.media.colorspace">709</property>
-    <property name="meta.media.color_trc">1</property>
-    <property name="meta.media.has_b_frames">2</property>
-    <property name="meta.media.width">1920</property>
-    <property name="meta.media.height">1080</property>
-    <property name="meta.media.aspect_ratio">1</property>
-    <property name="meta.media.color_range">mpeg</property>
-    <property name="astream">0</property>
-    <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:hash">b34eaab622724846752ed9a2b98ce1fb</property>
-    <property name="meta.media.top_field_first">0</property>
-    <property name="meta.media.progressive">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_004.mp4</property>
-    <property name="xml">was here</property>
-  </chain>
-  <producer id="producer2" in="00:00:00.000" out="00:00:05.160">
-    <property name="length">00:00:05.200</property>
-    <property name="eof">pause</property>
-    <property name="resource">6:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_004.mp4</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/bg.png</property>
+    <property name="ttl">1</property>
     <property name="aspect_ratio">1</property>
-    <property name="meta.media.nb_streams">2</property>
-    <property name="meta.media.0.stream.type">video</property>
-    <property name="meta.media.0.stream.frame_rate">59.9401</property>
-    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
-    <property name="meta.media.0.codec.width">1920</property>
-    <property name="meta.media.0.codec.height">1080</property>
-    <property name="meta.media.0.codec.rotate">0</property>
-    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
-    <property name="meta.media.0.codec.sample_aspect_ratio">1</property>
-    <property name="meta.media.0.codec.colorspace">709</property>
-    <property name="meta.media.0.codec.color_trc">1</property>
-    <property name="meta.media.0.codec.name">h264</property>
-    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">3299471</property>
-    <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
-    <property name="meta.media.1.stream.type">audio</property>
-    <property name="meta.media.1.codec.sample_fmt">fltp</property>
-    <property name="meta.media.1.codec.sample_rate">48000</property>
-    <property name="meta.media.1.codec.channels">2</property>
-    <property name="meta.media.1.codec.layout">stereo</property>
-    <property name="meta.media.1.codec.name">aac</property>
-    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
-    <property name="meta.media.1.codec.bit_rate">2276</property>
-    <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
-    <property name="meta.attr.major_brand.markup">isom</property>
-    <property name="meta.attr.minor_version.markup">512</property>
-    <property name="meta.attr.compatible_brands.markup">isomiso2avc1mp41</property>
-    <property name="meta.attr.encoder.markup">Lavf62.12.101</property>
+    <property name="meta.media.progressive">1</property>
     <property name="seekable">1</property>
-    <property name="meta.media.sample_aspect_num">1</property>
-    <property name="meta.media.sample_aspect_den">1</property>
-    <property name="format">3</property>
-    <property name="audio_index">1</property>
-    <property name="video_index">0</property>
-    <property name="warp_speed">6</property>
-    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_004.mp4</property>
-    <property name="mlt_service">timewarp</property>
-    <property name="shotcut:producer">avformat</property>
-    <property name="video_delay">0</property>
-    <property name="astream">0</property>
-    <property name="vstream">0</property>
-    <property name="shotcut:hash">ab8fb9c778eb78b46d17d84f31a21b39</property>
-    <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_004.mp4 (6x)</property>
-    <property name="xml">was here</property>
-    <property name="meta.media.frame_rate_num">60000</property>
-    <property name="meta.media.frame_rate_den">1001</property>
-    <property name="meta.media.colorspace">709</property>
-    <property name="meta.media.color_trc">1</property>
-    <property name="meta.media.has_b_frames">2</property>
+    <property name="format">2</property>
     <property name="meta.media.width">1920</property>
     <property name="meta.media.height">1080</property>
-    <property name="meta.media.aspect_ratio">1</property>
-    <property name="meta.media.color_range">mpeg</property>
-    <property name="meta.media.top_field_first">0</property>
-    <property name="meta.media.progressive">1</property>
+    <property name="mlt_service">qimage</property>
+    <property name="creation_time">2026-06-09T21:51:20</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">31ae56434a5a0553317feee58fa103f1</property>
+    <property name="shotcut:caption">bg.png</property>
   </producer>
-  <chain id="chain43" out="00:09:23.400">
-    <property name="length">00:09:23.440</property>
-    <property name="eof">pause</property>
-    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_004.mp4</property>
-    <property name="mlt_service">avformat-novalidate</property>
-    <property name="meta.media.nb_streams">2</property>
-    <property name="meta.media.0.stream.type">video</property>
-    <property name="meta.media.0.stream.frame_rate">60</property>
-    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
-    <property name="meta.media.0.codec.width">1920</property>
-    <property name="meta.media.0.codec.height">1080</property>
-    <property name="meta.media.0.codec.rotate">0</property>
-    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
-    <property name="meta.media.0.codec.sample_aspect_ratio">1</property>
-    <property name="meta.media.0.codec.colorspace">709</property>
-    <property name="meta.media.0.codec.color_trc">1</property>
-    <property name="meta.media.0.codec.name">h264</property>
-    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">709870</property>
-    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
-    <property name="meta.attr.0.stream.handler_name.markup">OBS Video Handler</property>
-    <property name="meta.attr.0.stream.encoder.markup">obs_x264</property>
-    <property name="meta.attr.0.stream.name.markup">simple_video_recording</property>
-    <property name="meta.media.1.stream.type">audio</property>
-    <property name="meta.media.1.codec.sample_fmt">fltp</property>
-    <property name="meta.media.1.codec.sample_rate">48000</property>
-    <property name="meta.media.1.codec.channels">2</property>
-    <property name="meta.media.1.codec.layout">stereo</property>
-    <property name="meta.media.1.codec.name">aac</property>
-    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
-    <property name="meta.media.1.codec.bit_rate">192000</property>
-    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
-    <property name="meta.attr.1.stream.handler_name.markup">OBS Audio Handler</property>
-    <property name="meta.attr.1.stream.name.markup">simple_aac_recording0</property>
-    <property name="meta.attr.major_brand.markup">iso4</property>
-    <property name="meta.attr.minor_version.markup">0</property>
-    <property name="meta.attr.compatible_brands.markup">iso4isomobs1iso2avc1mp41</property>
-    <property name="meta.attr.creation_time.markup">2026-06-06T19:59:20.000000Z</property>
-    <property name="meta.attr.encoder.markup">OBS Studio (32.1.2)</property>
-    <property name="seekable">1</property>
-    <property name="meta.media.sample_aspect_num">1</property>
-    <property name="meta.media.sample_aspect_den">1</property>
-    <property name="format">3</property>
-    <property name="audio_index">1</property>
-    <property name="video_index">0</property>
-    <property name="creation_time">2026-06-06T19:59:20</property>
-    <property name="vstream">0</property>
-    <property name="meta.media.frame_rate_num">60</property>
-    <property name="meta.media.frame_rate_den">1</property>
-    <property name="meta.media.colorspace">709</property>
-    <property name="meta.media.color_trc">1</property>
-    <property name="meta.media.has_b_frames">2</property>
-    <property name="meta.media.width">1920</property>
-    <property name="meta.media.height">1080</property>
-    <property name="meta.media.aspect_ratio">1</property>
-    <property name="meta.media.color_range">mpeg</property>
-    <property name="astream">0</property>
-    <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:hash">b34eaab622724846752ed9a2b98ce1fb</property>
-    <property name="meta.media.top_field_first">0</property>
-    <property name="meta.media.progressive">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_004.mp4</property>
-    <property name="xml">was here</property>
-  </chain>
-  <playlist id="playlist6">
+  <playlist id="playlist1">
     <property name="shotcut:video">1</property>
-    <property name="shotcut:name">ai_demo_004 (discarded)</property>
+    <property name="shotcut:name">V4</property>
     <property name="shotcut:lock">1</property>
-    <blank length="00:00:54.800"/>
-    <entry producer="chain30" in="00:00:27.480" out="00:00:29.440">
-      <property name="shotcut:group">1</property>
-    </entry>
-    <entry producer="producer2" in="00:00:00.000" out="00:00:05.120">
-      <property name="shotcut:group">1</property>
-    </entry>
-    <entry producer="chain43" in="00:08:28.560" out="00:08:31.520">
-      <property name="shotcut:group">1</property>
-    </entry>
+    <entry producer="producer3" in="00:00:00.000" out="00:01:59.960"/>
   </playlist>
-  <chain id="chain26" out="00:02:44.040">
-    <property name="length">00:02:44.080</property>
+  <chain id="chain10" out="00:00:09.960">
+    <property name="length">00:00:10.000</property>
     <property name="eof">pause</property>
-    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_003.mp4</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/bg_loop.mp4</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">2</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">24</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.width">1280</property>
+    <property name="meta.media.0.codec.height">720</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.name">h264</property>
+    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
+    <property name="meta.media.0.codec.bit_rate">2683258</property>
+    <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
+    <property name="meta.media.1.stream.type">audio</property>
+    <property name="meta.media.1.codec.sample_fmt">fltp</property>
+    <property name="meta.media.1.codec.sample_rate">48000</property>
+    <property name="meta.media.1.codec.channels">2</property>
+    <property name="meta.media.1.codec.layout">stereo</property>
+    <property name="meta.media.1.codec.name">aac</property>
+    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
+    <property name="meta.media.1.codec.bit_rate">139848</property>
+    <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
+    <property name="meta.attr.major_brand.markup">isom</property>
+    <property name="meta.attr.minor_version.markup">512</property>
+    <property name="meta.attr.compatible_brands.markup">isomiso2avc1mp41</property>
+    <property name="meta.attr.encoder.markup">Google</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="format">3</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2026-06-09T22:04:17</property>
+    <property name="vstream">0</property>
+    <property name="meta.media.frame_rate_num">24</property>
+    <property name="meta.media.frame_rate_den">1</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">2</property>
+    <property name="meta.media.has_b_frames">2</property>
+    <property name="meta.media.width">1280</property>
+    <property name="meta.media.height">720</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">a9f0d660d6e93cbbf2d4dd8e28596539</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="shotcut:caption">bg_loop.mp4</property>
+    <property name="xml">was here</property>
+    <filter id="filter6" out="00:00:04.960">
+      <property name="window">75</property>
+      <property name="max_gain">20dB</property>
+      <property name="level">00:00:04.520=0;00:00:04.960=-60</property>
+      <property name="channel_mask">-1</property>
+      <property name="mlt_service">volume</property>
+      <property name="shotcut:filter">fadeOutVolume</property>
+      <property name="shotcut:animOut">00:00:00.480</property>
+    </filter>
+  </chain>
+  <chain id="chain11" out="00:00:09.960">
+    <property name="length">00:00:10.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/bg_loop.mp4</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">2</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">24</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.width">1280</property>
+    <property name="meta.media.0.codec.height">720</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.name">h264</property>
+    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
+    <property name="meta.media.0.codec.bit_rate">2683258</property>
+    <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
+    <property name="meta.media.1.stream.type">audio</property>
+    <property name="meta.media.1.codec.sample_fmt">fltp</property>
+    <property name="meta.media.1.codec.sample_rate">48000</property>
+    <property name="meta.media.1.codec.channels">2</property>
+    <property name="meta.media.1.codec.layout">stereo</property>
+    <property name="meta.media.1.codec.name">aac</property>
+    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
+    <property name="meta.media.1.codec.bit_rate">139848</property>
+    <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
+    <property name="meta.attr.major_brand.markup">isom</property>
+    <property name="meta.attr.minor_version.markup">512</property>
+    <property name="meta.attr.compatible_brands.markup">isomiso2avc1mp41</property>
+    <property name="meta.attr.encoder.markup">Google</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="format">3</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2026-06-09T22:04:17</property>
+    <property name="vstream">0</property>
+    <property name="meta.media.frame_rate_num">24</property>
+    <property name="meta.media.frame_rate_den">1</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">2</property>
+    <property name="meta.media.has_b_frames">2</property>
+    <property name="meta.media.width">1280</property>
+    <property name="meta.media.height">720</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">a9f0d660d6e93cbbf2d4dd8e28596539</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="shotcut:caption">bg_loop.mp4</property>
+    <property name="xml">was here</property>
+    <filter id="filter7" out="00:00:06.480">
+      <property name="window">75</property>
+      <property name="max_gain">20dB</property>
+      <property name="level">00:00:06.040=0;00:00:06.480=-60</property>
+      <property name="channel_mask">-1</property>
+      <property name="mlt_service">volume</property>
+      <property name="shotcut:filter">fadeOutVolume</property>
+      <property name="shotcut:animOut">00:00:00.480</property>
+    </filter>
+    <filter id="filter8" out="00:00:06.480">
+      <property name="window">75</property>
+      <property name="max_gain">20dB</property>
+      <property name="level">00:00:00.000=-60;00:00:00.440=0</property>
+      <property name="channel_mask">-1</property>
+      <property name="mlt_service">volume</property>
+      <property name="shotcut:filter">fadeInVolume</property>
+      <property name="shotcut:animIn">00:00:00.480</property>
+    </filter>
+  </chain>
+  <playlist id="playlist2">
+    <property name="shotcut:video">1</property>
+    <property name="shotcut:name">V5</property>
+    <property name="shotcut:lock">0</property>
+    <entry producer="chain10" in="00:00:00.000" out="00:00:04.960"/>
+    <blank length="00:01:48.480"/>
+    <entry producer="chain11" in="00:00:00.000" out="00:00:06.480"/>
+  </playlist>
+  <producer id="producer4" in="00:00:00.000" out="00:00:29.960">
+    <property name="length">00:00:30.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">0.333:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/bg_loop.mp4</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.nb_streams">2</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">24</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.width">1280</property>
+    <property name="meta.media.0.codec.height">720</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.name">h264</property>
+    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
+    <property name="meta.media.0.codec.bit_rate">2683258</property>
+    <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
+    <property name="meta.media.1.stream.type">audio</property>
+    <property name="meta.media.1.codec.sample_fmt">fltp</property>
+    <property name="meta.media.1.codec.sample_rate">48000</property>
+    <property name="meta.media.1.codec.channels">2</property>
+    <property name="meta.media.1.codec.layout">stereo</property>
+    <property name="meta.media.1.codec.name">aac</property>
+    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
+    <property name="meta.media.1.codec.bit_rate">139848</property>
+    <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
+    <property name="meta.attr.major_brand.markup">isom</property>
+    <property name="meta.attr.minor_version.markup">512</property>
+    <property name="meta.attr.compatible_brands.markup">isomiso2avc1mp41</property>
+    <property name="meta.attr.encoder.markup">Google</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="format">3</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="warp_speed">0.333</property>
+    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/bg_loop.mp4</property>
+    <property name="mlt_service">timewarp</property>
+    <property name="shotcut:producer">avformat</property>
+    <property name="video_delay">0</property>
+    <property name="astream">0</property>
+    <property name="vstream">0</property>
+    <property name="shotcut:hash">a9f0d660d6e93cbbf2d4dd8e28596539</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:caption">bg_loop.mp4 (0.333x)</property>
+    <property name="xml">was here</property>
+    <property name="meta.media.frame_rate_num">24</property>
+    <property name="meta.media.frame_rate_den">1</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">2</property>
+    <property name="meta.media.has_b_frames">2</property>
+    <property name="meta.media.width">1280</property>
+    <property name="meta.media.height">720</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+    <filter id="filter9" out="00:00:29.960">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">brightnessOpacity</property>
+      <property name="alpha">0.2</property>
+      <property name="opacity">0.2</property>
+    </filter>
+    <filter id="filter10" out="00:00:29.960">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:29.680=1;00:00:29.960=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+      <property name="disable">1</property>
+    </filter>
+  </producer>
+  <producer id="producer5" in="00:00:00.000" out="00:00:30.000">
+    <property name="length">00:00:30.040</property>
+    <property name="eof">pause</property>
+    <property name="resource">0.333:bg_loop - Reversed1.mp4</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.nb_streams">2</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">24</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.width">1280</property>
+    <property name="meta.media.0.codec.height">720</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.color_trc">1</property>
+    <property name="meta.media.0.codec.name">h264</property>
+    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
+    <property name="meta.media.0.codec.bit_rate">23316088</property>
+    <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
+    <property name="meta.media.1.stream.type">audio</property>
+    <property name="meta.media.1.codec.sample_fmt">fltp</property>
+    <property name="meta.media.1.codec.sample_rate">48000</property>
+    <property name="meta.media.1.codec.channels">2</property>
+    <property name="meta.media.1.codec.layout">stereo</property>
+    <property name="meta.media.1.codec.name">ac3</property>
+    <property name="meta.media.1.codec.long_name">ATSC A/52A (AC-3)</property>
+    <property name="meta.media.1.codec.bit_rate">512000</property>
+    <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
+    <property name="meta.attr.major_brand.markup">isom</property>
+    <property name="meta.attr.minor_version.markup">512</property>
+    <property name="meta.attr.compatible_brands.markup">isomdby1iso2avc1mp41</property>
+    <property name="meta.attr.encoder.markup">Lavf62.12.101</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="format">3</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="warp_speed">0.333</property>
+    <property name="warp_resource">bg_loop - Reversed1.mp4</property>
+    <property name="mlt_service">timewarp</property>
+    <property name="shotcut:producer">avformat</property>
+    <property name="video_delay">0</property>
+    <property name="astream">0</property>
+    <property name="vstream">0</property>
+    <property name="shotcut:hash">6acf6b3489c54e8195442eb62c61f29a</property>
+    <property name="shotcut:caption">bg_loop - Reversed1.mp4</property>
+    <property name="shotcut:resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/bg_loop.mp4</property>
+    <property name="xml">was here</property>
+    <property name="meta.media.frame_rate_num">24</property>
+    <property name="meta.media.frame_rate_den">1</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">1</property>
+    <property name="meta.media.has_b_frames">0</property>
+    <property name="meta.media.width">1280</property>
+    <property name="meta.media.height">720</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+    <filter id="filter11" out="00:00:29.920">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">brightnessOpacity</property>
+      <property name="alpha">0.2</property>
+      <property name="opacity">0.2</property>
+    </filter>
+  </producer>
+  <producer id="producer6" in="00:00:00.000" out="00:00:29.960">
+    <property name="length">00:00:30.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">0.333:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/bg_loop.mp4</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.nb_streams">2</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">24</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.width">1280</property>
+    <property name="meta.media.0.codec.height">720</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.name">h264</property>
+    <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
+    <property name="meta.media.0.codec.bit_rate">2683258</property>
+    <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
+    <property name="meta.media.1.stream.type">audio</property>
+    <property name="meta.media.1.codec.sample_fmt">fltp</property>
+    <property name="meta.media.1.codec.sample_rate">48000</property>
+    <property name="meta.media.1.codec.channels">2</property>
+    <property name="meta.media.1.codec.layout">stereo</property>
+    <property name="meta.media.1.codec.name">aac</property>
+    <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
+    <property name="meta.media.1.codec.bit_rate">139848</property>
+    <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
+    <property name="meta.attr.major_brand.markup">isom</property>
+    <property name="meta.attr.minor_version.markup">512</property>
+    <property name="meta.attr.compatible_brands.markup">isomiso2avc1mp41</property>
+    <property name="meta.attr.encoder.markup">Google</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="format">3</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="warp_speed">0.333</property>
+    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/bg_loop.mp4</property>
+    <property name="mlt_service">timewarp</property>
+    <property name="shotcut:producer">avformat</property>
+    <property name="video_delay">0</property>
+    <property name="astream">0</property>
+    <property name="vstream">0</property>
+    <property name="shotcut:hash">a9f0d660d6e93cbbf2d4dd8e28596539</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:caption">bg_loop.mp4 (0.333x)</property>
+    <property name="xml">was here</property>
+    <property name="meta.media.frame_rate_num">24</property>
+    <property name="meta.media.frame_rate_den">1</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">2</property>
+    <property name="meta.media.has_b_frames">2</property>
+    <property name="meta.media.width">1280</property>
+    <property name="meta.media.height">720</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+    <filter id="filter12" out="00:00:29.960">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">brightnessOpacity</property>
+      <property name="alpha">0.2</property>
+      <property name="opacity">0.2</property>
+    </filter>
+    <filter id="filter13" out="00:00:29.960">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:29.680=1;00:00:29.960=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+      <property name="disable">1</property>
+    </filter>
+  </producer>
+  <playlist id="playlist4">
+    <property name="shotcut:video">1</property>
+    <property name="shotcut:name">bg</property>
+    <property name="shotcut:lock">0</property>
+    <blank length="00:00:04.320"/>
+    <entry producer="producer4" in="00:00:00.000" out="00:00:29.960"/>
+    <entry producer="producer5" in="00:00:00.000" out="00:00:29.920"/>
+    <entry producer="producer6" in="00:00:00.000" out="00:00:29.960"/>
+  </playlist>
+  <chain id="chain51" out="00:02:44.520">
+    <property name="length">00:02:44.560</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_006.mp4</property>
     <property name="mlt_service">avformat-novalidate</property>
     <property name="meta.media.nb_streams">2</property>
     <property name="meta.media.0.stream.type">video</property>
@@ -661,8 +1408,8 @@
     <property name="meta.media.0.codec.color_trc">1</property>
     <property name="meta.media.0.codec.name">h264</property>
     <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">520447</property>
-    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
+    <property name="meta.media.0.codec.bit_rate">600608</property>
+    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
     <property name="meta.attr.0.stream.handler_name.markup">OBS Video Handler</property>
     <property name="meta.attr.0.stream.encoder.markup">obs_x264</property>
     <property name="meta.attr.0.stream.name.markup">simple_video_recording</property>
@@ -674,13 +1421,13 @@
     <property name="meta.media.1.codec.name">aac</property>
     <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
     <property name="meta.media.1.codec.bit_rate">192000</property>
-    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
+    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
     <property name="meta.attr.1.stream.handler_name.markup">OBS Audio Handler</property>
     <property name="meta.attr.1.stream.name.markup">simple_aac_recording0</property>
     <property name="meta.attr.major_brand.markup">iso4</property>
     <property name="meta.attr.minor_version.markup">0</property>
     <property name="meta.attr.compatible_brands.markup">iso4isomobs1iso2avc1mp41</property>
-    <property name="meta.attr.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
+    <property name="meta.attr.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
     <property name="meta.attr.encoder.markup">OBS Studio (32.1.2)</property>
     <property name="seekable">1</property>
     <property name="meta.media.sample_aspect_num">1</property>
@@ -688,7 +1435,7 @@
     <property name="format">3</property>
     <property name="audio_index">1</property>
     <property name="video_index">0</property>
-    <property name="creation_time">2026-06-06T19:53:04</property>
+    <property name="creation_time">2026-06-06T20:18:05</property>
     <property name="vstream">0</property>
     <property name="meta.media.frame_rate_num">60</property>
     <property name="meta.media.frame_rate_den">1</property>
@@ -701,16 +1448,39 @@
     <property name="meta.media.color_range">mpeg</property>
     <property name="astream">0</property>
     <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:hash">cf732d522180a071043f8b6d144e0187</property>
+    <property name="shotcut:hash">d5faa94cb97d86203a2d16b216e7e5c9</property>
     <property name="meta.media.top_field_first">0</property>
     <property name="meta.media.progressive">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_003.mp4</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_006.mp4</property>
     <property name="xml">was here</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter14" in="00:00:34.360" out="00:00:36.320">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+    </filter>
+    <filter id="filter15" in="00:00:34.360" out="00:00:36.320">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
   </chain>
-  <producer id="producer3" in="00:00:00.000" out="00:00:01.200">
-    <property name="length">00:00:01.240</property>
+  <producer id="producer7" in="00:00:00.000" out="00:00:01.880">
+    <property name="length">00:00:01.920</property>
     <property name="eof">pause</property>
-    <property name="resource">2:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_003.mp4</property>
+    <property name="resource">4:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_006.mp4</property>
     <property name="aspect_ratio">1</property>
     <property name="meta.media.nb_streams">2</property>
     <property name="meta.media.0.stream.type">video</property>
@@ -725,7 +1495,7 @@
     <property name="meta.media.0.codec.color_trc">1</property>
     <property name="meta.media.0.codec.name">h264</property>
     <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">10363261</property>
+    <property name="meta.media.0.codec.bit_rate">5513706</property>
     <property name="meta.attr.0.stream.handler_name.markup">VideoHandler</property>
     <property name="meta.media.1.stream.type">audio</property>
     <property name="meta.media.1.codec.sample_fmt">fltp</property>
@@ -734,7 +1504,7 @@
     <property name="meta.media.1.codec.layout">stereo</property>
     <property name="meta.media.1.codec.name">aac</property>
     <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
-    <property name="meta.media.1.codec.bit_rate">2304</property>
+    <property name="meta.media.1.codec.bit_rate">2285</property>
     <property name="meta.attr.1.stream.handler_name.markup">SoundHandler</property>
     <property name="meta.attr.major_brand.markup">isom</property>
     <property name="meta.attr.minor_version.markup">512</property>
@@ -746,16 +1516,16 @@
     <property name="format">3</property>
     <property name="audio_index">1</property>
     <property name="video_index">0</property>
-    <property name="warp_speed">2</property>
-    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_003.mp4</property>
+    <property name="warp_speed">4</property>
+    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_006.mp4</property>
     <property name="mlt_service">timewarp</property>
     <property name="shotcut:producer">avformat</property>
     <property name="video_delay">0</property>
     <property name="astream">0</property>
     <property name="vstream">0</property>
-    <property name="shotcut:hash">c04c8e9a24d2c25865bf0dc53dd79d16</property>
+    <property name="shotcut:hash">453382ce7b4bbc9dab09aade092a8519</property>
     <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_003.mp4 (2x)</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_006.mp4 (4x)</property>
     <property name="xml">was here</property>
     <property name="meta.media.frame_rate_num">60000</property>
     <property name="meta.media.frame_rate_den">1001</property>
@@ -768,12 +1538,35 @@
     <property name="meta.media.color_range">mpeg</property>
     <property name="meta.media.top_field_first">0</property>
     <property name="meta.media.progressive">1</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter16" out="00:00:01.880">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+    </filter>
+    <filter id="filter17" out="00:00:01.880">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
   </producer>
-  <chain id="chain29" out="00:02:44.040">
-    <property name="length">00:02:44.080</property>
+  <producer id="producer8" in="00:00:00.000" out="00:05:29.080">
+    <property name="length">00:05:29.120</property>
     <property name="eof">pause</property>
-    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_003.mp4</property>
-    <property name="mlt_service">avformat-novalidate</property>
+    <property name="resource">0.5:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_006.mp4</property>
+    <property name="aspect_ratio">1</property>
     <property name="meta.media.nb_streams">2</property>
     <property name="meta.media.0.stream.type">video</property>
     <property name="meta.media.0.stream.frame_rate">60</property>
@@ -787,8 +1580,8 @@
     <property name="meta.media.0.codec.color_trc">1</property>
     <property name="meta.media.0.codec.name">h264</property>
     <property name="meta.media.0.codec.long_name">H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10</property>
-    <property name="meta.media.0.codec.bit_rate">520447</property>
-    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
+    <property name="meta.media.0.codec.bit_rate">600608</property>
+    <property name="meta.attr.0.stream.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
     <property name="meta.attr.0.stream.handler_name.markup">OBS Video Handler</property>
     <property name="meta.attr.0.stream.encoder.markup">obs_x264</property>
     <property name="meta.attr.0.stream.name.markup">simple_video_recording</property>
@@ -800,13 +1593,13 @@
     <property name="meta.media.1.codec.name">aac</property>
     <property name="meta.media.1.codec.long_name">AAC (Advanced Audio Coding)</property>
     <property name="meta.media.1.codec.bit_rate">192000</property>
-    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
+    <property name="meta.attr.1.stream.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
     <property name="meta.attr.1.stream.handler_name.markup">OBS Audio Handler</property>
     <property name="meta.attr.1.stream.name.markup">simple_aac_recording0</property>
     <property name="meta.attr.major_brand.markup">iso4</property>
     <property name="meta.attr.minor_version.markup">0</property>
     <property name="meta.attr.compatible_brands.markup">iso4isomobs1iso2avc1mp41</property>
-    <property name="meta.attr.creation_time.markup">2026-06-06T19:53:04.000000Z</property>
+    <property name="meta.attr.creation_time.markup">2026-06-06T20:18:05.000000Z</property>
     <property name="meta.attr.encoder.markup">OBS Studio (32.1.2)</property>
     <property name="seekable">1</property>
     <property name="meta.media.sample_aspect_num">1</property>
@@ -814,8 +1607,17 @@
     <property name="format">3</property>
     <property name="audio_index">1</property>
     <property name="video_index">0</property>
-    <property name="creation_time">2026-06-06T19:53:04</property>
+    <property name="warp_speed">0.5</property>
+    <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_006.mp4</property>
+    <property name="mlt_service">timewarp</property>
+    <property name="shotcut:producer">avformat</property>
+    <property name="video_delay">0</property>
+    <property name="astream">0</property>
     <property name="vstream">0</property>
+    <property name="shotcut:hash">d5faa94cb97d86203a2d16b216e7e5c9</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_006.mp4 (0.5x)</property>
+    <property name="xml">was here</property>
     <property name="meta.media.frame_rate_num">60</property>
     <property name="meta.media.frame_rate_den">1</property>
     <property name="meta.media.colorspace">709</property>
@@ -825,29 +1627,42 @@
     <property name="meta.media.height">1080</property>
     <property name="meta.media.aspect_ratio">1</property>
     <property name="meta.media.color_range">mpeg</property>
-    <property name="astream">0</property>
-    <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:hash">cf732d522180a071043f8b6d144e0187</property>
     <property name="meta.media.top_field_first">0</property>
     <property name="meta.media.progressive">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_003.mp4</property>
-    <property name="xml">was here</property>
-  </chain>
-  <playlist id="playlist5">
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter18" in="00:04:49.360" out="00:04:53.560">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+    </filter>
+    <filter id="filter19" in="00:04:49.360" out="00:04:53.560">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
+  </producer>
+  <playlist id="playlist8">
     <property name="shotcut:video">1</property>
-    <property name="shotcut:name">ai_demo_003</property>
-    <blank length="00:00:47.320"/>
-    <entry producer="chain26" in="00:00:13.640" out="00:00:15.600">
-      <property name="shotcut:group">2</property>
-    </entry>
-    <entry producer="producer3" in="00:00:00.000" out="00:00:01.200">
-      <property name="shotcut:group">2</property>
-    </entry>
-    <entry producer="chain29" in="00:00:56.760" out="00:00:59.720">
-      <property name="shotcut:group">2</property>
-    </entry>
+    <property name="shotcut:name">ai_demo_006</property>
+    <property name="shotcut:lock">0</property>
+    <blank length="00:01:45.000"/>
+    <entry producer="chain51" in="00:00:34.360" out="00:00:36.320"/>
+    <entry producer="producer7" in="00:00:00.000" out="00:00:01.880"/>
+    <entry producer="producer8" in="00:04:49.360" out="00:04:53.560"/>
   </playlist>
-  <chain id="chain8" out="00:07:35.920">
+  <chain id="chain12" out="00:07:35.920">
     <property name="length">00:07:35.960</property>
     <property name="eof">pause</property>
     <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_002.mp4</property>
@@ -910,11 +1725,35 @@
     <property name="meta.media.progressive">1</property>
     <property name="shotcut:caption">nsak_ai_agent_demo_002.mp4</property>
     <property name="xml">was here</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter20" in="00:00:39.200" out="00:00:41.160">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+      <property name="disable">0</property>
+    </filter>
+    <filter id="filter21" in="00:00:39.200" out="00:00:41.160">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
   </chain>
-  <producer id="producer4" in="00:00:00.000" out="00:00:05.280">
-    <property name="length">00:00:05.320</property>
+  <producer id="producer11" in="00:00:00.000" out="00:00:03.200">
+    <property name="length">00:00:03.240</property>
     <property name="eof">pause</property>
-    <property name="resource">8:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_002.mp4</property>
+    <property name="resource">13:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_002.mp4</property>
     <property name="aspect_ratio">1</property>
     <property name="meta.media.nb_streams">2</property>
     <property name="meta.media.0.stream.type">video</property>
@@ -950,7 +1789,7 @@
     <property name="format">3</property>
     <property name="audio_index">1</property>
     <property name="video_index">0</property>
-    <property name="warp_speed">8</property>
+    <property name="warp_speed">13</property>
     <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_002.mp4</property>
     <property name="mlt_service">timewarp</property>
     <property name="shotcut:producer">avformat</property>
@@ -959,7 +1798,7 @@
     <property name="vstream">0</property>
     <property name="shotcut:hash">4631f91e07c8e36e673d9a328b675f9e</property>
     <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_002.mp4 (8x)</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_002.mp4 (13x)</property>
     <property name="xml">was here</property>
     <property name="meta.media.frame_rate_num">60000</property>
     <property name="meta.media.frame_rate_den">1001</property>
@@ -972,6 +1811,29 @@
     <property name="meta.media.color_range">mpeg</property>
     <property name="meta.media.top_field_first">0</property>
     <property name="meta.media.progressive">1</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter22" out="00:00:03.200">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+    </filter>
+    <filter id="filter23" out="00:00:03.200">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
   </producer>
   <chain id="chain25" out="00:07:35.920">
     <property name="length">00:07:35.960</property>
@@ -1036,23 +1898,89 @@
     <property name="meta.media.progressive">1</property>
     <property name="shotcut:caption">nsak_ai_agent_demo_002.mp4</property>
     <property name="xml">was here</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter24" in="00:05:00.040" out="00:05:04.760">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+    </filter>
+    <filter id="filter25" in="00:05:00.040" out="00:05:04.760">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
   </chain>
-  <playlist id="playlist4">
+  <producer id="producer12" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/ai_agent_email_report.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">1920</property>
+    <property name="meta.media.height">1080</property>
+    <property name="mlt_service">qimage</property>
+    <property name="creation_time">2026-06-09T20:33:45</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">be233ecc45e88ef45fc452faf1e6afa5</property>
+    <property name="shotcut:caption">ai_agent_email_report.png</property>
+    <property name="meta.shotcut.vui">1</property>
+    <property name="xml">was here</property>
+    <filter id="filter26" out="00:00:00.880">
+      <property name="background">color:#00000000</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">00:00:00.600=0;00:00:00.880=0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">00:00:00.600=1150 150 700 393.75 1;00:00:00.880=0 0 1920 1080 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+      <property name="transition.threads">0</property>
+    </filter>
+    <filter id="filter27" out="00:00:02.960">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:02.680=1;00:00:02.960=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+  </producer>
+  <playlist id="playlist9">
     <property name="shotcut:video">1</property>
-    <property name="shotcut:name">ai_demo_002 (discarded)</property>
-    <property name="shotcut:lock">1</property>
-    <blank length="00:00:35.720"/>
-    <entry producer="chain8" in="00:00:39.200" out="00:00:41.160">
-      <property name="shotcut:group">3</property>
+    <property name="shotcut:name">ai_demo_002</property>
+    <property name="shotcut:lock">0</property>
+    <blank length="00:01:35.000"/>
+    <entry producer="chain12" in="00:00:39.200" out="00:00:41.160">
+      <property name="shotcut:group">0</property>
     </entry>
-    <entry producer="producer4" in="00:00:00.000" out="00:00:05.280">
-      <property name="shotcut:group">3</property>
+    <entry producer="producer11" in="00:00:00.000" out="00:00:03.200">
+      <property name="shotcut:group">0</property>
     </entry>
-    <entry producer="chain25" in="00:05:01.800" out="00:05:04.760">
-      <property name="shotcut:group">3</property>
+    <entry producer="chain25" in="00:05:00.040" out="00:05:04.760">
+      <property name="shotcut:group">0</property>
     </entry>
+    <blank length="00:00:05.480"/>
+    <entry producer="producer12" in="00:00:00.000" out="00:00:02.960"/>
   </playlist>
-  <chain id="chain1" out="00:07:44.680">
+  <chain id="chain13" out="00:07:44.680">
     <property name="length">00:07:44.720</property>
     <property name="eof">pause</property>
     <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_001.mp4</property>
@@ -1115,11 +2043,34 @@
     <property name="meta.media.progressive">1</property>
     <property name="shotcut:caption">nsak_ai_agent_demo_001.mp4</property>
     <property name="xml">was here</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter28" in="00:00:13.600" out="00:00:15.560">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+    </filter>
+    <filter id="filter29" in="00:00:13.600" out="00:00:15.560">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
   </chain>
-  <producer id="producer5" in="00:00:00.000" out="00:00:04.680">
-    <property name="length">00:00:04.720</property>
+  <producer id="producer13" in="00:00:00.000" out="00:00:03.120">
+    <property name="length">00:00:03.160</property>
     <property name="eof">pause</property>
-    <property name="resource">3:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_001.mp4</property>
+    <property name="resource">4.5:/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_001.mp4</property>
     <property name="aspect_ratio">1</property>
     <property name="meta.media.nb_streams">2</property>
     <property name="meta.media.0.stream.type">video</property>
@@ -1155,7 +2106,7 @@
     <property name="format">3</property>
     <property name="audio_index">1</property>
     <property name="video_index">0</property>
-    <property name="warp_speed">3</property>
+    <property name="warp_speed">4.5</property>
     <property name="warp_resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos_exported/nsak_ai_agent_demo_001.mp4</property>
     <property name="mlt_service">timewarp</property>
     <property name="shotcut:producer">avformat</property>
@@ -1164,7 +2115,7 @@
     <property name="vstream">0</property>
     <property name="shotcut:hash">48945cb82f7c5a8399d5e024a7c7aaae</property>
     <property name="shotcut:skipConvert">1</property>
-    <property name="shotcut:caption">nsak_ai_agent_demo_001.mp4 (3x)</property>
+    <property name="shotcut:caption">nsak_ai_agent_demo_001.mp4 (4.5x)</property>
     <property name="xml">was here</property>
     <property name="meta.media.frame_rate_num">60000</property>
     <property name="meta.media.frame_rate_den">1001</property>
@@ -1177,8 +2128,31 @@
     <property name="meta.media.color_range">mpeg</property>
     <property name="meta.media.top_field_first">0</property>
     <property name="meta.media.progressive">1</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter30" out="00:00:03.120">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+    </filter>
+    <filter id="filter31" out="00:00:03.120">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
   </producer>
-  <chain id="chain7" out="00:07:44.680">
+  <chain id="chain14" out="00:07:44.680">
     <property name="length">00:07:44.720</property>
     <property name="eof">pause</property>
     <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/demos/nsak_ai_agent_demo_001.mp4</property>
@@ -1241,23 +2215,134 @@
     <property name="meta.media.progressive">1</property>
     <property name="shotcut:caption">nsak_ai_agent_demo_001.mp4</property>
     <property name="xml">was here</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter32" in="00:06:34.360" out="00:06:39.160">
+      <property name="rect">0 48 1920 1032 1</property>
+      <property name="circle">0</property>
+      <property name="color">#ff181818</property>
+      <property name="radius">0</property>
+      <property name="mlt_service">qtcrop</property>
+      <property name="shotcut:filter">cropRectangle</property>
+    </filter>
+    <filter id="filter33" in="00:06:34.360" out="00:06:39.160">
+      <property name="background">color:#181818</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">10 -18.375 1900 1068.75 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
   </chain>
-  <playlist id="playlist2">
+  <producer id="producer14" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/demo_003.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">1</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">fc67d69044c07eed124ac80119895629</property>
+    <property name="shotcut:caption">demo_003.png</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter34" out="00:00:05.760">
+      <property name="background">color:#00000000</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">1150 150 700 393.333 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
+    <filter id="filter35" out="00:00:05.760">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:05.520=1;00:00:05.760=0</property>
+      <property name="shotcut:animOut">00:00:00.280</property>
+      <property name="shotcut:animIn">0</property>
+    </filter>
+  </producer>
+  <playlist id="playlist10">
     <property name="shotcut:video">1</property>
     <property name="shotcut:name">ai_demo_001</property>
     <property name="shotcut:lock">0</property>
-    <blank length="00:00:24.320"/>
-    <entry producer="chain1" in="00:00:13.600" out="00:00:15.560">
-      <property name="shotcut:group">4</property>
+    <blank length="00:01:25.000"/>
+    <entry producer="chain13" in="00:00:13.600" out="00:00:15.560">
+      <property name="shotcut:group">6</property>
     </entry>
-    <entry producer="producer5" in="00:00:00.000" out="00:00:04.680">
-      <property name="shotcut:group">4</property>
+    <entry producer="producer13" in="00:00:00.000" out="00:00:03.120">
+      <property name="shotcut:group">6</property>
     </entry>
-    <entry producer="chain7" in="00:06:36.200" out="00:06:39.160">
-      <property name="shotcut:group">4</property>
+    <entry producer="chain14" in="00:06:34.360" out="00:06:39.160">
+      <property name="shotcut:group">6</property>
     </entry>
+    <blank length="00:00:10.000"/>
+    <entry producer="producer14" in="00:00:00.000" out="00:00:05.760"/>
   </playlist>
-  <producer id="producer6" in="00:00:00.000" out="03:59:59.960">
+  <producer id="producer16" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/demo_002.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">1</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">f6a580cbd1e5516d3aff254c037cb1e5</property>
+    <property name="shotcut:caption">demo_002.png</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter36" out="00:00:10.240">
+      <property name="background">color:#00000000</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">1150 150 700 393.333 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:00.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
+    <filter id="filter37" out="00:00:10.240">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:09.960=1;00:00:10.240=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+  </producer>
+  <playlist id="playlist11">
+    <property name="shotcut:video">1</property>
+    <property name="shotcut:name">slides</property>
+    <property name="shotcut:lock">0</property>
+    <blank length="00:01:35.000"/>
+    <entry producer="producer16" in="00:00:00.000" out="00:00:10.240"/>
+  </playlist>
+  <producer id="producer10" in="00:00:00.000" out="03:59:59.960">
     <property name="length">04:00:00.000</property>
     <property name="eof">pause</property>
     <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/nsak_video_intro.jpg</property>
@@ -1269,12 +2354,342 @@
     <property name="meta.media.width">1920</property>
     <property name="meta.media.height">1080</property>
     <property name="mlt_service">qimage</property>
-    <property name="creation_time">2026-06-07T01:39:32</property>
-    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
     <property name="shotcut:hash">04a864ede4d2f83b8d0e30a5a212aace</property>
     <property name="shotcut:caption">nsak_video_intro.jpg</property>
+    <filter id="filter38" out="00:00:04.960">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:04.680=1;00:00:04.960=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
   </producer>
-  <chain id="chain0" out="00:00:06.520">
+  <producer id="producer17" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/output-001.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">3733212ab8f83d35459da83fd5b37d4a</property>
+    <property name="shotcut:caption">output-001.png</property>
+    <filter id="filter39" out="00:00:10.680">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+    <filter id="filter40" out="00:00:10.680">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:10.400=1;00:00:10.680=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+    <filter id="filter41" out="00:00:10.680">
+      <property name="color">#ffffffff</property>
+      <property name="radius">10</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+      <property name="mlt_service">dropshadow</property>
+      <property name="disable">0</property>
+    </filter>
+  </producer>
+  <producer id="producer18" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/output-002.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="creation_time">2026-06-10T00:13:46</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">683e78e85a59ffcf0c000928e8e411df</property>
+    <property name="shotcut:caption">output-002.png</property>
+    <property name="xml">was here</property>
+    <filter id="filter42" out="00:00:11.680">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+    <filter id="filter43" out="00:00:11.680">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:11.400=1;00:00:11.680=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+    <filter id="filter44" out="00:00:11.680">
+      <property name="color">#ffffffff</property>
+      <property name="radius">10</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+      <property name="mlt_service">dropshadow</property>
+    </filter>
+  </producer>
+  <producer id="producer19" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/output-003.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">9b7c54754fa0ef13793bb5d185b4dfa0</property>
+    <property name="shotcut:caption">output-003.png</property>
+    <filter id="filter45" in="00:00:00.080" out="00:00:15.080">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+    <filter id="filter46" in="00:00:00.080" out="00:00:15.080">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:14.720=1;00:00:15.000=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+    <filter id="filter47" in="00:00:00.080" out="00:00:15.080">
+      <property name="color">#ffffffff</property>
+      <property name="radius">10</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+      <property name="mlt_service">dropshadow</property>
+      <property name="disable">0</property>
+    </filter>
+  </producer>
+  <tractor id="tractor0" in="00:00:00.000" out="00:00:00.000">
+    <property name="shotcut:transition">lumaMix</property>
+    <track producer="producer18" in="00:00:11.720" out="00:00:11.720"/>
+    <track producer="producer19" in="00:00:00.080" out="00:00:00.080"/>
+    <transition id="transition0">
+      <property name="a_track">0</property>
+      <property name="b_track">1</property>
+      <property name="factory">loader</property>
+      <property name="mlt_service">luma</property>
+      <property name="alpha_over">1</property>
+      <property name="fix_background_alpha">1</property>
+    </transition>
+    <transition id="transition1">
+      <property name="a_track">0</property>
+      <property name="b_track">1</property>
+      <property name="mlt_service">mix</property>
+      <property name="start">-2</property>
+      <property name="accepts_blanks">1</property>
+    </transition>
+  </tractor>
+  <producer id="producer20" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/output-005.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">b73c6f9cada50f0f87216a1cbff0951c</property>
+    <property name="shotcut:caption">output-005.png</property>
+    <filter id="filter48" in="00:00:00.360" out="00:00:16.760">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+    <filter id="filter49" in="00:00:00.360" out="00:00:16.760">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:16.120=1;00:00:16.400=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+    <filter id="filter50" in="00:00:00.360" out="00:00:16.760">
+      <property name="color">#ffffffff</property>
+      <property name="radius">10</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+      <property name="mlt_service">dropshadow</property>
+    </filter>
+  </producer>
+  <producer id="producer21" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/output-010.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">e460f43fa609bed7575bb867798efd09</property>
+    <property name="shotcut:caption">output-010.png</property>
+    <filter id="filter51" out="00:00:20.840">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+    <filter id="filter52" out="00:00:20.840">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:20.560=1;00:00:20.840=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+    <filter id="filter53" out="00:00:20.840">
+      <property name="color">#ffffffff</property>
+      <property name="radius">10</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+      <property name="mlt_service">dropshadow</property>
+    </filter>
+  </producer>
+  <producer id="producer22" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/output-006.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">2</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="creation_time">2026-06-09T18:15:34</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="shotcut:hash">0457a5733ee08366882101f4103dd37a</property>
+    <property name="shotcut:caption">output-006.png</property>
+    <property name="xml">was here</property>
+    <filter id="filter54" out="00:00:04.360">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+    <filter id="filter55" out="00:00:04.360">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:04.080=1;00:00:04.360=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+    <filter id="filter56" out="00:00:04.360">
+      <property name="color">#ffffffff</property>
+      <property name="radius">10</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+      <property name="mlt_service">dropshadow</property>
+    </filter>
+  </producer>
+  <producer id="producer23" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/demo_001.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">1</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">ea1eade500ab825fbeb8eaa09f526827</property>
+    <property name="shotcut:caption">demo_001.png</property>
+    <filter id="filter57" out="00:00:00.760">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeInBrightness</property>
+      <property name="alpha">00:00:00.000=0;00:00:00.280=1</property>
+      <property name="shotcut:animIn">00:00:00.320</property>
+    </filter>
+  </producer>
+  <producer id="producer24" in="00:00:00.000" out="03:59:59.960">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/slides/output/demo_001.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="format">1</property>
+    <property name="meta.media.width">945</property>
+    <property name="meta.media.height">531</property>
+    <property name="mlt_service">qimage</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">ea1eade500ab825fbeb8eaa09f526827</property>
+    <property name="shotcut:caption">demo_001.png</property>
+    <property name="meta.shotcut.vui">1</property>
+    <filter id="filter58" out="00:00:10.280">
+      <property name="background">color:#00000000</property>
+      <property name="mlt_service">affine</property>
+      <property name="shotcut:filter">affineSizePosition</property>
+      <property name="transition.fix_rotate_x">00:00:00.000=0;00:00:00.960=0</property>
+      <property name="transition.fill">1</property>
+      <property name="transition.distort">0</property>
+      <property name="transition.rect">00:00:00.000=0 0 1920 1080 1;00:00:00.960=1150 150 700 393.333 1</property>
+      <property name="transition.valign">middle</property>
+      <property name="transition.halign">center</property>
+      <property name="shotcut:animIn">00:00:01.000</property>
+      <property name="shotcut:animOut">00:00:00.000</property>
+      <property name="transition.threads">0</property>
+    </filter>
+    <filter id="filter59" out="00:00:10.280">
+      <property name="start">1</property>
+      <property name="level">1</property>
+      <property name="mlt_service">brightness</property>
+      <property name="shotcut:filter">fadeOutBrightness</property>
+      <property name="alpha">00:00:10.000=1;00:00:10.280=0</property>
+      <property name="shotcut:animOut">00:00:00.320</property>
+    </filter>
+  </producer>
+  <chain id="chain15" out="00:00:06.520">
     <property name="length">00:00:06.560</property>
     <property name="eof">pause</property>
     <property name="resource">/home/lukas/CLionProjects/swiss-army-knife-network-sniffer/docs/thesis/video/assets/Vorlagen/03_Grafik/BFH_Outro.mp4</property>
@@ -1324,21 +2739,40 @@
     <property name="shotcut:caption">BFH_Outro.mp4</property>
     <property name="xml">was here</property>
   </chain>
-  <playlist id="playlist1">
+  <playlist id="playlist12">
     <property name="shotcut:video">1</property>
     <property name="shotcut:name">ai_demo_001</property>
-    <property name="shotcut:lock">1</property>
-    <entry producer="producer6" in="00:00:00.000" out="00:00:04.960"/>
-    <blank length="00:01:18.440"/>
-    <entry producer="chain0" in="00:00:00.000" out="00:00:06.520"/>
+    <property name="shotcut:lock">0</property>
+    <entry producer="producer10" in="00:00:00.000" out="00:00:04.960"/>
+    <entry producer="producer17" in="00:00:00.000" out="00:00:10.680"/>
+    <entry producer="producer18" in="00:00:00.000" out="00:00:11.680"/>
+    <entry producer="tractor0" in="00:00:00.000" out="00:00:00.000"/>
+    <entry producer="producer19" in="00:00:00.120" out="00:00:15.080"/>
+    <entry producer="producer20" in="00:00:00.360" out="00:00:16.760"/>
+    <entry producer="producer21" in="00:00:00.000" out="00:00:20.840"/>
+    <entry producer="producer22" in="00:00:00.000" out="00:00:04.360"/>
+    <entry producer="producer23" in="00:00:00.000" out="00:00:00.760"/>
+    <entry producer="producer24" in="00:00:00.000" out="00:00:10.280"/>
+    <blank length="00:00:18.160"/>
+    <entry producer="chain15" in="00:00:00.000" out="00:00:06.480"/>
   </playlist>
-  <tractor id="tractor0" title="Shotcut version 26.4.30" in="00:00:00.000" out="00:01:29.960">
+  <playlist id="playlist13">
+    <property name="shotcut:video">1</property>
+    <property name="shotcut:name">V12</property>
+    <blank length="00:00:00.040"/>
+  </playlist>
+  <playlist id="playlist14">
+    <property name="shotcut:audio">1</property>
+    <property name="shotcut:name">A3</property>
+    <blank length="00:00:00.040"/>
+  </playlist>
+  <tractor id="tractor1" title="Shotcut version 26.4.30" in="00:00:00.000" out="00:01:59.960">
     <property name="shotcut">1</property>
     <property name="shotcut:projectAudioChannels">2</property>
     <property name="shotcut:projectFolder">1</property>
     <property name="shotcut:processingMode">Native8Cpu</property>
     <property name="shotcut:trackHeaderWidth">150</property>
-    <property name="shotcut:scaleFactor">1.15117</property>
+    <property name="shotcut:scaleFactor">3.89841</property>
     <properties name="shotcut:markers">
       <properties name="0">
         <property name="text">Marker 1</property>
@@ -1346,38 +2780,26 @@
         <property name="end">00:00:05.000</property>
         <property name="color">#008000</property>
       </properties>
-      <properties name="1">
-        <property name="text">Marker 2</property>
-        <property name="start">00:01:30.000</property>
-        <property name="end">00:01:30.000</property>
-        <property name="color">#008000</property>
-      </properties>
-      <properties name="2">
-        <property name="text">Marker 3</property>
-        <property name="start">00:01:23.480</property>
-        <property name="end">00:01:23.480</property>
-        <property name="color">#008000</property>
-      </properties>
-      <properties name="3">
-        <property name="text">Marker 4</property>
-        <property name="start">00:00:06.400</property>
-        <property name="end">00:00:06.400</property>
-        <property name="color">#008000</property>
-      </properties>
     </properties>
     <property name="shotcut:skipConvert">0</property>
+    <property name="shotcut:trackHeight">10</property>
     <track producer="background"/>
     <track producer="playlist0" hide="video"/>
     <track producer="playlist3" hide="video"/>
-    <track producer="playlist9"/>
-    <track producer="playlist8" hide="audio"/>
-    <track producer="playlist7" hide="both"/>
+    <track producer="playlist5" hide="both"/>
     <track producer="playlist6" hide="both"/>
-    <track producer="playlist5" hide="audio"/>
-    <track producer="playlist4" hide="both"/>
-    <track producer="playlist2"/>
-    <track producer="playlist1" hide="audio"/>
-    <transition id="transition0">
+    <track producer="playlist7" hide="both"/>
+    <track producer="playlist1"/>
+    <track producer="playlist2" hide="video"/>
+    <track producer="playlist4" hide="audio"/>
+    <track producer="playlist8" hide="audio"/>
+    <track producer="playlist9" hide="audio"/>
+    <track producer="playlist10"/>
+    <track producer="playlist11"/>
+    <track producer="playlist12"/>
+    <track producer="playlist13"/>
+    <track producer="playlist14" hide="video"/>
+    <transition id="transition2">
       <property name="a_track">0</property>
       <property name="b_track">1</property>
       <property name="mlt_service">mix</property>
@@ -1391,15 +2813,15 @@
       <property name="always_active">1</property>
       <property name="sum">1</property>
     </transition>
-    <transition id="transition16">
+    <transition id="transition8">
       <property name="a_track">0</property>
       <property name="b_track">3</property>
       <property name="mlt_service">mix</property>
       <property name="always_active">1</property>
       <property name="sum">1</property>
     </transition>
-    <transition id="transition1">
-      <property name="a_track">1</property>
+    <transition id="transition3">
+      <property name="a_track">3</property>
       <property name="b_track">3</property>
       <property name="compositing">0</property>
       <property name="distort">0</property>
@@ -1408,15 +2830,15 @@
       <property name="1">normal</property>
       <property name="disable">0</property>
     </transition>
-    <transition id="transition14">
+    <transition id="transition10">
       <property name="a_track">0</property>
       <property name="b_track">4</property>
       <property name="mlt_service">mix</property>
       <property name="always_active">1</property>
       <property name="sum">1</property>
     </transition>
-    <transition id="transition2">
-      <property name="a_track">1</property>
+    <transition id="transition4">
+      <property name="a_track">3</property>
       <property name="b_track">4</property>
       <property name="compositing">0</property>
       <property name="distort">0</property>
@@ -1432,43 +2854,9 @@
       <property name="always_active">1</property>
       <property name="sum">1</property>
     </transition>
-    <transition id="transition3">
-      <property name="a_track">1</property>
-      <property name="b_track">5</property>
-      <property name="compositing">0</property>
-      <property name="distort">0</property>
-      <property name="rotate_center">0</property>
-      <property name="mlt_service">qtblend</property>
-      <property name="1">normal</property>
-      <property name="disable">0</property>
-    </transition>
-    <transition id="transition10">
-      <property name="a_track">0</property>
-      <property name="b_track">6</property>
-      <property name="mlt_service">mix</property>
-      <property name="always_active">1</property>
-      <property name="sum">1</property>
-    </transition>
-    <transition id="transition4">
-      <property name="a_track">1</property>
-      <property name="b_track">6</property>
-      <property name="compositing">0</property>
-      <property name="distort">0</property>
-      <property name="rotate_center">0</property>
-      <property name="mlt_service">qtblend</property>
-      <property name="1">normal</property>
-      <property name="disable">0</property>
-    </transition>
-    <transition id="transition8">
-      <property name="a_track">0</property>
-      <property name="b_track">7</property>
-      <property name="mlt_service">mix</property>
-      <property name="always_active">1</property>
-      <property name="sum">1</property>
-    </transition>
     <transition id="transition6">
-      <property name="a_track">1</property>
-      <property name="b_track">7</property>
+      <property name="a_track">3</property>
+      <property name="b_track">5</property>
       <property name="compositing">0</property>
       <property name="distort">0</property>
       <property name="rotate_center">0</property>
@@ -1478,14 +2866,14 @@
     </transition>
     <transition id="transition7">
       <property name="a_track">0</property>
-      <property name="b_track">8</property>
+      <property name="b_track">6</property>
       <property name="mlt_service">mix</property>
       <property name="always_active">1</property>
       <property name="sum">1</property>
     </transition>
     <transition id="transition9">
-      <property name="a_track">1</property>
-      <property name="b_track">8</property>
+      <property name="a_track">3</property>
+      <property name="b_track">6</property>
       <property name="compositing">0</property>
       <property name="distort">0</property>
       <property name="rotate_center">0</property>
@@ -1495,13 +2883,47 @@
     </transition>
     <transition id="transition11">
       <property name="a_track">0</property>
-      <property name="b_track">9</property>
+      <property name="b_track">7</property>
       <property name="mlt_service">mix</property>
       <property name="always_active">1</property>
       <property name="sum">1</property>
     </transition>
     <transition id="transition13">
-      <property name="a_track">1</property>
+      <property name="a_track">3</property>
+      <property name="b_track">7</property>
+      <property name="compositing">0</property>
+      <property name="distort">0</property>
+      <property name="rotate_center">0</property>
+      <property name="mlt_service">qtblend</property>
+      <property name="1">normal</property>
+      <property name="disable">0</property>
+    </transition>
+    <transition id="transition14">
+      <property name="a_track">0</property>
+      <property name="b_track">8</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition15">
+      <property name="a_track">3</property>
+      <property name="b_track">8</property>
+      <property name="compositing">0</property>
+      <property name="distort">0</property>
+      <property name="rotate_center">0</property>
+      <property name="mlt_service">qtblend</property>
+      <property name="1">normal</property>
+      <property name="disable">0</property>
+    </transition>
+    <transition id="transition16">
+      <property name="a_track">0</property>
+      <property name="b_track">9</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition17">
+      <property name="a_track">3</property>
       <property name="b_track">9</property>
       <property name="compositing">0</property>
       <property name="distort">0</property>
@@ -1510,15 +2932,15 @@
       <property name="1">normal</property>
       <property name="disable">0</property>
     </transition>
-    <transition id="transition15">
+    <transition id="transition18">
       <property name="a_track">0</property>
       <property name="b_track">10</property>
       <property name="mlt_service">mix</property>
       <property name="always_active">1</property>
       <property name="sum">1</property>
     </transition>
-    <transition id="transition17">
-      <property name="a_track">1</property>
+    <transition id="transition19">
+      <property name="a_track">3</property>
       <property name="b_track">10</property>
       <property name="compositing">0</property>
       <property name="distort">0</property>
@@ -1526,6 +2948,81 @@
       <property name="mlt_service">qtblend</property>
       <property name="1">normal</property>
       <property name="disable">0</property>
+    </transition>
+    <transition id="transition20">
+      <property name="a_track">0</property>
+      <property name="b_track">11</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition21">
+      <property name="a_track">3</property>
+      <property name="b_track">11</property>
+      <property name="compositing">0</property>
+      <property name="distort">0</property>
+      <property name="rotate_center">0</property>
+      <property name="mlt_service">qtblend</property>
+      <property name="1">normal</property>
+      <property name="disable">0</property>
+    </transition>
+    <transition id="transition22">
+      <property name="a_track">0</property>
+      <property name="b_track">12</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition23">
+      <property name="a_track">3</property>
+      <property name="b_track">12</property>
+      <property name="compositing">0</property>
+      <property name="distort">0</property>
+      <property name="rotate_center">0</property>
+      <property name="mlt_service">qtblend</property>
+      <property name="1">normal</property>
+      <property name="disable">0</property>
+    </transition>
+    <transition id="transition24">
+      <property name="a_track">0</property>
+      <property name="b_track">13</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition25">
+      <property name="a_track">3</property>
+      <property name="b_track">13</property>
+      <property name="compositing">0</property>
+      <property name="distort">0</property>
+      <property name="rotate_center">0</property>
+      <property name="mlt_service">qtblend</property>
+      <property name="1">normal</property>
+      <property name="disable">0</property>
+    </transition>
+    <transition id="transition26">
+      <property name="a_track">0</property>
+      <property name="b_track">14</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition27">
+      <property name="a_track">3</property>
+      <property name="b_track">14</property>
+      <property name="compositing">0</property>
+      <property name="distort">0</property>
+      <property name="rotate_center">0</property>
+      <property name="mlt_service">qtblend</property>
+      <property name="1">normal</property>
+      <property name="disable">0</property>
+    </transition>
+    <transition id="transition28">
+      <property name="a_track">0</property>
+      <property name="b_track">15</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
     </transition>
   </tractor>
 </mlt>
