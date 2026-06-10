@@ -6,6 +6,7 @@ This chapter defines the evaluation strategy used to assess the agentic \gls{AI}
 The evaluation is structured around a controlled benchmark in a reproducible virtual environment and a real-world assessment in the BFH network security lab.
 A static reference scenario serves as the baseline against which all \gls{AI}-driven configurations are compared.
 
+
 \section{Evaluation Setup}\label{sec:evaluation-setup}
 
 Three models are benchmarked across 10 runs in three environments (\emph{containerlab}, \emph{physical lab}, and \emph{BFH Cyber Lab}):
@@ -33,8 +34,14 @@ Qualitative criteria require manual assessment and are scored against the scale 
     \item \textbf{Token usage: AI-specific} Number of tokens consumed per run (\gls{AI} Reconnaissance only)
     \item \textbf{Success factor:} Number of valid runs with structured output and findings.
     The factor is presented in the form of (e.g.\ 10/12 means 10 usable runs out of 12 attempts).
-
 \end{itemize}
+
+\paragraph{Success factor}\label{par:success-factor}
+The benchmarks and plots are only presented over the sucessful run selection and the limitation or reliability is mentioned seperatly of the plots.
+A successful run is defined a run: - that does not raise an exception apart from an the api is temporarily disconnected which pauses the loop.
+The second condition for flagging a run as unsuccessful is that no findings could be presented.
+
+
 
 To fix most of the influencing factors we defined a system prompt and a scenario prompt to set the starting line for all models equally.
 With 3 models $\times$ 3 environments and 1 implemented static scenario $\times$ $n = 10$ runs, this yields 120 measurements for Reconnaissance.
