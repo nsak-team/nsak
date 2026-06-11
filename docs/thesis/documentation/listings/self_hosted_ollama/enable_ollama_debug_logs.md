@@ -25,21 +25,7 @@ journalctl -f -b -u ollama
 WARNING:nsak.core.scenario.scenario_manager:EXEC SCENARIO: AI Intrusion Detection
 INFO:root:Starting scenario: AI Intrusion Detection
 WARNING:nsak.core.drill.drill_manager:EXEC DRILL: Discover Hosts
-DEBUG:httpcore.connection:connect_tcp.started host='ai.hiube.ch' port=43434 local_address=None timeout=None socket_options=None
-DEBUG:httpcore.connection:connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7f6434e86f90>
-DEBUG:httpcore.connection:start_tls.started ssl_context=<ssl.SSLContext object at 0x7f6434eff4d0> server_hostname='ai.hiube.ch' timeout=None
-DEBUG:httpcore.connection:start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7f6434eab110>
-DEBUG:httpcore.http11:send_request_headers.started request=<Request [b'POST']>
-DEBUG:httpcore.http11:send_request_headers.complete
-DEBUG:httpcore.http11:send_request_body.started request=<Request [b'POST']>
-DEBUG:httpcore.http11:send_request_body.complete
-DEBUG:httpcore.http11:receive_response_headers.started request=<Request [b'POST']>
-DEBUG:httpcore.http11:receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Server', b'nginx'), (b'Date', b'Mon, 06 Apr 2026 07:22:02 GMT'), (b'Content-Type', b'application/x-ndjson'), (b'Connection', b'close')])
-INFO:httpx:HTTP Request: POST https://ai.hiube.ch:43434/api/chat "HTTP/1.1 200 OK"
-DEBUG:httpcore.http11:receive_response_body.started request=<Request [b'POST']>
-DEBUG:httpcore.http11:receive_response_body.complete
-DEBUG:httpcore.http11:response_closed.started
-DEBUG:httpcore.http11:response_closed.complete
+# Truncated
 WARNING:root:[Human]
 
 You are analyzing network traffic for intrusion detection on interface eth1.
