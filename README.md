@@ -1,5 +1,4 @@
 # Swiss Army Knife Network Sniffer
-@TODO: Add abstract
 
 ## About
 This repository contains all relevant documentation,
@@ -11,8 +10,21 @@ configuration and code for the BFH (Bern University of Applied Sciences) Module 
 
 ### Stakeholders
 - Wenger Hansjürg <wgh1@bfh.ch>
-- Urs Keller <>
-TODO: Ask expert and tutor if we are allowed to them to the readme
+- Urs Keller <urs@revault.ch>
+
+## Repository Structure
+- Documentation: `./docs`
+    - Project 2: `./docs/project2`
+    - Bachelor Thesis: `./docs/thesis`
+- Source Code:
+  - NSAK Framework: `./src`
+    - Core: `./src/core`
+    - CLI: `./src/cli`
+  - NSAK Resource Library: `./lib`
+    - Devices: `./lib/devices`
+    - Drills: `./lib/drills`
+    - Environments: `./lib/environments`
+    - Scenarios: `./lib/scenarios`
 
 ## Documentation
 The project documentation is written in LaTeX and can be found in the `docs/` folder.
@@ -57,9 +69,24 @@ NSAK CLI
 nsak --help
 ```
 
-### NSAK device configuration management
+### NSAK configuration management
 
 ```bash
+# List all subcommands for the config command
+nsak config --help
+
+# List the current configuration
+nsak config get
+
+# List the a config section by key
+nsak config get ai
+
+# Interactively configure the values under the "ai" section key
+nsak config set ai
+
+# Set one specific config
+nsak config set ai.provider <value>
+
 # List all subcommands for the Device resource
 nsak device --help
 
@@ -143,8 +170,6 @@ nsak environment simulate simple_tcp_client_server mitm
 
 ## Development
 
-@TODO: Describe development environment
-
 ### Programming Language
 
 nsak and all scenarios and drills are written in Python.
@@ -201,6 +226,3 @@ GIT pre-commit hooks are set up with [pre-commit](https://pre-commit.com/) to en
 Additional links:
  - ruff pre-commit: https://github.com/astral-sh/ruff-pre-commit
  - mypy pre-commit: https://github.com/pre-commit/mirrors-mypy
-
-## License
-@TODO: Evaluate and add license
