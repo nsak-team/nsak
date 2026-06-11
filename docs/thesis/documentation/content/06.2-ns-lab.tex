@@ -19,7 +19,7 @@
             Multi-Agent (claude-opus-4-7)  & 510 s          & 116,738      & 28          & 53             & 52             & 5/27                     \\
             Unstructured (claude-opus-4-7) & 739 s          & 222,094      & --          & --             & --             & 6/109\textsuperscript{*} \\
             Multi-Agent (qwen3:8b, local)  & ---            & ---          & --          & --             & --             & 0/6                      \\
-            Static Scenario                & 1780 s         & ---          & --          & --             & --             & 1/1\textsuperscritp{**}                      \\
+            Static Scenario                & 1780 s         & ---          & --          & --             & --             & 1/1\textsuperscript{**}                      \\
             \hline
         \end{tabular}
     }
@@ -29,7 +29,7 @@
 
 Table~\ref{tab:overview-nslab} summarises the quantitative benchmark values,  the configurations are discussed below.
 The low \(6/109\) success factor of the unstructured configuration is mostly an infrastructure artifact rather than a model limitation:
-103 of the 109 attempts aborted instantly because the Anthropic \gls{API} usage limit was reached, as the model's guardrail monthly quota got triggered mid-benchmark.
+103 of the 109 attempts aborted instantly because the \gls{Anthropic} \gls{API} usage limit was reached, as the model's guardrail monthly quota got triggered mid-benchmark.
 All six runs that actually reached the model succeeded.
 The static scenario is fully deterministic and produces identical results on every execution, therefore only one run was recorded instead of repeating it multiple times like the \gls{AI} configurations.\\
 

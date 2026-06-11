@@ -142,13 +142,30 @@ As described in the implementation, the prompts were improved iteratively before
 and the optimization against~\mintinline{bash}{qwen3:30b} might improve its performance relative to the other models~\ref{subsec:ai-scenario-prompts}.
 Further investigating the Prompt Engineering aspect of this thesis could be an interesting topic for a future work.
 
+\paragraph{Influence of structured output \& tool calling.}
+In addition to prompts,
+the use of structured output and tool calling are also influencing the model's behavior and quality,
+since they contribute to the context provided to the \gls{LLM}.
+This is underlined by the following observations.
+The high failure rate in the BFH network security lab
+and its resolution by using a scenario with unstructured output,
+strongly suggests that the performance of a model degrades by enforcing structured output.
+The \mintinline{bash}{system_prompt} in Listing~\ref{lst:langchain-agent-init} which is provided to all \gls{AI} scenarios,
+had to be adjusted since smaller \glspl{LLM} sometimes sent emails without being instructed to do so.
+This suggests that the tool's presence is already biasing the \gls{AI} into using it.
+Even though the agent has full access to the \gls{CLI},
+only the frontier model frequently uses other commands than nmap.
+This observation can be attributed to the fact that the description of the \gls{CLI} tool gives instructions on how to use nmap.
+The evaluation itself does not take these influences into account properly,
+which makes it subject to further investigation.
+
 \paragraph{Reliability and success rate.}
 The headline figures report \(n = 10\) \emph{successful} runs,
 but the success factors reveal unreliability.
 In the cyberlab the success factor concludes 5 of 27 attempts for the multi-agent and 6 of 109 runs for the unstructured attempts.
 These two figures stem from different causes, however.
 The multi-agent failures are task failures: the runs completed but returned no structured discovery map, typically because the scan found no open ports or was too restrictive.
-The unstructured failures are almost entirely infrastructure-related: 103 of the 103 failed runs aborted instantly once the Anthropic account hit its monthly \gls{API} quota in the benchmark process.
+The unstructured failures are almost entirely infrastructure-related: 103 of the 103 failed runs aborted instantly once the \gls{Anthropic} account hit its monthly \gls{API} quota in the benchmark process.
 The \gls{AI} scenario is not yet dependable enough for unsupervised operation, and the reported averages reflect a filtered best-case subset.
 
 \paragraph{Incomplete environment and scenario matrix.}

@@ -25,7 +25,7 @@
 
 ~~- Der Prompt wurde als fixe Konstante behandelt, aber seine Gestaltung beeinflusst die Resultate, insbesondere für kleinere Modelle. War der Prompt auf ein bestimmtes Modell optimiert? Wurde er iteriert? Das sollte als Limitation diskutiert werden.~~
 
-- Das Schema des strukturierten Outputs (Feldnamen, Typen) beeinflusst möglicherweise, worauf das Modell beim Scannen achtet. Dieser Einfluss wird nicht diskutiert.
+~~- Das Schema des strukturierten Outputs (Feldnamen, Typen) beeinflusst möglicherweise, worauf das Modell beim Scannen achtet. Dieser Einfluss wird nicht diskutiert.~~
 
 ~~- Bibliographie: Generell fehlen bei vielen Webquellen URLs (z.B. [7], [8], [9], [24], [25], [26], [28], [30], [31]).~~
 
