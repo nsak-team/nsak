@@ -7,8 +7,6 @@ One of the possibilities to avoid this risk was the usage of self-hosted \glsxtr
 Besides eliminating the costs for \glsxtrshort{AI} tokens, at least during the development phase, it also allows the quick evaluation of different \glsxtrshort{AI} Models.
 Depending on the quality and performance of the smaller models running in the self-hosted setup we can consider not using a cloud based \glsxtrshort{LLM} at all.
 
-\todo{Refactor the section: Move all information in their respective sections, etc.}
-
 \section{Hardware Setup}\label{sec:hw_setup}
 
 \begin{table}[h]
@@ -80,7 +78,7 @@ sudo ufw status
 
 \section{Expose Open WebUI and Ollama}\label{sec:expose-openwebui-and-ollama}
 
-For exposing the services from the home network via HTTPS to the internet, we need a domain name which points to the home router.
+For exposing the services from the home network via \gls{HTTP}S to the internet, we need a domain name which points to the home router.
 To achieve this we can use DynDNS, which is provided for free by~\gls{Infomaniak} where the domain \enquote{hiube.ch} was registered, and is supported by the \gls{FRITZ!Box} used in the home network.
 The screenshots~\ref{fig:infomaniak_dyndns_setup} and~\ref{fig:fritzbox_dyndns_setup} are showing the respective configurations.
 
@@ -120,7 +118,7 @@ podman-compose restart swag
     \label{lst:restart-swag-container}
 \end{listing}
 
-\section{Evaluation}\label{sec:evaluation}
+\section{Testing}\label{sec:testing}
 
 For quickly evaluate models and assess their capabilities we can now use the Open WebUI served under \enquote{ai.hiube.ch}.
 The screenshot~\ref{fig:open_webui_evaluation} shows a quick test with \enquote{qwen2.5-coder:7B}.
