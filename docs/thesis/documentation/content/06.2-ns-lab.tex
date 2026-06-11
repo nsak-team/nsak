@@ -14,19 +14,24 @@
     \resizebox{\textwidth}{!}{
         \begin{tabular}{l c c c c c c}
             \hline\hline
-            Configuration & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings & Success Factor \\ [0.5ex]
+            Configuration                  & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings & Success Factor \\ [0.5ex]
             \hline
-            Multi-Agent (claude-opus-4-7)  & 510 s  & 116,738  & 28 & 53 & 52 & 5/27   \\
-            Unstructured (claude-opus-4-7) & 739 s  & 222,094 & -- & -- & -- & 6/109\footnotemark[\getrefnumber{fn:nslab-quota}]  \\
-            Multi-Agent (qwen3:8b, local)  & ---    & ---     & -- & -- & -- & 0/6    \\
-            Static Scenario                & 1780 s & ---     & -- & -- & -- & --     \\
+            Multi-Agent (claude-opus-4-7)  & 510 s          & 116,738      & 28          & 53             & 52             & 5/27                     \\
+            Unstructured (claude-opus-4-7) & 739 s          & 222,094      & --          & --             & --             & 6/109\textsuperscript{*} \\
+            Multi-Agent (qwen3:8b, local)  & ---            & ---          & --          & --             & --             & 0/6                      \\
+            Static Scenario                & 1780 s         & ---          & --          & --             & --             & 1/1\textsuperscritp{**}                      \\
             \hline
         \end{tabular}
     }
     \label{tab:overview-nslab}
 \end{table}
+\vspace{2pt}
 
 Table~\ref{tab:overview-nslab} summarises the quantitative benchmark values,  the configurations are discussed below.
+The low \(6/109\) success factor of the unstructured configuration is mostly an infrastructure artifact rather than a model limitation:
+103 of the 109 attempts aborted instantly because the Anthropic \gls{API} usage limit was reached, as the model's guardrail monthly quota got triggered mid-benchmark.
+All six runs that actually reached the model succeeded.
+The static scenario is fully deterministic and produces identical results on every execution, therefore only one run was recorded instead of repeating it multiple times like the \gls{AI} configurations.\\
 
 
 \subsection{Quantitative Criteria}\label{subsec:quantitative-criteria-cyberlab}
@@ -43,7 +48,7 @@ The multi-agent setup completes in 510\,s on average, while the unstructured out
 requires 739\,s \textthreequartersemdash more than twice as long.
 The extended duration of the unstructured version is due to its tendency to produce lengthy
 free-form responses before each tool invocation.
-The static benchmark scenario needs 1780\,s to enumerate the whole network which exceeds the \gls{AI} configurations by far.\\
+The static benchmark scenario needs 1780\,s to enumerate the whole network which exceeds the \gls{AI} configurations by far.
 \textbf{Note:} Reported averages are calculated exclusively from successful runs, as defined in paragraph~\ref{par:success-factor}.
 Failed runs are excluded from the plotted results and discussed separately.
 The presented average should be interpreted together with the corresponding success factor.
@@ -107,12 +112,12 @@ Three findings serve as quality indicators:
     \resizebox{\textwidth}{!}{
         \begin{tabular}{@{}lccl@{}}
             \toprule
-            \textbf{Model} & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes} \\
+            \textbf{Model}                 & \textbf{Correctness} & \textbf{Hallucination} & \textbf{Notes}                                                                                \\
             \midrule
-            claude-opus-4-7 (multi-agent)       & 7 & 2 & All major structural risks found; \gls{SNMP}, open \gls{DNS} recursion and cloned keys missed \\
-            claude-opus-4-7 (unstructured)      & 9 & 2 & All three discriminating findings surfaced; ESXi host discovered \\
-            qwen3:8b (local, multi-agent)       & 1 & N/A & Zero \gls{CLI} calls; no reconnaissance executed                                              \\
-            Static Scenario (reference)         & 10 & N/A & Deterministic script; exhaustive enumeration; no assessment text \\
+            claude-opus-4-7 (multi-agent)  & 7                    & 2                      & All major structural risks found; \gls{SNMP}, open \gls{DNS} recursion and cloned keys missed \\
+            claude-opus-4-7 (unstructured) & 9                    & 2                      & All three discriminating findings surfaced; ESXi host discovered                              \\
+            qwen3:8b (local, multi-agent)  & 1                    & N/A                    & Zero \gls{CLI} calls; no reconnaissance executed                                              \\
+            Static Scenario (reference)    & 10                   & N/A                    & Deterministic script; exhaustive enumeration; no assessment text                              \\
             \bottomrule
         \end{tabular}
     }
@@ -146,4 +151,4 @@ reached the model -- five before the quota wall and one after -- succeeded.}
 and the substantially higher token cost (mean 222,094 tokens), driven by the unstructured reasoning
 traces produced before each tool call.
 
-\textbf{Qwen3:30b} is not further assessed due to its low success rate, (close to 0\%.
+\textbf{Qwen3:8b} is not further assessed due to its low success rate, (close to 0\%.

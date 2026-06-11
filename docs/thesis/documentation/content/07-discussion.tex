@@ -18,8 +18,8 @@ The evaluation shows that \gls{AI}-assisted reconnaissance is feasible but stron
 dependent on the underlying model.
 As expected, the frontier model \textit{claude-opus-4-7} delivers the most convincing results
 across both environments.
-In the rather small virtual \gls{Containerlab} environment it reaches the highest correctness (9)
-and lowest hallucination (1) scores.
+In the rather small virtual \gls{Containerlab} environment it reaches the highest correctness (8)
+and lowest hallucination (3) scores.
 Next to all discovered findings, the detailed report on how to deal with the flaws provides help, recommendations,
 and presents a plan for the next step to secure the network.
 The extraction of credentials exceeds the basic steps of reconnaissance, which according to MITRE ATT\&CK~\cite{mitreattack}
@@ -61,7 +61,7 @@ on every run.
 All services are discovered issued by an unconditional port sweep, where the \gls{AI} frontier model extracts the same
 hosts and services with a higher duration and token costs.
 However, raw coverage is not an indicator of qualitative results.
-The generalistic way how the engineered scenario was implemented, prevent the extraction of the cleartext credentials,
+The generalistic way the engineered scenario was implemented prevents the extraction of the cleartext credentials,
 does not elaborate the printer's banner mismatch, and produces no severity-rated assessment.
 The wrongly addressed honeypot~\ref{subsec:qualitativ-criteria-containerlab} shows the weakness of \gls{AI} agents.
 The reports must still be proved to be correct.
@@ -111,9 +111,9 @@ The real network exposes a trade-off that the virtual environment does not.
 The unstructured-output configuration issues additional \gls{UDP} scans alongside \gls{TCP} and executes
 \gls{NSE} scripts that the specialised sub-agents omit, surfacing all three discriminating
 findings (\gls{SNMP}, open \gls{DNS} recursion, and the cloned \gls{SSH} host keys).
-The schema constraints helps the multi-agent setup with speed and token usage where the reasoning succeed in enumeration depth.
+The schema constraints help the multi-agent setup with speed and token usage, whereas the unstructured reasoning succeeds in enumeration depth.
 The gain comes at a price: a 5.5\,\% nominal success rate (6 of 109 attempts) and roughly three times the
-token cost (222,094 vs.\ 81,453).
+token cost (222,094 vs.\ 116,738).
 The success rate is, however, distorted by the exhausted \gls{API} quota discussed in
 Section~\ref{subsec:qualitativ-criteria-cyberlab}: 103 of the 109 attempts aborted immediately
 with an \gls{API} usage-limit error rather than failing on the reconnaissance task itself.
@@ -124,7 +124,7 @@ The local \textit{qwen3:8b} is unusable on this scale, executing zero tool calls
 
 First, the \textbf{gain of the token reduction} from decomposition was larger
 than expected.
-A 68\,\% drop for \textit{qwen3:30b} in the containerlab and shows that prompt-context growth,
+A 68\,\% drop for \textit{qwen3:30b} in the containerlab shows that prompt-context growth
 dominates the cost of single-agent reconnaissance for smaller models or
 more complicated environments which results ultimately in larger context.
 
@@ -148,7 +148,7 @@ but the success factors reveal unreliability.
 In the cyberlab the success factor concludes 5 of 27 attempts for the multi-agent and 6 of 109 runs for the unstructured attempts.
 These two figures stem from different causes, however.
 The multi-agent failures are task failures: the runs completed but returned no structured discovery map, typically because the scan found no open ports or was too restrictive.
-The unstructured failures are almost entirely an infrastructure related: 103 of the 103 failed runs aborted instantly once the Anthropic account hit its monthly \gls{API} quota in the benchmark process.
+The unstructured failures are almost entirely infrastructure-related: 103 of the 103 failed runs aborted instantly once the Anthropic account hit its monthly \gls{API} quota in the benchmark process.
 The \gls{AI} scenario is not yet dependable enough for unsupervised operation, and the reported averages reflect a filtered best-case subset.
 
 \paragraph{Incomplete environment and scenario matrix.}
@@ -194,7 +194,7 @@ qualitative results.
     rates, an operator checkpoint or automatic retry on incomplete runs would
     raise dependability to a level acceptable for practical use, and would
     mitigate the silent \enquote{ping-sweep-only} failures.
-    While partly implemented in  we discarded the branch,
+    While partly implemented on branch 310, we discarded it,
     because the agent always tried to use just the recommended tools and did not deliver a more sophisticated result.
 \end{enumerate}
 

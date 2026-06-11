@@ -12,7 +12,7 @@ A static reference scenario serves as the baseline against which all \gls{AI}-dr
 Three models are benchmarked across 10 runs in three environments (\emph{containerlab}, \emph{physical lab}, and \emph{BFH Cyber Lab}):
 a frontier model (\mintinline{bash}{Claude Opus 4.7}),
 an institutionally hosted open-weight model (\mintinline{bash}{gpt-oss:120b}),
-and a locally-run open-source model (\mintinline{bash}{qwen3:30b} via Ollama).
+and a locally-run open-source model (\mintinline{bash}{qwen3:30b} in the Containerlab and the smaller \mintinline{bash}{qwen3:8b} in the BFH lab, via Ollama).
 
 \subsection{Criteria}\label{subsec:criteria}
 
@@ -37,14 +37,14 @@ Qualitative criteria require manual assessment and are scored against the scale 
 \end{itemize}
 
 \paragraph{Success factor}\label{par:success-factor}
-The benchmarks and plots are only presented over the sucessful run selection and the limitation or reliability is mentioned seperatly of the plots.
-A successful run is defined a run: - that does not raise an exception apart from an the api is temporarily disconnected which pauses the loop.
+The benchmarks and plots are only presented over the successful run selection, and the limitation or reliability is mentioned separately from the plots.
+A successful run is defined as a run that does not raise an exception, apart from a temporary API disconnect which pauses the loop.
 The second condition for flagging a run as unsuccessful is that no findings could be presented.
 
 
 
 To fix most of the influencing factors we defined a system prompt and a scenario prompt to set the starting line for all models equally.
-With 3 models $\times$ 3 environments and 1 implemented static scenario $\times$ $n = 10$ runs, this yields 120 measurements for Reconnaissance.
+With 3 models $\times$ 3 environments and 1 implemented static scenario $\times$ $n = 10$ runs, this yields a planned 120 measurements for Reconnaissance.
 
 \subsection{Environments}\label{subsec:environments}
 
@@ -68,7 +68,8 @@ allowing the evaluation to draw conclusions about the suitability of different m
         \hline
         \textbf{Model} & \textbf{Provider} \\
         \hline
-        qwen3:30b & Self-hosted via \gls{Ollama} \\
+        qwen3:30b & Self-hosted via \gls{Ollama} (Containerlab) \\
+        qwen3:8b & Self-hosted via \gls{Ollama} (BFH lab) \\
         gpt-oss:120b & BFH-TI Machine Learning Management Platform \\
         claude-opus-4-7 & \gls{Anthropic} \gls{API} \\
         \hline

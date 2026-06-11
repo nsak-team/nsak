@@ -162,7 +162,7 @@ and at 4 for \textit{qwen3:30b} in both configurations.
 The Static Scenario's 13 services exceed all \gls{AI} models because the script issues
 exhaustive port sweeps unconditionally, while \gls{AI} agents terminate scanning early
 once they reason the network is sufficiently enumerated.
-The static scenario list every host and follows with the services which result in 13 services.
+The static scenario lists every host and follows with the services which result in 13 services.
 The \gls{AI} scenarios consolidate the host information directly into the service rows, so a host
 with open ports is not listed a second time and only the gateway (without open ports) keeps its own
 entry, which adds up to 9 rows.
@@ -183,7 +183,7 @@ single \textit{Critical} finding.
     \caption{Qualitative Evaluation -- ContainerLab (Multi-Agent)}
     \label{tab:qualitative-results-containerlab}
     \small
-    \begin{tabular}{@{}lccl@{}}
+    \begin{tabular}{@{}lcc@{}}
         \toprule
         \textbf{Model}  & \textbf{Correctness} & \textbf{Hallucination} \\
         \midrule
@@ -198,7 +198,7 @@ single \textit{Critical} finding.
 \textit{Claude-opus-4-7} achieves the highest correctness score by consistently identifying
 the critical \gls{LDAP} anonymous bind and extracting the plaintext credentials in every
 single run.
-Furthermore, the agent follow with a correct attack-chain reasoning (credential reuse $\rightarrow$ / lateral movement
+Furthermore, the agent follows with correct attack-chain reasoning (credential reuse $\rightarrow$ lateral movement
 via \gls{SSH}/\gls{SMB}).
 It wrongly characterizes \textit{192.168.10.50} as a honeypot based on the
 Python \textit{BaseHTTPServer} banner behind an HP LaserJet facade, which lowers its correctness score

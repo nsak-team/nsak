@@ -29,8 +29,8 @@ It positions the \gls{NSAK} framework as a single system between the operator (a
 
 Figure~\ref{fig:lean-component} decomposes the framework into its main building blocks.
 The operator interacts with the cli with the framework on top of the core library which manages the functionalities, while
-the resource library (\mintinline{bash}{lib/}, \glsxtrshort{YAML}) and the runtime state (\mintinline{bash}{run/} provide the file based configuration layers described in Section~\ref{sec:configuration-management-concepts}
-The scenario runtime executes both static scenarios which is a fixed set of drills and \gls{AI}-based scenarios.
+the resource library (\mintinline{bash}{lib/}, \glsxtrshort{YAML}) and the runtime state (\mintinline{bash}{run/}) provide the file based configuration layers described in Section~\ref{sec:configuration-management-concepts}.
+The scenario runtime executes both static scenarios, which are a fixed set of drills, and \gls{AI}-based scenarios.
 
 \begin{figure}[H]
     \centering
@@ -142,7 +142,7 @@ Concretely, a simplified network topology comprising a client (Alice) and a serv
 
 While \gls{Docker} and \gls{Podman} provide a general-purpose containerization platform,
 they abstract away most of the lower levels of the network stack and thus lack the support for modeling network topologies.
-In contrast, \gls{Containerlab} builds upon \gls{Docker Compose} and optimize its functionalities for networking purposes~\cite{containerlab}.
+In contrast, \gls{Containerlab} builds upon \gls{Docker Compose} and optimizes its functionalities for networking purposes~\cite{containerlab}.
 
 The primary advantages of \gls{Containerlab} are:
 \begin{itemize}
@@ -150,7 +150,7 @@ The primary advantages of \gls{Containerlab} are:
     \item Support multiple interfaces nodes which closely resemble real-world network devices (in comparison \gls{Docker} typically operates with a single network interface).
     \item The rapid creation, extension and teardown of complete network environments, ensure that each experiment starts from a clean and controlled state.
 \end{itemize}
-In summary, while OCI containers serves as the underlying container engine, \gls{Containerlab} provides a higher-level network simulation.
+In summary, while OCI containers serve as the underlying container engine, \gls{Containerlab} provides a higher-level network simulation.
 
 \subsection{Additional \gls{AI} Related Concepts}\label{subsec:additional-ai-related-concepts}
 

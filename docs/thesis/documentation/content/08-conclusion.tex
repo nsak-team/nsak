@@ -21,7 +21,7 @@ Writing professionally and maintaining a consistent \enquote{red thread} through
 
 \subsection{Lukas}\label{subsec:personal-section-lukas}
 
-Initially very skeptic of the actual capabilities and usefulness of \glspl{LLM},
+Initially very skeptical of the actual capabilities and usefulness of \glspl{LLM},
 a year ago I would not have guessed that I will write an \gls{AI} focused bachelors thesis.
 This changed drastically with the rapid improvement of the models and especially the rise of \gls{AI} agents.
 Suddenly, combining the newly found interest with our previous work seemed to be the logical choice,
@@ -44,10 +44,10 @@ Its main strength lies in its interactive mode, where additional input from the 
 
 One key finding is that multi-agent task decomposition improves the performance of smaller models by reducing context complexity and increasing consistency.
 Despite these advances, hallucinations remain a limitation, making supervised operation with a human reviewer the proposed deployment model.
-A promising direction to mitigate this is a retrieval-augmented generation \gls{RAG} flow that grounds the agent's assessment in external knowledge before a finding is reported.
+A promising direction to mitigate this is a \gls{RAG} flow that grounds the agent's assessment in external knowledge before a finding is reported~\cite{lewis2020rag}.
 Meaning the claim is verified by evidence rather than by parametric memory.
 A possible scenario could look as follows:
-A scripted scenario first produces a verifiable structure result; this result, together with evidence from \gls{RAG} sources such as \gls{CVE} fees or \gls{NSE} documentation, grounds the agent's assessment.
+A scripted scenario first produces a verifiable structured result; this result, together with evidence from \gls{RAG} sources such as \gls{CVE} feeds or \gls{NSE} documentation, grounds the agent's assessment.
 The agent then either creates a report or triggers further scenarios.
 This could combine the deterministic, human engineered scenarios and the agent's reasoning efficiently.
 

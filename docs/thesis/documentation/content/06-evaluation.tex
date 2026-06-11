@@ -17,7 +17,7 @@ Table~\ref{tab:evaluated-scenarios} presents an overview of the evaluated scenar
 
 \begin{table}[h]
     \centering
-    \begin{tabularx}{\linewidth}{lXXX}
+    \begin{tabularx}{\linewidth}{lXX}
         \hline
         \textbf{Scenario} & \textbf{Type} & \textbf{Output} \\
         \hline
@@ -37,14 +37,14 @@ The static scenario is limited to a fixed execution order of drills (Section~\re
 which also results in a more predictable exception based error handling.
 The agent driven scenarios on the other hand can choose a broader palette of \gls{LangChain} tools (e.g., \gls{CLI}, host configuration) depending on the situation
 and the error handling can become quite intransparent, because a model might retry failed tool calls, start to hallucinate or even decides to skip entire steps.
-Additionally, there are three variations of the \gls{AI} scenario with different implementation details,
-with slightly different implementation details compensating different limitations.
+Additionally, there are three variations of the \gls{AI} scenario,
+each with slightly different implementation details compensating for different limitations.
 The characteristics and which limitations they try to address are described in the following paragraphs:
 
 \paragraph{Type}
-As already described the reference scenario does not incorporate on an \gls{LLM},
+As already described the reference scenario does not rely on an \gls{LLM},
 but on a \textbf{Static} sequential implementation.
-A \textbf{Single Agent} scenario in non-interactive mode rely on one prompt to achieve its goal.
+A \textbf{Single Agent} scenario in non-interactive mode relies on one prompt to achieve its goal.
 This can result in a long chain of tool calls, all contributing to the context.
 To address this issue and optimize for smaller models, we implemented the \textbf{Multi Agent} variant described in~\ref{subsubsec:multi-agent-scenario-ai-reconnaissance}.
 
@@ -56,5 +56,5 @@ This is probably caused by the increased context size and complexity resulting f
 Because all models struggled to produce any valid responses in the BFH network security lab,
 we developed an \gls{AI} scenario variant with \textbf{Unstructured} output on the spot~\ref{subsubsec:unstructured-output-scenario-ai-reconnaissance}.
 This resolved the issue and the agents could successfully generate reports on their findings,
-but we could not relly on the automation provided by the benchmarking suite,
+but we could not rely on the automation provided by the benchmarking suite,
 which resulted in much more manual labor.
