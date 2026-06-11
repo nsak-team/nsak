@@ -46,11 +46,7 @@ As already described the reference scenario does not incorporate on an \gls{LLM}
 but on a \textbf{Static} sequential implementation.
 A \textbf{Single Agent} scenario in non-interactive mode rely on one prompt to achieve its goal.
 This can result in a long chain of tool calls, all contributing to the context.
-To address this issue and optimize for smaller models, we implemented the \textbf{Multi Agent} variants.
-This implementation tries to reduce the context size with a divide-and-conquer approach
-~\textthreequartersemdash~the prompt is split into multiple steps and each result is fed into the next agent with the next instruction~\textthreequartersemdash~
-which probably results in longer runtimes.
-For large models this approach could be even harmful, as they probably don't have a problem with the context size and even call the same tools in multiple agents.
+To address this issue and optimize for smaller models, we implemented the \textbf{Multi Agent} variant described in~\ref{subsubsec:multi-agent-scenario-ai-reconnaissance}.
 
 \paragraph{Output}
 While \textbf{Structured} output comes with many benefits,
@@ -58,7 +54,7 @@ especially for quantitative criteria,
 it seems to result in a high failure rate for \glspl{LLM}~\textthreequartersemdash~especially for smaller models.
 This is probably caused by the increased context size and complexity resulting from the generated grammar required for validating the data structure.
 Because all models struggled to produce any valid responses in the BFH network security lab,
-we developed an \gls{AI} scenario variant with \textbf{Unstructured} output on the spot.
+we developed an \gls{AI} scenario variant with \textbf{Unstructured} output on the spot~\ref{subsubsec:unstructured-output-scenario-ai-reconnaissance}.
 This resolved the issue and the agents could successfully generate reports on their findings,
 but we could not relly on the automation provided by the benchmarking suite,
 which resulted in much more manual labor.

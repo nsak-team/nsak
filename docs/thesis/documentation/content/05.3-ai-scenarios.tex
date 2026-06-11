@@ -251,8 +251,6 @@ This makes it the primary entry point for ad-hoc \gls{AI}-assisted tasks where n
 The operator can guide the agent step by step, observe its reasoning, and issue follow-up instructions until they type an empty line or \mintinline{bash}{exit}.
 Listing~\ref{lst:scenario-ai-agent-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-agent-yaml} shows its \gls{YAML} interface declaration.
 
-
-
 \subsection{Scenario: AI Reconnaissance}\label{subsec:scenario-ai-reconnaissance}
 
 The \gls{AI} Reconnaissance scenario automates host and service discovery on a specified network interface.
@@ -262,9 +260,24 @@ If the \mintinline{python}{interactive} flag is set, the last step invites the o
 
 This prompt-driven approach means the scenario does not contain any network scanning logic itself
 ~\textthreequartersemdash~the agent decides which nmap flags to use, how to interpret results, and what to scan next.
-Listing~\ref{lst:scenario-ai-recon-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-recon-yaml} shows its \gls{YAML} interface declaration.
+Listing~\ref{lst:scenario-ai-recon-py} shows the scenario implementation and listing~\ref{lst:scenario-ai-recon-yaml} shows its \gls{YAML} interface declaration.
 
+\subsubsection{Scenario: Multi Agent AI Reconnaissance}\label{subsubsec:multi-agent-scenario-ai-reconnaissance}
 
+This implementation tries to reduce the context size with a divide-and-conquer approach
+~\textthreequartersemdash~the prompt is split into multiple steps and each result is fed into the next agent with the next instruction~\textthreequartersemdash~
+which probably results in longer runtimes.
+For large models this approach could be even harmful,
+since they don't have a problem with large context sizes and might call the same tools in every agent.
+Listings~\ref{lst:scenario-ai-recon-multi-agent-py}~\ref{lst:scenario-ai-recon-multi-agent-py-continued-1}~\ref{lst:scenario-ai-recon-multi-agent-py-continued-2} are displaying the multi-agent approach in detail.
+
+\subsubsection{Scenario: Unstructured Output AI Reconnaissance}\label{subsubsec:unstructured-output-scenario-ai-reconnaissance}
+
+The increased complexity and added context of structured output leads to very high error rates in larger network environments,
+such as the BFH network security lab~\ref{sec:eval-cyberlab}.
+This variant of the \gls{AI} Reconnaissance Scenario was implemented ad-hoc for trying to resolve this issue,
+by dropping the concept of structured output.
+Listing~\ref{lst:scenario-ai-recon-unstructured-output-py} is illustrating the code of the scenario.
 
 \subsection{Scenario: AI Intrusion Detection}\label{subsec:scenario-ai-intrusion-detection}
 
@@ -278,3 +291,17 @@ Both the host discovery table and the packet \gls{CSV} are injected into a struc
 each with source/destination \gls{IP} and \gls{MAC}, protocol, and the reason for suspicion, and to identify any malicious hosts.
 By constraining the number of events the prompt keeps the agent's output concise and actionable.
 Listing~\ref{lst:scenario-ai-ids-py} shows the full scenario entrypoint and listing~\ref{lst:scenario-ai-ids-yaml} shows its \gls{YAML} interface declaration.
+
+\subsection{\gls{AI} Scenario Prompts}\label{subsec:ai-scenario-prompts}
+
+As stated in the concepts chapter,
+this thesis does not focus explicitly on \enquote{Prompt Engineering}~\ref{subsubsec:prompt-promptengineering-concept}.
+During the implementation and testing phase,
+the prompt templates where regularly adjusted to subjectively improve the results.
+Since we primarily used \mintinline{bash}{qwen3:30b} during this phase,
+the prompts were implicitly optimized for this model.
+This should improve the overall results in the evaluation,
+as this is the smallest model to be used.
+It is expected that larger models will also perform well on the same inputs~\textthreequartersemdash~Had the prompts been optimized for the larger models instead, the smaller models might have yielded worse results.
+The prompts used for the respective scenarios can be found in the appendix,
+in the \mintinline{python}{PROMPT_TEMPLATE} variable at the beginning of Listings~\ref{lst:scenario-ai-recon-py}~\ref{lst:scenario-ai-recon-multi-agent-py}~\ref{lst:scenario-ai-recon-unstructured-output-py}~\ref{lst:scenario-ai-ids-py}.

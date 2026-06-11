@@ -2,7 +2,7 @@
 
 - ~~Was hat NSAK vor dieser Arbeit bereits gekonnt? Was habt ihr neu gebaut vs. übernommen? (Section 3.1 ist sehr knapp und zeigt das nicht klar.)~~
 
-- Eventuell C4 Architektur-Diagramm, von den relevanten Teilen? Das System hat viele Schichten (CLI, Config, Drills, Scenarios, AI Agent, LangChain) — eine visuelle Übersicht würde helfen.
+~~- Eventuell C4 Architektur-Diagramm, von den relevanten Teilen? Das System hat viele Schichten (CLI, Config, Drills, Scenarios, AI Agent, LangChain) — eine visuelle Übersicht würde helfen.~~
 
 - ~~Seite 4: Querverweise "2.1.12.1.22.1.3": Sections 2.1.1, 2.1.2, 2.1.3 ohne Trennzeichen zusammengeschrieben, Formatierungsfehler.~~
 
@@ -23,7 +23,7 @@
 
 ~~- Seite 50, eine Theorie warum nur 6 von 109 Versuchen funktionierten? Was ist die "nicht-deterministische" Komponente?~~
 
-- Der Prompt wurde als fixe Konstante behandelt, aber seine Gestaltung beeinflusst die Resultate, insbesondere für kleinere Modelle. War der Prompt auf ein bestimmtes Modell optimiert? Wurde er iteriert? Das sollte als Limitation diskutiert werden.
+~~- Der Prompt wurde als fixe Konstante behandelt, aber seine Gestaltung beeinflusst die Resultate, insbesondere für kleinere Modelle. War der Prompt auf ein bestimmtes Modell optimiert? Wurde er iteriert? Das sollte als Limitation diskutiert werden.~~
 
 - Das Schema des strukturierten Outputs (Feldnamen, Typen) beeinflusst möglicherweise, worauf das Modell beim Scannen achtet. Dieser Einfluss wird nicht diskutiert.
 
