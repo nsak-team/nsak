@@ -48,10 +48,7 @@ Network Discovery Result Map:
 | Interface   | MAC               | IP           | Port   | Protocol   | State   | Service   | Product   | Version   |
 |-------------|-------------------|--------------|--------|------------|---------|-----------|-----------|-----------|
 | eth1        | ea:35:69:e3:1d:1a | 10.10.100.10 |        |            |         |           |           |           |
-| eth1        | 72:31:39:c6:67:e6 | 10.10.100.20 |        |            |         |           |           |           |
-| eth1        | f2:f7:61:1a:62:f5 | 10.10.100.30 |        |            |         |           |           |           |
-| eth1        | f2:f7:61:1a:62:f5 | 10.10.100.20 |        |            |         |           |           |           |
-| eth1        | f2:f7:61:1a:62:f5 | 10.10.100.10 |        |            |         |           |           |           |
+# Truncated
 
 Captured packets (CSV):
 frame.number,eth.src,eth.dst,ip.src,ip.dst,tcp.dstport,udp.dstport,frame.protocols,frame.len
@@ -64,9 +61,6 @@ Identify at most 5 suspicious events. For each, output:
 
 Be concise. Do not repeat packet data.
 
-
 WARNING:root:[AI]
-
-
 WARNING:nsak.core.scenario.scenario_manager:EXEC SCENARIO: AI Intrusion Detection
 ```
