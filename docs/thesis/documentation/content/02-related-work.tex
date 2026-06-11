@@ -221,7 +221,7 @@ Consequently, from now on this thesis focus on the more general concept of \text
 Another limitation of tool usage is that tools must be described to the \gls{LLM}, which
 increases input token consumption and the required context size.
 Depending on the model this can lead to a significant filling of the context window,
-degrading the overall performance and quality of the responses. \todo{citation reference}
+degrading the overall performance and quality of the responses~\cite{langchain_context-engineering}
 The architectural decision is not to remove tools completely,
 but instead to expose a minimum set and an overview of available capabilities.
 An \gls{LLM} can now request a tool description from the agent,

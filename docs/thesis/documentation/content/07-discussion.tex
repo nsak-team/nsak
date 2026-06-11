@@ -112,8 +112,11 @@ The unstructured-output configuration issues additional \gls{UDP} scans alongsid
 \gls{NSE} scripts that the specialised sub-agents omit, surfacing all three discriminating
 findings (\gls{SNMP}, open \gls{DNS} recursion, and the cloned \gls{SSH} host keys).
 The schema constraints helps the multi-agent setup with speed and token usage where the reasoning succeed in enumeration depth.
-The gain comes at a price: a 5.5\,\% success rate (6 of 109 attempts) and roughly three times the
+The gain comes at a price: a 5.5\,\% nominal success rate (6 of 109 attempts) and roughly three times the
 token cost (222,094 vs.\ 81,453).
+The success rate is, however, distorted by the exhausted \gls{API} quota discussed in
+Section~\ref{subsec:qualitativ-criteria-cyberlab}: 103 of the 109 attempts aborted immediately
+with an \gls{API} usage-limit error rather than failing on the reconnaissance task itself.
 The local \textit{qwen3:8b} is unusable on this scale, executing zero tool calls and producing no reconnaissance.
 
 
@@ -139,8 +142,9 @@ Since the prompt
 The headline figures report \(n = 10\) \emph{successful} runs,
 but the success factors reveal unreliability.
 In the cyberlab the success factor concludes 5 of 27 attempts for the multi-agent and 6 of 109 runs for the unstructured attempts.
-The runs were interrupted because of high token usage and missing comparison with other models, only the frontier model
-could perform the tasks, though prone to errors.
+These two figures stem from different causes, however.
+The multi-agent failures are task failures: the runs completed but returned no structured discovery map, typically because the scan found no open ports or was too restrictive.
+The unstructured failures are almost entirely an infrastructure related: 103 of the 103 failed runs aborted instantly once the Anthropic account hit its monthly \gls{API} quota in the benchmark process.
 The \gls{AI} scenario is not yet dependable enough for unsupervised operation, and the reported averages reflect a filtered best-case subset.
 
 \paragraph{Incomplete environment and scenario matrix.}

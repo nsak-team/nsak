@@ -21,12 +21,12 @@
 - ~~- Seite 68, Glossary fehlt~~
 ~~- Seite 56: "show that teh operator must still be alert" → the~~
 
-- Seite 50, eine Theorie warum nur 6 von 109 Versuchen funktionierten? Was ist die "nicht-deterministische" Komponente?
+~~- Seite 50, eine Theorie warum nur 6 von 109 Versuchen funktionierten? Was ist die "nicht-deterministische" Komponente?~~
 
 - Der Prompt wurde als fixe Konstante behandelt, aber seine Gestaltung beeinflusst die Resultate, insbesondere für kleinere Modelle. War der Prompt auf ein bestimmtes Modell optimiert? Wurde er iteriert? Das sollte als Limitation diskutiert werden.
 
 - Das Schema des strukturierten Outputs (Feldnamen, Typen) beeinflusst möglicherweise, worauf das Modell beim Scannen achtet. Dieser Einfluss wird nicht diskutiert.
 
-- Bibliographie: Generell fehlen bei vielen Webquellen URLs (z.B. [7], [8], [9], [24], [25], [26], [28], [30], [31]).
+~~- Bibliographie: Generell fehlen bei vielen Webquellen URLs (z.B. [7], [8], [9], [24], [25], [26], [28], [30], [31]).~~
 
-- Verwendung von AI/Zitieren/Korrekturen/Ehrlichkeitserklärung: Gibt es dafür einen BFH Standard? In der Einleitung schreiben, ob und wie AI zur Erstellung der Thesis verwendet wurde.
+~~- Verwendung von AI/Zitieren/Korrekturen/Ehrlichkeitserklärung: Gibt es dafür einen BFH Standard? In der Einleitung schreiben, ob und wie AI zur Erstellung der Thesis verwendet wurde.~~

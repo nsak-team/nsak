@@ -17,7 +17,7 @@
             Configuration & Avg.\ Duration & Avg.\ Tokens & Avg.\ Hosts & Avg.\ Services & Avg.\ Findings & Success Factor \\ [0.5ex]
             \hline
             Multi-Agent (claude-opus-4-7)  & 510 s  & 116,738  & 28 & 53 & 52 & 5/27   \\
-            Unstructured (claude-opus-4-7) & 739 s  & 222,094 & -- & -- & -- & 6/109  \\
+            Unstructured (claude-opus-4-7) & 739 s  & 222,094 & -- & -- & -- & 6/109\footnotemark[\ref{fn:nslab-quota}]  \\
             Multi-Agent (qwen3:8b, local)  & ---    & ---     & -- & -- & -- & 0/6    \\
             Static Scenario                & 1780 s & ---     & -- & -- & -- & --     \\
             \hline
@@ -47,6 +47,7 @@ The static benchmark scenario needs 1780\,s to enumerate the whole network which
 \textbf{Note:} Reported averages are calculated exclusively from successful runs, as defined in paragraph~\ref{par:success-factor}.
 Failed runs are excluded from the plotted results and discussed separately.
 The presented average should be interpreted together with the corresponding success factor.
+The
 
 
 \begin{figure}[H]
@@ -136,8 +137,13 @@ When successful (six of 109 attempts), the model issued \gls{UDP} scans
 alongside \gls{TCP} and discovered all the flaws listed above.
 The hallucination score is equally 2: all assessment statements are grounded in concrete scan
 artifacts.
-The main limitation of this configuration is its very low success rate (5.5\,\%) and the
-substantially higher token cost (mean 222,094 tokens), driven by the unstructured reasoning
+The main limitation of this configuration is its very low success rate (5.5\,\%)\footnote{\label{fn:nslab-quota}%
+This rate is largely an infrastructure issue or handling issue rather than a measure of reconnaissance quality.
+All 103 failed attempts aborted instantly with an identical HTTP~400 \texttt{BadRequestError}
+(\enquote{You have reached your specified API usage limits}). Because the benchmark loop retries until ten
+\emph{successful} runs are collected without capping the number of attempts. All six runs that actually
+reached the model -- five before the quota wall and one after -- succeeded.}
+and the substantially higher token cost (mean 222,094 tokens), driven by the unstructured reasoning
 traces produced before each tool call.
 
 \textbf{Qwen3:30b} is not further assessed due to its low success rate, (close to 0\%.
