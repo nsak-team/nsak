@@ -2,12 +2,12 @@
 
 This section describes the design and implementation of the milestone \gls{AI} Scenarios~\ref{subsubsec:milestone-ai-scenarios},
 which is based on the user story map workshop \gls{AI} Purple Team~\ref{sec:nsak-scenario-ai-purple-team}.
-In the workshop we defined the features which such a scenario may provide and categorized them in \enquote{Must}, \enquote{Could} and \enquote{Should}.
-Because of time constraints, we set the focused only on the user stories categorized as \enquote{Must}.
+In the workshop the features of such a scenario were defined and categorized them in \enquote{Must}, \enquote{Could} and \enquote{Should}.
+Because of time constraints, the focused is only on the user stories categorized as \enquote{Must}.
 The main goal is to implement an \gls{AI} reconnaissance scenario, which is described in the~\ref{subsec:scenario-ai-reconnaissance}.
 But on the way it made sense to also create an intermediary scenario which can run custom prompts~\ref{subsec:scenario-ai-agent}.
-Further, we already explored the \gls{AI} based intrusion detection scenario~\ref{subsec:scenario-ai-intrusion-detection}
-which should be seen as proof of concept, because the corresponding milestone and goals are categorized as \enquote{Should}.
+The \gls{AI} based intrusion detection scenario~\ref{subsec:scenario-ai-intrusion-detection} is implemented as a proof of concept,
+but has not been finalized, since the corresponding goal is categorized as \enquote{Should}.
 
 \subsection{\gls{AI} Agent}\label{subsec:ai-scenarios-implementation-ai-agent}
 
@@ -24,7 +24,8 @@ The project team chose \href{https://www.langchain.com/}{LangChain} as the agent
     \item Extensive documentation and active community support
 \end{itemize}
 
-For the integration into the \gls{NSAK} framework we decided to implement an \mintinline{python}{AiAgent} class as the central abstraction,
+For the integration into the \gls{NSAK} framework,
+the \mintinline{python}{AiAgent} class was implemented as the central interface,
 which wraps a \mintinline{python}{BaseChatModel} together with a set of LangChain tools and delegates the reasoning loop to LangChain's built-in \mintinline{python}{create_agent()}.
 
 \subsubsection{AI Configuration}\label{subsubsec:ai-configuration}
@@ -148,29 +149,33 @@ but it is also why the kill switch described in~\ref{subsec:ai-scenarios-impleme
 
 \subsubsection{LangChain Tool: Human Interaction Hook}\label{subsubsec:langchain-tool-human-interaction-hook}
 
-We implemented a simple LangChain python tool which allows a human operator to interact with the agent~\ref{lst:langchain-tool-human-interaction-hook}.
+A simple LangChain python tool was implemented,
+which allows a human operator to interact with the agent~\ref{lst:langchain-tool-human-interaction-hook}.
 If enabled via the \mintinline{python}{interactive} flag when calling the \mintinline{python}{create_ai_agent()} function,
 the agent can pause its execution and ask the operator a question, then incorporate the answer into its next reasoning step.
 
 
 \subsubsection{LangChain Middleware: Human in the Loop (HITL)}\label{subsubsec:langchain-midleware-human-in-the-loop}
 
-After the implementation we read in the LangChain documentation,
+After the implementation we discovered in the LangChain documentation,
 that it has its own middleware for allowing human interactions,
 called \href{https://docs.langchain.com/oss/python/langchain/human-in-the-loop}{Human-in-the-loop}.
 We speculated that this solution is more sophisticated than the few lines of python we wrote and tried to refactor our implementation accordingly.
-It turned out, that it required a lot more changes than we first thought and the proof-of-concept did not work as stable as the current tool based implementation.
-As we focus on the agents non-interactive mode for the evaluation,
-we don't want to spend more time on this potential improvement.
+It turned out that it required a lot more changes than first thought
+and the proof-of-concept did not work as stable as the current tool based implementation.
+As the focus is on the agents non-interactive mode for the evaluation,
+we do not want to spend more time on this potential improvement.
 For these reasons we decided not to merge the code and let the implementation as is.
 The branch containing the proof-of-concept is still available under~\href{https://gitlab.ti.bfh.ch/gausf1-vonal3/swiss-army-knife-network-sniffer/-/tree/310-human-in-the-loop?ref_type=heads}{310-human-in-the-loop}.
 
 \subsubsection{LangChain Agent Chat UI}\label{subsubsec:langchain-agent-chat-ui}
 
-We did not add the~\href{https://docs.langchain.com/oss/python/langchain/ui}{LangChain Agent Chat UI} because we made some implicit architecture decisions which prevent easy integration.
-
-If we decide to implement it regardless, we would need to redesign and refactor the \gls{AI} Agent implementation, for example by switching to a callback-based output model.
-A useful reference for such a migration is available at \href{https://www.youtube.com/watch?v=lInrwVnZ83o}{this LangChain UI tutorial}.
+The~\href{https://docs.langchain.com/oss/python/langchain/ui}{LangChain Agent Chat UI} is not being implemented,
+because some implicit architecture decisions were made,
+which prevent easy integration.
+The implementation would require redesigning and refactoring the \gls{AI} Agent implementation,
+for example by switching to a callback-based output model.
+A useful reference for such a migration is available on YouTube: \href{https://www.youtube.com/watch?v=lInrwVnZ83o}{LangChain UI tutorial}.
 
 \subsection{Logging}\label{subsec:ai-scenarios-implementation-logging}
 
@@ -195,7 +200,8 @@ a self-hosted logging backend was configured using Grafana Loki and the \mintinl
 On the client side the \href{https://pypi.org/project/python-logging-loki/}{python-logging-loki} package was installed
 and provided log handler was added to existing setup.
 We went for this method over system logging agents such as promtail,
-because this way we can provide more metadata in form of \enquote{tags} on the application level,
+since this way,
+more metadata can be provided in the form of \enquote{tags} on the application level,
 instead of relying on of the parsing of text based logs.
 
 \subsection{E-Mail Alerting}\label{subsec:ai-scenarios-implementation-e-mail-alerting}
@@ -234,7 +240,7 @@ could lead to a wide range of issues:
     \item The \gls{AI}-Agent starts an attack against a production network.
 \end{itemize}
 
-For these reasons we want to be able to kill a specific or all scenarios as fast as possible.
+For these reasons it should be possible to kill a specific or all scenarios as fast as possible.
 As a first measure, the project team decided to add this functionality as simple \gls{CLI} commands:
 
 \begin{itemize}
@@ -298,7 +304,7 @@ As stated in the concepts chapter,
 this thesis does not focus explicitly on \enquote{Prompt Engineering}~\ref{subsubsec:prompt-promptengineering-concept}.
 During the implementation and testing phase,
 the prompt templates where regularly adjusted to subjectively improve the results.
-Since we primarily used \mintinline{bash}{qwen3:30b} during this phase,
+Since primarily \mintinline{bash}{qwen3:30b} was used during this phase,
 the prompts were implicitly optimized for this model.
 This should improve the overall results in the evaluation,
 as this is the smallest model to be used.

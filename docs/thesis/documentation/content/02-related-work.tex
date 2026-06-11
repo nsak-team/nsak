@@ -145,7 +145,7 @@ device~\ref{subsec:device-concept} and the reference hardware evaluated in the p
 The scenarios~\ref{subsec:scenario-concept} and drills~\ref{subsec:drill-concept} are implemented as simple Python scripts,
 with a few conventions instead of extensive boilerplate code or complicated concepts.
 Even though the framework can not compete in terms of maturity and library size,
-the modular design allows to incorporate the tools of other frameworks as drills if we see fit.
+the modular design allows to incorporate the tools of other frameworks as drills.
 An example could be, to use an \gls{AI}-Enhanced Network Discovery Scenario,
 which provides the necessary information to configure a Metasploit attack that leads to an attack operation in Caldera or an Atomic Red Team detection script.
 Further, the framework provides container based isolation, scenario simulation in virtual environments and flexible positioning in physical labs.
@@ -261,7 +261,7 @@ a framework which has a strong focus on networking and is able to run on small e
 In the context of \gls{AI}, the term \enquote{harness} is used to describe the software layer surrounding an agent that provides guardrails,
 tooling, configuration, logging, monitoring, and other supporting functionality required for secure and reliable operation.
 As \gls{NSAK} already acts as a harness for network focused cybersecurity scenarios~\ref{subsec:nsak-usp},
-we can implement an \gls{AI} agent and reuse the already implemented tooling.
+it is straightforward to implement an \gls{AI} agent and reuse the tooling.
 \paragraph{Familiarity}
 The existing familiarity with the \gls{NSAK} framework, its Python based library, and development workflow,
 which allows us to efficiently extend the core and develop new scenarios and drills for the library.

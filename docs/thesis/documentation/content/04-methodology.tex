@@ -38,12 +38,11 @@ Qualitative criteria require manual assessment and are scored against the scale 
 
 \paragraph{Success factor}\label{par:success-factor}
 The benchmarks and plots are only presented over the successful run selection, and the limitation or reliability is mentioned separately from the plots.
-A successful run is defined as a run that does not raise an exception, apart from a temporary API disconnect which pauses the loop.
+A successful run is defined as a run that does not raise an exception, apart from a temporary \gls{API} disconnect which pauses the loop.
 The second condition for flagging a run as unsuccessful is that no findings could be presented.
 
-
-
-To fix most of the influencing factors we defined a system prompt and a scenario prompt to set the starting line for all models equally.
+To fix most of the influencing factors a system and scenario prompt were defined,
+to set the starting line for all models equally.
 With 3 models $\times$ 3 environments and 1 implemented static scenario $\times$ $n = 10$ runs, this yields a planned 120 measurements for Reconnaissance.
 
 \subsection{Environments}\label{subsec:environments}

@@ -23,7 +23,7 @@ Overriding \mintinline{bash}{NSAK_BASE_PATH} is the primary mechanism to run \gl
 The runtime configuration is defined as the \enquote{Config} dataclass in \mintinline{bash}{src/nsak/core/configuration/configuration.py} and holds all state that can change during normal operation, currently the \mintinline{bash}{debug} flag and the active \enquote{Device}.
 It is persisted as a \gls{YAML} file at \mintinline{bash}{run/config.yaml} and loaded on every \gls{CLI} invocation.
 
-To avoid loading the configuration on import, the module-level \mintinline{bash}{config} object is wrapped in a \mintinline{python}{lazy_object_proxy.Proxy}.
+To avoid loading the configuration on import, the module-level config object is wrapped in a \mintinline{python}{lazy_object_proxy.Proxy}.
 The proxy defers the actual \mintinline{python}{Config.load()} call until the object is first accessed.
 Since the root \gls{CLI} group imports \mintinline{bash}{config} on every command invocation as displayed in listing~\ref{lst:nsak-cli-init}, this ensures the configuration is always initialized before any command logic runs.
 If \mintinline{bash}{run/config.yaml} does not yet exist, \mintinline{python}{Config.init()} is called automatically to create a default configuration and write it to disk, eliminating the need for manual setup on first run.
@@ -34,11 +34,12 @@ Custom \gls{YAML} representers are registered for \mintinline{python}{IPInterfac
 Listing~\ref{lst:nsak-config-yaml} shows an example of the persisted \mintinline{bash}{run/config.yaml} after loading the \mintinline{bash}{bananapi_r4} device.
 
 
-
 \subsection{Device Configuration Management}\label{subsec:device-configuration-management}
 
-In the context of \enquote{Project 2}\ref{sec:predecessor-project-project-2}, this resource type was already defined conceptually, and the~\gls{BananaPI R4} was added as an example in the library under \mintinline{bash}{lib/devices/bananapi_r4/}.
-But the resource type was not actually added to the \gls{NSAK} core, and to manage device configurations, we need to implement the Device resource type first.
+In the context of \enquote{Project 2}\ref{sec:predecessor-project-project-2}, this resource type was already defined conceptually,
+and the~\gls{BananaPI R4} was added as an example in the library under \mintinline{bash}{lib/devices/bananapi_r4/}.
+The resource type was not actually added to the \gls{NSAK} core,
+so the Device resource type has to be implemented in the context of this project.
 
 \subsubsection{Create New Device Resource Type}\label{subsubsec:create-new-device-resource-type}
 
@@ -124,7 +125,7 @@ With the example of the \mintinline{bash}{EnvironmentLoader}, the diff below~\re
     \label{fig:environment-loader-base-class-refactor-diff}
 \end{figure}
 The structure of all resources was aligned by nesting the resource under their respective resource type key (\mintinline{bash}{scenarios}, \mintinline{bash}{drills}, \mintinline{bash}{environments}, and \mintinline{bash}{devices}),
-so that we could merge all \gls{YAML} resource files into a single library data structure without key conflicts.
+so that all \gls{YAML} resources can be merged into a single data structure without key conflicts.
 In the \gls{YAML} specification~\ref{lst:mergeable-resource-yaml-specification}, the new base structure derived from the device resource~\ref{subsubsec:create-new-device-resource-type} is illustrated.
 All existing resource \gls{YAML} files in the library were adjusted accordingly, and thanks to the introduction of the \mintinline{bash}{ResourceLoader} base class,
 the required adjustments in the code were minimal.

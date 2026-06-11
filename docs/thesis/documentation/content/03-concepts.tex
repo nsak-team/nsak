@@ -184,8 +184,8 @@ which simplifies the comparison and evaluation of the results.
 This term describes the practice of designing and refining the input provided to an \gls{LLM} to improve the quality of the output.
 This includes structuring instructions, providing examples, and defining output constraints.
 In agentic systems, the system prompt is the primary mechanism through which an agent's behavior, scope, and reasoning style are defined.
-Even though we did not set our focus on Prompt Engineering,
-we implicitly used it to improve and fine tune the agents behavior during the implementation and evaluation phase of the thesis.
+Even though this work does not focus on Prompt Engineering,
+it is implicitly used to improve and fine tune the agents behavior during the implementation and testing phase of the thesis.
 
 \subsubsection{Reasoning}\label{subsubsec:reasoning-concept}
 In the context of \glspl{LLM}, reasoning refers to the model's ability to decompose a problem into intermediate steps and derive a conclusion from them.
@@ -197,8 +197,8 @@ which is relevant during the implementation and evaluation phase of the thesis.
 \subsubsection{\gls{RAG}}\label{subsubsec:rag-concept}
 Retrieval Augmented Generation is a technique that extends an \gls{LLM} by retrieving relevant documents or knowledge at inference time and including them in the context window alongside the user prompt~\cite{lewis2020rag}.
 This allows the model to ground its responses in external, up-to-date, or domain-specific information without requiring retraining.
-We did not implement a \gls{RAG} system in the \gls{AI} based scenarios,
-because the evaluation is focused on the pure tool calling capabilities of the current models.
+This project does not establish \gls{RAG} systems for \gls{AI} based scenarios,
+since the evaluation is focused on the tool calling capabilities of the current models.
 
 The concepts introduced in this chapter form the foundation for the decisions made throughout the rest of the thesis.
 The following chapter defines the methodology, specifying the evaluation setup, scoring criteria, and test environments used to assess the implementation presented in Chapter 5.
