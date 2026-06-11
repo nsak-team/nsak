@@ -251,6 +251,8 @@ This makes it the primary entry point for ad-hoc \gls{AI}-assisted tasks where n
 The operator can guide the agent step by step, observe its reasoning, and issue follow-up instructions until they type an empty line or \mintinline{bash}{exit}.
 Listing~\ref{lst:scenario-ai-agent-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-agent-yaml} shows its \gls{YAML} interface declaration.
 
+
+
 \subsection{Scenario: AI Reconnaissance}\label{subsec:scenario-ai-reconnaissance}
 
 The \gls{AI} Reconnaissance scenario automates host and service discovery on a specified network interface.
@@ -261,6 +263,8 @@ If the \mintinline{python}{interactive} flag is set, the last step invites the o
 This prompt-driven approach means the scenario does not contain any network scanning logic itself
 ~\textthreequartersemdash~the agent decides which nmap flags to use, how to interpret results, and what to scan next.
 Listing~\ref{lst:scenario-ai-recon-py} shows the scenario entrypoint and listing~\ref{lst:scenario-ai-recon-yaml} shows its \gls{YAML} interface declaration.
+
+
 
 \subsection{Scenario: AI Intrusion Detection}\label{subsec:scenario-ai-intrusion-detection}
 
