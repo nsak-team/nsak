@@ -1,0 +1,40 @@
+sequenceDiagram
+    actor Operator
+    participant Recon as Multi-Agent Recon
+    participant A1 as Agent 1<br/>Discovery
+    participant A2 as Agent 2<br/>Enumeration
+    participant A3 as Agent 3<br/>Assessment
+    participant Tools as Tools<br/>(nmap, drills)
+    participant Target as Target Network
+
+    Operator->>Recon: Task + scope
+    activate Recon
+
+    Note over Recon,A3: divide-and-conquer:<br/>each step is a fresh agent with its own context
+
+    Recon->>A1: find hosts and services
+    activate A1
+    A1->>Tools: host discovery + port scan
+    Tools->>Target: scan
+    Target-->>Tools: hosts, services
+    Tools-->>A1: result
+    A1-->>Recon: hosts and services (structured)
+    deactivate A1
+
+    Recon->>A2: enumerate the found services
+    activate A2
+    A2->>Tools: targeted NSE scripts
+    Tools->>Target: enumerate
+    Target-->>Tools: versions, findings
+    Tools-->>A2: result
+    A2-->>Recon: enriched findings (structured)
+    deactivate A2
+
+    Recon->>A3: assess discovery + findings
+    activate A3
+    Note over A3: reasons over both results,<br/>no tools needed
+    A3-->>Recon: assessment report (markdown)
+    deactivate A3
+
+    Recon-->>Operator: hosts, services, findings + assessment
+    deactivate Recon

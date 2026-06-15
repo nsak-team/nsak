@@ -1,0 +1,21 @@
+sequenceDiagram
+    actor Operator
+    participant Agent as AI Agent (LLM)
+    participant Tools as Tools<br/>(nmap, drills, CLI)
+    participant Target as Target Network
+
+    Operator->>Agent: Task + scope + output schema
+    activate Agent
+
+    loop until task is complete
+        Agent->>Agent: 1. Plan next step (reasoning)
+        Agent->>Tools: 2. Call a tool
+        activate Tools
+        Tools->>Target: run action
+        Target-->>Tools: raw result
+        Tools-->>Agent: 3. Observe result
+        deactivate Tools
+    end
+
+    Agent-->>Operator: Structured report<br/>(findings, severity, next steps)
+    deactivate Agent

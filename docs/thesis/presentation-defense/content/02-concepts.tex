@@ -1,0 +1,32 @@
+\begin{frame}{NSAK as AI Harness}
+    \framesubtitle{The framework as the agent's execution environment}
+
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.55\textwidth}
+            The agent does not run standalone --\\ \textbf{NSAK is the harness around it}:
+            \vspace{0.4em}
+            \begin{itemize}[<+->]
+                \item<1->[\faServer] \textbf{Execution host} \scriptsize Device at a strategic network position, isolated in a container
+                \item<2->[\faCogs] \textbf{Drills as tools} \scriptsize every drill auto-wrapped as a type-safe LangChain tool
+                \item<3->[\faLayerGroup] \textbf{Scenarios as entrypoints} \scriptsize AI scenarios run interactive, multi and single agent
+                \item<4->[\faSlidersH] \textbf{Configuration} \scriptsize provider, model and credentials via runtime config
+                \item<5->[\faPowerOff] \textbf{Safety \& observability} \scriptsize kill switch, structured results, Grafana / Loki logging
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \onslide<6->{
+                \centering
+                \footnotesize
+                \begin{block}{Reconnaissance in the attack chain}
+                    \scriptsize
+                    Host discovery $\rightarrow$ port scanning $\rightarrow$ service enumeration
+                    $\rightarrow$ (credential access / lateral movement)
+                \end{block}
+
+                \vspace{0.6em}
+                {\scriptsize\textit{The agent reuses NSAK building blocks instead of ad-hoc scripts.}}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}

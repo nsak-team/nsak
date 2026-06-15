@@ -1,0 +1,48 @@
+sequenceDiagram
+    actor User
+    participant Scenario as AI Recon Scenario
+    participant Factory as create_ai_agent()
+    participant Agent as AiAgent
+    participant LC as create_agent<br/>(LangGraph ReAct)
+    participant Model as ChatModel<br/>(PROVIDER_MAP)
+    participant Tools as LangChain Tools
+    participant Target as Target Network
+
+    User->>Scenario: nsak scenario run ai-reconnaissance
+    activate Scenario
+
+    Scenario->>Factory: create_ai_agent(response_format=Result,<br/>load_drill_tools, load_mcp_tools)
+    activate Factory
+    Note right of Factory: reads config.ai, assembles tools<br/>cli_tool, host_configuration, send_email<br/>(+ drills, MCP, human_interaction_hook)
+
+    Factory->>Agent: AiAgent(provider, model, tools, response_format)
+    activate Agent
+    Agent->>Model: create_model() via PROVIDER_MAP<br/>(+ UsageCallback)
+    Agent->>LC: create_agent(model, tools, middleware,<br/>system_prompt, response_format)
+    Note right of Agent: middleware TrackToolCallMiddleware<br/>response_format wrapped in ToolStrategy (gpt-oss)
+    Agent-->>Factory: agent
+    deactivate Agent
+    Factory-->>Scenario: AiAgent
+    deactivate Factory
+
+    Scenario->>LC: ainvoke({messages: [prompt]})
+    activate LC
+    loop ReAct loop (until done)
+        LC->>Model: reason / plan next step
+        Model-->>LC: tool call
+        LC->>Tools: cli_tool("nmap ...") / drill
+        activate Tools
+        Tools->>Target: execute scan / drill
+        Target-->>Tools: raw output
+        Tools-->>LC: result (tracked by middleware)
+        deactivate Tools
+        Note over LC,Model: UsageCallback.on_llm_end<br/>tracks token usage
+    end
+
+    LC->>Model: format final answer
+    Model-->>LC: structured output<br/>(response_format schema)
+    LC-->>Scenario: {messages, structured_response}
+    deactivate LC
+
+    Scenario-->>User: ReconnaissanceScenarioResult + report
+    deactivate Scenario

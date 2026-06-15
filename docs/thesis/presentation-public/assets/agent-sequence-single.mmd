@@ -1,0 +1,40 @@
+sequenceDiagram
+    actor Operator
+    participant Agent as AI Agent (LLM)
+    participant Tools as LangChain Tools<br/>(cli_tool, drills)
+    participant Target as Target Network
+
+    Operator->>Agent: Task + scope + output schema<br/>(system prompt sets purple-team context)
+    activate Agent
+
+    Note over Agent: 1. Bootstrap situational awareness
+    Agent->>Tools: host_configuration()
+    activate Tools
+    Tools-->>Agent: interfaces, target / mgmt IPs
+    deactivate Tools
+
+    loop Reasoning loop (until enough data)
+        Agent->>Agent: Plan next step
+
+        Note over Agent,Target: 2. Host discovery
+        Agent->>Tools: cli_tool("nmap -sn ...")
+        activate Tools
+        Tools->>Target: probe hosts
+        Target-->>Tools: live hosts
+        Tools-->>Agent: result
+        deactivate Tools
+
+        Note over Agent,Target: 3. Port scan and service enumeration
+        Agent->>Tools: cli_tool("nmap -sV --script ...")
+        activate Tools
+        Tools->>Target: scan ports / run NSE scripts
+        Target-->>Tools: services, versions, findings
+        Tools-->>Agent: result
+        deactivate Tools
+
+        Agent->>Agent: Interpret result and re-plan
+    end
+
+    Note over Agent: 4. Format final answer against schema<br/>(structured output)
+    Agent-->>Operator: ReconnaissanceScenarioResult<br/>(hosts, services, findings, severity, next steps)
+    deactivate Agent

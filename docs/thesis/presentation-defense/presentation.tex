@@ -1,0 +1,78 @@
+\documentclass[
+	ngerman,%globale Übergabe der Hauptsprache
+%	logofile=example-image, %Falls die Logo Dateien nicht vorliegen
+	authorontitle=true,
+	]{bfhbeamer}
+
+
+%\usepackage[main=ngerman]{babel}
+
+% Der folgende Block ist nur bei pdfTeX auf Versionen vor April 2018 notwendig
+\usepackage{iftex}
+\ifPDFTeX
+\usepackage[utf8]{inputenc}%kompatibilität mit TeX Versionen vor April 2018
+\fi
+\usepackage{bytefield}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{todonotes}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{svg}
+\svgsetup{inkscapelatex=false}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{tabto}
+
+%Makros für Formatierungen der Doku
+%Im Allgemeinen nicht notwendig!
+\let\code\texttt
+
+\title{Network Swiss Army Knife (NSAK) }
+\subtitle{Bachelor Thesis -- Integrating Agentic AI for Network Reconnaissance}
+\author[]{Lukas von Allmen (vonal3) and Frank Gauss (gausf1)}
+\institute{Bern University of Applied Sciences}
+\titlegraphic*{\includegraphics{{assets/nsak_title_new}}}%is only used with BFH-graphic and BFH-fullgraphic
+
+%Activate the output of a frame number:
+\setbeamertemplate{section page}[BFH-ruled]
+\setbeamertemplate{page number in head/foot}[framenumber]
+\AtBeginSection{\sectionpage}
+
+\begin{document}
+
+%\maketitle
+
+%second title variant
+%\setbeamertemplate{title page}[BFH-Orange]
+
+%\maketitle
+
+\setbeamertemplate{title page}[BFH-graphic]
+\maketitle
+
+%\setbeamertemplate{title page}[BFH-fullgraphic]
+%\maketitle
+
+\section{Introduction}\label{sec:introduction}
+\input{content/01-introduction}
+
+\section{Background and Concepts}\label{sec:background-and-concepts}
+\input{content/02-concepts}
+
+\section{Implementation}\label{sec:implementation}
+\input{content/03-ai-integration}
+
+\section{Evaluation Setup}\label{sec:evaluation-setup}
+\input{content/04-evaluation-setup}
+
+\section{Results}\label{sec:results}
+\input{content/05-results}
+
+\section{Discussion and Conclusion}\label{sec:discussion-and-conclusion}
+\input{content/06-discussion}
+
+\end{document}

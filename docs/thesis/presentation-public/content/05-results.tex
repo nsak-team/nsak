@@ -1,0 +1,79 @@
+\begin{frame}{Containerlab -- Multi-Agent Benchmark}
+    \framesubtitle{Containerlab Findings}
+    \centering
+    \begin{tikzpicture}
+        % Erstes SVG
+        \node (img1) at (0,0) {%
+            \uncover<1->{%
+                \includesvg[width=0.6\linewidth]{assets/figures/containerlab/benchmark_tokens_vs_duration_single_agent}%
+            }%
+        };
+        % Zweites SVG -- halb über das erste gelegt
+        \node (img2) at ([xshift=0.30\linewidth, yshift=-0.6cm]img1.center) {%
+            \uncover<2->{%
+                \includesvg[width=0.40\linewidth,height=0.5\textheight,keepaspectratio]{assets/figures/containerlab/benchmark_services_multi_agent}%
+            }%
+        };
+    \end{tikzpicture}
+
+    \uncover<3->{
+        \vspace{0.2em}
+        \begin{itemize}
+            \item \footnotesize Decomposition: \texttt{qwen3:30b} drops tokens \textbf{--68\%} and duration \textbf{--30\%}.
+            \item \footnotesize \texttt{claude-opus-4-7} keeps identical discovery quality (slight +13\% token overhead).
+        \end{itemize}
+    }
+\end{frame}
+%
+%\begin{frame}{Containerlab -- Qualitative Results}
+%    \framesubtitle{The discriminator: extracting the LDAP cleartext credentials}
+%
+%    \begin{columns}[T,onlytextwidth]
+%        \begin{column}{0.54\textwidth}
+%            \scriptsize
+%            \begin{itemize}
+%                \item \textbf{claude-opus-4-7} extracts the credentials in \textbf{every run} + correct attack-chain reasoning (reuse $\rightarrow$ lateral movement). Wrongly calls the printer a honeypot.
+%                \item \textbf{gpt-oss:120b} extracts creds in $\sim$half the runs; \textbf{fabricates CVE IDs}.
+%                \item \textbf{qwen3:30b} discovers hosts/services but rates LDAP ``Low'' risk in 9/10 runs -- \textbf{misses the critical finding}.
+%                \item \textbf{Static} never performs the anonymous bind -- credentials stay unextracted despite full port coverage.
+%            \end{itemize}
+%        \end{column}
+%        \begin{column}{0.46\textwidth}
+%            \vspace{0.6em}
+%            \footnotesize
+%            \begin{itemize}
+%                \item Only the \textbf{frontier model} reaches the critical cleartext credentials.
+%                \item \textbf{SNMP} probed by nobody (only TCP sweeps); DMZ host outside the target subnet -- unreached.
+%            \end{itemize}
+%
+%        \end{column}
+%    \end{columns}
+%
+%    \vspace{0.3em}
+%    \footnotesize\textbf{Trade-off:} static = breadth \& determinism; AI = \textbf{interpretive depth} (severity-rated assessment, next steps).
+%\end{frame}
+
+
+%\begin{frame}{Containerlab -- Vulnerability Coverage}
+%
+%
+%\end{frame}
+
+\begin{frame}{Network Security Lab -- Multi-Agent Benchmark}
+    \framesubtitle{NSlab - Findings}
+    \centering
+    \begin{tikzpicture}
+        % Erstes SVG
+        \node (img1) at (0,0) {%
+            \uncover<1->{%
+                \includesvg[width=0.6\linewidth]{assets/figures/cyber-lab/benchmark_tokens_vs_duration_ns_lab}%
+            }%
+        };
+        % Zweites SVG -- halb über das erste gelegt
+        \node (img2) at ([xshift=0.30\linewidth, yshift=-0.6cm]img1.center) {%
+            \uncover<2->{%
+                \includesvg[width=0.4\linewidth,height=0.5\textheight,keepaspectratio]{assets/figures/cyber-lab/benchmark_services_ns_lab}%
+            }%
+        };
+    \end{tikzpicture}
+\end{frame}

@@ -1,0 +1,51 @@
+sequenceDiagram
+    actor User
+    participant Scenario as Multi-Agent Recon<br/>run()
+    participant A1 as Agent 1<br/>network_discovery
+    participant A2 as Agent 2<br/>enumerate_services
+    participant A3 as Agent 3<br/>assessment
+    participant Tools as LangChain Tools
+    participant Target as Target Network
+
+    User->>Scenario: nsak scenario run ai-reconnaissance-multi-agent
+    activate Scenario
+
+    Note over Scenario,A3: divide-and-conquer:<br/>each step is a fresh create_ai_agent() with its own context
+
+    Scenario->>A1: create_ai_agent(response_format=NetworkDiscoveryTable)<br/>ainvoke(discovery prompt)
+    activate A1
+    loop ReAct loop
+        A1->>Tools: host_configuration() / cli_tool("nmap -sn ...")
+        activate Tools
+        Tools->>Target: discover subnets, hosts, services
+        Target-->>Tools: raw output
+        Tools-->>A1: result
+        deactivate Tools
+    end
+    Note right of A1: if structured_response is None<br/>fallback json.loads into NetworkDiscoveryTable
+    A1-->>Scenario: NetworkDiscoveryTable
+    deactivate A1
+
+    Scenario->>A2: create_ai_agent(response_format=EnumerateServicesResult)<br/>ainvoke(enumerate prompt + discovery table)
+    activate A2
+    loop ReAct loop
+        A2->>Tools: cli_tool("nmap --script ...") NSE
+        activate Tools
+        Tools->>Target: enumerate discovered services
+        Target-->>Tools: NSE output
+        Tools-->>A2: result
+        deactivate Tools
+    end
+    A2-->>Scenario: EnumerateServicesResult
+    deactivate A2
+
+    Scenario->>A3: create_ai_agent()<br/>ainvoke(assessment prompt + both tables)
+    activate A3
+    Note right of A3: reasons over both results<br/>no response_format
+    A3-->>Scenario: markdown assessment
+    deactivate A3
+
+    Note over Scenario: aggregate usage.tokens and<br/>tools_called over A1, A2, A3
+
+    Scenario-->>User: AIReconnaissanceScenarioResult<br/>(tables + assessment + tokens)
+    deactivate Scenario

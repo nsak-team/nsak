@@ -1,0 +1,29 @@
+sequenceDiagram
+    actor Operator
+    participant Agent as AI Agent<br/>(orchestrator + reasoning)
+    participant Eng as Engineered Drill / Scenario<br/>(deterministic, reproducible)
+    participant Target as Target Network
+
+    Note over Operator,Target: Future work: seamless switch between<br/>engineered execution and agentic reasoning
+
+    Operator->>Agent: goal (e.g. assess and harden the network)
+    activate Agent
+
+    loop per attack-chain step (recon, enumeration, credential access, ...)
+        Note over Agent,Target: implemented part: deterministic step
+        Agent->>Eng: run the next engineered drill
+        activate Eng
+        Eng->>Target: execute (scan / check / exploit)
+        Target-->>Eng: raw result
+        Eng-->>Agent: structured result (reproducible)
+        deactivate Eng
+
+        Note over Agent: agent part: reason over result,<br/>assess and propose next step
+
+        Note over Operator,Agent: human interaction
+        Agent->>Operator: present findings + proposed next step
+        Operator-->>Agent: approve / adjust / stop
+    end
+
+    Agent-->>Operator: final attack-chain report<br/>(findings, severity, remediation)
+    deactivate Agent

@@ -33,14 +33,13 @@
 
 \title{Network Swiss Army Knife (NSAK) }
 \subtitle{Bachelor Thesis -- Integrating Agentic AI for Network Reconnaissance}
-\author[]{Lukas von Allmen (vonal3) and Frank Gauss (gausf1)}
+\author[]{Lukas von Allmen and Frank Gauss}
 \institute{Bern University of Applied Sciences}
 \titlegraphic*{\includegraphics{{assets/nsak_title_new}}}%is only used with BFH-graphic and BFH-fullgraphic
 
 %Activate the output of a frame number:
 \setbeamertemplate{section page}[BFH-ruled]
 \setbeamertemplate{page number in head/foot}[framenumber]
-\AtBeginSection{\sectionpage}
 
 \begin{document}
 
@@ -54,20 +53,24 @@
 \setbeamertemplate{title page}[BFH-graphic]
 \maketitle
 
+\AtBeginSection{\sectionpage}
 %\setbeamertemplate{title page}[BFH-fullgraphic]
 %\maketitle
+\begin{frame}{Overview}
+\tableofcontents
+\end{frame}
 
 \section{Introduction}\label{sec:introduction}
 \input{content/01-introduction}
 
-\section{Background and Concepts}\label{sec:background-and-concepts}
-\input{content/02-concepts}
-
 \section{Implementation}\label{sec:implementation}
-\input{content/03-ai-integration}
+\input{content/02-implementation}
 
 \section{Evaluation Setup}\label{sec:evaluation-setup}
-\input{content/04-evaluation-setup}
+\input{content/03-evaluation-setup}
+
+\section{Ai Integration}\label{sec:ai-integration}
+\input{content/04-ai-integration}
 
 \section{Results}\label{sec:results}
 \input{content/05-results}

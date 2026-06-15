@@ -1,0 +1,67 @@
+\begin{frame}{Key Findings}
+    \framesubtitle{Takeaways across both environments}
+
+% --- Slide 1: only left column ---
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.5\textwidth}
+            \textbf{\faCheckCircle~~What works}
+            \begin{itemize}
+                \item \scriptsize Even smaller models can autonomously run \textbf{standard red-team reconnaissance}
+                \item \scriptsize \textbf{Multi-agent decomposition} helps smaller models (--68\% tokens for \texttt{qwen3:30b})
+                \item \scriptsize AI delivers \textbf{depth}: assessment, prioritized findings, remediation
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+        \end{column}
+    \end{columns}
+
+    \vspace{0.5em}
+
+% --- Slide 2: right column appears ---
+    \begin{onlyenv}<2->
+        \begin{columns}[T,onlytextwidth]
+            \begin{column}{0.5\textwidth}
+            \end{column}
+
+            \begin{column}{0.5\textwidth}
+                \textbf{\faExclamationTriangle~~What limits it}
+                \begin{itemize}
+                    \item \scriptsize \textbf{High failure rate} -- best-case subset
+                    \item \scriptsize \textbf{Hallucinations}: fabricated CVEs, honeypots
+                \end{itemize}
+            \end{column}
+        \end{columns}
+    \end{onlyenv}
+
+\end{frame}
+
+
+\begin{frame}{Recommendations and Future Work}
+    \framesubtitle{}
+
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.5\textwidth}
+            \textbf{Recommendations}
+            \begin{itemize}
+                \item \scriptsize \textbf{Match model tier to task} -- frontier model for autonomous recon
+                \item \scriptsize \textbf{Multi-agent} for smaller / self-hosted models
+                \item \scriptsize \textbf{Hybrid pipeline}: static breadth + AI depth (+ RAG)
+                \item \scriptsize \textbf{Human-in-the-loop} + retry on incomplete runs
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \textbf{Future work}
+            \begin{itemize}
+                \item \scriptsize \textbf{Dynamic tool calling} -- expose only relevant tools
+                \item \scriptsize \textbf{Guardrails \& sandboxing} -- scope restriction for production
+                \item \scriptsize Robust \textbf{HITL middleware}
+                \item \scriptsize \textbf{Broader attack-chain} coverage beyond reconnaissance
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\section[Demo \& Questions]{Demo: Agentic Reconnaissance in Action\\~\\ Questions?}\label{sec:demo-and-questions}
