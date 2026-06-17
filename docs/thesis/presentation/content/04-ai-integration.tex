@@ -1,28 +1,42 @@
-\begin{frame}
-    \begin{enumerate}
-        \item Provider Model und Agent
-        \item Tool calling (Langchain Tools) (MCP) (human interaction hook) (cli) (draw io) (send-mail)
-        \item 1. Single Agent interactive unstructured output
-        \item 2. Single Agent Reconnaissance unstructured output
-        \item 3. POC Blueteam intrusion detection - not followed time and scope - unstructured output
-        \item 4. Single Agent reconnaissance structure output (context-window, grammar -> why structured output create larger grammar)
-        \item 5. Multi Agent reconnaissance structured output (issue with smaller models) () Containerlab evalutation smaller model
-        \item 6. Multi Agent reconnaissance unstructured output
-    \end{enumerate}
+%\begin{frame}{AI Integration}
+%    \framesubtitle{Configuration Management}
+%
+%    \centering
+%    \includegraphics[width=1.0\textwidth]{assets/ai_integration/ai_implementation_1}
+%\end{frame}
+%
+%\begin{frame}{AI Integration}
+%    \framesubtitle{Abstractions: Agent \& Model Provider}
+%
+%    \centering
+%    \includegraphics[width=1.0\textwidth]{assets/ai_integration/ai_implementation_2}
+%\end{frame}
+%
+%\begin{frame}{AI Integration}
+%    \framesubtitle{Scenario: Interactive AI Agent (Unstructured output)}
+%
+%    \centering
+%    \includegraphics[width=1.0\textwidth]{assets/ai_integration/ai_implementation_3}
+%\end{frame}
+
+\begin{frame}{AI Integration}
+    \framesubtitle{Tool Calling: MCP Client}
+
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/ai_integration/ai_implementation_4}
 \end{frame}
 
-\begin{frame}{Concept 1: Taming the Context}
-    \framesubtitle{From one overloaded agent to a focused pipeline}
+\begin{frame}{Problem 1: MCP Overhead}
 
     \begin{columns}[T,onlytextwidth]
         \begin{column}{0.5\textwidth}
             \onslide<1-> {
                 \textbf{\faExclamationTriangle~~The problem}
+                ~\\
                 \begin{itemize}
-                    \item \scriptsize One agent does everything in a single long conversation
-                    \item \scriptsize Every scan output piles up $\rightarrow$ the \textbf{context keeps growing}
-                    \item \scriptsize Smaller models lose the thread and start failing
-                    \item \scriptsize Cost and runtime become hard to predict
+                    \item MCP servers like draw.io provide a lot of tools
+                    \item Each tool, and it's description contributes to the context
+                    \item Setups with small context windows are getting overwhelmed and do not call tools at all
                 \end{itemize}
             }
         \end{column}
@@ -30,95 +44,60 @@
         \begin{column}{0.5\textwidth}
             \onslide<2->{
                 \textbf{\faProjectDiagram~~Our solution}
+                ~\\
                 \begin{itemize}
-                    \item \scriptsize Split the task into \textbf{discovery $\rightarrow$ enumeration $\rightarrow$ assessment}
-                    \item \scriptsize Each phase is a \textbf{fresh agent} with its own, small context
-                    \item \scriptsize We pass on only the \textbf{distilled result}, not the whole history
+                    \item Disable the MCP based tools per default
+                    \item Implement tools as simple python functions with LangChain's @tool decorator
                 \end{itemize}
             }
         \end{column}
     \end{columns}
+\end{frame}
 
-    \onslide<3->{
-        \vspace{1.2em}
-        \footnotesize \faInfoCircle~~Trade-off: Improves results when the context window is almost full, but adds orchestration overhead.
-    }
+\begin{frame}{AI Integration}
+    \framesubtitle{Tool Calling: LangChain Tools}
+
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/ai_integration/ai_implementation_5}
 \end{frame}
 
 
-\begin{frame}{Concept 2: Keeping the Operator in Control}
-    \framesubtitle{The agent proposes -- the human decides on risky actions}
+\begin{frame}{Problem 2: Too Many Tools}
 
-    Merge with previous slide
     \begin{columns}[T,onlytextwidth]
         \begin{column}{0.5\textwidth}
-            \textbf{\faExclamationTriangle~~The problem}
-            \begin{itemize}
-                \item \scriptsize An autonomous agent can run \textbf{any} command or send reports on its own
-                \item \scriptsize In a security context that is unacceptable without oversight
-            \end{itemize}
-        \end{column}
-
-        \begin{column}{0.5\textwidth}
-            \onslide<3->{
-                \textbf{\faHandPaper~~Our solution}
+            \onslide<1-> {
+                \textbf{\faExclamationTriangle~~The problem}
+                ~\\
                 \begin{itemize}
-                    \item \scriptsize The agent \textbf{pauses} before sensitive actions and asks for a decision
-                    \item[\faTerminal] \scriptsize Shell commands $\rightarrow$ \textbf{approve} before they run
-                    \item[\faEnvelope] \scriptsize Sending a report $\rightarrow$ \textbf{approve / reject}
-                    \item[\faComments] \scriptsize Open questions $\rightarrow$ operator \textbf{responds} in free text
-                \end{itemize}
-            }
-        \end{column}
-    \end{columns}
-
-    \onslide<4->{
-        \vspace{0.4em}
-        \footnotesize \faRedo~~After the decision the agent resumes exactly where it stopped -- no restart, no lost progress.
-    }
-\end{frame}
-
-\begin{frame}
-    Merge with previous slide
-    \begin{columns}
-        \begin{column}{0.5\textwidth}
-            \uncover<1-> {
-                \textbf{Single Agent}
-                \begin{itemize}
-                    \item \scriptsize One prompt to achieve the goal
-                    \item \scriptsize Long chain of tool calls, \textbf{growing context}
-                    \item \scriptsize Smaller models fail as context fills up
-                \end{itemize}
-            }
-
-            \vspace{0.6em}
-            \uncover<2-> {
-                \textbf{Multi Agent} \textit{\scriptsize divide-and-conquer}
-                \begin{itemize}
-                    \item \scriptsize Prompt split into steps; result fed into next agent
-                    \item \scriptsize Smaller, focused context per step
-                    \item \scriptsize Helps small models; may add overhead for frontier
+                    \item There are a lot of drills which where automatically registered as tools
+                    \item Each tool, and it's description contributes to the context
+                    \item Setups with small context windows are getting overwhelmed and do not call tools at all
                 \end{itemize}
             }
         \end{column}
 
         \begin{column}{0.5\textwidth}
-            \uncover<3-> {
-                \begin{block}{Structured vs.\ Unstructured output}
-                    \scriptsize
-                    \textbf{Structured} (schema-constrained): great for automated metrics,
-                    but \textbf{high failure rate} -- especially for small models.
-                    \vspace{0.3em}\\
-                    \textbf{Unstructured}: needed in the BFH lab where all models failed to
-                    produce valid structured output; freed the agent but required manual evaluation.
-                \end{block}
+            \onslide<2->{
+                \textbf{\faProjectDiagram~~Our solution}
+                ~\\
+                \begin{itemize}
+                    \item Use only a small set of tools
+                    \item Investigate \enquote{Dynamic Tool Selection} (not finished)
+                \end{itemize}
             }
         \end{column}
     \end{columns}
 \end{frame}
 
+\begin{frame}{AI Integration}
+    \framesubtitle{Scenario: Single AI Agent (Structured output)}
 
-\begin{frame}{Multi-Agent Reconnaissance Pipeline}
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/ai_integration/ai_implementation_6}
+\end{frame}
+
+\begin{frame}{Problem 3: Taming the Context}
     \framesubtitle{Discovery $\rightarrow$ enumeration $\rightarrow$ assessment, each a fresh agent}
 
     \begin{figure}
@@ -126,4 +105,82 @@
         \includegraphics[width=\linewidth,height=0.78\textheight,keepaspectratio]{assets/multi-agent-sequence}
         \label{multi-agent-sequence-diagram}
     \end{figure}
+\end{frame}
+
+%\begin{frame}{Problem 3: Taming the Context}
+%    \framesubtitle{From one overloaded agent to a focused pipeline}
+%
+%    \begin{columns}[T,onlytextwidth]
+%        \begin{column}{0.5\textwidth}
+%            \onslide<1-> {
+%                \textbf{\faExclamationTriangle~~The problem}
+%                ~\\
+%                \begin{itemize}
+%                    \item One agent does everything in a single long conversation
+%                    \item Every scan output contributes to the context size
+%                    \item Setups with small context windows are degrading in quality and start failing
+%                \end{itemize}
+%            }
+%        \end{column}
+%
+%        \begin{column}{0.5\textwidth}
+%            \onslide<2->{
+%                \textbf{\faProjectDiagram~~Our solution}
+%                ~\\
+%                \begin{itemize}
+%                    \item Split the task into \textbf{discovery $\rightarrow$ enumeration $\rightarrow$ assessment}
+%                    \item Each phase is a \textbf{fresh agent} with its own, smaller context
+%                    \item We pass on only the \textbf{distilled result}, not the whole history
+%                \end{itemize}
+%            }
+%        \end{column}
+%    \end{columns}
+%
+%    \onslide<3->{
+%        \vspace{1.2em}
+%        \footnotesize \faInfoCircle~~Trade-off: Improves results when the context window is almost full, but adds orchestration overhead.
+%    }
+%\end{frame}
+
+\begin{frame}{AI Integration}
+    \framesubtitle{Scenario: Multi AI Agent (Structured output)}
+
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/ai_integration/ai_implementation_7}
+\end{frame}
+
+\begin{frame}{Problem 4: Structured Output Complexity}
+
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.5\textwidth}
+            \onslide<1-> {
+                \textbf{\faExclamationTriangle~~The problem}
+                ~\\
+                \begin{itemize}
+                    \item The failure rate skyrocketed in the BFH network security lab
+                    \item Not all models/providers support structured output equally well
+                    \item Native: Data structures are converted into grammars used in token sampling
+                    \item Tool Calling: Data structures are converted into tools
+                \end{itemize}
+            }
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \onslide<2->{
+                \textbf{\faProjectDiagram~~Our solution}
+                ~\\
+                \begin{itemize}
+                    \item Simplifying the data structure also simplifies the grammar/tool (was not enough)
+                    \item We implemented an AI scenario without structured output on the spot
+                \end{itemize}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{AI Integration}
+    \framesubtitle{Scenario: Multi AI Agent (Unstructured output)}
+
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/ai_integration/ai_implementation}
 \end{frame}
