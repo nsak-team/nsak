@@ -2,7 +2,42 @@
     \framesubtitle{\small 3 LLMs \quad\textbullet\quad 2 Network Environments \quad\textbullet\quad Static Reference Baseline}
 
     \centering
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \uncover<1-> {
+                \textbf{LLMs}
+                \begin{itemize}
+                    \item qwen3: Self-hosted via Ollama \\
+                    \item gpt-oss: BFH-TI MLMP \\
+                    \item claude-opus-4-7: Anthropic API \\
+                \end{itemize}
+            }
 
+            \vspace{0.6em}
+            \uncover<2-> {
+                \textbf{Network Environments}
+                \begin{itemize}
+                    \item Reproducible Containerlab Network
+                    \item BFH Network Security LAB
+                \end{itemize}
+            }
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \uncover<3-> {
+                \textbf{Reconnaissance Scenario}
+                \begin{itemize}
+                    \item Accepts an interface and/or a subnet as arguments
+                    \item discover\_network\_interfaces: \\
+                    Iterates all interfaces if none is provided
+                    \item dhcp\_request: Gets an IP via DHCP if needed
+                    \item discover\_hosts: arp-scan \& nmap
+                    \item enumerate\_services: nmap NSE scripts
+                    \item Returns a ReconnaissanceScenarioResult
+                \end{itemize}
+            }
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Reproducible Test Environment}
