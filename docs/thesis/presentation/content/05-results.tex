@@ -1,15 +1,21 @@
-\begin{frame}{Containerlab -- Multi-Agent Benchmark}
-    \framesubtitle{Containerlab Findings}
+\begin{frame}{Containerlab -- Multi-Agent vs Single-Agent}
+    \framesubtitle{Tokens vs.\ duration -- multi-agent first, then single-agent}
     \centering
     \begin{tikzpicture}
-        % Erstes SVG -- overlay spec on the node; \uncover inside a tikz node
-        % breaks tikz path parsing (both use <...> syntax).
-        \node<1-> (img1) at (0,0) {\includesvg[width=0.6\linewidth]{assets/figures/containerlab/benchmark_tokens_vs_duration_single_agent}};
-        % Zweites SVG -- halb über das erste gelegt
-        \node<2-> (img2) at ([xshift=0.30\linewidth, yshift=-0.6cm]img1.center) {\includesvg[width=0.40\linewidth,height=0.5\textheight,keepaspectratio]{assets/figures/containerlab/benchmark_services_multi_agent}};
+        % Overlay spec on the node; \uncover inside a tikz node breaks tikz path
+        % parsing (both use <...> syntax). Multi-agent first, single-agent beside it,
+
+
+        % then the findings/services plot.
+        \node<1-> (img1) at (0,0) {\includesvg[width=0.44\linewidth,height=0.5\textheight,keepaspectratio]{assets/figures/containerlab/benchmark_tokens_vs_duration_multi_agent}};
+        \node<1-> [below=0pt of img1] {\scriptsize\textit{Multi-agent}};
+        \node<2-> (img2) at ([xshift=0.48\linewidth]img1.center) {\includesvg[width=0.44\linewidth,height=0.5\textheight,keepaspectratio]{assets/figures/containerlab/benchmark_tokens_vs_duration_single_agent}};
+        \node<2-> [below=0pt of img2] {\scriptsize\textit{Single-agent}};
+        % Findings/services plot -- half over the scatter plots
+        \node<3-> (img3) at ([xshift=0.24\linewidth, yshift=-0.6cm]img1.center) {\includesvg[width=0.34\linewidth,height=0.42\textheight,keepaspectratio]{assets/figures/containerlab/benchmark_services_multi_agent}};
     \end{tikzpicture}
 
-    \uncover<3->{
+    \uncover<4->{
         \vspace{0.2em}
         \begin{itemize}
             \item \footnotesize Decomposition: \texttt{qwen3:30b} drops tokens \textbf{--68\%} and duration \textbf{--30\%}.
@@ -52,15 +58,55 @@
 %
 %\end{frame}
 
-\begin{frame}
-    single agent resultate -> Lösung zu Multiagent
-    Structured vs Unstructured
-    interactive
+\begin{frame}{Single-Agent $\rightarrow$ Multi-Agent}
+    \framesubtitle{Why we decompose the task}
+
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            \uncover<1->{
+                \textbf{\faExclamationTriangle~~Single agent}
+                \begin{itemize}
+                    \item \scriptsize \texttt{claude-opus-4-7} tight (\textasciitilde53k tok, 122\,s)
+                    \item \scriptsize \texttt{qwen3:30b} scatters wide (86k tok, 362\,s)
+                    \item \scriptsize \texttt{gpt-oss:120b} unreliable (963\,s)
+                \end{itemize}
+            }
+            \vspace{0.4em}
+            \uncover<2->{
+                \begin{block}{\footnotesize Structured vs.\ Unstructured}
+                    \scriptsize
+                    \textbf{Structured} output enables automated metrics but has a
+                    \textbf{high failure rate} for small models.
+                    \textbf{Unstructured} was required in the BFH lab, at the cost of manual evaluation.
+                \end{block}
+            }
+        \end{column}
+    \end{columns}
+
+    \uncover<4->{
+        \vspace{0.3em}
+        \footnotesize \faProjectDiagram~~Decomposition gives each phase a small, fresh context $\rightarrow$ rescues the smaller models.
+    }
 \end{frame}
-\begin{frame}
-    Qualitative
-    +
-    Interactive
+
+\begin{frame}{Qualitative Results + Interactive Mode}
+    \framesubtitle{The discriminator: extracting the LDAP cleartext credentials}
+
+
+    \uncover<1->{
+        \textbf{\faSearch~~Qualitative}
+        \scriptsize
+        \begin{itemize}
+            \item \textbf{claude-opus-4-7} extracts the credentials in \textbf{every run} + correct attack-chain reasoning. Wrongly calls the printer a honeypot.
+            \item \textbf{gpt-oss:120b} extracts creds in $\sim$half the runs; \textbf{fabricates CVE IDs}.
+            \item \textbf{qwen3:30b} discovers hosts/services but rates LDAP ``Low'' in 9/10 runs -- \textbf{misses it}.
+            \item \textbf{Static} never performs the anonymous bind -- creds stay unextracted.
+        \end{itemize}
+    }
+    \uncover<3->{
+        \vspace{0.3em}
+        \footnotesize\textbf{Trade-off:} static = breadth \& determinism; AI = \textbf{interpretive depth} (severity-rated assessment, next steps).
+    }
 \end{frame}
 
 \begin{frame}{Network Security Lab -- Multi-Agent Benchmark}
