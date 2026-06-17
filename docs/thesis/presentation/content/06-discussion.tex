@@ -31,6 +31,11 @@
 \end{frame}
 
 \begin{frame}{Answering the Research Questions}
+         \begin{itemize}[<+->]
+            \item[\textbf{RQ1}] How does an agentic AI scenario perform \textbf{compared to a static reference} scenario in network reconnaissance?
+            \item[\textbf{RQ2}] To what extent can agentic AI \textbf{support operators} during interactive reconnaissance?
+            \item[\textbf{RQ3}] To what extent is the implementation \textbf{suitable for real-world} deployment?
+        \end{itemize}
     \footnotesize
     \begin{itemize}[<+->]
         \item[\textbf{RQ1}] \textbf{AI vs.\ static:} Same discovery power as baseline, no gains in speed/determinism.
@@ -115,7 +120,7 @@
             \begin{itemize}
                 \item \scriptsize \textbf{Match model tier to task} -- frontier model for autonomous recon
                 \item \scriptsize \textbf{Multi-agent} for smaller / self-hosted models
-                \item \scriptsize \textbf{Hybrid pipeline}: static breadth + AI depth (+ RAG)
+                \item \scriptsize \textbf{Hybrid pipeline}: static breadth + AI depth (RAG Retrieval-Augmented Generation)
                 \item \scriptsize \textbf{Human-in-the-loop} + retry on incomplete runs
             \end{itemize}
         \end{column}
@@ -171,13 +176,5 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}
-    \begin{figure}
-        \centering
-        \includegraphics[width=\linewidth]{assets/rag-future}
-        \caption{}
-        \label{fig:rag-future}
-    \end{figure}
-\end{frame}
 
 \section[Demo]{Demo: Agentic Reconnaissance in Action}\label{sec:demo-and-questions}

@@ -23,9 +23,20 @@
         \end{column}
     \end{columns}
 \end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{assets/red-and-blue-v2-transparent}
+        \caption{Red and Blue Team}
+        \label{fig:red-and-blue-transparent}
+    \end{figure}
+\end{frame}
+
 \begin{frame}
     \begin{columns}[T,onlytextwidth]
         \begin{column}{0.5\textwidth}
+            Red Team
             \begin{figure}
                 \centering
                 \includegraphics[width=0.9\linewidth]{assets/cyber-kill-chain}
@@ -35,6 +46,7 @@
 
         \begin{column}{0.5\textwidth}
             \vspace*{1.5cm}
+            Blue Team
 
             \begin{itemize}
                 \item Gather baseline data
@@ -46,14 +58,6 @@
             \end{itemize}
         \end{column}
     \end{columns}
-\end{frame}
-\begin{frame}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\linewidth]{assets/red-and-blue-v2-transparent}
-    \caption{Red and Blue Team}
-    \label{fig:red-and-blue-transparent}
-\end{figure}
 \end{frame}
 
 
@@ -119,11 +123,12 @@
         \draw[->,line width=1.4pt,gray!70] (-5.6,0) -- (5.8,0);
 
         % ===== MUST =====
-        \begin{scope}[visible on=<1->]
-            \draw[red!75!black] (-4,0) -- (-4,-0.55);
-            \node[dot,red!75!black] at (-4,0) {};
-            \node[phase,red!75!black,above=2pt] at (-4,0.05) {Must};
-            \node[goals] at (-3.5,-0.6) {
+        \begin{scope}
+                    [visible on=<1->]
+                \draw[red!75!black] (-4,0) -- (-4,-0.55);
+                \node[dot,red!75!black] at (-4,0) {};
+                \node[phase,red!75!black,above=2pt] at (-4,0.05) {Must};
+                \node[goals] at (-3.5,-0.6) {
                 Compare Frameworks\\
                 AI Integration Research\\
                 Configuration Management\\
@@ -135,21 +140,23 @@
         \end{scope}
 
         % ===== SHOULD =====
-        \begin{scope}[visible on=<2->]
-            \draw[orange] (0.2,0) -- (0.2,-0.55);
-            \node[dot,orange] at (0.2,0) {};
-            \node[phase,orange,above=2pt] at (0.2,0.05) {Should};
-            \node[goals] at (0.6,-0.6) {
+        \begin{scope}
+                    [visible on=<2->]
+                \draw[orange] (0.2,0) -- (0.2,-0.55);
+                \node[dot,orange] at (0.2,0) {};
+                \node[phase,orange,above=2pt] at (0.2,0.05) {Should};
+                \node[goals] at (0.6,-0.6) {
                 Blue Team Intrusion Detection\\
                 AI vs.\ Engineered (Blue)};
         \end{scope}
 
         % ===== COULD =====
-        \begin{scope}[visible on=<3->]
-            \draw[gray!60] (4.2,0) -- (4.2,-0.55);
-            \node[dot,gray!60] at (4.2,0) {};
-            \node[phase,gray!60!black,above=2pt] at (4.2,0.05) {Could};
-            \node[goals] at (5.2,-0.6) {
+        \begin{scope}
+                    [visible on=<3->]
+                \draw[gray!60] (4.2,0) -- (4.2,-0.55);
+                \node[dot,gray!60] at (4.2,0) {};
+                \node[phase,gray!60!black,above=2pt] at (4.2,0.05) {Could};
+                \node[goals] at (5.2,-0.6) {
                 REST API\\
                 MCP Server\\
                 Web GUI};
