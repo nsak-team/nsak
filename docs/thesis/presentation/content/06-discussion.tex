@@ -31,21 +31,21 @@
 \end{frame}
 
 \begin{frame}{Answering the Research Questions}
-         \begin{itemize}[<+->]
-            \item[\textbf{RQ1}] How does an agentic AI scenario perform \textbf{compared to a static reference} scenario in network reconnaissance?
-            \item[\textbf{RQ2}] To what extent can agentic AI \textbf{support operators} during interactive reconnaissance?
-            \item[\textbf{RQ3}] To what extent is the implementation \textbf{suitable for real-world} deployment?
+    \begin{itemize}
+        \item<1->[\textbf{RQ1}] How does an agentic AI scenario perform \textbf{compared to a static reference} scenario in network reconnaissance?
+        \begin{itemize}
+            \item<1-> \footnotesize \textbf{AI vs.\ static:} Same discovery power as baseline, no gains in speed/determinism. Adds value via \textbf{reasoning and interpretation} (credentials, banner reasoning, severity scoring).
         \end{itemize}
-    \footnotesize
-    \begin{itemize}[<+->]
-        \item[\textbf{RQ1}] \textbf{AI vs.\ static:} Same discovery power as baseline, no gains in speed/determinism.
-        Adds value via \textbf{reasoning and interpretation} (credentials, banner reasoning, severity scoring).
-        \vspace{0.2em}
-        \item[\textbf{RQ2}] \textbf{Operator support:} Converts scans into structured, severity-ranked output + next steps.
-        \texttt{--interactive} Operator stays in the loop and control.
-        \vspace{0.2em}
-        \item[\textbf{RQ3}] \textbf{Deployment:} Scales to $\sim$35 hosts, highlights key risks.
-        \textbf{Requires supervision} (reliability limits).
+        \vspace{0.3em}
+        \item<2->[\textbf{RQ2}] To what extent can agentic AI \textbf{support operators} during interactive reconnaissance?
+        \begin{itemize}
+            \item<2-> \footnotesize \textbf{Operator support:} Converts scans into structured, severity-ranked output + next steps. \texttt{--interactive} keeps the operator in the loop and in control.
+        \end{itemize}
+        \vspace{0.3em}
+        \item<3->[\textbf{RQ3}] To what extent is the implementation \textbf{suitable for real-world} deployment?
+        \begin{itemize}
+            \item<3-> \footnotesize \textbf{Deployment:} Scales to $\sim$35 hosts, highlights key risks. \textbf{Requires supervision} (reliability limits).
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -104,9 +104,13 @@
             \draw[gray!60] (4.2,0) -- (4.2,-0.55);
             \node[dot,gray!60] at (4.2,0) {};
             \node[phase,gray!60!black,above=2pt] at (4.2,0.05) {Could};
-            \node[goals] at (5.2,-0.6) {
+            \node<1>[goals] at (5.2,-0.6) {
                 REST API\\
                 MCP Server\\
+                Web GUI};
+            \node<2>[goals] at (5.2,-0.6) {
+                REST API\\
+                MCP Server~{\color{green!60!black}\faCheck}\\
                 Web GUI};
         \end{scope}
     \end{tikzpicture}
@@ -139,14 +143,13 @@
 \begin{frame}{Conclusion}
     \framesubtitle{Agentic AI complements deterministic enumeration}
     \begin{itemize}
-        \item[\faCheck] Using NSAK directly as an \textbf{agentic harness} proved effective -- the agent autonomously and interactively executes network discovery via LangChain tools.
-        \item[\faCheck] Scripted scenarios excel in correctness and completeness; the agent adds \textbf{reasoning and assessment}, limited by model capability.
-        \item[\faCheck] \textbf{Multi-agent decomposition} models to digest large context improves models by reducing context complexity and increasing consistency.
-        \item[\faExclamationTriangle] Hallucinations remain a limitation -- \textbf{supervised operation with a human reviewer} is the proposed deployment model.
+        \item[\faCheck] NSAK as an \textbf{agentic harness}: scripts give breadth, the agent adds \textbf{reasoning and assessment}.
+        \item[\faCheck] \textbf{Multi-agent decomposition} improves consistency for smaller models.
+        \item[\faExclamationTriangle] Hallucinations persist -- \textbf{supervised operation} with a human reviewer.
     \end{itemize}
     \vspace{0.5em}
     \begin{center}
-        \footnotesize\textit{LLMs make cybersecurity use cases more accessible and cost-effective -- with a human in the loop.}
+        \footnotesize\textit{LLMs make cybersecurity more accessible -- with a human in the loop.}
     \end{center}
 \end{frame}
 
