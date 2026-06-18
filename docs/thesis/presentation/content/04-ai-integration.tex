@@ -31,9 +31,10 @@
     \begin{columns}[T,onlytextwidth]
         \begin{column}{0.5\textwidth}
             \onslide<1-> {
-                \textbf{\faExclamationTriangle~~The problem}
-                ~\\
+                \textbf{~~~\faExclamationTriangle~~~The problem}
+                \vspace{1.0em}
                 \begin{itemize}
+                    \setlength\itemsep{1.0em}
                     \item MCP servers like draw.io provide a lot of tools
                     \item Each tool, and it's description contributes to the context
                     \item Setups with small context windows are getting overwhelmed and do not call tools at all
@@ -43,9 +44,10 @@
 
         \begin{column}{0.5\textwidth}
             \onslide<2->{
-                \textbf{\faProjectDiagram~~Our solution}
-                ~\\
+                \textbf{~~~\faProjectDiagram~~~Our solution}
+                \vspace{1.0em}
                 \begin{itemize}
+                    \setlength\itemsep{1.0em}
                     \item Disable the MCP based tools per default
                     \item Implement tools as simple python functions with LangChain's @tool decorator
                 \end{itemize}
@@ -67,9 +69,10 @@
     \begin{columns}[T,onlytextwidth]
         \begin{column}{0.5\textwidth}
             \onslide<1-> {
-                \textbf{\faExclamationTriangle~~The problem}
-                ~\\
+                \textbf{~~~\faExclamationTriangle~~~The problem}
+                \vspace{1.0em}
                 \begin{itemize}
+                    \setlength\itemsep{1.0em}
                     \item There are a lot of drills which where automatically registered as tools
                     \item Each tool, and it's description contributes to the context
                     \item Setups with small context windows are getting overwhelmed and do not call tools at all
@@ -79,9 +82,10 @@
 
         \begin{column}{0.5\textwidth}
             \onslide<2->{
-                \textbf{\faProjectDiagram~~Our solution}
-                ~\\
+                \textbf{~~~\faProjectDiagram~~~Our solution}
+                \vspace{1.0em}
                 \begin{itemize}
+                    \setlength\itemsep{1.0em}
                     \item Use only a small set of tools
                     \item Investigate \enquote{Dynamic Tool Selection} (not finished)
                 \end{itemize}
@@ -154,9 +158,10 @@
     \begin{columns}[T,onlytextwidth]
         \begin{column}{0.5\textwidth}
             \onslide<1-> {
-                \textbf{\faExclamationTriangle~~The problem}
-                ~\\
+                \textbf{~~~\faExclamationTriangle~~~The problem}
+                \vspace{1.0em}
                 \begin{itemize}
+                    \setlength\itemsep{1.0em}
                     \item The failure rate skyrocketed in the BFH network security lab
                     \item Not all models/providers support structured output equally well
                     \item Native: Data structures are converted into grammars used in token sampling
@@ -167,9 +172,10 @@
 
         \begin{column}{0.5\textwidth}
             \onslide<2->{
-                \textbf{\faProjectDiagram~~Our solution}
-                ~\\
+                \textbf{~~~\faProjectDiagram~~~Our solution}
+                \vspace{1.0em}
                 \begin{itemize}
+                    \setlength\itemsep{1.0em}
                     \item Simplifying the data structure also simplifies the grammar/tool (was not enough)
                     \item We implemented an AI scenario without structured output on the spot
                 \end{itemize}
